@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.money.mapper.SysRolePermissionRelationMapper">
+
+    <select id="selectPermissionByRole" resultType="com.money.entity.SysPermission">
+        SELECT up.id, up.permission_name, up.permission_type, up.parent_id, up.permission
+        FROM sys_permission up
+        LEFT JOIN sys_role_permission_relation rel ON rel.permission_id = up.id
+        WHERE rel.role_id in
+        <foreach collection="roleIds" item="roleId" separator="," open="(" close=")">
+            #{roleId}
+        </foreach>
+        ORDER BY up.sort
+    </select>
+    <select id="selectPermissionByUser" resultType="com.money.entity.SysPermission">
+        SELECT up.id, up.permission_name, up.permission_type, up.parent_id, up.permission,
+            up.icon, up.router_path, up.iframe, up.hidden, up.component_name, up.component_path,
+            up.sub_count, up.sort
+        FROM sys_permission up
+        LEFT JOIN sys_role_permission_relation rel ON rel.permission_id = up.id
+        LEFT JOIN sys_user_role_relation urel ON urel.role_id = rel.role_id
+        WHERE urel.user_id = #{userId}
+        ORDER BY up.sort
+    </select>
+</mapper>
+

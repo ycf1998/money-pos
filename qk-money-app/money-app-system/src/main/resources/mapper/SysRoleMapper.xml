@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.money.mapper.SysRoleMapper">
+    <select id="getLevel" resultType="java.lang.Integer">
+        SELECT MIN(role.level)
+        FROM sys_user_role_relation rel
+        LEFT JOIN sys_role role ON rel.role_id = role.id
+        WHERE rel.user_id = #{userId} AND role.enabled = 1
+    </select>
+
+    <select id="selectRoleList" resultType="com.money.entity.SysRole">
+        SELECT role.id, role.role_code, role.role_name, role.description, role.level
+        FROM sys_user_role_relation rel
+        LEFT JOIN sys_role role ON rel.role_id = role.id
+        WHERE rel.user_id = #{userId} AND role.enabled = 1
+        ORDER BY role.level
+    </select>
+</mapper>

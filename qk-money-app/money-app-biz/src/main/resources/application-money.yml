@@ -1,0 +1,88 @@
+money:
+  web:
+    # 全局响应处理器
+    response-handler: true
+    # 全局异常处理器
+    exception-handler: true
+    # 全局请求日志切面
+    web-log-aspect: true
+  # 多租户
+  tenant:
+    # 开关
+    enabled: true
+    # 请求头
+    header: Y-tenant
+    # 忽略的表
+    ignore-table:
+      - sys_tenant
+      - provinces
+  # 缓存
+  cache:
+    # 本地缓存
+    local:
+      # 提供者 hutool（默认）、caffeine
+      provider: hutool
+      # 过期时间：ms，0代表永不过期
+      ttl: 86400000
+      # hutool-cache参数
+      hutool:
+        # 失效策略：LRU（默认）、LFU、FIFO、TIMED、WEAK
+        strategy: LRU
+        # 容量
+        capacity: 102400
+    # redis 缓存
+    redis:
+      # 开关，默认关闭
+      enabled: false
+      # 过期时间：ms，主要用于@Cacheable相关注解的过期时间
+      ttl: 86400000
+  # 安全
+  security:
+    # token配置
+    token:
+      # token请求头名称
+      header: Authorization
+      # 令牌类型：完整token："{tokenType} {accessToken}"
+      token-type: Bearer
+      # 密钥
+      secret: money
+      # access token过期时间 ms，默认8小时
+      ttl: 28800000
+      # refresh token过期时间 ms，默认30天
+      refresh-ttl: 2592000000
+      # 策略：jwt（自动过期，默认）、redis
+      strategy: jwt
+      # 缓存键名
+      cache-key: "security:token:"
+    # 忽略的url
+    ignore:
+      get:
+        - /tenants/byCode
+        - /auth/refreshToken
+      post:
+        - /auth/login
+        - /auth/logout
+      pattern:
+        - /error/**
+        - /actuator/**
+        - /swagger**/**
+        - /webjars/**
+        - /v3/**
+        - /assets/**
+        - /test/**
+  # 邮件服务
+  mail:
+    host: smtp.qq.com # 邮箱服务器
+    username: 374648769@qq.com
+    password: aqzhvhajqebqbgjh # 授权码（得去邮箱获取）
+    properties:
+      mail:
+        smtp:
+          auth: true # 使用
+          starttls: # 使用 SSL 安全协议，必须配置如下
+            enable: true
+            required: true
+    port: 465  # 端口
+    protocol: smtps # 协议
+    default-encoding: utf-8
+    fromAlias: 麦尼 # 发件人别名

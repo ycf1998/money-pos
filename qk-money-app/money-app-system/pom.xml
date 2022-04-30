@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.money</groupId>
+        <artifactId>qk-money-app</artifactId>
+        <version>${revision}</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+
+    <artifactId>money-app-system</artifactId>
+    <name>money-app-system</name>
+    <version>${revision}</version>
+    <description>系统模块</description>
+
+    <dependencies>
+        <!-- api模块 -->
+        <dependency>
+            <groupId>com.money</groupId>
+            <artifactId>money-app-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+        <!-- 安全模块 -->
+        <dependency>
+            <groupId>com.money</groupId>
+            <artifactId>qk-money-security</artifactId>
+        </dependency>
+        <!-- 对象存储OSS模块-->
+        <dependency>
+            <groupId>com.money</groupId>
+            <artifactId>money-common-oss</artifactId>
+        </dependency>
+    </dependencies>
+
+</project>
