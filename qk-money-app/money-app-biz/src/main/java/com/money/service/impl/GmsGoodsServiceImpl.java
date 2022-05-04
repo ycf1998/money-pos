@@ -95,10 +95,6 @@ public class GmsGoodsServiceImpl extends ServiceImpl<GmsGoodsMapper, GmsGoods> i
             throw new GoodsRelatedException("条码已存在");
         }
         GmsGoods gmsGoods = this.getById(goodsDTO.getId());
-        // 调整状态
-        if (GoodsStatus.SOLD_OUT.name().equals(gmsGoods.getStatus()) && goodsDTO.getStock() > 0) {
-            gmsGoods.setStatus(GoodsStatus.SALE.name());
-        }
         // 更新商品数量
         if (!gmsGoods.getBrandId().equals(goodsDTO.getBrandId())) {
             gmsBrandService.updateGoodsCount(goodsDTO.getBrandId(), 1);
@@ -109,6 +105,13 @@ public class GmsGoodsServiceImpl extends ServiceImpl<GmsGoodsMapper, GmsGoods> i
             gmsGoodsCategoryService.updateGoodsCount(gmsGoods.getCategoryId(), -1);
         }
         BeanUtil.copyProperties(goodsDTO, gmsGoods);
+        // 调整状态
+        if (GoodsStatus.SOLD_OUT.name().equals(gmsGoods.getStatus()) && goodsDTO.getStock() > 0) {
+            gmsGoods.setStatus(GoodsStatus.SALE.name());
+        }
+        if (GoodsStatus.SALE.name().equals(gmsGoods.getStatus()) && goodsDTO.getStock() <= 0) {
+            gmsGoods.setStatus(GoodsStatus.SOLD_OUT.name());
+        }
         // 上传图片
         if (pic != null) {
             String picUrl = localOSS.upload(pic, FolderPath.builder().cd("goods").build(), FileNameStrategy.TIMESTAMP);
