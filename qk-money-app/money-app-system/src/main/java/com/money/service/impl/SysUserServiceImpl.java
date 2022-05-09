@@ -70,7 +70,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     @Cacheable(key = "'permission:' + #userId + ':list'")
     @Override
     public List<SysPermission> getPermissions(Long userId) {
-        List<SysUserRoleRelation> userRoleRelationList = sysUserRoleRelationService.lambdaQuery().select(SysUserRoleRelation::getRoleId).list();
+        List<SysUserRoleRelation> userRoleRelationList = sysUserRoleRelationService.lambdaQuery().select(SysUserRoleRelation::getRoleId).eq(SysUserRoleRelation::getUserId, userId).list();
         return sysPermissionService.getPermissionByRole(userRoleRelationList.stream().map(SysUserRoleRelation::getRoleId).collect(Collectors.toList()));
     }
 
