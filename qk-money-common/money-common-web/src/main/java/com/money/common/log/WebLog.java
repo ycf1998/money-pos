@@ -23,10 +23,6 @@ public class WebLog {
      */
     private String ip;
     /**
-     * 操作用户
-     */
-    private String username;
-    /**
      * 操作描述
      */
     private String description;

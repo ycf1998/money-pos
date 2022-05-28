@@ -24,7 +24,7 @@ public class MybatisPlusGenerator {
      * 数据源配置
      */
     private static final DataSourceConfig.Builder DATA_SOURCE_CONFIG = new DataSourceConfig
-            .Builder("jdbc:mysql://127.0.0.1:3306/money_pos?useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT%2b8&useSSL=false", "root", "root");
+            .Builder("jdbc:mysql://127.0.0.1:3306/qk_money?useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT%2b8&useSSL=false", "root", "root");
 
     public static void main(String[] args) {
         String javaDir = new File("qk-money-app/money-app-biz/src/main/java/").getAbsolutePath();
@@ -40,9 +40,9 @@ public class MybatisPlusGenerator {
                 .globalConfig((scanner, builder) -> builder.disableOpenDir()
                         .author(scanner.apply("请输入作者名称？"))
                         // 开启swagger
-//                        .enableSwagger()
-//                        // 是否覆盖
-//                        .fileOverride()
+                        .enableSwagger()
+                        // 是否覆盖
+                        .fileOverride()
                         .outputDir(javaDir))
                 .templateConfig(builder -> builder.disable(TemplateType.XML))
                 // 包配置
@@ -59,7 +59,7 @@ public class MybatisPlusGenerator {
                 // 策略配置
                 .strategyConfig((scanner, builder) -> builder
                         // 不生成sys相关表
-                        .likeTable(new LikeTable("oms_order_log"))
+                        .likeTable(new LikeTable("demo"))
 //                        .notLikeTable(new LikeTable("sys"))
                         // Entity策略
                         .entityBuilder().superClass(BaseEntity.class).enableLombok()

@@ -19,13 +19,16 @@ import com.money.entity.SysUser;
 import com.money.entity.SysUserRoleRelation;
 import com.money.exception.UserRelatedException;
 import com.money.mapper.SysUserMapper;
+import com.money.oss.OSSDelegate;
+import com.money.oss.core.FileNameStrategy;
+import com.money.oss.core.FolderPath;
+import com.money.oss.local.LocalOSS;
 import com.money.security.component.SecurityTokenSupport;
 import com.money.service.SysPermissionService;
 import com.money.service.SysRoleService;
 import com.money.service.SysUserRoleRelationService;
 import com.money.service.SysUserService;
-import com.money.util.PageUtil;
-import com.money.util.VOUtil;
+import com.money.util.*;
 import com.money.vo.AuthTokenVO;
 import com.money.vo.OwnInfoVO;
 import com.money.vo.SysUserVO;
@@ -37,6 +40,7 @@ import org.springframework.cache.annotation.Caching;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -54,6 +58,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     private final SysRoleService sysRoleService;
     private final SysUserRoleRelationService sysUserRoleRelationService;
     private final SysPermissionService sysPermissionService;
+    private final OSSDelegate<LocalOSS> localOSS;
 
     @Cacheable(key = "'basic.info:' + #username + ':object'")
     @Override
@@ -132,6 +137,19 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 //        authTokenVO.setRefreshToken(securityTokenSupport.generateRefreshToken(username));
 //        authTokenVO.setRefreshTtl(securityTokenSupport.getTokenConfig().getRefreshTtl());
         return authTokenVO;
+    }
+
+    @Override
+    public String uploadAvatar(String username, MultipartFile file) {
+        SysUser sysUser = this.getByUsername(username);
+        String oldAvatar = sysUser.getAvatar();
+        if (StrUtil.isNotBlank(oldAvatar)) {
+            localOSS.delete(oldAvatar);
+        }
+        String avatar = localOSS.upload(file, FolderPath.builder().cd("user").build(), FileNameStrategy.TIMESTAMP);
+        sysUser.setAvatar(avatar);
+        this.updateById(sysUser);
+        return avatar;
     }
 
     // ============================================================

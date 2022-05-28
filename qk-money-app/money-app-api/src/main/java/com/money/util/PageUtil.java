@@ -18,6 +18,6 @@ public class PageUtil {
     }
 
     public <T> Page<T> toPage(PageRequest pageRequest, Class<T> t) {
-        return new Page<T>(pageRequest.getPage(), pageRequest.getSize());
+        return new Page<>(pageRequest.getPage(), pageRequest.getSize());
     }
 }

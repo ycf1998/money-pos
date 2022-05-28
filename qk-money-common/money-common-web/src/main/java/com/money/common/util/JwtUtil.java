@@ -1,6 +1,6 @@
 package com.money.common.util;
 
-import com.money.common.core.constant.ProjectConstants;
+import com.money.common.constant.ProjectConstants;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;

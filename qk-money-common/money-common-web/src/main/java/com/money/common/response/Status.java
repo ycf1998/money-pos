@@ -1,23 +1,27 @@
-package com.money.common.core.response;
+package com.money.common.response;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
 
-@Data
+/**
+ * @author : money
+ * @version : 1.0.0
+ * @description : 状态
+ * @createTime : 2022-05-26 21:44:27
+ */
 @AllArgsConstructor
 public class Status implements IStatus {
 
-    private Integer code;
+    private int code;
 
     private String message;
 
     @Override
     public int getCode() {
-        return 0;
+        return this.code;
     }
 
     @Override
     public String getMessage() {
-        return null;
+        return this.message;
     }
 }

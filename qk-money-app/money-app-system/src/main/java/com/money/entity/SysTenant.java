@@ -39,6 +39,9 @@ public class SysTenant extends BaseEntity {
     @Schema(description = "租户描述")
     private String tenantDesc;
 
+    @Schema(description = "逻辑删除")
+    private Boolean deleted;
+
     private Integer sort;
 
 

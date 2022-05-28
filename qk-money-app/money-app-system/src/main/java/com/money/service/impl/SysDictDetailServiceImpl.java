@@ -2,7 +2,7 @@ package com.money.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.money.common.core.exception.BaseException;
+import com.money.common.exception.BaseException;
 import com.money.constant.ErrorStatus;
 import com.money.dto.SysDictDetailDTO;
 import com.money.entity.SysDictDetail;

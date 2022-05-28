@@ -1,5 +1,6 @@
 package com.money.common.config;
 
+import cn.hutool.core.date.DatePattern;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.converter.Converter;
@@ -27,7 +28,7 @@ public class DefaultDateConverterConfig {
             @Override
             public Date convert(String source) {
                 try {
-                    return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(source);
+                    return new SimpleDateFormat(DatePattern.NORM_DATETIME_PATTERN).parse(source);
                 } catch (ParseException e) {
                     return null;
                 }
@@ -40,7 +41,7 @@ public class DefaultDateConverterConfig {
         return new Converter<String, LocalDateTime>() {
             @Override
             public LocalDateTime convert(String source) {
-                return LocalDateTime.parse(source, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+                return LocalDateTime.parse(source, DateTimeFormatter.ofPattern(DatePattern.NORM_DATETIME_PATTERN));
             }
         };
     }
@@ -50,7 +51,7 @@ public class DefaultDateConverterConfig {
         return new Converter<String, LocalDate>() {
             @Override
             public LocalDate convert(String source) {
-                return LocalDate.parse(source, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+                return LocalDate.parse(source, DateTimeFormatter.ofPattern(DatePattern.NORM_DATE_PATTERN));
             }
         };
     }
@@ -60,7 +61,7 @@ public class DefaultDateConverterConfig {
         return new Converter<String, LocalTime>() {
             @Override
             public LocalTime convert(String source) {
-                return LocalTime.parse(source, DateTimeFormatter.ofPattern("HH:mm:ss"));
+                return LocalTime.parse(source, DateTimeFormatter.ofPattern(DatePattern.NORM_TIME_PATTERN));
             }
         };
     }

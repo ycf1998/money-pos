@@ -1,4 +1,4 @@
-package com.money.common.core.constant;
+package com.money.common.constant;
 
 /**
  * @author : money

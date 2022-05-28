@@ -6,6 +6,14 @@ money:
     exception-handler: true
     # 全局请求日志切面
     web-log-aspect: true
+    # 多语言
+    i18n:
+      enabled: false
+      support:
+        - en
+    # 多时区
+    timezone:
+      default-time-zone: GMT+08:00
   # 多租户
   tenant:
     # 开关
@@ -47,7 +55,7 @@ money:
       # 密钥
       secret: money
       # access token过期时间 ms，默认8小时
-      ttl: 28800000
+      ttl: 604800000
       # refresh token过期时间 ms，默认30天
       refresh-ttl: 2592000000
       # 策略：jwt（自动过期，默认）、redis
@@ -72,14 +80,14 @@ money:
         - /test/**
   # 邮件服务
   mail:
-    host: smtp.qq.com # 邮箱服务器
-    username: 374648769@qq.com
-    password: aqzhvhajqebqbgjh # 授权码（得去邮箱获取）
+    host: smtp.shahow.top # 邮箱服务器
+    username: qk-money@money.shahow.top # 账号
+    password: Vv123456#
     properties:
       mail:
         smtp:
-          auth: true # 使用
-          starttls: # 使用 SSL 安全协议，必须配置如下
+          auth: true
+          starttls: # 使用SSL安全协议，必须配置如下
             enable: true
             required: true
     port: 465  # 端口

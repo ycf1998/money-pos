@@ -1,6 +1,5 @@
 package com.money.controller;
 
-
 import com.money.common.dto.ValidGroup;
 import com.money.dto.SysTenantDTO;
 import com.money.dto.query.SysTenantQueryDTO;

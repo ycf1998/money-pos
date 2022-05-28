@@ -12,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.InvalidPathException;
 import java.nio.file.Paths;
 
 /**
@@ -52,8 +53,8 @@ public class LocalOSS implements OSSInterface {
         try {
             String finalPath = StrUtil.appendIfMissing(config.getBucket(), "/") + uri;
             Files.deleteIfExists(Paths.get(finalPath));
-        } catch (IOException e) {
-            log.error("【本地OSS】文件 {} 删除失败", uri);
+        } catch (IOException | InvalidPathException e) {
+            log.error("【本地OSS】文件 {} 删除失败", uri, e);
             throw new DeleteFailedException();
         }
     }

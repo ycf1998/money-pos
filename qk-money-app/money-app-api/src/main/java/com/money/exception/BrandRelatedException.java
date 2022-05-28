@@ -1,8 +1,8 @@
 package com.money.exception;
 
-import com.money.common.core.exception.BaseException;
-import com.money.common.core.response.IStatus;
-import com.money.common.core.response.Status;
+import com.money.common.exception.BaseException;
+import com.money.common.response.IStatus;
+import com.money.common.response.Status;
 
 /**
  * @author : money

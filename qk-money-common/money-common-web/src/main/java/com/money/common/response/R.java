@@ -1,6 +1,7 @@
 package com.money.common.response;
 
 
+import com.money.common.i18n.I18nSupport;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -38,7 +39,7 @@ public class R<T> implements Serializable {
 
     public R(int code, String message, T data) {
         this.code = code;
-        this.message = message;
+        this.message = I18nSupport.get(message);
         this.data = data;
     }
 
@@ -48,7 +49,7 @@ public class R<T> implements Serializable {
      * @return {@link R}<{@link String}>
      */
     public static <T> R<T> success() {
-        return new R<T>(RStatus.SUCCESS.getCode(), RStatus.SUCCESS.getMessage(), null);
+        return new R<>(RStatus.SUCCESS.getCode(), RStatus.SUCCESS.getMessage(), null);
     }
 
     /**
@@ -58,7 +59,7 @@ public class R<T> implements Serializable {
      * @return {@link R}<{@link T}>
      */
     public static <T> R<T> success(T data) {
-        return new R<T>(RStatus.SUCCESS.getCode(), RStatus.SUCCESS.getMessage(), data);
+        return new R<>(RStatus.SUCCESS.getCode(), RStatus.SUCCESS.getMessage(), data);
     }
 
     /**
@@ -69,7 +70,7 @@ public class R<T> implements Serializable {
      * @return {@link R}<{@link T}>
      */
     public static <T> R<T> success(String message, T data) {
-        return new R<T>(RStatus.SUCCESS.getCode(), message, data);
+        return new R<>(RStatus.SUCCESS.getCode(), message, data);
     }
 
     /**
@@ -78,7 +79,7 @@ public class R<T> implements Serializable {
      * @return {@link R}<{@link T}>
      */
     public static <T> R<T> fail() {
-        return new R<T>(RStatus.FAILED.getCode(), RStatus.FAILED.getMessage(), null);
+        return new R<>(RStatus.FAILED.getCode(), RStatus.FAILED.getMessage(), null);
     }
 
     /**
@@ -88,7 +89,7 @@ public class R<T> implements Serializable {
      * @return {@link R}<{@link T}>
      */
     public static <T> R<T> fail(String message) {
-        return new R<T>(RStatus.FAILED.getCode(), message, null);
+        return new R<>(RStatus.FAILED.getCode(), message, null);
     }
 
     /**
@@ -100,7 +101,7 @@ public class R<T> implements Serializable {
      * @return {@link R}<{@link T}>
      */
     public static <T> R<T> fail(int code, String message) {
-        return new R<T>(code, message, null);
+        return new R<>(code, message, null);
     }
 
     /**
@@ -119,7 +120,7 @@ public class R<T> implements Serializable {
      * @return {@link R}<{@link T}>
      */
     public static <T> R<T> validateFailed(String message) {
-        return new R<T>(RStatus.BAD_REQUEST.getCode(), message, null);
+        return new R<>(RStatus.BAD_REQUEST.getCode(), message, null);
     }
 
     /**
@@ -138,7 +139,7 @@ public class R<T> implements Serializable {
      * @return {@link R}<{@link T}>
      */
     public static <T> R<T> unauthorized(T data) {
-        return new R<T>(RStatus.UNAUTHORIZED.getCode(), RStatus.UNAUTHORIZED.getMessage(), data);
+        return new R<>(RStatus.UNAUTHORIZED.getCode(), RStatus.UNAUTHORIZED.getMessage(), data);
     }
 
     /**
@@ -157,7 +158,7 @@ public class R<T> implements Serializable {
      * @return {@link R}<{@link T}>
      */
     public static <T> R<T> forbidden(T data) {
-        return new R<T>(RStatus.FORBIDDEN.getCode(), RStatus.FORBIDDEN.getMessage(), data);
+        return new R<>(RStatus.FORBIDDEN.getCode(), RStatus.FORBIDDEN.getMessage(), data);
     }
 
 }

@@ -1,7 +1,5 @@
 package com.money.common.response;
 
-import com.money.common.core.response.IStatus;
-
 /**
  * @author : money
  * @version : 1.0.0

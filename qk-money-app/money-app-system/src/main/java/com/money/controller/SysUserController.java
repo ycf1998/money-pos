@@ -18,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Collections;
 import java.util.Set;
@@ -30,6 +31,12 @@ public class SysUserController {
 
     private final SysUserService sysUserService;
     private final SysRoleService sysRoleService;
+
+    @Operation(summary = "上传头像", tags = {"sysUser"})
+    @PostMapping("/uploadAvatar")
+    public String uploadAvatar(@CurrentUser String username, MultipartFile file) {
+        return sysUserService.uploadAvatar(username, file);
+    }
 
     @Operation(summary = "更新资料", tags = {"sysUser"})
     @PostMapping("/updateProfile")

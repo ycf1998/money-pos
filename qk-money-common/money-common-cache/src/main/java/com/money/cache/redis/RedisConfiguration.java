@@ -97,7 +97,7 @@ public class RedisConfiguration {
 
     @Bean
     public RedisCacheManagerBuilderCustomizer myRedisCacheManagerBuilderCustomizer(RedisConfig redisConfig) {
-        return (builder) -> builder
+        return builder -> builder
                 .cacheDefaults(RedisCacheConfiguration
                         .defaultCacheConfig(Thread.currentThread().getContextClassLoader())
                         .entryTtl(Duration.ofMillis(redisConfig.getTtl())));

@@ -28,5 +28,5 @@ public class OwnInfoVO implements Serializable {
      * 权限列表
      */
     @Schema(description = "权限列表")
-    List<SysPermission> permissions;
+    private List<SysPermission> permissions;
 }

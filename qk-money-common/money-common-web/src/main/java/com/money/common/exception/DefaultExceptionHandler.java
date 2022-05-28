@@ -1,7 +1,7 @@
 package com.money.common.exception;
 
 
-import com.money.common.core.exception.BaseException;
+import com.money.common.i18n.I18nSupport;
 import com.money.common.response.R;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -86,7 +86,7 @@ public class DefaultExceptionHandler {
         if (bindingResult.hasErrors()) {
             FieldError fieldError = bindingResult.getFieldError();
             if (fieldError != null) {
-                message = "[" + fieldError.getField() + "] " + fieldError.getDefaultMessage();
+                message = "[" + fieldError.getField() + "] " + I18nSupport.get(fieldError.getDefaultMessage());
             }
         }
         log.warn("参数异常：{}", message);

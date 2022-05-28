@@ -1,4 +1,4 @@
-package com.money.common.swagger;
+package com.money.swagger;
 
 import io.swagger.v3.oas.models.ExternalDocumentation;
 import io.swagger.v3.oas.models.OpenAPI;

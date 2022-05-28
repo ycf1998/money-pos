@@ -1,17 +1,23 @@
 package com.money.mail.service;
 
+import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.StrUtil;
 import com.money.mail.config.ExtMailProperties;
+import com.money.mail.domian.MailRequest;
+import com.money.mail.interceptor.PostmanInterceptor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.FileSystemResource;
-import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 
+import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.io.File;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author : money
@@ -41,100 +47,30 @@ public class MailServiceImpl implements MailService {
     }
 
     @Override
-    public boolean sendSimpleMail(String to, String subject, String content) {
+    public boolean send(MailRequest mailRequest) {
+        List<PostmanInterceptor> postmanInterceptors = mailRequest.getPostmanInterceptors();
         try {
-            log.info("发送普通文本邮件：{},{},{}", to, subject, content);
-            SimpleMailMessage message = new SimpleMailMessage();
-            message.setFrom(fromAlias());
-            message.setTo(to);
-            message.setSubject(subject);
-            message.setText(content);
-            mailSender.send(message);
-            log.info("发送普通文本邮件成功！");
-        } catch (Exception e) {
-            log.error("发送普通文本邮件失败：", e);
-            return false;
-        }
-        return true;
-    }
+            log.info("发送邮件 {}", mailRequest);
+            postmanInterceptors.forEach(p -> p.beforeSending(mailRequest));
 
-    @Override
-    public boolean sendSimpleMail(String to, String subject, String content, String... cc) {
-        try {
-            log.info("批量发送普通文本邮件：{},{},{}", to, subject, content);
-            SimpleMailMessage message = new SimpleMailMessage();
-            message.setFrom(fromAlias());
-            message.setTo(to);
-            message.setCc(cc);
-            message.setSubject(subject);
-            message.setText(content);
-            mailSender.send(message);
-            log.info("批量发送普通文本邮件成功！");
-        } catch (Exception e) {
-            log.error("批量发送普通文本邮件失败：", e);
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public boolean sendHtmlMail(String to, String subject, String content) {
-        try {
-            log.info("发送Html邮件：{},{},{}", to, subject, content);
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true);
-            message.setFrom(fromAlias());
-            helper.setTo(to);
-            helper.setSubject(subject);
-            helper.setText(content, true);
+            helper.setFrom(fromAlias());
+            helper.setTo(mailRequest.getTo());
+            helper.setSubject(mailRequest.getSubject());
+            helper.setText(mailRequest.getContent(), mailRequest.isHtml());
+            // 装填附件
+            for (Map.Entry<String, File> fileNameWithFile : mailRequest.getAttachments().entrySet()) {
+                File file = fileNameWithFile.getValue();
+                String fileName = fileNameWithFile.getKey() + "." + FileUtil.getSuffix(file);
+                helper.addAttachment(fileName, new FileSystemResource(file));
+            }
             mailSender.send(message);
-            log.info("发送Html邮件成功！");
-        } catch (Exception e) {
-            log.error("发送Html邮件失败：", e);
-            return false;
-        }
-        return true;
-    }
 
-    @Override
-    public boolean sendAttachmentsMail(String to, String subject, String content, String filePath) {
-        try {
-            log.info("发送带附件的邮件：{},{},{},{}", to, subject, content, filePath);
-            MimeMessage message = mailSender.createMimeMessage();
-            MimeMessageHelper helper = new MimeMessageHelper(message, true);
-            message.setFrom(fromAlias());
-            helper.setTo(to);
-            helper.setSubject(subject);
-            helper.setText(content, true);
-            // 多附件只要传入文件数组，一个一个addAttachment就可以了
-            FileSystemResource file = new FileSystemResource(new File(filePath)); // 获取文件名
-            String fileName = filePath.substring(filePath.lastIndexOf(File.separator));
-            helper.addAttachment(fileName, file);
-            mailSender.send(message);
-            log.info("发送带附件的邮件成功！");
-        } catch (Exception e) {
-            log.error("发送带附件的邮件失败：", e);
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public boolean sendInlineResourceMail(String to, String subject, String content, String rscPath, String rscId) {
-        try {
-            log.info("发送图片邮件：{},{},{},{},{}", to, subject, content, rscPath, rscId);
-            MimeMessage message = mailSender.createMimeMessage();
-            MimeMessageHelper helper = new MimeMessageHelper(message, true);
-            message.setFrom(fromAlias());
-            helper.setTo(to);
-            helper.setSubject(subject);
-            helper.setText(content, true);
-            FileSystemResource res = new FileSystemResource(new File(rscPath));
-            helper.addInline(rscId, res);
-            mailSender.send(message);
-            log.info("发送图片邮件成功！");
-        } catch (Exception e) {
-            log.error("发送图片邮件失败：", e);
+            postmanInterceptors.forEach(p -> p.sendSucceeded(mailRequest));
+        } catch (MailException | MessagingException e) {
+            log.error("发送邮件失败 ", e);
+            postmanInterceptors.forEach(p -> p.sendFailed(mailRequest, e));
             return false;
         }
         return true;

@@ -4,6 +4,7 @@ import cn.hutool.core.util.StrUtil;
 import com.money.common.response.R;
 import com.money.common.util.WebUtil;
 import io.jsonwebtoken.JwtException;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.MDC;
@@ -17,6 +18,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.web.servlet.HandlerExecutionChain;
+import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -38,6 +41,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final SecurityTokenSupport securityTokenSupport;
     private final SecurityUserService securityUserService;
+    private final RequestMappingHandlerMapping handlerMapping;
 
     /**
      * 解决SpringSecurity全局忽略url配置无效问题
@@ -54,9 +58,20 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
 
     @Override
-    protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest httpServletRequest, @NonNull HttpServletResponse httpServletResponse, @NonNull FilterChain filterChain) throws ServletException, IOException {
         log.info("=============================================");
         log.info("请求认证 {} {}", httpServletRequest.getMethod(), httpServletRequest.getRequestURI());
+        try {
+            HandlerExecutionChain handler = handlerMapping.getHandler(httpServletRequest);
+            // 没有处理映射器，直接放行
+            if (handler == null) {
+                log.info("接口不存在，无需认证");
+                filterChain.doFilter(httpServletRequest, httpServletResponse);
+                return;
+            }
+        } catch (Exception e) {
+            log.error("", e);
+        }
         String token = httpServletRequest.getHeader(securityTokenSupport.getTokenConfig().getHeader());
         if (StrUtil.isBlank(token)) {
             log.info("未携带token，认证失败");

@@ -1,7 +1,7 @@
-package com.money.common.core.exception;
+package com.money.common.exception;
 
 
-import com.money.common.core.response.IStatus;
+import com.money.common.response.IStatus;
 
 /**
  * @author : money

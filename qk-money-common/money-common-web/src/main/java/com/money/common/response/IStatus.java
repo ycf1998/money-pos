@@ -1,4 +1,4 @@
-package com.money.common.core.response;
+package com.money.common.response;
 
 /**
  * @author : money

@@ -1,4 +1,4 @@
-package com.money.common.swagger;
+package com.money.swagger;
 
 import lombok.Getter;
 import lombok.Setter;

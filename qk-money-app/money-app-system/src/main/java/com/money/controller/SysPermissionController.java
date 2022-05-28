@@ -1,8 +1,8 @@
 package com.money.controller;
 
 
-import com.money.dto.SysPermissionDTO;
 import com.money.common.dto.ValidGroup;
+import com.money.dto.SysPermissionDTO;
 import com.money.dto.query.SysPermissionQueryDTO;
 import com.money.entity.SysPermission;
 import com.money.security.annotation.CurrentUser;

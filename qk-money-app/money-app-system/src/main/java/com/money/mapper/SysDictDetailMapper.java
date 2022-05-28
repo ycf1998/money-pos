@@ -1,7 +1,7 @@
 package com.money.mapper;
 
-import com.money.entity.SysDictDetail;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.money.entity.SysDictDetail;
 
 /**
  * <p>

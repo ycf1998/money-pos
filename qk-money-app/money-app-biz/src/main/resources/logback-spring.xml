@@ -4,9 +4,10 @@
     <springProperty scope="context" name="app_name" source="spring.application.name" defaultValue="app"/>
     <!-- 设置变量 -->
     <include resource="org/springframework/boot/logging/logback/defaults.xml" />
-    <property name="FILE_LOG_PATTERN" value="【%X{userId}】%d{HH:mm:ss.SSS} %-5level --- [%thread] %logger{36} : %msg%n"/>
+    <property name="FILE_LOG_PATTERN" value="%X{requestId}|%X{userId}> %d{HH:mm:ss.SSS} %-5level --- [%thread] %logger{36} : %msg%n"/>
+    <property name="ACCESS_LOG_PATTERN" value="%X{requestId}|%X{userId}> %d{HH:mm:ss.SSS} %-5level- [%thread] %logger{0} : %msg%n"/>
     <property name="LOG_PATH" value="log"/>
-    
+
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <pattern>${CONSOLE_LOG_PATTERN}</pattern>
@@ -23,7 +24,7 @@
             <totalSizeCap>5GB</totalSizeCap>
         </rollingPolicy>
         <encoder>
-            <pattern>${FILE_LOG_PATTERN}</pattern>
+            <pattern>${ACCESS_LOG_PATTERN}</pattern>
         </encoder>
     </appender>
     <!-- INFO级别及以上日志 -->

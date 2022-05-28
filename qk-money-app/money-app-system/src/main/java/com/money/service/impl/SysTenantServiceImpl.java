@@ -2,15 +2,16 @@ package com.money.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.money.common.core.exception.BaseException;
-import com.money.common.vo.PageVO;
-import com.money.constant.ErrorStatus;
+import com.money.common.exception.BaseException;
 import com.money.dto.SysTenantDTO;
 import com.money.dto.query.SysTenantQueryDTO;
+import com.money.common.vo.PageVO;
+import com.money.constant.ErrorStatus;
 import com.money.entity.*;
 import com.money.mapper.SysTenantMapper;
 import com.money.oss.OSSDelegate;
@@ -57,7 +58,7 @@ public class SysTenantServiceImpl extends ServiceImpl<SysTenantMapper, SysTenant
 
     @Override
     public SysTenant getTenantIdByCode(String code) {
-        return this.lambdaQuery().eq(SysTenant::getTenantCode, code).one();
+        return this.lambdaQuery().eq(SysTenant::getTenantCode, code).eq(SysTenant::getDeleted, false).one();
     }
 
     @Override
@@ -65,6 +66,7 @@ public class SysTenantServiceImpl extends ServiceImpl<SysTenantMapper, SysTenant
         Page<SysTenant> page = this.lambdaQuery()
                 .like(StrUtil.isNotBlank(queryDTO.getTenantCode()), SysTenant::getTenantCode, queryDTO.getTenantCode())
                 .like(StrUtil.isNotBlank(queryDTO.getTenantName()), SysTenant::getTenantName, queryDTO.getTenantName())
+                .eq(SysTenant::getDeleted, false)
                 .orderByAsc(SysTenant::getSort).orderByDesc(SysTenant::getUpdateTime)
                 .page(PageUtil.toPage(queryDTO, SysTenant.class));
         return VOUtil.toPageVO(page);
@@ -74,7 +76,7 @@ public class SysTenantServiceImpl extends ServiceImpl<SysTenantMapper, SysTenant
     @Transactional(rollbackFor = Exception.class)
     public void add(SysTenantDTO sysTenantDTO, MultipartFile logo) {
         // 租户code唯一
-        boolean exists = this.lambdaQuery().eq(SysTenant::getTenantCode, sysTenantDTO.getTenantCode()).exists();
+        boolean exists = this.lambdaQuery().eq(SysTenant::getTenantCode, sysTenantDTO.getTenantCode()).eq(SysTenant::getDeleted, false).exists();
         if (exists) {
             throw new BaseException(ErrorStatus.TENANT_ALREADY_EXIST);
         }
@@ -82,7 +84,7 @@ public class SysTenantServiceImpl extends ServiceImpl<SysTenantMapper, SysTenant
         BeanUtil.copyProperties(sysTenantDTO, sysTenant);
         // 上传logo
         if (logo != null) {
-            String logoUrl = localOSS.upload(logo, FolderPath.builder().cd("image").build(), FileNameStrategy.TIMESTAMP);
+            String logoUrl = localOSS.upload(logo, FolderPath.builder().cd("tenant").build(), FileNameStrategy.TIMESTAMP);
             sysTenant.setLogo(logoUrl);
         }
         this.save(sysTenant);
@@ -94,6 +96,7 @@ public class SysTenantServiceImpl extends ServiceImpl<SysTenantMapper, SysTenant
         // 租户code唯一
         boolean exists = this.lambdaQuery()
                 .ne(SysTenant::getId, sysTenantDTO.getId())
+                .eq(SysTenant::getDeleted, false)
                 .eq(SysTenant::getTenantCode, sysTenantDTO.getTenantCode()).exists();
         if (exists) {
             throw new BaseException(ErrorStatus.TENANT_ALREADY_EXIST);
@@ -102,7 +105,7 @@ public class SysTenantServiceImpl extends ServiceImpl<SysTenantMapper, SysTenant
         BeanUtil.copyProperties(sysTenantDTO, sysTenant, CopyOptions.create().ignoreNullValue());
         // 上传logo
         if (logo != null) {
-            String logoUrl = localOSS.upload(logo, FolderPath.builder().cd("image").build(), FileNameStrategy.TIMESTAMP);
+            String logoUrl = localOSS.upload(logo, FolderPath.builder().cd("tenant").build(), FileNameStrategy.TIMESTAMP);
             localOSS.delete(sysTenant.getLogo());
             sysTenant.setLogo(logoUrl);
         }
@@ -112,14 +115,20 @@ public class SysTenantServiceImpl extends ServiceImpl<SysTenantMapper, SysTenant
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void deleteById(Set<Long> ids) {
-        this.removeBatchByIds(ids);
-        sysUserService.lambdaUpdate().in(SysUser::getTenantId, ids).remove();
-        sysUserRoleRelationService.lambdaUpdate().in(SysUserRoleRelation::getTenantId, ids).remove();
-        sysRoleService.lambdaUpdate().in(SysRole::getTenantId, ids).remove();
-        sysRolePermissionRelationService.lambdaUpdate().in(SysRolePermissionRelation::getTenantId, ids).remove();
-        sysPermissionService.lambdaUpdate().in(SysPermission::getTenantId, ids).remove();
-        sysDictService.lambdaUpdate().in(SysDict::getTenantId, ids).remove();
-        sysDictDetailService.lambdaUpdate().in(SysDictDetail::getTenantId, ids).remove();
+        // 主租户不可删除
+        List<Long> filterIds = ids.stream().filter(id -> 0 != id).collect(Collectors.toList());
+        if (CollUtil.isEmpty(filterIds)) {
+            throw new BaseException("不可以删除主租户");
+        }
+        this.lambdaUpdate().set(SysTenant::getDeleted, true).in(SysTenant::getId, filterIds).update();
+//        this.removeBatchByIds(ids);
+//        sysUserService.lambdaUpdate().in(SysUser::getTenantId, ids).remove();
+//        sysUserRoleRelationService.lambdaUpdate().in(SysUserRoleRelation::getTenantId, ids).remove();
+//        sysRoleService.lambdaUpdate().in(SysRole::getTenantId, ids).remove();
+//        sysRolePermissionRelationService.lambdaUpdate().in(SysRolePermissionRelation::getTenantId, ids).remove();
+//        sysPermissionService.lambdaUpdate().in(SysPermission::getTenantId, ids).remove();
+//        sysDictService.lambdaUpdate().in(SysDict::getTenantId, ids).remove();
+//        sysDictDetailService.lambdaUpdate().in(SysDictDetail::getTenantId, ids).remove();
     }
 
     /**

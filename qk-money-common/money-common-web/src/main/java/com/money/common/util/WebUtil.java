@@ -4,7 +4,10 @@ import cn.hutool.json.JSONUtil;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -18,6 +21,17 @@ import java.io.PrintWriter;
 @Slf4j
 @UtilityClass
 public class WebUtil {
+
+    /**
+     * 获取当前请求对象
+     *
+     * @return {@link HttpServletRequest}
+     */
+    public HttpServletRequest getRequest() {
+        ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        assert requestAttributes != null;
+        return requestAttributes.getRequest();
+    }
 
     /**
      * json响应
@@ -39,4 +53,5 @@ public class WebUtil {
             log.error("响应返回失败", e);
         }
     }
+
 }

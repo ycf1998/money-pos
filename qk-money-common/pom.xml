@@ -14,7 +14,6 @@
     <description>通用模块</description>
 
     <modules>
-        <module>money-common-core</module>
         <module>money-common-web</module>
         <module>money-common-mybatis</module>
         <module>money-common-oss</module>

@@ -8,7 +8,7 @@ import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.money.common.core.exception.BaseException;
+import com.money.common.exception.BaseException;
 import com.money.common.vo.PageVO;
 import com.money.constant.ErrorStatus;
 import com.money.dto.SysRoleDTO;
@@ -166,7 +166,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     public void checkLevel(Long userId, Integer checkLevel) {
         Integer level = this.getLevel(userId);
         if (level > checkLevel) {
-            throw new BaseException("权限不足，你的角色级别：" + level + "，低于操作的角色级别：" + checkLevel);
+            throw new BaseException("权限不足，你的角色级别低于操作的角色级别");
         }
     }
 
@@ -175,7 +175,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
         Integer level = this.getLevel(userId);
         Integer min = this.listByIds(roleIds).stream().map(SysRole::getLevel).min(Integer::compare).orElse(Integer.MAX_VALUE);
         if (level > min) {
-            throw new BaseException("权限不足，你的角色级别：" + level + "，低于操作角色的级别：" + min);
+            throw new BaseException("权限不足，你的角色级别低于操作的角色级别");
         }
     }
 

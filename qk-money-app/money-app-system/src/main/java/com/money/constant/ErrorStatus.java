@@ -1,6 +1,6 @@
 package com.money.constant;
 
-import com.money.common.core.response.IStatus;
+import com.money.common.response.IStatus;
 
 /**
  * @author : money

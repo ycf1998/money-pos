@@ -1,6 +1,6 @@
 package com.money.exception;
 
-import com.money.common.core.exception.BaseException;
+import com.money.common.exception.BaseException;
 import com.money.constant.ErrorStatus;
 
 /**

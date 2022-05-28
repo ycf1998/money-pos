@@ -1,6 +1,6 @@
 package com.money.mb;
 
-import cn.hutool.core.collection.CollectionUtil;
+import cn.hutool.core.collection.CollUtil;
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.InnerInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
@@ -33,7 +33,7 @@ public class MybatisPlusConfiguration {
     @Bean
     public MybatisPlusInterceptor mybatisPlusInterceptor(@Nullable List<InnerInterceptor> interceptors) {
         MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
-        if (CollectionUtil.isNotEmpty(interceptors)) {
+        if (CollUtil.isNotEmpty(interceptors)) {
             interceptors.forEach(interceptor::addInnerInterceptor);
         }
         interceptor.addInnerInterceptor(new PaginationInnerInterceptor());

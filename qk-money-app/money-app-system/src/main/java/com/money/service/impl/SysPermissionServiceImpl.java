@@ -7,7 +7,7 @@ import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.extension.conditions.update.LambdaUpdateChainWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.money.common.core.exception.BaseException;
+import com.money.common.exception.BaseException;
 import com.money.constant.ErrorStatus;
 import com.money.constant.PermissionType;
 import com.money.dto.SysPermissionDTO;
@@ -238,10 +238,9 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
                     throw new BaseException("组件路径不允许为空");
                 }
             }
-        } else if (PermissionType.BUTTON.name().equals(permissionType)) {
-            if (StrUtil.isBlank(permissionDTO.getPermission())) {
+        } else if (PermissionType.BUTTON.name().equals(permissionType)
+                && StrUtil.isBlank(permissionDTO.getPermission())) {
                 throw new BaseException("权限标识不允许为空");
-            }
         }
     }
 }
