@@ -21,25 +21,25 @@ public class SysAuthController {
 
     private final SysUserService sysUserService;
 
-    @Operation(summary = "登录", tags = {"auth"})
+    @Operation(summary = "登录")
     @PostMapping("/login")
     public AuthTokenVO login(@Validated @RequestBody LoginDTO loginDto) {
         return sysUserService.login(loginDto);
     }
 
-    @Operation(summary = "注销", tags = {"auth"})
+    @Operation(summary = "注销")
     @PostMapping("/logout")
     public void logout(@Parameter(hidden = true) @RequestHeader("${money.security.token.header}") String token) {
         sysUserService.logout(token);
     }
 
-    @Operation(summary = "获取自己的信息", tags = {"auth"})
+    @Operation(summary = "获取自己的信息")
     @GetMapping("/own")
     public OwnInfoVO own(@Parameter(hidden = true) @CurrentUser String username) {
         return sysUserService.getOwnInfo(username);
     }
 
-    @Operation(summary = "刷新令牌", tags = {"auth"})
+    @Operation(summary = "刷新令牌")
     @GetMapping("/refreshToken")
     public AuthTokenVO refreshToken(String refreshToken) {
         return sysUserService.refreshToken(refreshToken);

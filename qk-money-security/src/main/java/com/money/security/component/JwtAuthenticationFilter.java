@@ -1,16 +1,11 @@
 package com.money.security.component;
 
 import cn.hutool.core.util.StrUtil;
-import com.money.common.response.R;
-import com.money.common.util.WebUtil;
 import io.jsonwebtoken.JwtException;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.MDC;
-import org.springframework.boot.web.servlet.FilterRegistrationBean;
-import org.springframework.context.annotation.Bean;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -18,8 +13,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-import org.springframework.web.servlet.HandlerExecutionChain;
-import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -41,57 +34,28 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final SecurityTokenSupport securityTokenSupport;
     private final SecurityUserService securityUserService;
-    private final RequestMappingHandlerMapping handlerMapping;
-
-    /**
-     * 解决SpringSecurity全局忽略url配置无效问题
-     * （因为托管给Spring的过滤器被注册到servlet，在最前面就已经拦截了，还没到security）
-     *
-     * @param filter 过滤器
-     * @return {@link FilterRegistrationBean}<{@link JwtAuthenticationFilter}>
-     */
-    @Bean
-    public FilterRegistrationBean<JwtAuthenticationFilter> registration(JwtAuthenticationFilter filter) {
-        FilterRegistrationBean<JwtAuthenticationFilter> registration = new FilterRegistrationBean<>(filter);
-        registration.setEnabled(false);
-        return registration;
-    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, @NonNull HttpServletResponse httpServletResponse, @NonNull FilterChain filterChain) throws ServletException, IOException {
-        log.info("=============================================");
-        log.info("请求认证 {} {}", httpServletRequest.getMethod(), httpServletRequest.getRequestURI());
-        try {
-            HandlerExecutionChain handler = handlerMapping.getHandler(httpServletRequest);
-            // 没有处理映射器，直接放行
-            if (handler == null) {
-                log.info("接口不存在，无需认证");
-                filterChain.doFilter(httpServletRequest, httpServletResponse);
-                return;
-            }
-        } catch (Exception e) {
-            log.error("", e);
-        }
         String token = httpServletRequest.getHeader(securityTokenSupport.getTokenConfig().getHeader());
-        if (StrUtil.isBlank(token)) {
-            log.info("未携带token，认证失败");
-            WebUtil.responseJson(httpServletResponse, HttpStatus.UNAUTHORIZED, R.unauthorized());
-            return;
+        // 仅处理带token的请求
+        if (StrUtil.isNotBlank(token)) {
+            log.info("=============================================");
+            log.info("请求认证 {} {}", httpServletRequest.getMethod(), httpServletRequest.getRequestURI());
+            try {
+                String username = securityTokenSupport.getUsername(token);
+                log.info("解析token成功，认证用户为：{}", username);
+                UserDetails userDetails = securityUserService.loadUserByUsername(username);
+                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpServletRequest));
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+                log.info("认证成功！");
+                // 提供用户日志追踪
+                MDC.put("userId", username);
+            } catch (AuthenticationException | JwtException e) {
+                log.error("认证失败！", e);
+            }
         }
-        try {
-            String username = securityTokenSupport.getUsername(token);
-            log.info("解析token成功，认证用户为：{}", username);
-            UserDetails userDetails = securityUserService.loadUserByUsername(username);
-            UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-            authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpServletRequest));
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-            log.info("认证成功！");
-            // 提供用户日志追踪
-            MDC.put("userId", username);
-            filterChain.doFilter(httpServletRequest, httpServletResponse);
-        } catch (AuthenticationException | JwtException e) {
-            log.error("认证失败！", e);
-            WebUtil.responseJson(httpServletResponse, HttpStatus.UNAUTHORIZED, R.unauthorized());
-        }
+        filterChain.doFilter(httpServletRequest, httpServletResponse);
     }
 }

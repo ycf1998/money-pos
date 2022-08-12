@@ -39,9 +39,8 @@ import java.util.concurrent.TimeUnit;
 @Import(SecurityConfig.class)
 public class SecurityConfiguration {
 
-
     /**
-     * web mvc安全配置
+     * web mvc安全配置（解析@CurrentUser注解）
      *
      * @return {@link WebMvcConfigurer}
      */
@@ -116,7 +115,7 @@ public class SecurityConfiguration {
     @Bean
     AuthenticationEntryPoint restAuthenticationEntryPoint() {
         return (req, res, e) -> {
-            log.info("认证失败，无法访问");
+            log.info("认证失败，拒绝访问");
             WebUtil.responseJson(res, HttpStatus.UNAUTHORIZED, R.unauthorized());
         };
     }

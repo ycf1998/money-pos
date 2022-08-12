@@ -2,6 +2,7 @@ package com.money.common.response;
 
 
 import com.money.common.i18n.I18nSupport;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,19 +20,13 @@ public class R<T> implements Serializable {
 
     private static final long serialVersionUID = -9068318251197180009L;
 
-    /**
-     * 代码
-     */
+    @Schema(description = "返回码")
     private int code;
 
-    /**
-     * 消息
-     */
+    @Schema(description = "返回信息")
     private String message;
 
-    /**
-     * 数据
-     */
+    @Schema(description = "返回数据")
     private T data;
 
     public R() {

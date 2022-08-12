@@ -20,6 +20,7 @@ swagger:
   title: ${spring.application.name}
   description: ${spring.application.name}接口文档
   version: 1.0.0
+  auth-header: ${money.security.token.header}
   contact:
     name: money
     url: www.money.com

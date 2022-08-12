@@ -16,10 +16,10 @@
 | ------------ | ------ |
 | JDK          | 1.8    |
 | Maven        | 3.8.1  |
-| Spring Boot  | 2.5.4  |
-| Mybatis-plus | 3.5.0  |
-| JWT          | 0.11.2 |
-| Hutool       | 5.7.9  |
+| Spring Boot  | 2.6.10 |
+| Mybatis-plus | 3.5.2  |
+| JJWT         | 0.11.2 |
+| Hutool       | 5.8.4  |
 | Jackson      | 2.12.4 |
 | Spring Doc   | 1.5.11 |
 | Qiniu        | 7.7.0  |

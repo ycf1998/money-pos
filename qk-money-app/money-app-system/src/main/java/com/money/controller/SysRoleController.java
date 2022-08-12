@@ -27,21 +27,21 @@ public class SysRoleController {
 
     private final SysRoleService sysRoleService;
 
-    @Operation(summary = "获取所有角色信息", tags = "role")
+    @Operation(summary = "获取所有角色信息")
     @GetMapping("/all")
     @PreAuthorize("@rbac.hasPermission('role:list', 'user:add', 'user:edit')")
     public List<SysRole> getAllRoles() {
         return sysRoleService.getAllRoles();
     }
 
-    @Operation(summary = "分页查询角色信息", tags = "role")
+    @Operation(summary = "分页查询角色信息")
     @GetMapping
     @PreAuthorize("@rbac.hasPermission('role:list')")
     public PageVO<SysRoleVO> listSysRole(@Validated SysRoleQueryDTO queryDTO) {
         return sysRoleService.list(queryDTO);
     }
 
-    @Operation(summary = "添加角色信息", tags = "role")
+    @Operation(summary = "添加角色信息")
     @PostMapping
     @PreAuthorize("@rbac.hasPermission('role:add')")
     public void addSysRole(@Validated(ValidGroup.Save.class) @RequestBody SysRoleDTO sysRoleDTO) {
@@ -49,7 +49,7 @@ public class SysRoleController {
         sysRoleService.add(sysRoleDTO);
     }
 
-    @Operation(summary = "修改角色信息", tags = "role")
+    @Operation(summary = "修改角色信息")
     @PutMapping
     @PreAuthorize("@rbac.hasPermission('role:edit')")
     public void updateSysRole(@Validated(ValidGroup.Update.class) @RequestBody SysRoleDTO sysRoleDTO) {
@@ -58,7 +58,7 @@ public class SysRoleController {
         sysRoleService.updateById(sysRoleDTO);
     }
 
-    @Operation(summary = "删除角色信息", tags = "role")
+    @Operation(summary = "删除角色信息")
     @DeleteMapping
     @PreAuthorize("@rbac.hasPermission('role:del')")
     public void deleteSysRole(@RequestBody Set<Long> ids) {
@@ -66,7 +66,7 @@ public class SysRoleController {
         sysRoleService.deleteById(ids);
     }
 
-    @Operation(summary = "更改角色状态", tags = "role")
+    @Operation(summary = "更改角色状态")
     @PostMapping("/changeStatus")
     @PreAuthorize("@rbac.hasPermission('role:edit')")
     public void changeStatus(@RequestParam Long id, @RequestParam Boolean enabled) {
@@ -74,7 +74,7 @@ public class SysRoleController {
         sysRoleService.changeStatus(id, enabled);
     }
 
-    @Operation(summary = "角色配置权限", tags = "role")
+    @Operation(summary = "角色配置权限")
     @PostMapping("/{id}/permission")
     @PreAuthorize("@rbac.hasPermission('role:edit')")
     public void configurePermissions(@PathVariable Long id, @RequestBody Set<Long> permissions) {

@@ -1,8 +1,6 @@
-package com.money.oss;
+package com.money.oss.local;
 
-import com.money.oss.local.LocalOSS;
-import com.money.oss.local.LocalOSSConfig;
-import com.money.oss.local.ResourceMappingConfig;
+import com.money.oss.OSSDelegate;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,7 +12,7 @@ import org.springframework.context.annotation.Configuration;
  * @createTime : 2022-01-01 16:53:08
  */
 @Configuration(proxyBeanMethods = false)
-public class OSSConfiguration {
+public class LocalOSSConfiguration {
 
     @Bean
     @ConditionalOnMissingBean(LocalOSSConfig.class)

@@ -3,8 +3,7 @@
 其他工程的POM不允许显示的设置version属性！
 
 ## 强依赖
-项目强依赖了两个jar，分别是`Lombok` 和`Hutool`。`Hutool`是一个丰富的工具类库，需要过目下它的工具，
-尽量避免重复造轮子。
+项目强依赖了两个jar，分别是`Lombok` 和`Hutool`。`Hutool`是一个丰富的工具类库，需要过目下它的工具，尽量避免重复造轮子。
 ~~~xml
 <dependencies>
     <dependency>

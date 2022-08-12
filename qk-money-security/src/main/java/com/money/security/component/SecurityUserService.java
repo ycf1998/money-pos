@@ -17,10 +17,10 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class SecurityUserService implements UserDetailsService {
 
-    private final RbacSecurityConfig configurer;
+    private final RbacSecurityConfig rbacSecurityConfig;
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return new SecurityUserDetail(configurer.loadRbacUser(username));
+        return new SecurityUserDetail(rbacSecurityConfig.loadRbacUser(username));
     }
 
 }

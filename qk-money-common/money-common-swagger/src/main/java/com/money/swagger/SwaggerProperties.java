@@ -34,6 +34,12 @@ public class SwaggerProperties {
      */
     private String description = "";
 
+
+    /**
+     * auth头
+     */
+    private String authHeader;
+
     /**
      * 联系人
      */

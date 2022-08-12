@@ -52,7 +52,7 @@ public class ${table.controllerName} {
     private final ${table.serviceName} ${serviceVar};
 
 <#if swagger>
-    @Operation(summary = "分页查询", tags = {"${entityUncap}"})
+    @Operation(summary = "分页查询")
 </#if>
     @GetMapping
     @PreAuthorize("@rbac.hasPermission('${entityUncap}:list')")
@@ -61,7 +61,7 @@ public class ${table.controllerName} {
     }
 
     <#if swagger>
-    @Operation(summary = "添加", tags = {"${entityUncap}"})
+    @Operation(summary = "添加")
     </#if>
     @PostMapping
     @PreAuthorize("@rbac.hasPermission('${entityUncap}:add')")
@@ -70,7 +70,7 @@ public class ${table.controllerName} {
     }
 
     <#if swagger>
-    @Operation(summary = "修改", tags = {"${entityUncap}"})
+    @Operation(summary = "修改")
     </#if>
     @PutMapping
     @PreAuthorize("@rbac.hasPermission('${entityUncap}:edit')")
@@ -79,7 +79,7 @@ public class ${table.controllerName} {
     }
 
     <#if swagger>
-    @Operation(summary = "删除", tags = {"${entityUncap}"})
+    @Operation(summary = "删除")
     </#if>
     @DeleteMapping
     @PreAuthorize("@rbac.hasPermission('${entityUncap}:del')")

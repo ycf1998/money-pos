@@ -24,20 +24,20 @@ public class SysTenantController {
 
     private final SysTenantService sysTenantService;
 
-    @Operation(summary = "通过code获取租户", tags = {"tenant"})
+    @Operation(summary = "通过code获取租户")
     @GetMapping("/byCode")
     public SysTenant getTenant(@RequestParam String code) {
         return sysTenantService.getTenantIdByCode(code);
     }
 
-    @Operation(summary = "分页查询租户", tags = {"tenant"})
+    @Operation(summary = "分页查询租户")
     @GetMapping
     @PreAuthorize("@rbac.hasPermission('tenant:list')")
     public PageVO<SysTenant> listSysTenant(SysTenantQueryDTO queryDTO) {
         return sysTenantService.list(queryDTO);
     }
 
-    @Operation(summary = "添加租户", tags = {"tenant"})
+    @Operation(summary = "添加租户")
     @PostMapping
     @PreAuthorize("@rbac.hasPermission('tenant:add')")
     public void addSysTenant(@Validated(ValidGroup.Save.class) @RequestPart("tenant") SysTenantDTO sysTenantDTO,
@@ -45,7 +45,7 @@ public class SysTenantController {
         sysTenantService.add(sysTenantDTO, logo);
     }
 
-    @Operation(summary = "修改租户", tags = {"tenant"})
+    @Operation(summary = "修改租户")
     @PutMapping
     @PreAuthorize("@rbac.hasPermission('tenant:edit')")
     public void updateSysTenant(@Validated(ValidGroup.Update.class) @RequestPart("tenant") SysTenantDTO sysTenantDTO,
@@ -53,7 +53,7 @@ public class SysTenantController {
         sysTenantService.updateById(sysTenantDTO, logo);
     }
 
-    @Operation(summary = "删除租户", tags = {"tenant"})
+    @Operation(summary = "删除租户")
     @DeleteMapping
     @PreAuthorize("@rbac.hasPermission('tenant:del')")
     public void deleteSysTenant(@RequestBody Set<Long> ids) {
