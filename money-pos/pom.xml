@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.money</groupId>
+    <artifactId>qk-money</artifactId>
+    <version>${revision}</version>
+    <packaging>pom</packaging>
+
+    <name>qk-money</name>
+    <description>A quickly project for Spring Boot</description>
+
+    <properties>
+        <revision>0.0.1-SNAPSHOT</revision>
+        <java.version>1.8</java.version>
+
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+    </properties>
+
+    <modules>
+        <!-- BOM依赖清单 -->
+        <module>qk-money-parent</module>
+        <!-- 通用模块 -->
+        <module>qk-money-common</module>
+        <!-- 安全模块 -->
+        <module>qk-money-security</module>
+        <!-- 租户模块 -->
+        <module>qk-money-tenant</module>
+        <!-- 应用模块 -->
+        <module>qk-money-app</module>
+    </modules>
+
+    <dependencyManagement>
+        <dependencies>
+            <!-- 模块版本 -->
+            <dependency>
+                <groupId>com.money</groupId>
+                <artifactId>qk-money-common</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.money</groupId>
+                <artifactId>money-common-web</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.money</groupId>
+                <artifactId>money-common-mybatis</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.money</groupId>
+                <artifactId>money-common-oss</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.money</groupId>
+                <artifactId>money-common-cache</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.money</groupId>
+                <artifactId>money-common-swagger</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.money</groupId>
+                <artifactId>money-common-schedule</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.money</groupId>
+                <artifactId>money-common-mail</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.money</groupId>
+                <artifactId>qk-money-security</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.money</groupId>
+                <artifactId>qk-money-tenant</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.money</groupId>
+                <artifactId>money-app-api</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.money</groupId>
+                <artifactId>money-app-system</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.money</groupId>
+                <artifactId>money-app-biz</artifactId>
+                <version>${revision}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+</project>
