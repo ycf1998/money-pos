@@ -289,7 +289,8 @@ export default {
     changeQuantity(goods) {
       // 为0删除商品
       if (goods.quantity === 0) {
-        this.orderList = this.orderList.filter(e => e.goodsId === goods.id)
+        console.log(this.orderList)
+        this.orderList = this.orderList.filter(e => e.goodsId !== goods.goodsId)
       }
     },
     // 显示订单
