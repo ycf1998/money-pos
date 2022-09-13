@@ -3,9 +3,9 @@ package com.money.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.money.common.vo.PageVO;
 import com.money.entity.GmsGoods;
-import com.money.web.goods.GoodsDTO;
-import com.money.web.goods.GoodsQueryDTO;
-import com.money.web.goods.GoodsVO;
+import com.money.dto.goods.GoodsDTO;
+import com.money.dto.goods.GoodsQueryDTO;
+import com.money.dto.goods.GoodsVO;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;

@@ -12,9 +12,9 @@ import com.money.mapper.UmsMemberMapper;
 import com.money.service.UmsMemberService;
 import com.money.util.PageUtil;
 import com.money.util.VOUtil;
-import com.money.web.member.MemberDTO;
-import com.money.web.member.MemberQueryDTO;
-import com.money.web.member.MemberVO;
+import com.money.dto.member.MemberDTO;
+import com.money.dto.member.MemberQueryDTO;
+import com.money.dto.member.MemberVO;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;

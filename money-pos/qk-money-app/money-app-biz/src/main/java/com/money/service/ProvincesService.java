@@ -2,7 +2,7 @@ package com.money.service;
 
 import com.money.entity.Provinces;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.money.vo.SelectVO;
+import com.money.dto.SelectVO;
 
 import java.util.List;
 

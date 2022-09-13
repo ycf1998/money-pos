@@ -3,9 +3,9 @@ package com.money.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.money.common.vo.PageVO;
 import com.money.entity.UmsMember;
-import com.money.web.member.MemberDTO;
-import com.money.web.member.MemberQueryDTO;
-import com.money.web.member.MemberVO;
+import com.money.dto.member.MemberDTO;
+import com.money.dto.member.MemberQueryDTO;
+import com.money.dto.member.MemberVO;
 
 import java.math.BigDecimal;
 import java.util.Set;

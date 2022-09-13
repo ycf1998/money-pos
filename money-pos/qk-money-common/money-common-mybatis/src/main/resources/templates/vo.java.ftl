@@ -43,7 +43,7 @@ public class ${entity}VO {
     private Long id;
 <#-- ----------  BEGIN 字段循环遍历  ---------->
 <#list table.fields as field>
-    <#if field.propertyName != "sort" && field.propertyName != "tenantId">
+    <#if field.propertyName != "id" && field.propertyName != "sort" && field.propertyName != "tenantId">
     <#if field.keyFlag>
         <#assign keyPropertyName="${field.propertyName}"/>
     </#if>

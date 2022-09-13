@@ -1,9 +1,9 @@
 package com.money.service;
 
-import com.money.web.order.OrderVO;
-import com.money.web.pos.PosGoodsVO;
-import com.money.web.pos.PosMemberVO;
-import com.money.web.pos.SettleAccountsDTO;
+import com.money.dto.order.OrderVO;
+import com.money.dto.pos.PosGoodsVO;
+import com.money.dto.pos.PosMemberVO;
+import com.money.dto.pos.SettleAccountsDTO;
 
 import java.util.List;
 

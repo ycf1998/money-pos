@@ -2,7 +2,7 @@ package com.money.controller;
 
 
 import com.money.service.ProvincesService;
-import com.money.vo.SelectVO;
+import com.money.dto.SelectVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

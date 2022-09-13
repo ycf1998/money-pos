@@ -4,7 +4,7 @@ import com.money.entity.Provinces;
 import com.money.mapper.ProvincesMapper;
 import com.money.service.ProvincesService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.money.vo.SelectVO;
+import com.money.dto.SelectVO;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

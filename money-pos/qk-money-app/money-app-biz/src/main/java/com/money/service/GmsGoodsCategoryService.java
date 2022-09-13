@@ -1,10 +1,10 @@
 package com.money.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.money.web.goodscategory.GoodsCategoryDTO;
+import com.money.dto.goodscategory.GoodsCategoryDTO;
 import com.money.entity.GmsGoodsCategory;
-import com.money.vo.SelectVO;
-import com.money.vo.TreeNodeVO;
+import com.money.dto.SelectVO;
+import com.money.dto.TreeNodeVO;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;

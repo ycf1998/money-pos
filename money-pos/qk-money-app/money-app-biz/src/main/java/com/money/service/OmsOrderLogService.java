@@ -2,7 +2,7 @@ package com.money.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.money.entity.OmsOrderLog;
-import com.money.web.orderlog.OrderLogVO;
+import com.money.dto.orderlog.OrderLogVO;
 
 import java.util.List;
 

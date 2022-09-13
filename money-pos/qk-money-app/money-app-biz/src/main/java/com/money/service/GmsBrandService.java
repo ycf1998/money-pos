@@ -3,10 +3,10 @@ package com.money.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.money.common.vo.PageVO;
 import com.money.entity.GmsBrand;
-import com.money.vo.SelectVO;
-import com.money.web.brand.BrandDTO;
-import com.money.web.brand.BrandQueryDTO;
-import com.money.web.brand.BrandVO;
+import com.money.dto.SelectVO;
+import com.money.dto.brand.BrandDTO;
+import com.money.dto.brand.BrandQueryDTO;
+import com.money.dto.brand.BrandVO;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;

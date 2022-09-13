@@ -2,10 +2,10 @@ package com.money.controller;
 
 
 import com.money.service.PosService;
-import com.money.web.order.OrderVO;
-import com.money.web.pos.PosGoodsVO;
-import com.money.web.pos.PosMemberVO;
-import com.money.web.pos.SettleAccountsDTO;
+import com.money.dto.order.OrderVO;
+import com.money.dto.pos.PosGoodsVO;
+import com.money.dto.pos.PosMemberVO;
+import com.money.dto.pos.SettleAccountsDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;

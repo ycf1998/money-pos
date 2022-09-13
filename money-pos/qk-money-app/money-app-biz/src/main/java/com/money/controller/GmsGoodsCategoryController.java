@@ -3,9 +3,9 @@ package com.money.controller;
 
 import com.money.common.dto.ValidGroup;
 import com.money.service.GmsGoodsCategoryService;
-import com.money.vo.SelectVO;
-import com.money.vo.TreeNodeVO;
-import com.money.web.goodscategory.GoodsCategoryDTO;
+import com.money.dto.SelectVO;
+import com.money.dto.TreeNodeVO;
+import com.money.dto.goodscategory.GoodsCategoryDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;

@@ -17,7 +17,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 /**
  * @author : money
  * @version : 1.0.0
- * @description : 安全配置（Spring Security 5.7以下版本）
+ * @description : 安全配置
  * @createTime : 2022-01-01 15:04:06
  */
 @Slf4j

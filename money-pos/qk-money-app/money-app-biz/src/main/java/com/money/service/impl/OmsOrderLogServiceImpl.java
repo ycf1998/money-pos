@@ -5,7 +5,7 @@ import com.money.entity.OmsOrderLog;
 import com.money.mapper.OmsOrderLogMapper;
 import com.money.service.OmsOrderLogService;
 import com.money.util.VOUtil;
-import com.money.web.orderlog.OrderLogVO;
+import com.money.dto.orderlog.OrderLogVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

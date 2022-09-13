@@ -55,7 +55,9 @@ public class ${table.controllerName} {
     @Operation(summary = "分页查询")
 </#if>
     @GetMapping
+    <#if preAuthorize>
     @PreAuthorize("@rbac.hasPermission('${entityUncap}:list')")
+    </#if>
     public PageVO<${table.entityName}VO> list(@Validated ${table.entityName}QueryDTO queryDTO) {
         return ${serviceVar}.list(queryDTO);
     }
@@ -64,7 +66,9 @@ public class ${table.controllerName} {
     @Operation(summary = "添加")
     </#if>
     @PostMapping
+    <#if preAuthorize>
     @PreAuthorize("@rbac.hasPermission('${entityUncap}:add')")
+    </#if>
     public void add(@Validated(ValidGroup.Save.class) @RequestBody ${table.entityName}DTO addDTO) {
         ${serviceVar}.add(addDTO);
     }
@@ -73,7 +77,9 @@ public class ${table.controllerName} {
     @Operation(summary = "修改")
     </#if>
     @PutMapping
+    <#if preAuthorize>
     @PreAuthorize("@rbac.hasPermission('${entityUncap}:edit')")
+    </#if>
     public void update(@Validated(ValidGroup.Update.class) @RequestBody ${table.entityName}DTO updateDTO) {
         ${serviceVar}.update(updateDTO);
     }
@@ -82,7 +88,9 @@ public class ${table.controllerName} {
     @Operation(summary = "删除")
     </#if>
     @DeleteMapping
+    <#if preAuthorize>
     @PreAuthorize("@rbac.hasPermission('${entityUncap}:del')")
+    </#if>
     public void delete(@RequestBody Set<Long> ids) {
         ${serviceVar}.delete(ids);
     }
