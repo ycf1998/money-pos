@@ -1,6 +1,6 @@
 # 麦尼收银系统
 
-​	基于自制轮子`qk-money`开发，自家用的收银系统 [体验](http://175.178.102.32/money-pos-demo?tenant=M)
+​	基于自制轮子[qk-money](https://github.com/ycf1998/qk-money)开发，自家用的收银系统 [体验](http://175.178.102.32/money-pos-demo?tenant=M)
 
 > 体验账号：
 >
@@ -21,8 +21,10 @@
 | Jackson      | 2.12.4 |
 | Spring Doc   | 1.5.11 |
 | Qiniu        | 7.7.0  |
+| XXL-JOB      | 2.3.1  |
 
-- 依赖版本都在`qk-money-parent`包下`POM.xml`的`<properties>`标签里声明
+- 本项目的模块版本声明都在根目录下的`POM.xml`，称为**主POM**
+- 第三方依赖版本声明都在`qk-money-parent`包下的`POM.xml`，称为**清单POM**
 
 # 功能清单
 
@@ -45,17 +47,16 @@
 | `qk-money-app`/`money-app-biz`           | 应用业务模块：放Controller、Service、Mapper等，**启动类所在** |
 | `qk-money-app`/`money-app-system`        | 应用系统模块：提供和前端配套的基于RBAC模型和JWT的权限认证、数据字典等系统管理功能，biz模块默认会引入 |
 | `qk-money-common`                        | 👉通用模块：                                                  |
-| `qk-money-common`/`money-common-core`    | 通用核心模块：核心的常量枚举、通用异常和工具类（工具类能用[Hutool](https://www.hutool.cn/docs/#/)就不要重复造轮子）等。 |
-| `qk-money-common`/`money-common-web`     | 通用web模块：包含core模块，作为web项目必要的依赖。提供默认的响应返回①、异常处理和请求日志切面（可通过开关配置，默认都开）等web相关配置。 |
-| `qk-money-common`/`money-common-mybatis` | Mybatis模块：使用的是`Mybatis-Plus`，默认已配置分页插件、审计字段默认值填充（需继承`BaseEntity`）和**生成器**。 |
+| `qk-money-common`/`money-common-web`     | 通用web模块：**建议至少引入的模块**。<br />提供默认全局的响应返回、异常处理、请求日志切面、日志链路追踪、多语言、多时区等功能，减少项目的基础构建和规范。 |
+| `qk-money-common`/`money-common-mybatis` | Mybatis模块：使用的是`Mybatis-Plus`，默认已配置分页插件、审计字段默认值填充（需继承`BaseEntity`）和**代码生成器**。 |
 | `qk-money-common/money-common-cache`     | 缓存模块：支持本地缓存和分布式缓存`Redis`                    |
-| `qk-money-common/money-common-mail`      | 邮件模块：发送邮件                                           |
+| `qk-money-common/money-common-mail`      | 邮件模块：提供邮件发送功能                                   |
+| `qk-money-common/money-common-schedule`  | 定时任务模块：提供集成XXL-JOB定时任务                        |
 | `qk-money-common`/`money-common-oss`     | OSS对象存储模块：提供本地文件OSS和七牛云OSS                  |
 | `qk-money-common/money-common-swagger`   | 接口文档模块：提供Open API 3（Swagger）                      |
 | `qk-money-security`                      | 👉安全模块：使用Spring Security框架，基于RBAC模型和JWT赋予认证授权能力 |
-| `qk-money-tenant`                        | 👉多租户模块：基于`Mybatis Plus`多租户插件实现多租户功能。    |
-
-①响应返回：对于Controller的返回值默认会用`R<T>(code=200, data, message)`包装返回，返回值无需自己包装。如果不想被包装，可在Controller类上或者方法上注解`@IgnoreGlobalResponse`。而对于非200，建议用抛异常的方式让统一异常处理返回，而不要自己包装非200的`R`
+| `qk-money-tenant`                        | 👉多租户模块：基于`Mybatis Plus`多租户插件实现多租户功能      |
+| `xxl-job-admin`                          | 👉XXL-JOB调度中心：[官方文档](https://www.xuxueli.com/xxl-job)，简单使用看定时任务模块文档即可 |
 
 # 截图
 
