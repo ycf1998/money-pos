@@ -43,7 +43,7 @@ public class SysPermissionController {
 
     @Operation(summary = "返回所有子节点ID，包含自身ID")
     @GetMapping("/allSubIds")
-    @PreAuthorize("@rbac.hasPermission('permission:list')")
+    @PreAuthorize("@rbac.hasPermission('permission:list', 'role:list')")
     public List<Long> getAllSubIds(@RequestParam Long id) {
         return sysPermissionService.getAllSubIds(id);
     }
