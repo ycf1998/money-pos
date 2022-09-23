@@ -4,7 +4,7 @@
       <el-tabs v-model="activeTab" tab-position="left">
         <el-tab-pane label="今日" name="today">
           <el-row :gutter="40" class="panel-group">
-            <el-col :span="8" class="card-panel-col">
+            <el-col :xs="24" :md="8" class="card-panel-col">
               <div class="card-panel" @click="handleSetLineChartData('newVisitis')">
                 <div class="card-panel-icon-wrapper icon-people">
                   <svg-icon icon-class="list" class-name="card-panel-icon" />
@@ -17,7 +17,7 @@
                 </div>
               </div>
             </el-col>
-            <el-col :span="8" class="card-panel-col">
+            <el-col :xs="24" :md="8" class="card-panel-col">
               <div class="card-panel" @click="handleSetLineChartData('shoppings')">
                 <div class="card-panel-icon-wrapper icon-shopping">
                   <svg-icon icon-class="shopping" class-name="card-panel-icon" />
@@ -30,7 +30,7 @@
                 </div>
               </div>
             </el-col>
-            <el-col :span="8" class="card-panel-col">
+            <el-col :xs="24" :md="8" class="card-panel-col">
               <div class="card-panel" @click="handleSetLineChartData('purchases')">
                 <div class="card-panel-icon-wrapper icon-money">
                   <svg-icon icon-class="money" class-name="card-panel-icon" />
@@ -47,7 +47,7 @@
         </el-tab-pane>
         <el-tab-pane label="本月" name="month">
           <el-row :gutter="40" class="panel-group">
-            <el-col :span="8" class="card-panel-col">
+            <el-col :xs="24" :md="8" class="card-panel-col">
               <div class="card-panel" @click="handleSetLineChartData('newVisitis')">
                 <div class="card-panel-icon-wrapper icon-people">
                   <svg-icon icon-class="list" class-name="card-panel-icon" />
@@ -60,7 +60,7 @@
                 </div>
               </div>
             </el-col>
-            <el-col :span="8" class="card-panel-col">
+            <el-col :xs="24" :md="8" class="card-panel-col">
               <div class="card-panel" @click="handleSetLineChartData('shoppings')">
                 <div class="card-panel-icon-wrapper icon-shopping">
                   <svg-icon icon-class="shopping" class-name="card-panel-icon" />
@@ -73,7 +73,7 @@
                 </div>
               </div>
             </el-col>
-            <el-col :span="8" class="card-panel-col">
+            <el-col :xs="24" :md="8" class="card-panel-col">
               <div class="card-panel" @click="handleSetLineChartData('purchases')">
                 <div class="card-panel-icon-wrapper icon-money">
                   <svg-icon icon-class="money" class-name="card-panel-icon" />
@@ -90,7 +90,7 @@
         </el-tab-pane>
         <el-tab-pane label="本年" name="year">
           <el-row :gutter="40" class="panel-group">
-            <el-col :span="8" class="card-panel-col">
+            <el-col :xs="24" :md="8" class="card-panel-col">
               <div class="card-panel" @click="handleSetLineChartData('newVisitis')">
                 <div class="card-panel-icon-wrapper icon-people">
                   <svg-icon icon-class="list" class-name="card-panel-icon" />
@@ -103,7 +103,7 @@
                 </div>
               </div>
             </el-col>
-            <el-col :span="8" class="card-panel-col">
+            <el-col :xs="24" :md="8" class="card-panel-col">
               <div class="card-panel" @click="handleSetLineChartData('shoppings')">
                 <div class="card-panel-icon-wrapper icon-shopping">
                   <svg-icon icon-class="shopping" class-name="card-panel-icon" />
@@ -116,7 +116,7 @@
                 </div>
               </div>
             </el-col>
-            <el-col :span="8" class="card-panel-col">
+            <el-col :xs="24" :md="8" class="card-panel-col">
               <div class="card-panel" @click="handleSetLineChartData('purchases')">
                 <div class="card-panel-icon-wrapper icon-money">
                   <svg-icon icon-class="money" class-name="card-panel-icon" />
@@ -133,7 +133,7 @@
         </el-tab-pane>
         <el-tab-pane label="总" name="all">
           <el-row :gutter="40" class="panel-group">
-            <el-col :span="8" class="card-panel-col">
+            <el-col :xs="24" :md="8" class="card-panel-col">
               <div class="card-panel" @click="handleSetLineChartData('newVisitis')">
                 <div class="card-panel-icon-wrapper icon-people">
                   <svg-icon icon-class="list" class-name="card-panel-icon" />
@@ -146,7 +146,7 @@
                 </div>
               </div>
             </el-col>
-            <el-col :span="8" class="card-panel-col">
+            <el-col :xs="24" :md="8" class="card-panel-col">
               <div class="card-panel" @click="handleSetLineChartData('shoppings')">
                 <div class="card-panel-icon-wrapper icon-shopping">
                   <svg-icon icon-class="shopping" class-name="card-panel-icon" />
@@ -159,7 +159,7 @@
                 </div>
               </div>
             </el-col>
-            <el-col :span="8" class="card-panel-col">
+            <el-col :xs="24" :md="8" class="card-panel-col">
               <div class="card-panel" @click="handleSetLineChartData('purchases')">
                 <div class="card-panel-icon-wrapper icon-money">
                   <svg-icon icon-class="money" class-name="card-panel-icon" />
@@ -176,7 +176,7 @@
         </el-tab-pane>
       </el-tabs>
     </el-col>
-    <el-col :span="6" style="padding-left: 20px">
+    <el-col :xs="24" :md="6" style="padding-left: 20px">
       <el-row :gutter="40" class="panel-group">
         <el-col :span="24" class="card-panel-col">
           <div class="card-panel" @click="handleSetLineChartData('messages')">
@@ -319,20 +319,14 @@ export default {
 
 @media (max-width:550px) {
   .card-panel-description {
-    display: none;
+    float: none !important;
+    margin-left: 50px !important;
+    width: 100%;
+    height: 100%;
   }
 
   .card-panel-icon-wrapper {
-    float: none !important;
-    width: 100%;
-    height: 100%;
-    margin: 0 !important;
-
-    .svg-icon {
-      display: block;
-      margin: 14px auto !important;
-      float: none !important;
-    }
+    display: none;
   }
 }
 </style>

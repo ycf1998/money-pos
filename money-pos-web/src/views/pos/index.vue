@@ -11,6 +11,8 @@
             </el-button>
             <el-button :type="tool.editPrice ? 'success' : ''" plain @click="editPrice">修改价格</el-button>
             <el-button plain @click="clearOrderList">清空商品</el-button>
+            <el-button v-if="isMobile" type="success" plain @click="showOrder">收款</el-button>
+            <el-button v-if="isMobile" plain @click="simple = !simple">精简</el-button>
           </div>
         </el-card>
       </el-col>
@@ -22,34 +24,22 @@
             <el-row :gutter="10">
               <el-col :sm="17" :md="18" :lg="19">
                 <div>
-                  <el-autocomplete
-                    v-model="barcode"
-                    class="cashier-input-item"
-                    popper-class="cashier-input-item"
-                    :fetch-suggestions="queryGoods"
-                    placeholder="条码 or 名称"
-                    @select="item => barcode = item.barcode"
-                    @keydown.enter.native="enterBarcode"
-                  >
+                  <el-autocomplete v-model="barcode" class="cashier-input-item" popper-class="cashier-input-item" :fetch-suggestions="queryGoods" placeholder="条码 or 名称" @select="item => barcode = item.barcode" @keydown.enter.native="enterBarcode">
                     <template slot-scope="{ item }">
                       <div class="label">{{ item.barcode }}</div>
-                      <span class="desc">{{ item.name }} <svg-icon icon-class="stock" /> {{ item.stock }}</span>
+                      <span class="desc">{{ item.name }}
+                        <svg-icon icon-class="stock" /> {{ item.stock }}
+                      </span>
                     </template>
                   </el-autocomplete>
                 </div>
                 <div>
-                  <el-autocomplete
-                    v-model="member"
-                    class="cashier-input-item"
-                    popper-class="cashier-input-item"
-                    :fetch-suggestions="queryMember"
-                    placeholder="会员名 or 手机号"
-                    @select="item => member = item.name"
-                    @keydown.enter.native="enterMember"
-                  >
+                  <el-autocomplete v-model="member" class="cashier-input-item" popper-class="cashier-input-item" :fetch-suggestions="queryMember" placeholder="会员名 or 手机号" @select="item => member = item.name" @keydown.enter.native="enterMember">
                     <template slot-scope="{ item }">
                       <div class="label">{{ item.name }}</div>
-                      <span class="desc">{{ item.phone }} <svg-icon icon-class="coupon" /> {{ item.coupon }}</span>
+                      <span class="desc">{{ item.phone }}
+                        <svg-icon icon-class="coupon" /> {{ item.coupon }}
+                      </span>
                     </template>
                   </el-autocomplete>
                   <p v-if="currentMember" style="font-size: 13px">存券：{{ currentMember.coupon }}</p>
@@ -68,51 +58,85 @@
         <div class="cashier-goods">
           <el-card shadow="always">
             <el-row type="flex" justify="between">
-              <el-col><h4>共{{ total }}件</h4>
+              <el-col>
+                <h4>共{{ total }}件</h4>
               </el-col>
-              <el-col align="right"><h4>💰{{ totalAmount }} <svg-icon icon-class="coupon" /> {{ couponAmount }} <span style="font-size:20px">🪙{{ payAmount }}</span> </h4>
+              <el-col align="right">
+                <h4>💰{{ totalAmount }}
+                  <svg-icon icon-class="coupon" /> {{ couponAmount }} <span style="font-size:20px">🪙{{ payAmount
+                  }}</span>
+                </h4>
               </el-col>
             </el-row>
-            <el-table
-              ref="table"
-              border
-              :data="orderList"
-              style="width: 100%;"
-              row-key="goodsBarcode"
-            >
-              <el-table-column prop="goodsBarcode" align="center" label="条码" />
-              <el-table-column prop="goodsName" align="center" label="商品" />
-              <el-table-column prop="quantity" align="center" label="数量">
-                <template slot-scope="scope">
-                  <el-input-number v-model="scope.row.quantity" size="small" :min="0" @change="changeQuantity(scope.row)" />
-                </template>
-              </el-table-column>
-              <el-table-column prop="salePrice" align="center" label="原价" />
-              <el-table-column prop="vipPrice" align="center" label="会员价">
-                <template slot-scope="scope">
-                  {{ isVip ? scope.row.vipPrice : 0 }}
-                </template>
-              </el-table-column>
-              <el-table-column prop="coupon" align="center" label="购物券">
-                <template slot-scope="scope">
-                  {{ isVip ? scope.row.coupon : 0 }}
-                </template>
-              </el-table-column>
-              <el-table-column prop="goodsPrice" align="center" label="应收">
-                <template slot-scope="scope">
-                  <template v-if="tool.editPrice">
-                    <el-input v-model="scope.row.goodsPrice" placeholder="请输入内容" class="input-with-select">
-                      <el-button slot="append" icon="el-icon-refresh" @click="cancelEdit(scope.row)" />
-                    </el-input>
+            <el-table ref="table" border :data="orderList" style="width: 100%;" row-key="goodsBarcode">
+              <template v-if="simple">
+                <el-table-column v-if="false" key="1" prop="goodsBarcode" align="center" label="条码" />
+                <el-table-column key="2" prop="goodsName" align="center" label="商品" />
+                <el-table-column key="3" prop="quantity" align="center" label="数量">
+                  <template slot-scope="scope">
+                    <el-input v-model="scope.row.quantity" @change="changeQuantity(scope.row)" />
                   </template>
-                  <span v-else style="font-size: 16px">{{ scope.row.goodsPrice }}</span>
-                </template>
-              </el-table-column>
-              <el-table-column prop="subcount" align="center" label="小计">
-                <template slot-scope="scope">
-                  <span style="font-size: 18px">{{ calculator.Mul(scope.row.quantity, scope.row.goodsPrice) }}</span>
-                </template>
-              </el-table-column>
+                </el-table-column>
+                <el-table-column v-if="false" key="4" prop="salePrice" align="center" label="原价" />
+                <el-table-column v-if="false" key="5" prop="vipPrice" align="center" label="会员价">
+                  <template slot-scope="scope">
+                    {{ isVip ? scope.row.vipPrice : 0 }}
+                  </template>
+                </el-table-column>
+                <el-table-column key="6" prop="coupon" align="center" label="购物券">
+                  <template slot-scope="scope">
+                    {{ isVip ? scope.row.coupon : 0 }}
+                  </template>
+                </el-table-column>
+                <el-table-column key="7" prop="goodsPrice" align="center" label="应收">
+                  <template slot-scope="scope">
+                    <template v-if="tool.editPrice">
+                      <el-input v-model="scope.row.goodsPrice" placeholder="请输入内容" class="input-with-select" />
+                    </template>
+                    <span v-else style="font-size: 16px">{{ scope.row.goodsPrice }}</span>
+                  </template>
+                </el-table-column>
+                <el-table-column key="8" prop="subcount" align="center" label="小计">
+                  <template slot-scope="scope">
+                    <span style="font-size: 18px">{{ calculator.Mul(scope.row.quantity, scope.row.goodsPrice) }}</span>
+                  </template>
+                </el-table-column>
+              </template>
+              <template v-else>
+                <el-table-column key="1" prop="goodsBarcode" align="center" label="条码" />
+                <el-table-column key="2" prop="goodsName" align="center" label="商品" />
+                <el-table-column key="3" prop="quantity" align="center" label="数量">
+                  <template slot-scope="scope">
+                    <el-input-number v-model="scope.row.quantity" size="small" :min="0" @change="changeQuantity(scope.row)" />
+                  </template>
+                </el-table-column>
+                <el-table-column key="4" prop="salePrice" align="center" label="原价" />
+                <el-table-column key="5" prop="vipPrice" align="center" label="会员价">
+                  <template slot-scope="scope">
+                    {{ isVip ? scope.row.vipPrice : 0 }}
+                  </template>
+                </el-table-column>
+                <el-table-column key="6" prop="coupon" align="center" label="购物券">
+                  <template slot-scope="scope">
+                    {{ isVip ? scope.row.coupon : 0 }}
+                  </template>
+                </el-table-column>
+                <el-table-column key="7" prop="goodsPrice" align="center" label="应收">
+                  <template slot-scope="scope">
+                    <template v-if="tool.editPrice">
+                      <el-input v-model="scope.row.goodsPrice" placeholder="请输入内容" class="input-with-select">
+                        <el-button slot="append" icon="el-icon-refresh" @click="cancelEdit(scope.row)" />
+                      </el-input>
+                    </template>
+                    <span v-else style="font-size: 16px">{{ scope.row.goodsPrice }}</span>
+                  </template>
+                </el-table-column>
+                <el-table-column key="8" prop="subcount" align="center" label="小计">
+                  <template slot-scope="scope">
+                    <span style="font-size: 18px">{{ calculator.Mul(scope.row.quantity, scope.row.goodsPrice) }}</span>
+                  </template>
+                </el-table-column>
+              </template>
             </el-table>
           </el-card>
         </div>
@@ -122,10 +146,18 @@
     <!-- 清单 -->
     <el-dialog v-loading.fullscreen.lock="fullscreenLoading" class="orderDialog" title="清单" :visible.sync="showOrderDialog">
       <el-row :gutter="10" style="text-align: center">
-        <el-col :span="6"><h4>商品名称</h4></el-col>
-        <el-col :span="6"><h4>原价</h4></el-col>
-        <el-col :span="6"><h4>现价</h4></el-col>
-        <el-col :span="6"><h4>优惠</h4></el-col>
+        <el-col :span="6">
+          <h4>商品名称</h4>
+        </el-col>
+        <el-col :span="6">
+          <h4>原价</h4>
+        </el-col>
+        <el-col :span="6">
+          <h4>现价</h4>
+        </el-col>
+        <el-col :span="6">
+          <h4>优惠</h4>
+        </el-col>
       </el-row>
       <div v-for="item in orderList" :key="item.barcode">
         <el-row style="text-align: center;margin-bottom: 10px;">
@@ -137,7 +169,8 @@
         <el-row type="flex" style="text-align: center;margin-bottom: 20px;">
           <el-col><span style="color: #909399">数量 X {{ item.quantity }}</span></el-col>
           <el-col><span style="color: #909399">小计{{ calculator.Mul(item.goodsPrice, item.quantity) }}元</span></el-col>
-          <el-col><span style="color: #909399">优惠{{ isVip ? calculator.Mul(item.coupon, item.quantity) : 0 }}元</span></el-col>
+          <el-col><span style="color: #909399">优惠{{ isVip ? calculator.Mul(item.coupon, item.quantity) : 0 }}元</span>
+          </el-col>
         </el-row>
       </div>
       <el-row style="text-align: center;margin-bottom: 10px;font-size: 15px">
@@ -159,6 +192,7 @@
 </template>
 
 <script>
+import { isMobile } from '@/utils/index'
 import posApi from '@/api/pos/pos'
 import calculator from '@/utils/calculator'
 import printOrder from '../oms/order/printOrder.vue'
@@ -167,6 +201,8 @@ export default {
   components: { printOrder },
   data() {
     return {
+      isMobile: isMobile(),
+      simple: false,
       calculator: calculator,
       orderList: [],
       goods: [],
@@ -184,26 +220,29 @@ export default {
   },
   computed: {
     total: function() {
-      return this.orderList.reduce((prev, next) => (prev.quantity | 0) + (next.quantity | 0), 0)
+      return this.orderList.reduce(
+        (prev, next) => (prev.quantity | 0) + (next.quantity | 0),
+        0
+      )
     },
     totalAmount: function() {
-      let val = 0.00
-      this.orderList.forEach(data => {
+      let val = 0.0
+      this.orderList.forEach((data) => {
         val += calculator.Mul(data.quantity, data.salePrice)
       })
       return val
     },
     payAmount: function() {
-      let val = 0.00
-      this.orderList.forEach(data => {
+      let val = 0.0
+      this.orderList.forEach((data) => {
         val += calculator.Mul(data.quantity, data.goodsPrice)
       })
       return val
     },
     couponAmount: function() {
-      let val = 0.00
+      let val = 0.0
       if (this.isVip) {
-        this.orderList.forEach(data => {
+        this.orderList.forEach((data) => {
           val += calculator.Mul(data.quantity, data.coupon)
         })
       }
@@ -225,12 +264,22 @@ export default {
   methods: {
     // 初始 or 刷新
     loadInit() {
-      posApi.listMember(this.member).then(res => { this.members = res.data })
-      posApi.listGoods(this.barcode).then(res => { this.goods = res.data })
+      posApi.listMember(this.member).then((res) => {
+        this.members = res.data
+      })
+      posApi.listGoods(this.barcode).then((res) => {
+        this.goods = res.data
+      })
     },
     // 查询商品
     queryGoods(barcodeOrName, cb) {
-      let results = barcodeOrName ? this.goods.filter(e => e.barcode.includes(barcodeOrName) || e.name.includes(barcodeOrName)) : this.goods
+      let results = barcodeOrName
+        ? this.goods.filter(
+          (e) =>
+            e.barcode.includes(barcodeOrName) ||
+              e.name.includes(barcodeOrName)
+        )
+        : this.goods
       if (results.length > 10) {
         results = []
       }
@@ -238,7 +287,11 @@ export default {
     },
     // 查询会员
     queryMember(nameOrPhone, cb) {
-      let results = nameOrPhone ? this.members.filter(e => e.name.includes(nameOrPhone) || e.phone.includes(nameOrPhone)) : this.members
+      let results = nameOrPhone
+        ? this.members.filter(
+          (e) => e.name.includes(nameOrPhone) || e.phone.includes(nameOrPhone)
+        )
+        : this.members
       if (results.length > 15) {
         results = []
       }
@@ -247,9 +300,9 @@ export default {
     // 回车商品
     enterBarcode(e) {
       if (!this.barcode || (this.barcode && this.barcode.length < 1)) return
-      const goods = this.goods.find(e => e.barcode === this.barcode)
+      const goods = this.goods.find((e) => e.barcode === this.barcode)
       if (goods) {
-        let orderDetail = this.orderList.find(e => e.goodsId === goods.id)
+        let orderDetail = this.orderList.find((e) => e.goodsId === goods.id)
         if (!orderDetail) {
           orderDetail = {
             goodsId: goods.id,
@@ -278,11 +331,13 @@ export default {
     // 回车会员
     enterMember(e) {
       if (!this.member || (this.member && this.member.length < 1)) return
-      const member = this.members.find(e => e.name === this.member)
+      const member = this.members.find((e) => e.name === this.member)
       if (member) {
         this.currentMember = member
         this.isVip = true
-        this.orderList.forEach(e => { e.goodsPrice = e.vipPrice })
+        this.orderList.forEach((e) => {
+          e.goodsPrice = e.vipPrice
+        })
       }
     },
     // 修改数量
@@ -290,7 +345,9 @@ export default {
       // 为0删除商品
       if (goods.quantity === 0) {
         console.log(this.orderList)
-        this.orderList = this.orderList.filter(e => e.goodsId !== goods.goodsId)
+        this.orderList = this.orderList.filter(
+          (e) => e.goodsId !== goods.goodsId
+        )
       }
     },
     // 显示订单
@@ -319,27 +376,36 @@ export default {
         member: this.currentMember?.id,
         orderDetail: this.orderList
       }
-      posApi.settleAccounts(data).then(res => {
-        this.$notify({
-          title: 'Success',
-          message: '订单结算成功',
-          type: 'success',
-          duration: 2000
+      posApi
+        .settleAccounts(data)
+        .then((res) => {
+          this.$notify({
+            title: 'Success',
+            message: '订单结算成功',
+            type: 'success',
+            duration: 2000
+          })
+          this.showOrderDialog = false
+          const printOrderInfo = {
+            info: res.data,
+            detail: this.orderList.flatMap((o) => {
+              return [
+                Object.assign({ key: Math.random() }, o),
+                Object.assign({ key: Math.random() }, o)
+              ]
+            }),
+            member: Object.assign({}, this.currentMember)
+          }
+          this.settleAccountsOk()
+          this.fullscreenLoading = false
+          // 移动端不打印
+          if (!isMobile) {
+            this.$refs.child.print(printOrderInfo)
+          }
         })
-        this.showOrderDialog = false
-        const printOrderInfo = {
-          info: res.data,
-          detail: this.orderList.flatMap(o => {
-            return [Object.assign({ key: Math.random() }, o), Object.assign({ key: Math.random() }, o)]
-          }),
-          member: Object.assign({ }, this.currentMember)
-        }
-        this.settleAccountsOk()
-        this.fullscreenLoading = false
-        this.$refs.child.print(printOrderInfo)
-      }).catch(() => {
-        this.fullscreenLoading = false
-      })
+        .catch(() => {
+          this.fullscreenLoading = false
+        })
     },
     // 结算成功，清理打印
     settleAccountsOk() {
@@ -361,13 +427,17 @@ export default {
       if (!this.isVip) {
         this.member = ''
         this.currentMember = null
-        this.orderList.forEach(e => { e.goodsPrice = e.salePrice })
+        this.orderList.forEach((e) => {
+          e.goodsPrice = e.salePrice
+        })
       } else if (!this.currentMember) {
         // 默认刷内部号
-        const member = this.members.find(e => e.type === 'INNER')
+        const member = this.members.find((e) => e.type === 'INNER')
         this.member = member.name
         this.currentMember = member
-        this.orderList.forEach(e => { e.goodsPrice = e.vipPrice })
+        this.orderList.forEach((e) => {
+          e.goodsPrice = e.vipPrice
+        })
       }
     },
     // 清空商品
@@ -377,7 +447,9 @@ export default {
     // 修改价格
     editPrice() {
       this.tool.editPrice = !this.tool.editPrice
-      this.orderList.forEach(e => { e.oldGoodsPrice = e.goodsPrice })
+      this.orderList.forEach((e) => {
+        e.oldGoodsPrice = e.goodsPrice
+      })
     },
     // 取消修改
     cancelEdit(goods) {
@@ -388,59 +460,65 @@ export default {
 </script>
 
 <style lang="scss">
-.main{
-    // height: 100vh;
-    display: flex;
-    flex-direction: column;
-    .cashier-input {
-        margin-bottom: 10px;
-    }
-    .cashier-goods {
+.main {
+  // height: 100vh;
+  display: flex;
+  flex-direction: column;
 
-    }
+  .cashier-input {
+    margin-bottom: 10px;
+  }
 }
 
-.el-autocomplete-suggestion li.highlighted, .el-autocomplete-suggestion li:hover {
-   background-color: lightgray;
+.el-autocomplete-suggestion li.highlighted,
+.el-autocomplete-suggestion li:hover {
+  background-color: lightgray;
 }
 
 .cashier-input-item {
-    width: 100%;
+  width: 100%;
+  padding: 7px;
+
+  input {
+    font-size: 14px;
+    height: 42px !important;
+    line-height: 42px !important;
+  }
+
+  li {
+    line-height: normal;
     padding: 7px;
-    input {
-        font-size: 14px;
-        height: 42px !important;
-        line-height: 42px !important;
+
+    .label {
+      text-overflow: ellipsis;
+      overflow: hidden;
     }
-    li {
-        line-height: normal;
-        padding: 7px;
-        .label {
-            text-overflow: ellipsis;
-            overflow: hidden;
-        }
-        .desc {
-            font-size: 12px;
-            color: #b4b4b4;
-        }
+
+    .desc {
+      font-size: 12px;
+      color: #b4b4b4;
     }
+  }
 }
 
 .tool {
-    display: flex;
-    flex-direction: column;
-    .el-button {
-        margin-top: 10px;
-        padding: 18px 0;
-    }
-    .el-button + .el-button {
-        margin-left: 0;
-    }
+  display: flex;
+  flex-direction: column;
+
+  .el-button {
+    margin-top: 10px;
+    padding: 18px 0;
+  }
+
+  .el-button + .el-button {
+    margin-left: 0;
+  }
 }
 
 .orderDialog {
-    .el-dialog {
-        width: 450px;
-    }
+  .el-dialog {
+    width: 100%;
+    max-width: 450px;
+  }
 }
 </style>
