@@ -399,7 +399,7 @@ export default {
           this.settleAccountsOk()
           this.fullscreenLoading = false
           // 移动端不打印
-          if (!isMobile) {
+          if (!this.isMobile) {
             this.$refs.child.print(printOrderInfo)
           }
         })
