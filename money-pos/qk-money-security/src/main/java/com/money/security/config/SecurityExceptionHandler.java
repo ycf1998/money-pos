@@ -1,13 +1,12 @@
 package com.money.security.config;
 
 
-import com.money.common.response.R;
+import com.money.common.util.WebUtil;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.annotation.Order;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 /**
@@ -18,20 +17,20 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
  */
 @Slf4j
 @RestControllerAdvice
+@RequiredArgsConstructor
 @Order(-1)
 public class SecurityExceptionHandler {
 
+    private final SecurityExceptionHandleConfig securityExceptionHandleConfig;
+
     /**
-     * 处理其他异常
+     * 处理拒绝访问异常
      *
-     * @param e e
-     * @return {@link R}<{@link String}>
+     * @param accessDeniedException   拒绝访问异常
      */
-    @ResponseStatus(HttpStatus.FORBIDDEN)
     @ExceptionHandler(AccessDeniedException.class)
-    public R<String> handleAccessDeniedException(AccessDeniedException e) {
-        log.error("权限不足，禁止访问", e);
-        return R.forbidden();
+    public void handleAccessDeniedException(AccessDeniedException accessDeniedException) {
+        securityExceptionHandleConfig.handle(WebUtil.getRequest(), WebUtil.getResponse(), accessDeniedException);
     }
 
 }

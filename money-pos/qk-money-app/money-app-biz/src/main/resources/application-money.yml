@@ -20,6 +20,8 @@ money:
     enabled: true
     # 请求头
     header: Y-tenant
+    # 默认租户id
+    default-tenant-id: "0"
     # 忽略的表
     ignore-table:
       - sys_tenant

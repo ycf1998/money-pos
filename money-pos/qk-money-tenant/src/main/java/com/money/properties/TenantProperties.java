@@ -16,9 +16,14 @@ public class TenantProperties {
     private boolean enabled = true;
 
     /**
-     * 头
+     * 租户请求头
      */
     private String header = "Y-tenant";
+
+    /**
+     * 默认租户id
+     */
+    private String defaultTenantId = "0";
 
     /**
      * 忽略表

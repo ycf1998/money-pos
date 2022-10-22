@@ -35,27 +35,5 @@ public class RbacAuthorityService {
         return userPermissions.contains("SUPER_ADMIN") || Arrays.stream(permissions).anyMatch(userPermissions::contains);
     }
 
-
-//    // 基于REST URL
-//    public boolean hasPermission(HttpServletRequest request, Authentication authentication) {
-//        boolean hasPermission = false;
-//        SecurityUserDetail securityUserDetail = (SecurityUserDetail) authentication.getPrincipal();
-//        log.info("检查用户相关权限: 拥有角色 {}", securityUserDetail.getAuthorities());
-//        List<RbacPermission> RbacPermissionList = securityUserDetail.getPermissionList();
-//        if (CollectionUtil.isNotEmpty(RbacPermissionList)) {
-//            // 权限匹配
-//            String requestMethod = request.getMethod();
-//            hasPermission = RbacPermissionList.stream().anyMatch(RbacPermission -> {
-//                // 匹配请求方法
-//                List<String> allowMethodList = RbacPermission.getMethod();
-//                boolean matchMethod = allowMethodList.contains("ALL") || allowMethodList.contains(requestMethod);
-//                // 匹配请求路径
-//                boolean matchUrl = new AntPathRequestMatcher(RbacPermission.getUrl()).matches(request);
-//                return matchMethod && matchUrl;
-//            });
-//        }
-//        log.info("鉴权结果: {}", hasPermission);
-//        return hasPermission;
-//    }
 }
 

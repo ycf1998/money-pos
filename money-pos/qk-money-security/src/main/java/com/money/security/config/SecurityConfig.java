@@ -9,9 +9,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.ExpressionUrlAuthorizationConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 /**
@@ -27,8 +25,7 @@ public class SecurityConfig {
     private final IgnoreUrlConfig ignoreUrlConfig;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final SecurityUserService securityUserService;
-    private final AuthenticationEntryPoint restAuthenticationEntryPoint;
-    private final AccessDeniedHandler restAccessDeniedHandler;
+    private final SecurityExceptionHandleConfig securityExceptionHandleConfig;
 
     /**
      * 过滤器链
@@ -64,8 +61,8 @@ public class SecurityConfig {
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 // 自定义认证授权异常控制器
                 .exceptionHandling()
-                .accessDeniedHandler(restAccessDeniedHandler)
-                .authenticationEntryPoint(restAuthenticationEntryPoint);
+                .accessDeniedHandler(securityExceptionHandleConfig)
+                .authenticationEntryPoint(securityExceptionHandleConfig);
         return httpSecurity.build();
     }
 

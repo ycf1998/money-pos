@@ -7,10 +7,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
 
 /**
  * @author : money
@@ -34,6 +35,17 @@ public class WebUtil {
     }
 
     /**
+     * 获取当前请求响应对象
+     *
+     * @return {@link HttpServletResponse}
+     */
+    public HttpServletResponse getResponse() {
+        ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        assert requestAttributes != null;
+        return requestAttributes.getResponse();
+    }
+
+    /**
      * json响应
      *
      * @param response   响应
@@ -46,9 +58,10 @@ public class WebUtil {
         response.setContentType("application/json;charset=UTF-8");
         response.setStatus(httpStatus.value());
         try {
-            PrintWriter writer = response.getWriter();
-            writer.write(JSONUtil.toJsonStr(o));
-            writer.close();
+            ServletOutputStream outputStream = response.getOutputStream();
+            outputStream.write(JSONUtil.toJsonStr(o).getBytes(StandardCharsets.UTF_8));
+            outputStream.flush();
+            outputStream.close();
         } catch (IOException e) {
             log.error("响应返回失败", e);
         }

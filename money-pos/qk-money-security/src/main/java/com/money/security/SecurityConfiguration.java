@@ -1,12 +1,7 @@
 package com.money.security;
 
-import com.money.common.response.R;
-import com.money.common.util.WebUtil;
 import com.money.security.component.TokenStrategy;
-import com.money.security.config.CurrentUserArgumentResolver;
-import com.money.security.config.IgnoreUrlConfig;
-import com.money.security.config.SecurityConfig;
-import com.money.security.config.TokenConfig;
+import com.money.security.config.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
@@ -14,12 +9,9 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.AuthenticationEntryPoint;
-import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -46,7 +38,7 @@ public class SecurityConfiguration {
      */
     @Bean
     @ConditionalOnWebApplication
-    public WebMvcConfigurer securityWebMvcConfig() {
+    WebMvcConfigurer securityWebMvcConfig() {
         return new WebMvcConfigurer() {
             /**
              * 添加参数解析器
@@ -84,6 +76,18 @@ public class SecurityConfiguration {
         };
     }
 
+
+    /**
+     * 安全异常处理配置
+     *
+     * @return {@link SecurityExceptionHandleConfig}
+     */
+    @Bean
+    @ConditionalOnMissingBean(SecurityExceptionHandleConfig.class)
+    SecurityExceptionHandleConfig securityExceptionConfig() {
+        return new SecurityExceptionHandleConfig();
+    }
+
     /**
      * 密码编码器
      *
@@ -92,31 +96,5 @@ public class SecurityConfiguration {
     @Bean
     PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
-    }
-
-    /**
-     * 拒绝访问处理器
-     *
-     * @return {@link AccessDeniedHandler}
-     */
-    @Bean
-    AccessDeniedHandler restAccessDeniedHandler() {
-        return (req, res, e) -> {
-            log.info("权限不足，禁止访问");
-            WebUtil.responseJson(res, HttpStatus.FORBIDDEN, R.forbidden());
-        };
-    }
-
-    /**
-     * 认证失败处理器
-     *
-     * @return {@link AuthenticationEntryPoint}
-     */
-    @Bean
-    AuthenticationEntryPoint restAuthenticationEntryPoint() {
-        return (req, res, e) -> {
-            log.info("认证失败，拒绝访问");
-            WebUtil.responseJson(res, HttpStatus.UNAUTHORIZED, R.unauthorized());
-        };
     }
 }

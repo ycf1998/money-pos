@@ -42,18 +42,7 @@ public class TenantConfiguration {
                     assert servletRequestAttributes != null;
                     String tenantId = servletRequestAttributes.getRequest().getHeader(tenantProperties.getHeader());
                     if (StrUtil.isBlank(tenantId)) {
-                        tenantId = "0";
-                        // 租户id未传报错提示
-//                        HttpServletResponse response = servletRequestAttributes.getResponse();
-//                        assert response != null;
-//                        response.setStatus(403);
-//                        response.setHeader("Access-Control-Allow-Origin", "*");
-//                        response.setHeader("Access-Control-Allow-Methods", "*");
-//                        response.setContentType("application/json;charset=UTF-8");
-//                        ServletOutputStream writer = response.getOutputStream();
-//                        writer.write("未携带租户id".getBytes(StandardCharsets.UTF_8));
-//                        writer.close();
-//                        return null;
+                        tenantId = tenantProperties.getDefaultTenantId();
                     }
                     TenantContextHolder.setTenant(Long.valueOf(tenantId));
                     return new LongValue(tenantId);

@@ -15,7 +15,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 public class SecurityGuard {
 
     public static boolean isLoggedState() {
-        return SecurityContextHolder.getContext().getAuthentication() != null;
+        return SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof SecurityUserDetail;
     }
 
     public static RbacUser getRbacUser() {
