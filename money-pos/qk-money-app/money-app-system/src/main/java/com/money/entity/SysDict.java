@@ -33,8 +33,4 @@ public class SysDict extends BaseEntity {
     @Schema(description="排序")
     private Integer sort;
 
-    @Schema(description="租户id")
-    private Long tenantId;
-
-
 }

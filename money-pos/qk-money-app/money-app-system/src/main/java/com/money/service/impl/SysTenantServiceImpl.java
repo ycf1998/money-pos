@@ -51,8 +51,6 @@ public class SysTenantServiceImpl extends ServiceImpl<SysTenantMapper, SysTenant
     private final SysRoleService sysRoleService;
     private final SysRolePermissionRelationService sysRolePermissionRelationService;
     private final SysPermissionService sysPermissionService;
-    private final SysDictService sysDictService;
-    private final SysDictDetailService sysDictDetailService;
     private final OSSDelegate<LocalOSS> localOSS;
 
 
@@ -161,7 +159,9 @@ public class SysTenantServiceImpl extends ServiceImpl<SysTenantMapper, SysTenant
         // 新增权限
         List<SysPermission> sysPermissions = sysPermissionService.lambdaQuery()
                 .notLike(SysPermission::getPermission, "tenant")
-                .notLike(SysPermission::getPermission, "permission").list();
+                .notLike(SysPermission::getPermission, "permission")
+                .notLike(SysPermission::getPermission, "dict")
+                .list();
         // id映射保证父子节点关系
         Map<Long, Long> permissionId = new HashMap<>(sysPermissions.size());
         sysPermissions.forEach(sysPermission -> {
@@ -182,18 +182,5 @@ public class SysTenantServiceImpl extends ServiceImpl<SysTenantMapper, SysTenant
             return sysRolePermissionRelation;
         }).collect(Collectors.toList());
         sysRolePermissionRelationService.saveBatch(sysRolePermissionRelationList);
-        // 必要的数据字典
-        List<SysDict> sysDictList = sysDictService.lambdaQuery().eq(SysDict::getCreateBy, "").list();
-        sysDictList.forEach(sysDict -> {
-            sysDict.setId(null);
-            sysDict.setTenantId(id);
-        });
-        List<SysDictDetail> sysDictDetailList = sysDictDetailService.lambdaQuery().eq(SysDictDetail::getCreateBy, "").list();
-        sysDictDetailList.forEach(sysDict -> {
-            sysDict.setId(null);
-            sysDict.setTenantId(id);
-        });
-        sysDictDetailService.saveBatch(sysDictDetailList);
-        sysDictService.saveBatch(sysDictList);
     }
 }

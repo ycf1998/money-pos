@@ -3,8 +3,6 @@ package com.money.common.dto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
-import java.io.Serializable;
-
 /**
  * @author : money
  * @version : 1.0.0
@@ -12,7 +10,7 @@ import java.io.Serializable;
  * @createTime : 2022-10-01 11:52:33
  */
 @Data
-public class SortRequest implements Serializable {
+public class SortRequest implements ISortRequest {
 
     private static final long serialVersionUID = 4432103394522401613L;
 
