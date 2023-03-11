@@ -1,7 +1,9 @@
 package com.money.service;
 
-import com.money.entity.OmsOrderDetail;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.money.entity.OmsOrderDetail;
+
+import java.util.List;
 
 /**
  * <p>
@@ -9,8 +11,16 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * </p>
  *
  * @author money
- * @since 2022-04-10
+ * @since 2023-02-27
  */
 public interface OmsOrderDetailService extends IService<OmsOrderDetail> {
+
+    /**
+     * 获取订单详情
+     *
+     * @param orderNo 订单号
+     * @return {@link List}<{@link OmsOrderDetail}>
+     */
+    List<OmsOrderDetail> getOrderDetail(String orderNo);
 
 }

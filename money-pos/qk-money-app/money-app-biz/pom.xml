@@ -41,6 +41,11 @@
             <groupId>com.money</groupId>
             <artifactId>qk-money-security</artifactId>
         </dependency>
+        <!-- 定时任务模块 -->
+<!--        <dependency>-->
+<!--            <groupId>com.money</groupId>-->
+<!--            <artifactId>money-common-schedule</artifactId>-->
+<!--        </dependency>-->
         <!-- 缓存模块 -->
         <dependency>
             <groupId>com.money</groupId>
@@ -61,10 +66,10 @@
             <artifactId>money-common-oss</artifactId>
         </dependency>
         <!-- 七牛云 -->
-        <dependency>
-            <groupId>com.qiniu</groupId>
-            <artifactId>qiniu-java-sdk</artifactId>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>com.qiniu</groupId>-->
+<!--            <artifactId>qiniu-java-sdk</artifactId>-->
+<!--        </dependency>-->
         <!-- 邮件模块-->
         <dependency>
             <groupId>com.money</groupId>

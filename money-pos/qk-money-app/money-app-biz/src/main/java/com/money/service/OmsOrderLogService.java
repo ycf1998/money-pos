@@ -1,8 +1,8 @@
 package com.money.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.money.dto.OmsOrderLog.OmsOrderLogVO;
 import com.money.entity.OmsOrderLog;
-import com.money.dto.orderlog.OrderLogVO;
 
 import java.util.List;
 
@@ -12,16 +12,15 @@ import java.util.List;
  * </p>
  *
  * @author money
- * @since 2022-04-26
+ * @since 2023-02-27
  */
 public interface OmsOrderLogService extends IService<OmsOrderLog> {
 
     /**
      * 列表
      *
-     * @param id id
-     * @return {@link List}<{@link OrderLogVO}>
+     * @param orderId 订单id
+     * @return {@link List}<{@link OmsOrderLogVO}>
      */
-    List<OrderLogVO> list(Long id);
-
+    List<OmsOrderLogVO> list(Long orderId);
 }

@@ -3,97 +3,29 @@
     <span class="crud-opts-left">
       <!--左侧插槽-->
       <slot name="left" />
-      <el-button
-        v-if="crud.optShow.add"
-        v-permission="permission.add"
-        class="filter-item"
-        size="mini"
-        type="primary"
-        icon="el-icon-plus"
-        @click="crud.toAdd"
-      >
-        新增
+      <el-button v-if="crud.optShow.add" v-permission="permission.add" class="filter-item" size="mini" type="primary" icon="el-icon-plus" @click="crud.toAdd">
+        <span v-if="!isMobile">新增</span>
       </el-button>
-      <el-button
-        v-if="crud.optShow.edit"
-        v-permission="permission.edit"
-        class="filter-item"
-        size="mini"
-        type="success"
-        icon="el-icon-edit"
-        :disabled="crud.selections.length !== 1"
-        @click="crud.toEdit(crud.selections[0])"
-      >
-        修改
+      <el-button v-if="crud.optShow.edit" v-permission="permission.edit" class="filter-item" size="mini" type="success" icon="el-icon-edit" :disabled="crud.selections.length !== 1" @click="crud.toEdit(crud.selections[0])">
+        <span v-if="!isMobile">修改</span>
       </el-button>
-      <el-button
-        v-if="crud.optShow.del"
-        slot="reference"
-        v-permission="permission.del"
-        class="filter-item"
-        type="danger"
-        icon="el-icon-delete"
-        size="mini"
-        :loading="crud.delAllLoading"
-        :disabled="crud.selections.length === 0"
-        @click="toDelete(crud.selections)"
-      >
-        删除
+      <el-button v-if="crud.optShow.del" slot="reference" v-permission="permission.del" class="filter-item" type="danger" icon="el-icon-delete" size="mini" :loading="crud.delAllLoading" :disabled="crud.selections.length === 0" @click="toDelete(crud.selections)">
+        <span v-if="!isMobile">删除</span>
       </el-button>
-      <el-button
-        v-if="crud.optShow.download"
-        :loading="crud.downloadLoading"
-        :disabled="!crud.data.length"
-        class="filter-item"
-        size="mini"
-        type="warning"
-        icon="el-icon-download"
-        @click="crud.doExport"
-      >导出</el-button>
       <!--右侧-->
       <slot name="right" />
     </span>
     <el-button-group class="crud-opts-right">
-      <el-button
-        size="mini"
-        plain
-        type="info"
-        icon="el-icon-search"
-        @click="toggleSearch()"
-      />
-      <el-button
-        size="mini"
-        icon="el-icon-refresh"
-        @click="crud.refresh()"
-      />
-      <el-popover
-        placement="bottom-end"
-        width="150"
-        trigger="click"
-      >
-        <el-button
-          slot="reference"
-          size="mini"
-          icon="el-icon-s-grid"
-        >
-          <i
-            class="fa fa-caret-down"
-            aria-hidden="true"
-          />
+      <el-button size="mini" plain type="info" icon="el-icon-search" @click="toggleSearch()" />
+      <el-button size="mini" icon="el-icon-refresh" @click="crud.refresh()" />
+      <el-popover placement="bottom-end" width="150" trigger="click">
+        <el-button slot="reference" size="mini" icon="el-icon-s-grid">
+          <i class="fa fa-caret-down" aria-hidden="true" />
         </el-button>
-        <el-checkbox
-          v-model="allColumnsSelected"
-          :indeterminate="allColumnsSelectedIndeterminate"
-          @change="handleCheckAllChange"
-        >
+        <el-checkbox v-model="allColumnsSelected" :indeterminate="allColumnsSelectedIndeterminate" @change="handleCheckAllChange">
           全选
         </el-checkbox>
-        <el-checkbox
-          v-for="item in tableColumns"
-          :key="item.property"
-          v-model="item.visible"
-          @change="handleCheckedTableColumnsChange(item)"
-        >
+        <el-checkbox v-for="item in tableColumns" :key="item.property" v-model="item.visible" @change="handleCheckedTableColumnsChange(item)">
           {{ item.label }}
         </el-checkbox>
       </el-popover>
@@ -101,12 +33,13 @@
   </div>
 </template>
 <script>
+import { isMobile } from '@/utils/index'
 import CRUD, { crud } from './crud'
 
 function sortWithRef(src, ref) {
   const result = Object.assign([], ref)
   let cursor = -1
-  src.forEach(e => {
+  src.forEach((e) => {
     const idx = result.indexOf(e)
     if (idx === -1) {
       cursor += 1
@@ -123,19 +56,26 @@ export default {
   props: {
     permission: {
       type: Object,
-      default: () => { return {} }
+      default: () => {
+        return {}
+      }
     },
     hiddenColumns: {
       type: Array,
-      default: () => { return [] }
+      default: () => {
+        return []
+      }
     },
     ignoreColumns: {
       type: Array,
-      default: () => { return [] }
+      default: () => {
+        return []
+      }
     }
   },
   data() {
     return {
+      isMobile: isMobile(),
       tableColumns: [],
       allColumnsSelected: true,
       allColumnsSelectedIndeterminate: false,
@@ -147,7 +87,7 @@ export default {
   watch: {
     'crud.props.table'() {
       this.updateTableColumns()
-      this.tableColumns.forEach(column => {
+      this.tableColumns.forEach((column) => {
         if (this.hiddenColumns.indexOf(column.property) !== -1) {
           column.visible = false
           this.updateColumnVisible(column)
@@ -169,7 +109,11 @@ export default {
         return
       }
       let cols = null
-      const columnFilter = e => e && e.type === 'default' && e.property && this.ignoreColumns.indexOf(e.property) === -1
+      const columnFilter = (e) =>
+        e &&
+        e.type === 'default' &&
+        e.property &&
+        this.ignoreColumns.indexOf(e.property) === -1
       const refCols = table.columns.filter(columnFilter)
       if (this.ignoreNextTableColumnsChange) {
         this.ignoreNextTableColumnsChange = false
@@ -177,9 +121,11 @@ export default {
       }
       this.ignoreNextTableColumnsChange = false
       const columns = []
-      const fullTableColumns = table.$children.map(e => e.columnConfig).filter(columnFilter)
+      const fullTableColumns = table.$children
+        .map((e) => e.columnConfig)
+        .filter(columnFilter)
       cols = sortWithRef(fullTableColumns, refCols)
-      cols.forEach(config => {
+      cols.forEach((config) => {
         const column = {
           property: config.property,
           label: config.label,
@@ -194,18 +140,19 @@ export default {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
-      }).then(() => {
-        this.crud.delAllLoading = true
-        this.crud.doDelete(datas)
-      }).catch(() => {
       })
+        .then(() => {
+          this.crud.delAllLoading = true
+          this.crud.doDelete(datas)
+        })
+        .catch(() => { })
     },
     handleCheckAllChange(val) {
       if (val === false) {
         this.allColumnsSelected = true
         return
       }
-      this.tableColumns.forEach(column => {
+      this.tableColumns.forEach((column) => {
         if (!column.visible) {
           column.visible = true
           this.updateColumnVisible(column)
@@ -217,29 +164,35 @@ export default {
     handleCheckedTableColumnsChange(item) {
       let totalCount = 0
       let selectedCount = 0
-      this.tableColumns.forEach(column => {
+      this.tableColumns.forEach((column) => {
         ++totalCount
         selectedCount += column.visible ? 1 : 0
       })
       if (selectedCount === 0) {
         this.crud.notify('请至少选择一列', CRUD.NOTIFICATION_TYPE.WARNING)
-        this.$nextTick(function() {
+        this.$nextTick(() => {
           item.visible = true
         })
         return
       }
       this.allColumnsSelected = selectedCount === totalCount
-      this.allColumnsSelectedIndeterminate = selectedCount !== totalCount && selectedCount !== 0
+      this.allColumnsSelectedIndeterminate =
+        selectedCount !== totalCount && selectedCount !== 0
       this.updateColumnVisible(item)
     },
     updateColumnVisible(item) {
       const table = this.crud.props.table
-      const vm = table.$children.find(e => e.prop === item.property)
+      const vm = table.$children.find((e) => e.prop === item.property)
       const columnConfig = vm.columnConfig
       if (item.visible) {
         // 找出合适的插入点
         const columnIndex = this.tableColumns.indexOf(item)
-        vm.owner.store.commit('insertColumn', columnConfig, columnIndex + 1, null)
+        vm.owner.store.commit(
+          'insertColumn',
+          columnConfig,
+          columnIndex + 1,
+          null
+        )
       } else {
         vm.owner.store.commit('removeColumn', columnConfig, null)
       }
@@ -253,16 +206,18 @@ export default {
 </script>
 
 <style>
-  .crud-opts {
-    padding: 4px 0;
-    display: -webkit-flex;
-    display: flex;
-    align-items: center;
-  }
-  .crud-opts .crud-opts-right {
-    margin-left: auto;
-  }
-  .crud-opts .crud-opts-right span {
-    float: left;
-  }
+.crud-opts {
+  padding: 4px 0;
+  display: -webkit-flex;
+  display: flex;
+  align-items: center;
+}
+
+.crud-opts .crud-opts-right {
+  margin-left: auto;
+}
+
+.crud-opts .crud-opts-right span {
+  float: left;
+}
 </style>

@@ -6,14 +6,14 @@ import cn.hutool.core.util.RandomUtil;
 import cn.hutool.core.util.StrUtil;
 import com.money.common.exception.BaseException;
 import com.money.constant.OrderStatusEnum;
+import com.money.dto.OmsOrder.OmsOrderVO;
+import com.money.dto.OmsOrderDetail.OmsOrderDetailDTO;
+import com.money.dto.Pos.PosGoodsVO;
+import com.money.dto.Pos.PosMemberVO;
+import com.money.dto.Pos.SettleAccountsDTO;
 import com.money.entity.*;
 import com.money.service.*;
 import com.money.util.VOUtil;
-import com.money.dto.order.OrderDetailDTO;
-import com.money.dto.order.OrderVO;
-import com.money.dto.pos.PosGoodsVO;
-import com.money.dto.pos.PosMemberVO;
-import com.money.dto.pos.SettleAccountsDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,12 +48,12 @@ public class PosServiceImpl implements PosService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public OrderVO settleAccounts(SettleAccountsDTO settleAccountsDTO) {
+    public OmsOrderVO settleAccounts(SettleAccountsDTO settleAccountsDTO) {
         String orderNo = getOrderNo();
         OmsOrder order = new OmsOrder();
         order.setOrderNo(orderNo);
         // 核算订单
-        List<OrderDetailDTO> orderDetailDTOS = settleAccountsDTO.getOrderDetail();
+        List<OmsOrderDetailDTO> orderDetailDTOS = settleAccountsDTO.getOrderDetail();
         List<OmsOrderDetail> orderDetails = orderDetailDTOS.stream().map(dto -> {
             GmsGoods goods = gmsGoodsService.getById(dto.getGoodsId());
             OmsOrderDetail detail = new OmsOrderDetail();
@@ -109,12 +109,9 @@ public class PosServiceImpl implements PosService {
         // 订单日志
         OmsOrderLog log = new OmsOrderLog();
         log.setOrderId(order.getId());
-        log.setDescription("创建订单");
-        OmsOrderLog log2 = new OmsOrderLog();
-        log2.setOrderId(order.getId());
-        log2.setDescription("收银完成");
-        omsOrderLogService.saveBatch(ListUtil.of(log, log2));
-        return VOUtil.toVO(order, OrderVO.class);
+        log.setDescription("完成订单");
+        omsOrderLogService.saveBatch(ListUtil.of(log));
+        return VOUtil.toVO(order, OmsOrderVO.class);
     }
 
     /**

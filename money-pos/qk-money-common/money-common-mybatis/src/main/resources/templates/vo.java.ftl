@@ -1,5 +1,10 @@
 package ${package.Other}.${table.entityName};
 
+<#list table.importPackages as pkg>
+<#if pkg!="com.baomidou.mybatisplus.annotation.TableName" && pkg!="com.money.mb.base.BaseEntity">
+import ${pkg};
+</#if>
+</#list>
 <#if entitySerialVersionUID>
 import java.io.Serializable;
 </#if>
@@ -85,7 +90,6 @@ public class ${entity}VO {
         }
     </#list>
 </#if>
-
 <#if entityColumnConstant>
     <#list table.fields as field>
         public static final String ${field.name?upper_case} = "${field.name}";

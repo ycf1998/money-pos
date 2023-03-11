@@ -1,12 +1,13 @@
-import axios from 'axios'
 import moneyConfig from '@/money.config'
-import { Message } from 'element-ui'
+import tokenManage from '@/utils/tokenManage'
+import axios from 'axios'
 import store from '@/store'
-import { getToken } from '@/utils/auth'
+import { Message } from 'element-ui'
 
 const service = axios.create({
-  baseURL: process.env.VUE_APP_BASE_API, // url = base url + request url
-  timeout: 10000,
+  // url = base url + request url
+  baseURL: process.env.VUE_APP_BASE_API,
+  timeout: 300000,
   retry: 3
 })
 
@@ -38,12 +39,12 @@ service.interceptors.request.use(
     }
     // 【qk-money】：access token
     if (store.getters.token) {
-      config.headers[moneyConfig.tokenHeader] = 'Bearer ' + getToken()
+      config.headers[moneyConfig.tokenHeader] = `${moneyConfig.tokenType} ${tokenManage.getToken()}`
     }
     // 【qk-money】：request上下文请求头
     config.headers[moneyConfig.requestIdHeader] = new Date().getTime()
-    config.headers[moneyConfig.i18nHeader] = 'en'
-    config.headers[moneyConfig.timezoneHeader] = 'GMT+08:00'
+    config.headers[moneyConfig.i18nHeader] = moneyConfig.lang
+    config.headers[moneyConfig.timezoneHeader] = moneyConfig.timezone
     return config
   },
   error => {

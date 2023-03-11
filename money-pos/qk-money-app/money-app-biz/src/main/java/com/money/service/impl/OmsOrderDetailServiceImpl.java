@@ -1,10 +1,13 @@
 package com.money.service.impl;
 
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.money.entity.OmsOrderDetail;
 import com.money.mapper.OmsOrderDetailMapper;
 import com.money.service.OmsOrderDetailService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * <p>
@@ -12,9 +15,14 @@ import org.springframework.stereotype.Service;
  * </p>
  *
  * @author money
- * @since 2022-04-10
+ * @since 2023-02-27
  */
 @Service
+@RequiredArgsConstructor
 public class OmsOrderDetailServiceImpl extends ServiceImpl<OmsOrderDetailMapper, OmsOrderDetail> implements OmsOrderDetailService {
 
+    @Override
+    public List<OmsOrderDetail> getOrderDetail(String orderNo) {
+        return this.lambdaQuery().eq(OmsOrderDetail::getOrderNo, orderNo).list();
+    }
 }

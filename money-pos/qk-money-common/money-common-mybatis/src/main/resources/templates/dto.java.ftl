@@ -1,5 +1,10 @@
 package ${package.Other}.${table.entityName};
 
+<#list table.importPackages as pkg>
+<#if pkg!="com.baomidou.mybatisplus.annotation.TableName" && pkg!="com.money.mb.base.BaseEntity">
+import ${pkg};
+</#if>
+</#list>
 <#if entitySerialVersionUID>
 import java.io.Serializable;
 </#if>
@@ -12,6 +17,8 @@ import lombok.Data;
 import lombok.experimental.Accessors;
 </#if>
 </#if>
+import javax.validation.constraints.NotNull;
+import com.money.common.dto.ValidGroup;
 
 /**
 * <p>
@@ -40,6 +47,7 @@ public class ${entity}DTO {
     private static final long serialVersionUID = 1L;
 </#if>
 
+    @NotNull(groups = ValidGroup.Update.class)
     private Long id;
 <#-- ----------  BEGIN 字段循环遍历  ---------->
 <#list table.fields as field>
@@ -85,7 +93,6 @@ public class ${entity}DTO {
         }
     </#list>
 </#if>
-
 <#if entityColumnConstant>
     <#list table.fields as field>
         public static final String ${field.name?upper_case} = "${field.name}";

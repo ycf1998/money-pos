@@ -1,21 +1,20 @@
 import router from '.'
 import store from '../store'
 import { Message } from 'element-ui'
-import NProgress from 'nprogress' // progress bar
-import 'nprogress/nprogress.css' // progress bar style
-import { getToken, removeToken } from '@/utils/auth' // get token from cookie
+import NProgress from 'nprogress'
+import 'nprogress/nprogress.css'
+import tokenManage from '@/utils/tokenManage'
 import getPageTitle from '@/utils/get-page-title'
 
-NProgress.configure({ showSpinner: false }) // NProgress Configuration
+NProgress.configure({ showSpinner: false })
 
 const whiteList = ['/login'] // 白名单
 
-// 【qk-money】初始化动态路由
-// 路由权限拦截
-router.beforeEach(async(to, from, next) => {
+// 【qk-money】路由权限拦截
+router.beforeEach(async (to, from, next) => {
   NProgress.start()
   document.title = getPageTitle(to.meta.title)
-  const hasToken = getToken()
+  const hasToken = tokenManage.getToken()
   if (hasToken) {
     if (to.path === '/login') {
       next({ path: '/' })
@@ -34,7 +33,7 @@ router.beforeEach(async(to, from, next) => {
           next({ ...to, replace: true })
         } catch (error) {
           Message.error(error || 'Has Error')
-          removeToken()
+          tokenManage.removeToken()
           next(`/login?redirect=${to.path}`)
           NProgress.done()
         }

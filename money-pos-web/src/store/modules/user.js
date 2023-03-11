@@ -1,10 +1,10 @@
 import { login, logout, getInfo } from '@/api/auth'
-import { getToken, setToken, removeToken } from '@/utils/auth'
-import router, { resetRouter } from '@/router'
+import tokenManage from '@/utils/tokenManage'
+import { resetRouter } from '@/router'
 
 const state = {
   tenant: null,
-  token: getToken(),
+  token: tokenManage.getToken(),
   user: {},
   username: null,
   roles: [],
@@ -40,14 +40,13 @@ const actions = {
       login({ username: username.trim(), password: password }).then(response => {
         const { data } = response
         commit('SET_TOKEN', data.accessToken)
-        setToken(data.accessToken)
+        tokenManage.setToken(data.accessToken)
         resolve()
       }).catch(error => {
         reject(error)
       })
     })
   },
-
   // 获取用户信息
   getInfo({ commit, state }) {
     return new Promise((resolve, reject) => {
@@ -59,7 +58,6 @@ const actions = {
         }
 
         const { roles, info, permissions } = data
-
         if (!roles || roles.length <= 0) {
           reject('getInfo: roles must be a non-null array!')
         }
@@ -77,7 +75,6 @@ const actions = {
       })
     })
   },
-
   // 登出
   logout({ commit, state, dispatch }) {
     return new Promise((resolve, reject) => {
@@ -86,7 +83,7 @@ const actions = {
         commit('SET_ROLES', [])
         commit('SET_PERMISSIONS', [])
 
-        removeToken()
+        tokenManage.removeToken()
         resetRouter()
 
         dispatch('tagsView/delAllViews', null, { root: true })
@@ -97,36 +94,15 @@ const actions = {
       })
     })
   },
-
   // 重置token
   resetToken({ commit }) {
     return new Promise(resolve => {
       commit('SET_TOKEN', '')
       commit('SET_ROLES', [])
       commit('SET_PERMISSIONS', [])
-      removeToken()
+      tokenManage.removeToken()
       resolve()
     })
-  },
-
-  // 动态修改权限（未用）
-  async changeRoles({ commit, dispatch }, role) {
-    const token = role + '-token'
-
-    commit('SET_TOKEN', token)
-    setToken(token)
-
-    const { roles } = await dispatch('getInfo')
-
-    resetRouter()
-
-    // generate accessible routes map based on roles
-    const accessRoutes = await dispatch('permission/generateRoutes', roles, { root: true })
-    // dynamically add accessible routes
-    router.addRoutes(accessRoutes)
-
-    // reset visited views and cached views
-    dispatch('tagsView/delAllViews', null, { root: true })
   }
 }
 

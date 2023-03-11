@@ -2,10 +2,10 @@ package com.money.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.money.mb.base.BaseEntity;
+import java.math.BigDecimal;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.math.BigDecimal;
 
 /**
  * <p>
@@ -13,96 +13,60 @@ import java.math.BigDecimal;
  * </p>
  *
  * @author money
- * @since 2022-04-01
+ * @since 2023-02-27
  */
 @Getter
 @Setter
 @TableName("ums_member")
+@Schema(description = "会员表")
 public class UmsMember extends BaseEntity {
 
-    private static final long serialVersionUID = 1L;
-
-    /**
-     * 卡号
-     */
+    @Schema(description="卡号")
     private String code;
 
-    /**
-     * 会员名称
-     */
+    @Schema(description="会员名称")
     private String name;
 
-    /**
-     * 会员类型
-     */
+    @Schema(description="会员类型")
     private String type;
 
-    /**
-     * 联系电话
-     */
+    @Schema(description="手机号")
     private String phone;
 
-    /**
-     * 省
-     */
+    @Schema(description="省份")
     private String province;
 
-    /**
-     * 城市
-     */
+    @Schema(description="城市")
     private String city;
 
-    /**
-     * 区
-     */
+    @Schema(description="地区")
     private String district;
 
-    /**
-     * 详细地址
-     */
+    @Schema(description="详细地址")
     private String address;
 
-    /**
-     * 抵用券
-     */
+    @Schema(description="抵用券")
     private BigDecimal coupon;
 
-    /**
-     * 总消费金额
-     */
+    @Schema(description="总消费金额")
     private BigDecimal consumeAmount;
 
-    /**
-     * 消费抵用券
-     */
+    @Schema(description="消费抵用券")
     private BigDecimal consumeCoupon;
 
-    /**
-     * 消费次数
-     */
+    @Schema(description="消费次数")
     private Integer consumeTimes;
 
-    /**
-     * 取消次数
-     */
+    @Schema(description="取消次数")
     private Integer cancelTimes;
 
-    /**
-     * 备注
-     */
+    @Schema(description="备注")
     private String remark;
 
-    /**
-     * 逻辑删除
-     */
+    @Schema(description="逻辑删除")
     private Boolean deleted;
 
-    private Integer sort;
-
-    /**
-     * 租户id
-     */
+    @Schema(description="租户id")
     private Long tenantId;
-
 
 }

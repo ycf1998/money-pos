@@ -2,7 +2,7 @@ import request from '@/api/request'
 
 export function selectBrand() {
   return request({
-    url: '/brands/select',
+    url: '/gms/brand/select',
     method: 'get'
   })
 }
@@ -14,7 +14,7 @@ export function add(data) {
   }))
   formData.append('logo', data.logoFile)
   return request({
-    url: '/brands',
+    url: '/gms/brand',
     method: 'post',
     data: formData,
     headers: { 'Content-Type': 'multipart/mixed' }
@@ -28,7 +28,7 @@ export function edit(data) {
   }))
   formData.append('logo', data.logoFile)
   return request({
-    url: '/brands',
+    url: '/gms/brand',
     method: 'put',
     data: formData,
     headers: { 'Content-Type': 'multipart/mixed' }
@@ -37,7 +37,7 @@ export function edit(data) {
 
 export function del(ids) {
   return request({
-    url: '/brands',
+    url: '/gms/brand',
     method: 'delete',
     data: ids
   })

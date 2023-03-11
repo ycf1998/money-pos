@@ -3,49 +3,43 @@
     <el-row :gutter="10">
       <!-- 工具栏 -->
       <el-col :sm="4" :md="3" :lg="2" style="float: right; margin-bottom: 10px;">
-        <el-card shadow="always">
-          <div class="tool">
+        <el-card class="tool-card" shadow="always">
+          <div class="tool-list">
             <el-button plain @click="reload">刷新</el-button>
-            <el-button :type="isVip ? 'success' : ''" plain @click="brushVip">
-              {{ isVip ? '取消会员' : '刷会员' }}
-            </el-button>
-            <el-button :type="tool.editPrice ? 'success' : ''" plain @click="editPrice">修改价格</el-button>
+            <el-button plain :type="isVip ? 'success' : ''" @click="brushVip">{{ isVip ? '取消会员' : '刷会员' }}</el-button>
+            <el-button plain :type="tool.editPrice ? 'success' : ''" @click="editPrice">修改价格</el-button>
             <el-button plain @click="clearOrderList">清空商品</el-button>
-            <el-button v-if="isMobile" type="success" plain @click="showOrder">收款</el-button>
-            <el-button v-if="isMobile" plain @click="simple = !simple">精简</el-button>
+            <el-button v-if="isMobile" type="success" @click="showOrder">收款</el-button>
+            <el-button v-if="isMobile" plain :type="tool.simple ? 'success' : ''" @click="tool.simple = !tool.simple">精简</el-button>
           </div>
         </el-card>
       </el-col>
       <!-- 收银台 -->
-      <el-col class="main" :sm="20" :md="21" :lg="22">
+      <el-col class="cashier" :sm="20" :md="21" :lg="22">
         <!-- 输入 -->
         <div class="cashier-input">
           <el-card shadow="always">
-            <el-row :gutter="10">
-              <el-col :sm="17" :md="18" :lg="19">
-                <div>
+            <el-row :gutter="40" type="flex" class="row-bg" justify="space-between" align="middle">
+              <el-col :xs="24" :sm="17" :md="19" :lg="20">
+                <el-row type="flex" class="row-bg">
                   <el-autocomplete v-model="barcode" class="cashier-input-item" popper-class="cashier-input-item" :fetch-suggestions="queryGoods" placeholder="条码 or 名称" @select="item => barcode = item.barcode" @keydown.enter.native="enterBarcode">
                     <template slot-scope="{ item }">
-                      <div class="label">{{ item.barcode }}</div>
-                      <span class="desc">{{ item.name }}
-                        <svg-icon icon-class="stock" /> {{ item.stock }}
-                      </span>
+                      <span class="label">{{ item.barcode }}</span>
+                      <span class="desc">{{ item.name }} 🌰 {{ item.stock }}</span>
                     </template>
                   </el-autocomplete>
-                </div>
-                <div>
+                </el-row>
+                <el-row type="flex" class="row-bg" align="middle">
                   <el-autocomplete v-model="member" class="cashier-input-item" popper-class="cashier-input-item" :fetch-suggestions="queryMember" placeholder="会员名 or 手机号" @select="item => member = item.name" @keydown.enter.native="enterMember">
                     <template slot-scope="{ item }">
-                      <div class="label">{{ item.name }}</div>
-                      <span class="desc">{{ item.phone }}
-                        <svg-icon icon-class="coupon" /> {{ item.coupon }}
-                      </span>
+                      <span class="label">{{ item.name }}</span>
+                      <span class="desc">{{ item.phone }} 🎫 {{ item.coupon }}</span>
                     </template>
                   </el-autocomplete>
-                  <p v-if="currentMember" style="font-size: 13px">存券：{{ currentMember.coupon }}</p>
-                </div>
+                  <el-tag v-if="currentMember">存券：{{ currentMember.coupon }}</el-tag>
+                </el-row>
               </el-col>
-              <el-col :xs="0" :offset="2" :sm="5" :md="4" :lg="3">
+              <el-col :xs="0" :sm="7" :md="5" :lg="4">
                 <el-button type="success" style="width:100%;height:100%" @click="showOrder">
                   <h1>收款</h1>
                   <h4>（空格space）</h4>
@@ -59,84 +53,48 @@
           <el-card shadow="always">
             <el-row type="flex" justify="between">
               <el-col>
-                <h4>共{{ total }}件</h4>
+                <h4>共 {{ total }} 件</h4>
               </el-col>
               <el-col align="right">
-                <h4>💰{{ totalAmount }}
-                  <svg-icon icon-class="coupon" /> {{ couponAmount }} <span style="font-size:20px">🪙{{ payAmount
-                  }}</span>
+                <h4>💰{{ totalAmount }} 🎫 {{ couponAmount }} <span style="font-size:20px">🪙{{ payAmount }}</span>
                 </h4>
               </el-col>
             </el-row>
-            <el-table ref="table" border :data="orderList" style="width: 100%;" row-key="goodsBarcode">
-              <template v-if="simple">
-                <el-table-column v-if="false" key="1" prop="goodsBarcode" align="center" label="条码" />
-                <el-table-column key="2" prop="goodsName" align="center" label="商品" />
-                <el-table-column key="3" prop="quantity" align="center" label="数量">
-                  <template slot-scope="scope">
-                    <el-input v-model="scope.row.quantity" @change="changeQuantity(scope.row)" />
+            <el-table ref="table" border :data="orderList" style="width: 100%;" fit row-key="goodsBarcode">
+              <el-table-column v-if="!tool.simple" key="1" prop="goodsBarcode" min-width="120" align="center" label="条码" />
+              <el-table-column key="2" :fixed="tool.simple" prop="goodsName" min-width="120" align="center" label="商品" />
+              <el-table-column key="3" prop="quantity" align="center" label="数量">
+                <template slot-scope="scope">
+                  <el-input-number v-if="!tool.simple" v-model="scope.row.quantity" size="small" :min="0" @change="changeQuantity(scope.row)" />
+                  <el-input v-else v-model="scope.row.quantity" @change="changeQuantity(scope.row)" />
+                </template>
+              </el-table-column>
+              <el-table-column v-if="!tool.simple" key="4" prop="salePrice" align="center" label="原价" />
+              <el-table-column v-if="!tool.simple" key="5" prop="vipPrice" align="center" label="会员价">
+                <template slot-scope="scope">
+                  {{ isVip ? scope.row.vipPrice : 0 }}
+                </template>
+              </el-table-column>
+              <el-table-column key="6" prop="coupon" align="center" label="购物券">
+                <template slot-scope="scope">
+                  {{ isVip ? scope.row.coupon : 0 }}
+                </template>
+              </el-table-column>
+              <el-table-column key="7" :min-width="tool.editPrice ? 120 : 0" prop="goodsPrice" align="center" label="应收">
+                <template slot-scope="scope">
+                  <template v-if="tool.editPrice">
+                    <el-input v-model="scope.row.goodsPrice" placeholder="请输入内容" class="input-with-select">
+                      <el-button slot="append" icon="el-icon-refresh" @click="cancelEdit(scope.row)" />
+                    </el-input>
                   </template>
-                </el-table-column>
-                <el-table-column v-if="false" key="4" prop="salePrice" align="center" label="原价" />
-                <el-table-column v-if="false" key="5" prop="vipPrice" align="center" label="会员价">
-                  <template slot-scope="scope">
-                    {{ isVip ? scope.row.vipPrice : 0 }}
-                  </template>
-                </el-table-column>
-                <el-table-column key="6" prop="coupon" align="center" label="购物券">
-                  <template slot-scope="scope">
-                    {{ isVip ? scope.row.coupon : 0 }}
-                  </template>
-                </el-table-column>
-                <el-table-column key="7" prop="goodsPrice" align="center" label="应收">
-                  <template slot-scope="scope">
-                    <template v-if="tool.editPrice">
-                      <el-input v-model="scope.row.goodsPrice" placeholder="请输入内容" class="input-with-select" />
-                    </template>
-                    <span v-else style="font-size: 16px">{{ scope.row.goodsPrice }}</span>
-                  </template>
-                </el-table-column>
-                <el-table-column key="8" prop="subcount" align="center" label="小计">
-                  <template slot-scope="scope">
-                    <span style="font-size: 18px">{{ calculator.Mul(scope.row.quantity, scope.row.goodsPrice) }}</span>
-                  </template>
-                </el-table-column>
-              </template>
-              <template v-else>
-                <el-table-column key="1" prop="goodsBarcode" align="center" label="条码" />
-                <el-table-column key="2" prop="goodsName" align="center" label="商品" />
-                <el-table-column key="3" prop="quantity" align="center" label="数量">
-                  <template slot-scope="scope">
-                    <el-input-number v-model="scope.row.quantity" size="small" :min="0" @change="changeQuantity(scope.row)" />
-                  </template>
-                </el-table-column>
-                <el-table-column key="4" prop="salePrice" align="center" label="原价" />
-                <el-table-column key="5" prop="vipPrice" align="center" label="会员价">
-                  <template slot-scope="scope">
-                    {{ isVip ? scope.row.vipPrice : 0 }}
-                  </template>
-                </el-table-column>
-                <el-table-column key="6" prop="coupon" align="center" label="购物券">
-                  <template slot-scope="scope">
-                    {{ isVip ? scope.row.coupon : 0 }}
-                  </template>
-                </el-table-column>
-                <el-table-column key="7" prop="goodsPrice" align="center" label="应收">
-                  <template slot-scope="scope">
-                    <template v-if="tool.editPrice">
-                      <el-input v-model="scope.row.goodsPrice" placeholder="请输入内容" class="input-with-select">
-                        <el-button slot="append" icon="el-icon-refresh" @click="cancelEdit(scope.row)" />
-                      </el-input>
-                    </template>
-                    <span v-else style="font-size: 16px">{{ scope.row.goodsPrice }}</span>
-                  </template>
-                </el-table-column>
-                <el-table-column key="8" prop="subcount" align="center" label="小计">
-                  <template slot-scope="scope">
-                    <span style="font-size: 18px">{{ calculator.Mul(scope.row.quantity, scope.row.goodsPrice) }}</span>
-                  </template>
-                </el-table-column>
-              </template>
+                  <span v-else style="font-size: 16px">{{ scope.row.goodsPrice }}</span>
+                </template>
+              </el-table-column>
+              <el-table-column key="8" prop="subcount" align="center" label="小计">
+                <template slot-scope="scope">
+                  <span style="font-size: 18px">{{ calculator.Mul(scope.row.quantity, scope.row.goodsPrice) }}</span>
+                </template>
+              </el-table-column>
             </el-table>
           </el-card>
         </div>
@@ -202,16 +160,19 @@ export default {
   data() {
     return {
       isMobile: isMobile(),
-      simple: false,
       calculator: calculator,
-      orderList: [],
-      goods: [],
-      members: [],
+
+      goodsList: [],
+      memberList: [],
+
       barcode: null,
       member: null,
+      orderList: [],
+
       currentMember: null,
       isVip: false,
       tool: {
+        simple: false,
         editPrice: false
       },
       showOrderDialog: false,
@@ -219,27 +180,27 @@ export default {
     }
   },
   computed: {
-    total: function() {
+    total: function () {
       return this.orderList.reduce(
         (prev, next) => (prev.quantity | 0) + (next.quantity | 0),
         0
       )
     },
-    totalAmount: function() {
+    totalAmount: function () {
       let val = 0.0
       this.orderList.forEach((data) => {
         val += calculator.Mul(data.quantity, data.salePrice)
       })
       return val
     },
-    payAmount: function() {
+    payAmount: function () {
       let val = 0.0
       this.orderList.forEach((data) => {
         val += calculator.Mul(data.quantity, data.goodsPrice)
       })
       return val
     },
-    couponAmount: function() {
+    couponAmount: function () {
       let val = 0.0
       if (this.isVip) {
         this.orderList.forEach((data) => {
@@ -250,59 +211,51 @@ export default {
     }
   },
   created() {
+    this.tool.simple = this.isMobile
     // 空格收银
     const that = this
-    document.onkeydown = function(e) {
+    document.onkeydown = function (e) {
       const key = window.event.keyCode
       if (key === 32) {
         e.preventDefault()
         that.showOrder()
       }
     }
+    // 初始化
     this.loadInit()
   },
   methods: {
     // 初始 or 刷新
     loadInit() {
-      posApi.listMember(this.member).then((res) => {
-        this.members = res.data
-      })
       posApi.listGoods(this.barcode).then((res) => {
-        this.goods = res.data
+        this.goodsList = res.data
+      })
+      posApi.listMember(this.member).then((res) => {
+        this.memberList = res.data
       })
     },
     // 查询商品
     queryGoods(barcodeOrName, cb) {
-      let results = barcodeOrName
-        ? this.goods.filter(
-          (e) =>
-            e.barcode.includes(barcodeOrName) ||
-              e.name.includes(barcodeOrName)
-        )
-        : this.goods
-      if (results.length > 10) {
-        results = []
+      let result = this.goodsList
+      if (barcodeOrName) {
+        result = this.goodsList.filter(e => e.barcode.includes(barcodeOrName) || e.name.includes(barcodeOrName))
       }
-      cb(results)
+      cb(result.length > 10 ? [] : result)
     },
     // 查询会员
     queryMember(nameOrPhone, cb) {
-      let results = nameOrPhone
-        ? this.members.filter(
-          (e) => e.name.includes(nameOrPhone) || e.phone.includes(nameOrPhone)
-        )
-        : this.members
-      if (results.length > 15) {
-        results = []
+      let result = this.memberList
+      if (nameOrPhone) {
+        result = this.memberList.filter(e => e.name.includes(nameOrPhone) || e.phone.includes(nameOrPhone))
       }
-      cb(results)
+      cb(result.length > 10 ? [] : result)
     },
     // 回车商品
-    enterBarcode(e) {
-      if (!this.barcode || (this.barcode && this.barcode.length < 1)) return
-      const goods = this.goods.find((e) => e.barcode === this.barcode)
+    enterBarcode() {
+      if (!this.barcode?.length > 0) return
+      const goods = this.goodsList.find(e => e.barcode === this.barcode)
       if (goods) {
-        let orderDetail = this.orderList.find((e) => e.goodsId === goods.id)
+        let orderDetail = this.orderList.find(e => e.goodsId === goods.id)
         if (!orderDetail) {
           orderDetail = {
             goodsId: goods.id,
@@ -329,25 +282,21 @@ export default {
       }
     },
     // 回车会员
-    enterMember(e) {
-      if (!this.member || (this.member && this.member.length < 1)) return
-      const member = this.members.find((e) => e.name === this.member)
+    enterMember() {
+      if (!this.member?.length > 0) return
+      const member = this.memberList.find(e => e.name === this.member)
       if (member) {
         this.currentMember = member
         this.isVip = true
-        this.orderList.forEach((e) => {
+        this.orderList.forEach(e => {
           e.goodsPrice = e.vipPrice
         })
       }
     },
     // 修改数量
     changeQuantity(goods) {
-      // 为0删除商品
       if (goods.quantity === 0) {
-        console.log(this.orderList)
-        this.orderList = this.orderList.filter(
-          (e) => e.goodsId !== goods.goodsId
-        )
+        this.orderList = this.orderList.filter(e => e.goodsId !== goods.goodsId)
       }
     },
     // 显示订单
@@ -376,8 +325,7 @@ export default {
         member: this.currentMember?.id,
         orderDetail: this.orderList
       }
-      posApi
-        .settleAccounts(data)
+      posApi.settleAccounts(data)
         .then((res) => {
           this.$notify({
             title: 'Success',
@@ -425,19 +373,15 @@ export default {
     brushVip() {
       this.isVip = !this.isVip
       if (!this.isVip) {
-        this.member = ''
+        this.member = null
         this.currentMember = null
-        this.orderList.forEach((e) => {
-          e.goodsPrice = e.salePrice
-        })
+        this.orderList.forEach(e => { e.goodsPrice = e.salePrice })
       } else if (!this.currentMember) {
         // 默认刷内部号
-        const member = this.members.find((e) => e.type === 'INNER')
+        const member = this.memberList.find((e) => e.type === 'INNER')
         this.member = member.name
         this.currentMember = member
-        this.orderList.forEach((e) => {
-          e.goodsPrice = e.vipPrice
-        })
+        this.orderList.forEach(e => { e.goodsPrice = e.vipPrice })
       }
     },
     // 清空商品
@@ -460,23 +404,25 @@ export default {
 </script>
 
 <style lang="scss">
-.main {
-  // height: 100vh;
+.cashier {
   display: flex;
   flex-direction: column;
+}
 
-  .cashier-input {
-    margin-bottom: 10px;
+.orderDialog {
+  .el-dialog {
+    width: 100%;
+    max-width: 450px;
   }
 }
 
-.el-autocomplete-suggestion li.highlighted,
-.el-autocomplete-suggestion li:hover {
-  background-color: lightgray;
+// 输入部分
+.cashier-input {
+  margin-bottom: 10px;
 }
 
 .cashier-input-item {
-  width: 100%;
+  width: 90%;
   padding: 7px;
 
   input {
@@ -486,39 +432,70 @@ export default {
   }
 
   li {
-    line-height: normal;
-    padding: 7px;
+    display: flex;
+    padding: 5px 20px;
+    flex-direction: column;
+    line-height: 20px;
 
     .label {
-      text-overflow: ellipsis;
-      overflow: hidden;
+      font-size: 15px;
     }
 
     .desc {
-      font-size: 12px;
-      color: #b4b4b4;
+      font-size: 13px;
+      color: #999;
     }
   }
 }
 
-.tool {
-  display: flex;
-  flex-direction: column;
-
-  .el-button {
-    margin-top: 10px;
-    padding: 18px 0;
-  }
-
-  .el-button + .el-button {
-    margin-left: 0;
+@media only screen and (max-width: 767px) {
+  .cashier-input {
+    .cashier-input-item {
+      width: 100%;
+    }
   }
 }
 
-.orderDialog {
-  .el-dialog {
-    width: 100%;
-    max-width: 450px;
+// tool
+.tool-card {
+  .el-card__body {
+    padding: 0.5rem !important;
   }
+  .tool-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .el-button {
+      width: 100px;
+      height: 3rem;
+      margin: 0.3rem;
+    }
+  }
+}
+
+@media only screen and (max-width: 767px) {
+  .tool-card {
+    .el-card__body {
+      padding: 0.5rem !important;
+    }
+    .tool-list {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-around;
+      flex-wrap: wrap;
+
+      .el-button {
+        width: 100px;
+        height: 3rem;
+        margin: 0.3rem;
+      }
+    }
+  }
+}
+
+.el-autocomplete-suggestion li.highlighted,
+.el-autocomplete-suggestion li:hover {
+  background-color: lightgray;
 }
 </style>

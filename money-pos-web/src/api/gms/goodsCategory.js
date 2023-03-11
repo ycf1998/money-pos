@@ -2,14 +2,14 @@ import request from '@/api/request'
 
 export function selectCategory() {
   return request({
-    url: '/goodsCategories/select',
+    url: '/gms/goodsCategory/select',
     method: 'get'
   })
 }
 
 export function getTree() {
   return request({
-    url: '/goodsCategories/tree',
+    url: '/gms/goodsCategory/tree',
     method: 'get'
   })
 }
@@ -21,7 +21,7 @@ export function add(data) {
   }))
   formData.append('icon', data.iconFile)
   return request({
-    url: '/goodsCategories',
+    url: '/gms/goodsCategory',
     method: 'post',
     data: formData,
     headers: { 'Content-Type': 'multipart/mixed' }
@@ -35,7 +35,7 @@ export function edit(data) {
   }))
   formData.append('icon', data.iconFile)
   return request({
-    url: '/goodsCategories',
+    url: '/gms/goodsCategory',
     method: 'put',
     data: formData,
     headers: { 'Content-Type': 'multipart/mixed' }
@@ -44,7 +44,7 @@ export function edit(data) {
 
 export function del(ids) {
   return request({
-    url: '/goodsCategories',
+    url: '/gms/goodsCategory',
     method: 'delete',
     data: ids
   })

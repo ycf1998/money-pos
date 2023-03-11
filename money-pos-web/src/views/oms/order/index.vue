@@ -2,51 +2,18 @@
   <div class="app-container">
     <!-- 搜索 -->
     <div v-if="crud.props.searchToggle" class="filter-container">
-      <el-date-picker
-        v-model="datePicker"
-        class="filter-item"
-        type="datetimerange"
-        :picker-options="pickerOptions"
-        value-format="yyyy-MM-dd HH:mm:ss"
-        range-separator="至"
-        start-placeholder="开始日期"
-        end-placeholder="结束日期"
-        align="right"
-        style="margin-right:10px"
-      />
-      <el-input v-model="query.orderNo" placeholder="订单号" style="width: 200px;" class="filter-item" @keyup.enter.native="crud.toQuery" />
-      <el-input v-model="query.member" placeholder="会员" style="width: 200px;" class="filter-item" @keyup.enter.native="crud.toQuery" />
-      <el-select
-        v-model="query.status"
-        clearable
-        placeholder="状态"
-        class="filter-item"
-        style="width: 120px"
-        @change="crud.toQuery"
-      >
-        <el-option
-          v-for="item in dict.orderStatus"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value"
-        />
+      <el-date-picker v-model="datePicker" class="filter-item-200" type="datetimerange" :picker-options="pickerOptions" value-format="yyyy-MM-dd HH:mm:ss" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" align="right" style="margin-right:10px" />
+      <el-input v-model="query.orderNo" placeholder="订单号" class="filter-item-200" @keyup.enter.native="crud.toQuery" />
+      <el-input v-model="query.member" placeholder="会员" class="filter-item-200" @keyup.enter.native="crud.toQuery" />
+      <el-select v-model="query.status" clearable placeholder="状态" class="filter-item-200" @change="crud.toQuery">
+        <el-option v-for="item in dict.orderStatus" :key="item.value" :label="item.label" :value="item.value" />
       </el-select>
       <rr-operation />
     </div>
     <!-- CRUD操作 -->
-    <crud-operation :hidden-columns="['address', 'completionTime', 'remark']" />
+    <crud-operation :hidden-columns="['address', 'paymentTime', 'completionTime', 'remark']" />
     <!-- 订单列表 -->
-    <el-table
-      ref="table"
-      v-loading="crud.loading"
-      :summary-method="getSummaries"
-      show-summary
-      :data="crud.data"
-      style="width: 100%"
-      @selection-change="crud.selectionChangeHandler"
-      @sort-change="crud.sortChangeHandler"
-    >
-      <el-table-column align="center" type="selection" width="55" />
+    <el-table ref="table" v-loading="crud.loading" :summary-method="getSummaries" show-summary :data="crud.data" style="width: 100%" @selection-change="crud.selectionChangeHandler" @sort-change="crud.sortChangeHandler">
       <el-table-column align="center" width="200" prop="orderNo" label="订单号" />
       <el-table-column align="center" prop="member" label="会员" />
       <el-table-column align="center" width="150" prop="address" label="地址">
@@ -60,14 +27,14 @@
       <el-table-column align="center" prop="costAmount" label="成本" />
       <el-table-column align="center" prop="totalAmount" label="总价" />
       <el-table-column align="center" prop="payAmount" label="实付款" />
-      <el-table-column align="center" label="利润" prop="profit">
-        <template slot-scope="{ row }">
-          <span>{{ calculator.Sub(row.payAmount, row.costAmount) }}</span>
-        </template>
-      </el-table-column>
       <el-table-column align="center" prop="couponAmount" label="抵用券">
         <template slot-scope="{ row }">
           <span>{{ row.vip ? row.couponAmount : 0 }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column align="center" label="利润" prop="profit">
+        <template slot-scope="{ row }">
+          <span>{{ calculator.Sub(row.payAmount, row.costAmount) }}</span>
         </template>
       </el-table-column>
       <el-table-column align="center" label="状态">
@@ -79,14 +46,9 @@
       <el-table-column align="center" width="180" prop="paymentTime" label="支付时间" />
       <el-table-column align="center" width="180" prop="completionTime" label="完成时间" />
       <el-table-column align="center" prop="remark" label="备注" />
-      <el-table-column
-        label="操作"
-        width="200"
-        align="center"
-        fixed="right"
-      >
+      <el-table-column label="操作" width="200" align="center" fixed="right">
         <template slot-scope="{ row }">
-          <router-link :to="'/order/detail/'+ row.id"><el-button size="mini">查看</el-button></router-link>
+          <router-link :to="'/oms/order/detail/'+ row.id"><el-button size="mini">查看</el-button></router-link>
           <el-button v-if="row.status != 'RETURN'" size="mini" type="danger" @click="handleReturn(row, $index)">退单</el-button>
         </template>
       </el-table-column>
@@ -109,7 +71,7 @@ export default {
   name: 'Order',
   components: { Pagination, rrOperation, crudOperation },
   cruds() {
-    return CRUD({ title: '订单', url: '/orders', optShow: { add: false, edit: false, del: false }})
+    return CRUD({ title: '订单', url: '/oms/order', optShow: { add: false, edit: false, del: false } })
   },
   mixins: [presenter(), header(), form({}), crud()],
   dicts: ['orderStatus'],

@@ -13,16 +13,10 @@
       </div>
       <div class="box-center">
         <div class="user-name text-center">{{ user.nickname }}
-          <el-upload
-            style="display: inline"
-            :action="uploadAvatar()"
-            :headers="uploadHeader()"
-            :on-success="handleLogoSuccess"
-            :show-file-list="false"
-            accept="image/*"
-          >
+          <el-upload style="display: inline" :action="uploadAvatar()" :headers="uploadHeader()" :on-success="handleLogoSuccess" :show-file-list="false" accept="image/*">
             <el-link type="primary" icon="el-icon-picture-outline" />
-          </el-upload></div>
+          </el-upload>
+        </div>
         <div class="user-role text-center text-muted">{{ user.role }}</div>
       </div>
     </div>

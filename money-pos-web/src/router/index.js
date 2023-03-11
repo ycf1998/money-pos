@@ -42,7 +42,7 @@ export const constantRoutes = [
       path: 'dashboard',
       name: 'Dashboard',
       component: () => import('@/views/dashboard/index'),
-      meta: { title: '首页', icon: 'dashboard', affix: true, noCache: true }
+      meta: { title: '首页', icon: 'dashboard', affix: true }
     }]
   },
   {
@@ -72,119 +72,10 @@ export const constantRoutes = [
         hidden: true
       }
     ]
-  },
-  {
-    path: '/order',
-    component: Layout,
-    children: [
-      {
-        path: 'detail/:id',
-        component: () => import('@/views/oms/order/detail'),
-        name: 'OrderDetail',
-        meta: { title: '订单明细' },
-        hidden: true
-      }
-    ]
   }
 ]
 
-export const asyncRoutes = [
-  {
-    path: '/system',
-    component: Layout,
-    meta: { title: '系统管理', icon: 'el-icon-setting' },
-    children: [
-      {
-        path: 'user',
-        name: 'User',
-        component: () => import('@/views/system/user/index'),
-        meta: { title: '用户管理', icon: 'zujian' }
-      },
-      {
-        path: 'role',
-        name: 'Role',
-        component: () => import('@/views/system/role/index'),
-        meta: { title: '角色管理', icon: 'zujian' }
-      },
-      {
-        path: 'permission',
-        name: 'Permission',
-        component: () => import('@/views/system/permission/index'),
-        meta: { title: '权限管理', icon: 'zujian' }
-      },
-      {
-        path: 'dict',
-        name: 'Dict',
-        component: () => import('@/views/system/dict/index'),
-        meta: { title: '字典管理', icon: 'zujian' }
-      },
-      {
-        path: 'tenant',
-        name: 'Tenant',
-        component: () => import('@/views/system/tenant/index'),
-        meta: { title: '租户管理', icon: 'zujian' }
-      }
-    ]
-  },
-  {
-    path: '/pos',
-    component: Layout,
-    meta: { title: '日常', icon: 'zujian' },
-    children: [
-      {
-        path: 'pos',
-        name: 'Pos',
-        component: () => import('@/views/pos/index'),
-        meta: { title: '收银台', icon: 'zujian' }
-      }
-    ]
-  },
-  {
-    path: '/ums',
-    component: Layout,
-    meta: { title: '会员管理', icon: 'zujian' },
-    children: [
-      {
-        path: 'member',
-        name: 'Member',
-        component: () => import('@/views/ums/member/index'),
-        meta: { title: '会员管理', icon: 'zujian' }
-      }
-    ]
-  },
-  {
-    path: '/gms',
-    component: Layout,
-    meta: { title: '商品管理', icon: 'zujian' },
-    children: [
-      {
-        path: 'goods',
-        name: 'Goods',
-        component: () => import('@/views/gms/goods/index'),
-        meta: { title: '商品', icon: 'zujian' }
-      },
-      {
-        path: 'brand',
-        name: 'Brand',
-        component: () => import('@/views/gms/brand/index'),
-        meta: { title: '品牌', icon: 'zujian' }
-      }
-    ]
-  },
-  {
-    path: '/oms',
-    component: Layout,
-    meta: { title: '订单管理', icon: 'zujian' },
-    children: [
-      {
-        path: 'order',
-        name: 'Order',
-        component: () => import('@/views/oms/order/index'),
-        meta: { title: '订单', icon: 'zujian' }
-      }
-    ]
-  }
-]
+export const asyncRoutes = []
 
 const createRouter = () => new Router({
   // mode: 'history', // require service support

@@ -7,7 +7,7 @@ export function add(data) {
   }))
   formData.append('pic', data.picFile)
   return request({
-    url: '/goods',
+    url: '/gms/goods',
     method: 'post',
     data: formData,
     headers: { 'Content-Type': 'multipart/mixed' }
@@ -21,7 +21,7 @@ export function edit(data) {
   }))
   formData.append('pic', data.picFile)
   return request({
-    url: '/goods',
+    url: '/gms/goods',
     method: 'put',
     data: formData,
     headers: { 'Content-Type': 'multipart/mixed' }
@@ -30,7 +30,7 @@ export function edit(data) {
 
 export function del(ids) {
   return request({
-    url: '/goods',
+    url: '/gms/goods',
     method: 'delete',
     data: ids
   })

@@ -10,12 +10,7 @@
       <el-input v-model.trim="user.email" />
     </el-form-item>
     <el-form-item label="描述">
-      <el-input
-        v-model.trim="user.remark"
-        type="textarea"
-        maxlength="250"
-        show-word-limit
-      />
+      <el-input v-model.trim="user.remark" type="textarea" maxlength="250" show-word-limit />
     </el-form-item>
     <el-form-item>
       <el-button type="primary" @click="submit">更新</el-button>

@@ -98,7 +98,7 @@ import java.util.TreeSet;
  * </tr>
  * </table>
  * <P>
- * The '*' character is used to specify all values. For example, &quot;*&quot; 
+ * The '*' character is used to specify total values. For example, &quot;*&quot;
  * in the minute field means &quot;every minute&quot;.
  * <P>
  * The '?' character is allowed for the day-of-month and day-of-week fields. It
@@ -167,7 +167,7 @@ import java.util.TreeSet;
  * <!--The 'C' character is allowed for the day-of-month and day-of-week fields.
  * This character is short-hand for "calendar". This means values are
  * calculated against the associated calendar, if any. If no calendar is
- * associated, then it is equivalent to having an all-inclusive calendar. A
+ * associated, then it is equivalent to having an total-inclusive calendar. A
  * value of "5C" in the day-of-month field means "the first day included by the
  * calendar on or after the 5th". A value of "1C" in the day-of-week field
  * means "the first day included by the calendar on or after Sunday".-->

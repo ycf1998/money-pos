@@ -1,10 +1,10 @@
 package com.money.service.impl;
 
+import com.money.dto.Home.HomeCountVO;
+import com.money.dto.OmsOrder.OrderCountVO;
 import com.money.service.GmsGoodsService;
 import com.money.service.HomeService;
 import com.money.service.OmsOrderService;
-import com.money.dto.home.HomeCountVO;
-import com.money.dto.order.OrderCountVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -38,7 +38,7 @@ public class HomeServiceImpl implements HomeService {
         homeCountVO.setYear(yearOrderCount);
         // 总计
         OrderCountVO allOrderCount = omsOrderService.countOrderAndSales(null, null);
-        homeCountVO.setAll(allOrderCount);
+        homeCountVO.setTotal(allOrderCount);
         // 库存价值
         homeCountVO.setInventoryValue(gmsGoodsService.getCurrentStockValue());
         return homeCountVO;

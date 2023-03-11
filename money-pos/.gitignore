@@ -16,5 +16,3 @@ log/
 **/target/
 !**/src/main/**
 !**/src/test/**
-
-/sql/1.0.0/money_pos_home.sql

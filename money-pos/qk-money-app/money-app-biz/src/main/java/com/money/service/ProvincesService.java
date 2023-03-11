@@ -1,8 +1,8 @@
 package com.money.service;
 
-import com.money.entity.Provinces;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.money.dto.SelectVO;
+import com.money.entity.Provinces;
 
 import java.util.List;
 
@@ -12,7 +12,7 @@ import java.util.List;
  * </p>
  *
  * @author money
- * @since 2022-04-03
+ * @since 2023-02-27
  */
 public interface ProvincesService extends IService<Provinces> {
 

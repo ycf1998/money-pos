@@ -1,5 +1,6 @@
 spring:
   config:
+    # 引入对象存储的配置
     import: oss.properties
   # mysql
   datasource:
@@ -46,6 +47,19 @@ spring:
     admin:
       client:
         url: http://192.168.169.128:9999
+# 定时任务XXL-JOB
+xxl:
+  job:
+    access-token: MONEY # XXL-JOB调度中心设置的token
+    admin:
+      address: http://127.0.0.1:8000/xxl-job-admin # XXL-JOB调度中心地址
+    executor:
+      app-name: ${spring.application.name} # 执行器名称
+      address:
+      ip: # 指定IP注册，不填自动获取
+      port: 0 # 指定端口注册，填0自动获取
+      log-path: log/xxl-job/jobhandler # 日志存储路径
+      log-retention-days: 30 # 日志存储天数
 # actuator
 management:
   endpoints:

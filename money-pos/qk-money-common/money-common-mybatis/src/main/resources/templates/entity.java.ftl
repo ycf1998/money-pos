@@ -120,7 +120,6 @@ public class ${entity} {
     }
     </#list>
 </#if>
-
 <#if entityColumnConstant>
     <#list table.fields as field>
     public static final String ${field.name?upper_case} = "${field.name}";

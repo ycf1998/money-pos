@@ -2,10 +2,10 @@ package com.money.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.money.mb.base.BaseEntity;
+import java.math.BigDecimal;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.math.BigDecimal;
 
 /**
  * <p>
@@ -13,81 +13,51 @@ import java.math.BigDecimal;
  * </p>
  *
  * @author money
- * @since 2022-04-10
+ * @since 2023-02-27
  */
 @Getter
 @Setter
 @TableName("oms_order_detail")
+@Schema(description = "订单明细表")
 public class OmsOrderDetail extends BaseEntity {
 
-    private static final long serialVersionUID = 1L;
-
-    /**
-     * 订单号
-     */
+    @Schema(description="订单号")
     private String orderNo;
 
-    /**
-     * 状态
-     */
+    @Schema(description="状态")
     private String status;
 
-    /**
-     * 商品id
-     */
+    @Schema(description="商品id")
     private Long goodsId;
 
-    /**
-     * 商品条码
-     */
+    @Schema(description="商品条码")
     private String goodsBarcode;
 
-    /**
-     * 商品名称
-     */
+    @Schema(description="商品名称")
     private String goodsName;
 
-    /**
-     * 实际单价
-     */
+    @Schema(description="实际单价")
     private BigDecimal goodsPrice;
 
-    /**
-     * 数量
-     */
+    @Schema(description="数量")
     private Integer quantity;
 
-    /**
-     * 售价
-     */
+    @Schema(description="售价")
     private BigDecimal salePrice;
 
-    /**
-     * 进价
-     */
+    @Schema(description="进价")
     private BigDecimal purchasePrice;
 
-    /**
-     * 会员价
-     */
+    @Schema(description="会员价")
     private BigDecimal vipPrice;
 
-    /**
-     * 抵用券
-     */
+    @Schema(description="抵用券")
     private BigDecimal coupon;
 
-    /**
-     * 退货数量
-     */
+    @Schema(description="退货数量")
     private Integer returnQuantity;
 
-    private Integer sort;
-
-    /**
-     * 租户id
-     */
+    @Schema(description="租户id")
     private Long tenantId;
-
 
 }

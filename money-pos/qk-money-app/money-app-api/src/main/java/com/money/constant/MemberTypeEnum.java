@@ -13,7 +13,12 @@ public enum MemberTypeEnum {
      */
     MEMBER,
     /**
-     * 白金VIP
+     * 黄金VIP
+     */
+    HJ_VIP,
+
+    /**
+     * 铂金会员
      */
     BJ_VIP,
     /**

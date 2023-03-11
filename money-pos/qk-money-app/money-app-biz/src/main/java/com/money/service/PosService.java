@@ -1,9 +1,9 @@
 package com.money.service;
 
-import com.money.dto.order.OrderVO;
-import com.money.dto.pos.PosGoodsVO;
-import com.money.dto.pos.PosMemberVO;
-import com.money.dto.pos.SettleAccountsDTO;
+import com.money.dto.OmsOrder.OmsOrderVO;
+import com.money.dto.Pos.PosGoodsVO;
+import com.money.dto.Pos.PosMemberVO;
+import com.money.dto.Pos.SettleAccountsDTO;
 
 import java.util.List;
 
@@ -16,7 +16,7 @@ import java.util.List;
 public interface PosService {
 
     /**
-     * 查询商品
+     * 列表商品
      *
      * @param barcode 条形码
      * @return {@link List}<{@link PosGoodsVO}>
@@ -35,7 +35,7 @@ public interface PosService {
      * 结算
      *
      * @param settleAccountsDTO 结算dto
-     * @return {@link Long}
+     * @return {@link OmsOrderVO}
      */
-    OrderVO settleAccounts(SettleAccountsDTO settleAccountsDTO);
+    OmsOrderVO settleAccounts(SettleAccountsDTO settleAccountsDTO);
 }

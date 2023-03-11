@@ -5,11 +5,11 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**
  * <p>
- *  Mapper 接口
+ * 商品表 Mapper 接口
  * </p>
  *
  * @author money
- * @since 2022-04-04
+ * @since 2023-02-27
  */
 public interface GmsGoodsMapper extends BaseMapper<GmsGoods> {
 

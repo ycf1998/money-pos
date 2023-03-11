@@ -2,9 +2,9 @@ package com.money.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.money.mb.base.BaseEntity;
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,111 +14,69 @@ import lombok.Setter;
  * </p>
  *
  * @author money
- * @since 2022-04-10
+ * @since 2023-02-27
  */
 @Getter
 @Setter
 @TableName("oms_order")
+@Schema(description = "订单表")
 public class OmsOrder extends BaseEntity {
 
-    private static final long serialVersionUID = 1L;
-
-    /**
-     * 订单号
-     */
+    @Schema(description="订单号")
     private String orderNo;
 
-    /**
-     * 会员名
-     */
+    @Schema(description="会员名")
     private String member;
 
-    /**
-     * 会员id
-     */
+    @Schema(description="会员id")
     private Long memberId;
 
-    /**
-     * vip单
-     */
+    @Schema(description="vip单")
     private Boolean vip;
 
-    /**
-     * 状态
-     */
+    @Schema(description="状态")
     private String status;
 
-    /**
-     * 联系方式
-     */
+    @Schema(description="联系方式")
     private String contact;
 
-    /**
-     * 省份
-     */
+    @Schema(description="省份")
     private String province;
 
-    /**
-     * 城市
-     */
+    @Schema(description="城市")
     private String city;
 
-    /**
-     * 地区
-     */
+    @Schema(description="地区")
     private String district;
 
-    /**
-     * 详细地址
-     */
+    @Schema(description="详细地址")
     private String address;
 
-    /**
-     * 总成本
-     */
+    @Schema(description="总成本")
     private BigDecimal costAmount;
 
-    /**
-     * 总价
-     */
+    @Schema(description="总价")
     private BigDecimal totalAmount;
 
-    /**
-     * 实付款
-     */
+    @Schema(description="实付款")
     private BigDecimal payAmount;
 
-    /**
-     * 抵用券
-     */
+    @Schema(description="抵用券")
     private BigDecimal couponAmount;
 
-    /**
-     * 最终销售金额
-     */
+    @Schema(description="最终销售金额")
     private BigDecimal finalSalesAmount;
 
-    /**
-     * 备注
-     */
+    @Schema(description="备注")
     private String remark;
 
-    /**
-     * 支付时间
-     */
+    @Schema(description="支付时间")
     private LocalDateTime paymentTime;
 
-    /**
-     * 完成时间
-     */
+    @Schema(description="完成时间")
     private LocalDateTime completionTime;
 
-    private Integer sort;
-
-    /**
-     * 租户id
-     */
+    @Schema(description="租户id")
     private Long tenantId;
-
 
 }

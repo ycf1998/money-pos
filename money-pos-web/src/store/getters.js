@@ -4,6 +4,7 @@ const getters = {
   device: state => state.app.device,
   visitedViews: state => state.tagsView.visitedViews,
   cachedViews: state => state.tagsView.cachedViews,
+  // 信息部分
   tenant: state => state.user.tenant,
   token: state => state.user.token,
   user: state => state.user.user,

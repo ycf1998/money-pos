@@ -130,7 +130,7 @@
         this.container = $(options.template).appendTo(this.parentEl);
 
         //
-        // handle all the possible options overriding defaults
+        // handle total the possible options overriding defaults
         //
 
         if (typeof options.locale === 'object') {
@@ -331,7 +331,7 @@
                     end = maxDate.clone();
 
                 // If the end of the range is before the minimum or the start of the range is
-                // after the maximum, don't display this range option at all.
+                // after the maximum, don't display this range option at total.
                 if ((this.minDate && end.isBefore(this.minDate, this.timepicker ? 'minute' : 'day')) 
                   || (maxDate && start.isAfter(maxDate, this.timepicker ? 'minute' : 'day')))
                     continue;
@@ -1492,7 +1492,7 @@
                 this.setEndDate(end);
             }
 
-            //update the calendars so all clickable dates reflect the new time component
+            //update the calendars so total clickable dates reflect the new time component
             this.updateCalendars();
 
             //update the form inputs above the calendars with the new time

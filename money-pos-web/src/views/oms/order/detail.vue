@@ -5,7 +5,7 @@
         <span>订单状态：<el-tag :type="statusTag(order.status)">{{ dict.label.orderStatus[order.status] }}</el-tag></span>
         <el-button style="float: right; padding: 3px 0" type="text" @click="print">打印单据</el-button>
       </div>
-      <el-descriptions class="margin-top" title="基本信息" :column="4" border>
+      <el-descriptions class="margin-top" title="基本信息" :column="isMobile ? 1: 4" border>
         <!-- <template slot="extra">
           <el-button type="primary" size="small">操作</el-button>
         </template> -->
@@ -55,14 +55,7 @@
 
       <div>
         <h4>商品信息</h4>
-        <el-table
-          row-key="id"
-          :data="orderDetail"
-          border
-          style="width: 100%"
-          :summary-method="getSummaries"
-          show-summary
-        >
+        <el-table row-key="id" :data="orderDetail" border style="width: 100%" :summary-method="getSummaries" show-summary>
           <el-table-column prop="goodsBarcode" label="条码" align="center" />
           <el-table-column prop="goodsName" label="名称" align="center" />
           <el-table-column prop="quantity" label="数量" align="center" />
@@ -75,7 +68,7 @@
               {{ calculator.Mul(row.quantity, row.goodsPrice) }}
             </template>
           </el-table-column>
-          <el-table-column label="操作" align="center" width="180" class-name="small-padding fixed-width" fixed="right">
+          <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
             <template slot-scope="{ row }">
               <el-button type="danger" size="mini" @click="handleReturnGoods(row)">退货</el-button>
               <span v-if="row.returnQuantity > 0" class="note"> ( 已退X{{ row.returnQuantity }} )</span>
@@ -109,12 +102,7 @@
 
       <div>
         <h4>操作记录</h4>
-        <el-table
-          row-key="id"
-          :data="log"
-          border
-          style="width: 100%"
-        >
+        <el-table row-key="id" :data="log" border style="width: 100%">
           <el-table-column prop="description" label="操作描述" align="center">
             <template slot-scope="{ row }">
               <span v-html="row.description" />
@@ -132,6 +120,7 @@
 </template>
 
 <script>
+import { isMobile } from '@/utils/index'
 import orderApi from '@/api/oms/order'
 import calculator from '@/utils/calculator'
 import printOrder from './printOrder.vue'
@@ -142,6 +131,7 @@ export default {
   dicts: ['orderStatus', 'memberType'],
   data() {
     return {
+      isMobile: isMobile(),
       calculator: calculator,
       printOrderInfo: {},
       order: {},

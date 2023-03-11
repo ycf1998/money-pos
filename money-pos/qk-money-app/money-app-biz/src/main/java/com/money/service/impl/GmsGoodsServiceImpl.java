@@ -6,10 +6,13 @@ import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.extension.conditions.query.LambdaQueryChainWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.money.common.exception.BaseException;
 import com.money.common.vo.PageVO;
 import com.money.constant.GoodsStatus;
+import com.money.dto.GmsGoods.GmsGoodsDTO;
+import com.money.dto.GmsGoods.GmsGoodsQueryDTO;
+import com.money.dto.GmsGoods.GmsGoodsVO;
 import com.money.entity.GmsGoods;
-import com.money.exception.GoodsRelatedException;
 import com.money.mapper.GmsGoodsMapper;
 import com.money.oss.OSSDelegate;
 import com.money.oss.core.FileNameStrategy;
@@ -20,9 +23,6 @@ import com.money.service.GmsGoodsCategoryService;
 import com.money.service.GmsGoodsService;
 import com.money.util.PageUtil;
 import com.money.util.VOUtil;
-import com.money.dto.goods.GoodsDTO;
-import com.money.dto.goods.GoodsQueryDTO;
-import com.money.dto.goods.GoodsVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,11 +35,11 @@ import java.util.stream.Collectors;
 
 /**
  * <p>
- * 服务实现类
+ * 商品表 服务实现类
  * </p>
  *
  * @author money
- * @since 2022-04-04
+ * @since 2023-02-27
  */
 @Service
 @RequiredArgsConstructor
@@ -48,9 +48,8 @@ public class GmsGoodsServiceImpl extends ServiceImpl<GmsGoodsMapper, GmsGoods> i
     private final OSSDelegate<LocalOSS> localOSS;
     private final GmsBrandService gmsBrandService;
     private final GmsGoodsCategoryService gmsGoodsCategoryService;
-
     @Override
-    public PageVO<GoodsVO> list(GoodsQueryDTO queryDTO) {
+    public PageVO<GmsGoodsVO> list(GmsGoodsQueryDTO queryDTO) {
         LambdaQueryChainWrapper<GmsGoods> queryChainWrapper = this.lambdaQuery();
         if (queryDTO.getCategoryId() != null) {
             List<Long> categoryIds = gmsGoodsCategoryService.getAllSubId(queryDTO.getCategoryId());
@@ -62,58 +61,59 @@ public class GmsGoodsServiceImpl extends ServiceImpl<GmsGoodsMapper, GmsGoods> i
                 .like(StrUtil.isNotBlank(queryDTO.getBarcode()), GmsGoods::getBarcode, queryDTO.getBarcode())
                 .like(StrUtil.isNotBlank(queryDTO.getName()), GmsGoods::getName, queryDTO.getName())
                 .orderByDesc(StrUtil.isBlank(queryDTO.getSort()), GmsGoods::getUpdateTime)
-                .last(StrUtil.isNotBlank(queryDTO.getSort()), queryDTO.getOrderBySql()).page(PageUtil.toPage(queryDTO, GmsGoods.class));
-        return VOUtil.toPageVO(page, GoodsVO.class);
+                .last(StrUtil.isNotBlank(queryDTO.getSort()), queryDTO.getOrderBySql())
+                .page(PageUtil.toPage(queryDTO, GmsGoods.class));
+        return VOUtil.toPageVO(page, GmsGoodsVO.class);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Long add(GoodsDTO goodsDTO, MultipartFile pic) {
-        boolean exists = this.lambdaQuery().eq(GmsGoods::getBarcode, goodsDTO.getBarcode()).exists();
+    public void add(GmsGoodsDTO addDTO, MultipartFile pic) {
+        boolean exists = this.lambdaQuery().eq(GmsGoods::getBarcode, addDTO.getBarcode()).exists();
         if (exists) {
-            throw new GoodsRelatedException("条码已存在");
+            throw new BaseException("条码已存在");
         }
         GmsGoods gmsGoods = new GmsGoods();
-        BeanUtil.copyProperties(goodsDTO, gmsGoods);
+        BeanUtil.copyProperties(addDTO, gmsGoods);
         // 上传图片
         if (pic != null) {
             String picUrl = localOSS.upload(pic, FolderPath.builder().cd("goods").build(), FileNameStrategy.TIMESTAMP);
             gmsGoods.setPic(picUrl);
         }
-        this.save(gmsGoods);
         // 更新商品数量
         gmsBrandService.updateGoodsCount(gmsGoods.getBrandId(), 1);
         gmsGoodsCategoryService.updateGoodsCount(gmsGoods.getCategoryId(), 1);
-        return gmsGoods.getId();
+        this.save(gmsGoods);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void update(GoodsDTO goodsDTO, MultipartFile pic) {
-        boolean exists = this.lambdaQuery().ne(GmsGoods::getId, goodsDTO.getId()).eq(GmsGoods::getBarcode, goodsDTO.getBarcode()).exists();
+    public void update(GmsGoodsDTO updateDTO, MultipartFile pic) {
+        boolean exists = this.lambdaQuery().ne(GmsGoods::getId, updateDTO.getId()).eq(GmsGoods::getBarcode, updateDTO.getBarcode()).exists();
         if (exists) {
-            throw new GoodsRelatedException("条码已存在");
+            throw new BaseException("条码已存在");
         }
-        GmsGoods gmsGoods = this.getById(goodsDTO.getId());
+        GmsGoods gmsGoods = this.getById(updateDTO.getId());
         // 更新商品数量
-        if (!gmsGoods.getBrandId().equals(goodsDTO.getBrandId())) {
-            gmsBrandService.updateGoodsCount(goodsDTO.getBrandId(), 1);
+        if (!gmsGoods.getBrandId().equals(updateDTO.getBrandId())) {
+            gmsBrandService.updateGoodsCount(updateDTO.getBrandId(), 1);
             gmsBrandService.updateGoodsCount(gmsGoods.getBrandId(), -1);
         }
-        if (!gmsGoods.getCategoryId().equals(goodsDTO.getCategoryId())) {
-            gmsGoodsCategoryService.updateGoodsCount(goodsDTO.getCategoryId(), 1);
+        if (!gmsGoods.getCategoryId().equals(updateDTO.getCategoryId())) {
+            gmsGoodsCategoryService.updateGoodsCount(updateDTO.getCategoryId(), 1);
             gmsGoodsCategoryService.updateGoodsCount(gmsGoods.getCategoryId(), -1);
         }
-        BeanUtil.copyProperties(goodsDTO, gmsGoods);
+        BeanUtil.copyProperties(updateDTO, gmsGoods);
         // 调整状态
-        if (GoodsStatus.SOLD_OUT.name().equals(gmsGoods.getStatus()) && goodsDTO.getStock() > 0) {
+        if (GoodsStatus.SOLD_OUT.name().equals(gmsGoods.getStatus()) && updateDTO.getStock() > 0) {
             gmsGoods.setStatus(GoodsStatus.SALE.name());
         }
-        if (GoodsStatus.SALE.name().equals(gmsGoods.getStatus()) && goodsDTO.getStock() <= 0) {
+        if (GoodsStatus.SALE.name().equals(gmsGoods.getStatus()) && updateDTO.getStock() <= 0) {
             gmsGoods.setStatus(GoodsStatus.SOLD_OUT.name());
         }
         // 上传图片
         if (pic != null) {
+            localOSS.delete(gmsGoods.getPic());
             String picUrl = localOSS.upload(pic, FolderPath.builder().cd("goods").build(), FileNameStrategy.TIMESTAMP);
             gmsGoods.setPic(picUrl);
         }
@@ -121,52 +121,43 @@ public class GmsGoodsServiceImpl extends ServiceImpl<GmsGoodsMapper, GmsGoods> i
     }
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
     public void delete(Set<Long> ids) {
-        // 更新商品数量
-        this.listByIds(ids).forEach(gmsGoods -> {
-            gmsBrandService.updateGoodsCount(gmsGoods.getBrandId(), -1);
-        });
+        List<GmsGoods> gmsGoodsList = this.listByIds(ids);
         this.removeByIds(ids);
+        gmsGoodsList.forEach(gmsGoods -> {
+            if (StrUtil.isNotBlank(gmsGoods.getPic())) {
+                localOSS.delete(gmsGoods.getPic());
+            }
+        });
     }
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
-    public void sell(Long goodsId, Integer quantity) {
-        if (quantity > 0) {
-            this.lambdaUpdate().setSql("stock = stock - " + quantity + ", sales = sales + " + quantity)
-                    .eq(GmsGoods::getId, goodsId)
-                    .update();
-            this.lambdaUpdate().set(GmsGoods::getStatus, GoodsStatus.SOLD_OUT)
-                    .eq(GmsGoods::getStatus, GoodsStatus.SALE)
-                    .le(GmsGoods::getStock, 0).update();
+    public void sell(Long goodsId, Integer qty) {
+        if (qty > 0) {
+            GmsGoods byId = this.getById(goodsId);
+            byId.setStock(byId.getStock() + qty);
+            byId.setSales(byId.getSales() + 1);
+            byId.setStatus(byId.getStock() > 0 ? GoodsStatus.SALE.name() : GoodsStatus.SOLD_OUT.name());
+            this.updateById(byId);
         }
     }
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
-    public void updateStock(Long id, Integer quantity) {
-        if (quantity != 0) {
-            this.lambdaUpdate().setSql("stock = stock + " + quantity)
-                    .eq(GmsGoods::getId, id).update();
-            this.lambdaUpdate().set(GmsGoods::getStatus, GoodsStatus.SOLD_OUT)
-                    .eq(GmsGoods::getStatus, GoodsStatus.SALE)
-                    .le(GmsGoods::getStock, 0).update();
-            this.lambdaUpdate().set(GmsGoods::getStatus, GoodsStatus.SALE)
-                    .eq(GmsGoods::getStatus, GoodsStatus.SOLD_OUT)
-                    .gt(GmsGoods::getStock, 0).update();
+    public void updateStock(Long goodsId, Integer qty) {
+        if (qty != 0) {
+            GmsGoods byId = this.getById(goodsId);
+            byId.setStock(byId.getStock() + qty);
+            byId.setSales(byId.getSales() + 1);
+            byId.setStatus(byId.getStock() > 0 ? GoodsStatus.SALE.name() : GoodsStatus.SOLD_OUT.name());
+            this.updateById(byId);
         }
     }
 
     @Override
     public BigDecimal getCurrentStockValue() {
         List<GmsGoods> gmsGoods = this.lambdaQuery().select(GmsGoods::getStock, GmsGoods::getPurchasePrice).gt(GmsGoods::getStock, 0).list();
-        List<BigDecimal> sumList = gmsGoods.stream()
-                .map(gmsGood -> gmsGood.getPurchasePrice().multiply(new BigDecimal(gmsGood.getStock()))).collect(Collectors.toList());
-        BigDecimal sum = BigDecimal.ZERO;
-        for (BigDecimal var : sumList) {
-            sum = sum.add(var);
-        }
-        return sum;
+        List<BigDecimal> sumList = gmsGoods.stream().map(gmsGood -> gmsGood.getPurchasePrice().multiply(new BigDecimal(gmsGood.getStock()))).collect(Collectors.toList());
+        return sumList.stream().reduce(BigDecimal.ZERO, BigDecimal::add);
     }
+
 }

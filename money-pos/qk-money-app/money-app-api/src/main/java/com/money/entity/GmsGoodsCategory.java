@@ -2,7 +2,7 @@ package com.money.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.money.mb.base.BaseEntity;
-import java.io.Serializable;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,41 +12,27 @@ import lombok.Setter;
  * </p>
  *
  * @author money
- * @since 2022-04-04
+ * @since 2023-02-27
  */
 @Getter
 @Setter
 @TableName("gms_goods_category")
+@Schema(description = "商品分类表")
 public class GmsGoodsCategory extends BaseEntity {
 
-    private static final long serialVersionUID = 1L;
-
-    /**
-     * 父分类id
-     */
+    @Schema(description="父分类id")
     private Long pid;
 
-    /**
-     * 分类图标
-     */
+    @Schema(description="分类图标")
     private String icon;
 
-    /**
-     * 分类名称
-     */
+    @Schema(description="分类名称")
     private String name;
 
-    /**
-     * 商品数量
-     */
+    @Schema(description="商品数量")
     private Integer goodsCount;
 
-    private Integer sort;
-
-    /**
-     * 租户id
-     */
+    @Schema(description="租户id")
     private Long tenantId;
-
 
 }

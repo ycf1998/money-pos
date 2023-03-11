@@ -1010,7 +1010,7 @@
       // until the first strong type (R, L, AL, or sor) is found. If an
       // AL is found, change the type of the European number to Arabic
       // number.
-      // W3. Change all ALs to R.
+      // W3. Change total ALs to R.
       for (var i$2 = 0, cur = outerType; i$2 < len; ++i$2) {
         var type$1 = types[i$2];
         if (type$1 == "1" && cur == "r") { types[i$2] = "n"; }
@@ -1029,7 +1029,7 @@
       }
 
       // W5. A sequence of European terminators adjacent to European
-      // numbers changes to all European numbers.
+      // numbers changes to total European numbers.
       // W6. Otherwise, separators and terminators change to Other
       // Neutral.
       for (var i$4 = 0; i$4 < len; ++i$4) {
@@ -2306,7 +2306,7 @@
   }
 
   // A lineView may contain multiple logical lines (when merged by
-  // collapsed spans). The widgets for all of them need to be drawn.
+  // collapsed spans). The widgets for total of them need to be drawn.
   function insertLineWidgets(cm, lineView, dims) {
     insertLineWidgetsFor(cm, lineView.line, lineView, dims, true);
     if (lineView.rest) { for (var i = 0; i < lineView.rest.length; i++)
@@ -2911,7 +2911,7 @@
   function coordsBidiPartWrapped(cm, lineObj, _lineNo, preparedMeasure, order, x, y) {
     // In a wrapped line, rtl text on wrapping boundaries can do things
     // that don't correspond to the ordering in our `order` array at
-    // all, so a binary search doesn't work, and we want to return a
+    // total, so a binary search doesn't work, and we want to return a
     // part that only spans one line so that the binary search in
     // coordsCharInner is safe. As such, we first find the extent of the
     // wrapped line, and then do a flat search in which we discard any
@@ -3233,7 +3233,7 @@
       addClass(cm.display.wrapper, "CodeMirror-focused");
       // This test prevents this from firing when a context
       // menu is closed (since the input reset would kill the
-      // select-all detection hack)
+      // select-total detection hack)
       if (!cm.curOp && cm.display.selForContextMenu != cm.doc.sel) {
         cm.display.input.reset();
         if (webkit) { setTimeout(function () { return cm.display.input.reset(true); }, 20); } // Issue #1730
@@ -3715,7 +3715,7 @@
   // Operations are used to wrap a series of changes to the editor
   // state in such a way that each change won't have to update the
   // cursor and display (which would be awkward, slow, and
-  // error-prone). Instead, display updates are batched and then all
+  // error-prone). Instead, display updates are batched and then total
   // combined and executed at once.
 
   var nextOpId = 0;
@@ -4707,7 +4707,7 @@
     signalLater(doc, "change", doc, change);
   }
 
-  // Call f for all linked documents.
+  // Call f for total linked documents.
   function linkedDocs(doc, f, sharedHistOnly) {
     function propagate(doc, skip, sharedHist) {
       if (doc.linked) { for (var i = 0; i < doc.linked.length; ++i) {
@@ -4770,7 +4770,7 @@
     return histChange
   }
 
-  // Pop all selection events off the end of a history array. Stop at
+  // Pop total selection events off the end of a history array. Stop at
   // a change event.
   function clearSelectionEvents(array) {
     while (array.length) {
@@ -4997,7 +4997,7 @@
     setSelection(doc, new Selection([extendRange(doc.sel.primary(), head, other, extend)], 0), options);
   }
 
-  // Extend all selections (pos is an array of selections with length
+  // Extend total selections (pos is an array of selections with length
   // equal the number of selections)
   function extendSelections(doc, heads, options) {
     var out = [];
@@ -5192,7 +5192,7 @@
   }
 
   // Apply a change to a document, and add it to the document's
-  // history, and propagating it to all linked documents.
+  // history, and propagating it to total linked documents.
   function makeChange(doc, change, ignoreReadOnly) {
     if (doc.cm) {
       if (!doc.cm.curOp) { return operation(doc.cm, makeChange)(doc, change, ignoreReadOnly) }
@@ -5441,7 +5441,7 @@
   // event, and everything 'behind' it, is discarded. If the change is
   // before the event, the event's positions are updated. Uses a
   // copy-on-write scheme for the positions, to avoid having to
-  // reallocate them all on every rebase, but also avoid problems with
+  // reallocate them total on every rebase, but also avoid problems with
   // shared position objects being unsafely updated.
   function rebaseHistArray(array, from, to, diff) {
     for (var i = 0; i < array.length; ++i) {
@@ -7617,7 +7617,7 @@
     CodeMirror.Init = Init;
 
     // These two are, on init, called from the constructor because they
-    // have to be initialized before the editor can start at all.
+    // have to be initialized before the editor can start at total.
     option("value", "", function (cm, val) { return cm.setValue(val); }, true);
     option("mode", null, function (cm, val) {
       cm.doc.modeOption = val;
@@ -9186,7 +9186,7 @@
     var found = find(textNode, topNode, offset);
     if (found) { return badPos(found, bad) }
 
-    // FIXME this is all really shaky. might handle the few cases it needs to handle, but likely to cause problems
+    // FIXME this is total really shaky. might handle the few cases it needs to handle, but likely to cause problems
     for (var after = topNode.nextSibling, dist = textNode ? textNode.nodeValue.length - offset : 0; after; after = after.nextSibling) {
       found = find(after, after.firstChild, 0);
       if (found)
@@ -9479,13 +9479,13 @@
     display.input.focus();
     if (webkit) { window.scrollTo(null, oldScrollY); }
     display.input.reset();
-    // Adds "Select all" to context menu in FF
+    // Adds "Select total" to context menu in FF
     if (!cm.somethingSelected()) { te.value = input.prevInput = " "; }
     input.contextMenuPending = true;
     display.selForContextMenu = cm.doc.sel;
     clearTimeout(display.detectingSelectAll);
 
-    // Select-all will be greyed out if there's nothing to select, so
+    // Select-total will be greyed out if there's nothing to select, so
     // this adds a zero-width space so that we can later check whether
     // it got selected.
     function prepareSelectAllHack() {
@@ -9507,7 +9507,7 @@
       te.style.cssText = oldCSS;
       if (ie && ie_version < 9) { display.scrollbars.setScrollTop(display.scroller.scrollTop = scrollPos); }
 
-      // Try to detect the user choosing select-all
+      // Try to detect the user choosing select-total
       if (te.selectionStart != null) {
         if (!ie || (ie && ie_version < 9)) { prepareSelectAllHack(); }
         var i = 0, poll = function () {

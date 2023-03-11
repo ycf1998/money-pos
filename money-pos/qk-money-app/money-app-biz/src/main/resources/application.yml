@@ -5,7 +5,7 @@ server:
 
 spring:
   application:
-    name: qk-money
+    name: money-pos
   profiles:
     active: dev # 默认开发环境
     include: [ money ]
@@ -14,7 +14,7 @@ spring:
 #  configuration:
 #    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
-# swagger配置
+# swagger配置，更多配置可参考官网https://springdoc.org/#properties
 swagger:
   scan-package: com.money
   title: ${spring.application.name}

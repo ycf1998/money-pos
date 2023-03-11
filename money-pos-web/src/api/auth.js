@@ -1,5 +1,10 @@
 import request from '@/api/request'
 
+/**
+ * 登录
+ * @param {*} data
+ * @returns
+ */
 export function login(data) {
   return request({
     url: '/auth/login',
@@ -8,6 +13,10 @@ export function login(data) {
   })
 }
 
+/**
+ * 获取个人信息
+ * @returns
+ */
 export function getInfo() {
   return request({
     url: '/auth/own',
@@ -15,6 +24,10 @@ export function getInfo() {
   })
 }
 
+/**
+ * 登出
+ * @returns
+ */
 export function logout() {
   return request({
     url: '/auth/logout',

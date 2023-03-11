@@ -1,18 +1,19 @@
 package com.money.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.money.dto.goodscategory.GoodsCategoryDTO;
+import com.money.common.exception.BaseException;
+import com.money.dto.GmsGoodsCategory.GmsGoodsCategoryDTO;
+import com.money.dto.SelectVO;
+import com.money.dto.TreeNodeVO;
 import com.money.entity.GmsGoodsCategory;
-import com.money.exception.GoodsRelatedException;
 import com.money.mapper.GmsGoodsCategoryMapper;
 import com.money.oss.OSSDelegate;
 import com.money.oss.core.FileNameStrategy;
 import com.money.oss.core.FolderPath;
 import com.money.oss.local.LocalOSS;
 import com.money.service.GmsGoodsCategoryService;
-import com.money.dto.SelectVO;
-import com.money.dto.TreeNodeVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -28,13 +29,56 @@ import java.util.stream.Collectors;
  * </p>
  *
  * @author money
- * @since 2022-04-04
+ * @since 2023-02-27
  */
 @Service
 @RequiredArgsConstructor
 public class GmsGoodsCategoryServiceImpl extends ServiceImpl<GmsGoodsCategoryMapper, GmsGoodsCategory> implements GmsGoodsCategoryService {
 
     private final OSSDelegate<LocalOSS> localOSS;
+
+    @Override
+    public void add(GmsGoodsCategoryDTO addDTO, MultipartFile icon) {
+        boolean exists = this.lambdaQuery().eq(GmsGoodsCategory::getName, addDTO.getName()).exists();
+        if (exists) {
+            throw new BaseException("商品类别已存在");
+        }
+        GmsGoodsCategory gmsGoodsCategory = new GmsGoodsCategory();
+        BeanUtil.copyProperties(addDTO, gmsGoodsCategory);
+        // 上传icon
+        if (icon != null) {
+            String iconUrl = localOSS.upload(icon, FolderPath.builder().cd("goods").cd("category").build(), FileNameStrategy.TIMESTAMP);
+            gmsGoodsCategory.setIcon(iconUrl);
+        }
+        this.save(gmsGoodsCategory);
+    }
+
+    @Override
+    public void update(GmsGoodsCategoryDTO updateDTO, MultipartFile icon) {
+        boolean exists = this.lambdaQuery().ne(GmsGoodsCategory::getId, updateDTO.getId()).eq(GmsGoodsCategory::getName, updateDTO.getName()).exists();
+        if (exists) {
+            throw new BaseException("商品类别已存在");
+        }
+        GmsGoodsCategory gmsGoodsCategory = this.getById(updateDTO.getId());
+        BeanUtil.copyProperties(updateDTO, gmsGoodsCategory);
+        // 上传icon
+        if (icon != null) {
+            localOSS.delete(gmsGoodsCategory.getIcon());
+            String iconUrl = localOSS.upload(icon, FolderPath.builder().cd("goods").cd("category").build(), FileNameStrategy.TIMESTAMP);
+            gmsGoodsCategory.setIcon(iconUrl);
+        }
+        this.updateById(gmsGoodsCategory);
+    }
+    @Override
+    public void delete(Set<Long> ids) {
+        List<GmsGoodsCategory> gmsGoodsCategoryList = this.listByIds(ids);
+        this.removeByIds(ids);
+        gmsGoodsCategoryList.forEach(gmsGoodsCategory -> {
+            if (StrUtil.isNotBlank(gmsGoodsCategory.getIcon())) {
+                localOSS.delete(gmsGoodsCategory.getIcon());
+            }
+        });
+    }
 
     @Override
     public List<SelectVO> getGoodsCategorySelect() {
@@ -90,45 +134,8 @@ public class GmsGoodsCategoryServiceImpl extends ServiceImpl<GmsGoodsCategoryMap
     }
 
     @Override
-    public Long add(GoodsCategoryDTO goodsCategoryDTO, MultipartFile icon) {
-        boolean exists = this.lambdaQuery().eq(GmsGoodsCategory::getName, goodsCategoryDTO.getName()).exists();
-        if (exists) {
-            throw new GoodsRelatedException("商品类别已存在");
-        }
-        GmsGoodsCategory gmsGoodsCategory = new GmsGoodsCategory();
-        BeanUtil.copyProperties(goodsCategoryDTO, gmsGoodsCategory);
-        // 上传logo
-        if (icon != null) {
-            String iconUrl = localOSS.upload(icon, FolderPath.builder().cd("goods").cd("category").build(), FileNameStrategy.TIMESTAMP);
-            gmsGoodsCategory.setIcon(iconUrl);
-        }
-        this.save(gmsGoodsCategory);
-        return gmsGoodsCategory.getId();
-    }
-
-    @Override
-    public void update(GoodsCategoryDTO goodsCategoryDTO, MultipartFile icon) {
-        boolean exists = this.lambdaQuery().ne(GmsGoodsCategory::getId, goodsCategoryDTO.getId()).eq(GmsGoodsCategory::getName, goodsCategoryDTO.getName()).exists();
-        if (exists) {
-            throw new GoodsRelatedException("商品类别已存在");
-        }
-        GmsGoodsCategory gmsGoodsCategory = new GmsGoodsCategory();
-        BeanUtil.copyProperties(goodsCategoryDTO, gmsGoodsCategory);
-        // 上传logo
-        if (icon != null) {
-            String iconUrl = localOSS.upload(icon, FolderPath.builder().cd("goods").cd("category").build(), FileNameStrategy.TIMESTAMP);
-            gmsGoodsCategory.setIcon(iconUrl);
-        }
-        this.updateById(gmsGoodsCategory);
-    }
-
-    @Override
-    public void delete(Set<Long> ids) {
-        this.removeByIds(ids);
-    }
-
-    @Override
     public void updateGoodsCount(Long categoryId, int step) {
         this.lambdaUpdate().setSql("goods_count = goods_count + " + step).eq(GmsGoodsCategory::getId, categoryId).update();
     }
+
 }

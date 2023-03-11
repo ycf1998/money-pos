@@ -9,7 +9,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * </p>
  *
  * @author money
- * @since 2022-04-03
+ * @since 2023-02-27
  */
 public interface ProvincesMapper extends BaseMapper<Provinces> {
 

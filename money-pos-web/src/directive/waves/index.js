@@ -1,12 +1,16 @@
+/**
+ * 点击容器出现水波纹效果
+ * */
 import waves from './waves'
 
-const install = function(Vue) {
+const install = (Vue) => {
   Vue.directive('waves', waves)
 }
 
 if (window.Vue) {
   window.waves = waves
-  Vue.use(install); // eslint-disable-line
+  // eslint-disable-next-line no-undef
+  Vue.use(install)
 }
 
 waves.install = install

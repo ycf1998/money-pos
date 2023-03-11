@@ -1,5 +1,5 @@
-import { initData, download } from '@/api/data'
-import { parseTime, downloadFile } from '@/utils/index'
+import commonApi from '@/api/common'
+import { parseTime } from '@/utils/index'
 import Vue from 'vue'
 
 /**
@@ -30,24 +30,23 @@ function CRUD(options) {
     // Form 表单
     form: {},
     // 重置表单
-    defaultForm: () => {},
-    // 排序规则，默认 id 降序， 支持多字段排序 ['id,desc', 'createTime,asc']
+    defaultForm: () => { },
+    // 排序规则, 支持多字段排序 ['id,desc', 'createTime,asc']
     sort: [],
-    // 等待时间
+    // 数据显示等待时间(ms)
     time: 50,
     // CRUD Method
     crudMethod: {
-      add: (form) => {},
-      del: (id) => {},
-      edit: (form) => {},
-      get: (id) => {}
+      add: (form) => { },
+      del: (id) => { },
+      edit: (form) => { },
+      get: (id) => { }
     },
     // 主页操作栏显示哪些按钮
     optShow: {
       add: true,
       edit: true,
       del: true,
-      download: false,
       reset: true
     },
     // 自定义一些扩展属性
@@ -55,14 +54,12 @@ function CRUD(options) {
     // 进入页面就查询
     queryOnPresenterCreated: true,
     // 是否分页
-    isPage: true,
-    // 调试开关
-    debug: false
+    isPage: true
   }
   options = mergeOptions(defaultOptions, options)
   const data = {
     ...options,
-    // 记录数据状态
+    // 数据状态
     dataStatus: {},
     status: {
       add: CRUD.STATUS.NORMAL,
@@ -137,7 +134,7 @@ function CRUD(options) {
       return new Promise((resolve, reject) => {
         crud.loading = true
         // 请求数据
-        initData(crud.url, crud.getQueryParams()).then(response => {
+        commonApi.list(crud.url, crud.getQueryParams()).then(response => {
           const { data } = response
           const table = crud.getTable()
           if (table && table.lazy) { // 懒加载子节点数据，清掉已加载的数据
@@ -337,21 +334,9 @@ function CRUD(options) {
       })
     },
     /**
-     * 通用导出
-     */
-    doExport() {
-      crud.downloadLoading = true
-      download(crud.url + '/download', crud.getQueryParams()).then(result => {
-        downloadFile(result, crud.title + '数据', 'xlsx')
-        crud.downloadLoading = false
-      }).catch(() => {
-        crud.downloadLoading = false
-      })
-    },
-    /**
      * 获取查询参数
      */
-    getQueryParams: function() {
+    getQueryParams() {
       // 清除参数无值的情况
       Object.keys(crud.query).length !== 0 && Object.keys(crud.query).forEach(item => {
         if (crud.query[item] === null || crud.query[item] === '') crud.query[item] = undefined
@@ -389,9 +374,12 @@ function CRUD(options) {
     // 排序改变
     sortChangeHandler(orderBy) {
       let { order } = orderBy
-      if (order === null) crud.sort = []
-      order = (order === 'descending' ? 'desc' : 'asc')
-      crud.sort = [`${orderBy.prop},${order}`]
+      if (order === null) {
+        crud.sort = []
+      } else {
+        order = (order === 'descending' ? 'desc' : 'asc')
+        crud.sort = [`${orderBy.prop},${order}`]
+      }
       crud.refresh()
     },
     // 预防删除第二页最后一条数据时，或者多选删除第二页的数据时，页码错误导致请求无数据

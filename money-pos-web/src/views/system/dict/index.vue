@@ -14,24 +14,11 @@
           <!-- CRUD操作 -->
           <crud-operation :permission="permission" />
           <!-- 字典管理 -->
-          <el-table
-            ref="table"
-            v-loading="crud.loading"
-            :data="crud.data"
-            style="width: 100%;"
-            highlight-current-row
-            @selection-change="crud.selectionChangeHandler"
-            @current-change="handleCurrentChange"
-          >
+          <el-table ref="table" v-loading="crud.loading" :data="crud.data" style="width: 100%;" highlight-current-row @selection-change="crud.selectionChangeHandler" @current-change="handleCurrentChange">
             <el-table-column type="selection" width="55" />
             <el-table-column :show-overflow-tooltip="true" prop="name" label="字典名" />
             <el-table-column :show-overflow-tooltip="true" prop="description" label="字典描述" />
-            <el-table-column
-              label="操作"
-              width="115"
-              align="center"
-              fixed="right"
-            >
+            <el-table-column label="操作" width="115" align="center" fixed="right">
               <template slot-scope="scope">
                 <ud-operation :data="scope.row" :permission="permission" />
               </template>
@@ -48,15 +35,7 @@
             <el-tooltip class="item" effect="dark" content="点击字典显示字典详情" placement="top">
               <span class="role-span">字典详情</span>
             </el-tooltip>
-            <el-button
-              v-if="showButton"
-              v-permission="['dict:edit']"
-              icon="el-icon-plus"
-              size="mini"
-              style="float: right; padding: 6px 9px"
-              type="primary"
-              @click="$refs.dictDetail && $refs.dictDetail.crud.toAdd()"
-            >新增</el-button>
+            <el-button v-if="showButton" v-permission="['dict:edit']" icon="el-icon-plus" size="mini" style="float: right; padding: 6px 9px" type="primary" @click="$refs.dictDetail && $refs.dictDetail.crud.toAdd()">新增</el-button>
           </div>
           <dict-detail ref="dictDetail" />
         </el-card>
@@ -69,12 +48,7 @@
           <el-input v-model="form.name" @keydown.native="keydown($event)" />
         </el-form-item>
         <el-form-item label="字典描述">
-          <el-input
-            v-model.trim="form.description"
-            type="textarea"
-            maxlength="250"
-            show-word-limit
-          />
+          <el-input v-model.trim="form.description" type="textarea" maxlength="250" show-word-limit />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -98,7 +72,7 @@ export default {
   name: 'Dict',
   components: { Pagination, rrOperation, udOperation, crudOperation, dictDetail },
   cruds() {
-    return CRUD({ title: '字典', url: '/dict', crudMethod: { ...crudDict }})
+    return CRUD({ title: '字典', url: '/dict', crudMethod: { ...crudDict } })
   },
   mixins: [presenter(), header(), form({
     // 表单初始值
@@ -149,5 +123,4 @@ export default {
 </script>
 
 <style>
-
 </style>

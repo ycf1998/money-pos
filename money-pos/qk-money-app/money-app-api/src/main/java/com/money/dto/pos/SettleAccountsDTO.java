@@ -1,6 +1,6 @@
-package com.money.dto.pos;
+package com.money.dto.Pos;
 
-import com.money.dto.order.OrderDetailDTO;
+import com.money.dto.OmsOrderDetail.OmsOrderDetailDTO;
 import lombok.Data;
 
 import javax.validation.constraints.NotEmpty;
@@ -24,5 +24,5 @@ public class SettleAccountsDTO {
      * 订单详情
      */
     @NotEmpty
-    private List<OrderDetailDTO> orderDetail;
+    private List<OmsOrderDetailDTO> orderDetail;
 }

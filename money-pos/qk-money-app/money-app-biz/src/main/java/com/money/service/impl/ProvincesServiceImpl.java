@@ -1,10 +1,11 @@
 package com.money.service.impl;
 
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.money.dto.SelectVO;
 import com.money.entity.Provinces;
 import com.money.mapper.ProvincesMapper;
 import com.money.service.ProvincesService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.money.dto.SelectVO;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,9 +17,10 @@ import java.util.stream.Collectors;
  * </p>
  *
  * @author money
- * @since 2022-04-03
+ * @since 2023-02-27
  */
 @Service
+@RequiredArgsConstructor
 public class ProvincesServiceImpl extends ServiceImpl<ProvincesMapper, Provinces> implements ProvincesService {
 
     @Override
@@ -53,4 +55,5 @@ public class ProvincesServiceImpl extends ServiceImpl<ProvincesMapper, Provinces
                     return vo;
                 }).collect(Collectors.toList());
     }
+
 }

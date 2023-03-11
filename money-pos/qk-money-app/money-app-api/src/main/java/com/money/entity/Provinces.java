@@ -1,5 +1,7 @@
 package com.money.entity;
 
+import com.money.mb.base.BaseEntity;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,11 +11,12 @@ import lombok.Setter;
  * </p>
  *
  * @author money
- * @since 2022-04-03
+ * @since 2023-02-27
  */
 @Getter
 @Setter
-public class Provinces {
+@Schema(description = "")
+public class Provinces extends BaseEntity {
 
     private String districtId;
 

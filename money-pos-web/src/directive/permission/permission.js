@@ -5,7 +5,7 @@ function checkPermission(el, binding) {
   const { value } = binding
   const roles = store.getters && store.getters.roles
   const permissions = store.getters && store.getters.permissions
-  // 角色和权限标识
+  // 角色名和权限标识
   const roleWithPermission = [...roles, ...permissions]
 
   if (value && value instanceof Array) {

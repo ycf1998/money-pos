@@ -8,11 +8,11 @@
     <version>${revision}</version>
     <packaging>pom</packaging>
 
-    <name>qk-money</name>
-    <description>A quickly project for Spring Boot</description>
+    <name>money-pos</name>
+    <description>麦尼收银系统</description>
 
     <properties>
-        <revision>0.0.1-SNAPSHOT</revision>
+        <revision>1.0.0</revision>
         <java.version>1.8</java.version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

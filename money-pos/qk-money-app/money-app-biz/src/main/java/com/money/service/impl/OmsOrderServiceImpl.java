@@ -6,16 +6,16 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.money.common.exception.BaseException;
 import com.money.common.vo.PageVO;
 import com.money.constant.OrderStatusEnum;
+import com.money.dto.OmsOrder.*;
+import com.money.dto.OmsOrderDetail.OmsOrderDetailVO;
+import com.money.dto.UmsMember.UmsMemberVO;
 import com.money.entity.OmsOrder;
 import com.money.entity.OmsOrderDetail;
 import com.money.entity.OmsOrderLog;
-import com.money.entity.UmsMember;
 import com.money.mapper.OmsOrderMapper;
 import com.money.service.*;
 import com.money.util.PageUtil;
 import com.money.util.VOUtil;
-import com.money.dto.member.MemberVO;
-import com.money.dto.order.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,19 +32,19 @@ import java.util.concurrent.atomic.AtomicReference;
  * </p>
  *
  * @author money
- * @since 2022-04-10
+ * @since 2023-02-27
  */
 @Service
 @RequiredArgsConstructor
 public class OmsOrderServiceImpl extends ServiceImpl<OmsOrderMapper, OmsOrder> implements OmsOrderService {
 
     private final UmsMemberService umsMemberService;
-    private final OmsOrderDetailService omsOrderDetailService;
     private final GmsGoodsService gmsGoodsService;
+    private final OmsOrderDetailService omsOrderDetailService;
     private final OmsOrderLogService omsOrderLogService;
 
     @Override
-    public PageVO<OrderVO> list(OrderQueryDTO queryDTO) {
+    public PageVO<OmsOrderVO> list(OmsOrderQueryDTO queryDTO) {
         Page<OmsOrder> page = this.lambdaQuery().eq(StrUtil.isNotBlank(queryDTO.getStatus()), OmsOrder::getStatus, queryDTO.getStatus())
                 .like(StrUtil.isNotBlank(queryDTO.getOrderNo()), OmsOrder::getOrderNo, queryDTO.getOrderNo())
                 .like(StrUtil.isNotBlank(queryDTO.getMember()), OmsOrder::getMember, queryDTO.getMember())
@@ -53,20 +53,44 @@ public class OmsOrderServiceImpl extends ServiceImpl<OmsOrderMapper, OmsOrder> i
                 .orderByDesc(StrUtil.isBlank(queryDTO.getSort()), OmsOrder::getCreateTime)
                 .last(StrUtil.isNotBlank(queryDTO.getSort()), queryDTO.getOrderBySql())
                 .page(PageUtil.toPage(queryDTO, OmsOrder.class));
-        return VOUtil.toPageVO(page, OrderVO.class);
+        return VOUtil.toPageVO(page, OmsOrderVO.class);
     }
 
     @Override
-    public OrderDetailInfoVO getDetail(Long id) {
-        OrderDetailInfoVO vo = new OrderDetailInfoVO();
-        OmsOrder order = this.getById(id);
-        if (order != null) {
-            List<OmsOrderDetail> orderDetails = omsOrderDetailService.lambdaQuery().eq(OmsOrderDetail::getOrderNo, order.getOrderNo()).list();
-            UmsMember member = umsMemberService.getById(order.getMemberId());
-            vo.setOrder(VOUtil.toVO(order, OrderVO.class));
-            vo.setMember(VOUtil.toVO(member, MemberVO.class));
-            vo.setOrderDetail(VOUtil.toVO(orderDetails, OrderDetailVO.class));
+    public OrderCountVO countOrderAndSales(LocalDateTime startTime, LocalDateTime endTime) {
+        List<OmsOrderDetail> omsOrderDetails = omsOrderDetailService.lambdaQuery()
+                .select(OmsOrderDetail::getOrderNo, OmsOrderDetail::getQuantity, OmsOrderDetail::getReturnQuantity,
+                        OmsOrderDetail::getGoodsPrice, OmsOrderDetail::getPurchasePrice)
+                .eq(OmsOrderDetail::getStatus, OrderStatusEnum.PAID)
+                .ge(startTime != null, OmsOrderDetail::getCreateTime, startTime)
+                .le(endTime != null, OmsOrderDetail::getCreateTime, endTime)
+                .list();
+        long count = omsOrderDetails.stream().map(OmsOrderDetail::getOrderNo).distinct().count();
+        BigDecimal saleCount = BigDecimal.ZERO;
+        BigDecimal costCount = BigDecimal.ZERO;
+        for (OmsOrderDetail omsOrderDetail : omsOrderDetails) {
+            int quantity = omsOrderDetail.getQuantity() - omsOrderDetail.getReturnQuantity();
+            saleCount = saleCount.add(omsOrderDetail.getGoodsPrice().multiply(new BigDecimal(quantity)));
+            costCount = costCount.add(omsOrderDetail.getPurchasePrice().multiply(new BigDecimal(quantity)));
         }
+        OrderCountVO vo = new OrderCountVO();
+        vo.setOrderCount(count);
+        vo.setSaleCount(saleCount);
+        vo.setCostCount(costCount);
+        vo.setProfit(saleCount.subtract(costCount));
+        return vo;
+    }
+
+    @Override
+    public OrderDetailVO getDetail(Long id) {
+        OrderDetailVO vo = new OrderDetailVO();
+        OmsOrder order = this.getById(id);
+        if (order == null) {
+            throw new BaseException("订单不存在");
+        }
+        vo.setOrder(VOUtil.toVO(order, OmsOrderVO.class));
+        vo.setMember(VOUtil.toVO(umsMemberService.getById(order.getMemberId()), UmsMemberVO.class));
+        vo.setOrderDetail(VOUtil.toVO(omsOrderDetailService.getOrderDetail(order.getOrderNo()), OmsOrderDetailVO.class));
         return vo;
     }
 
@@ -74,7 +98,7 @@ public class OmsOrderServiceImpl extends ServiceImpl<OmsOrderMapper, OmsOrder> i
     @Transactional(rollbackFor = Exception.class)
     public void returnOrder(Set<Long> ids) {
         ids.stream().map(this::getById).forEach(order -> {
-            List<OmsOrderDetail> orderDetails = omsOrderDetailService.lambdaQuery().eq(OmsOrderDetail::getOrderNo, order.getOrderNo()).list();
+            List<OmsOrderDetail> orderDetails = omsOrderDetailService.getOrderDetail(order.getOrderNo());
             AtomicReference<BigDecimal> returnPrice = new AtomicReference<>(BigDecimal.ZERO);
             AtomicReference<BigDecimal> returnCoupon = new AtomicReference<>(BigDecimal.ZERO);
             orderDetails.forEach(orderDetail -> {
@@ -132,28 +156,4 @@ public class OmsOrderServiceImpl extends ServiceImpl<OmsOrderMapper, OmsOrder> i
         omsOrderLogService.save(log);
     }
 
-    @Override
-    public OrderCountVO countOrderAndSales(LocalDateTime startTime, LocalDateTime endTime) {
-        List<OmsOrderDetail> omsOrderDetails = omsOrderDetailService.lambdaQuery()
-                .select(OmsOrderDetail::getOrderNo, OmsOrderDetail::getQuantity, OmsOrderDetail::getReturnQuantity,
-                        OmsOrderDetail::getGoodsPrice, OmsOrderDetail::getPurchasePrice)
-                .eq(OmsOrderDetail::getStatus, OrderStatusEnum.PAID)
-                .ge(startTime != null, OmsOrderDetail::getCreateTime, startTime)
-                .le(endTime != null, OmsOrderDetail::getCreateTime, endTime)
-                .list();
-        long count = omsOrderDetails.stream().map(OmsOrderDetail::getOrderNo).distinct().count();
-        BigDecimal saleCount = BigDecimal.ZERO;
-        BigDecimal costCount = BigDecimal.ZERO;
-        for (OmsOrderDetail omsOrderDetail : omsOrderDetails) {
-            int quantity = omsOrderDetail.getQuantity() - omsOrderDetail.getReturnQuantity();
-            saleCount = saleCount.add(omsOrderDetail.getGoodsPrice().multiply(new BigDecimal(quantity)));
-            costCount = costCount.add(omsOrderDetail.getPurchasePrice().multiply(new BigDecimal(quantity)));
-        }
-        OrderCountVO vo = new OrderCountVO();
-        vo.setOrderCount(count);
-        vo.setSaleCount(saleCount);
-        vo.setCostCount(costCount);
-        vo.setProfit(saleCount.subtract(costCount));
-        return vo;
-    }
 }

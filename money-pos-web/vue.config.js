@@ -7,8 +7,6 @@ function resolve(dir) {
 }
 
 const name = defaultSettings.title
-const port = process.env.port || process.env.npm_config_port || 9528
-
 module.exports = {
   publicPath: process.env.ENV === 'staging' ? '/money-pos-demo' : '/money-pos',
   outputDir: 'dist',
@@ -16,7 +14,7 @@ module.exports = {
   lintOnSave: process.env.NODE_ENV === 'development',
   productionSourceMap: false,
   devServer: {
-    port: port,
+    port: 9528,
     open: true,
     overlay: {
       warnings: false,
@@ -32,22 +30,12 @@ module.exports = {
     }
   },
   chainWebpack(config) {
-    config.plugin('preload').tap(() => [
-      {
-        rel: 'preload',
-        fileBlacklist: [/\.map$/, /hot-update\.js$/, /runtime\..*\.js$/],
-        include: 'initial'
-      }
-    ])
-
-    // when there are many pages, it will cause too many meaningless requests
-    config.plugins.delete('prefetch')
-
-    // set svg-sprite-loader
+    // svg 配置
     config.module
       .rule('svg')
       .exclude.add(resolve('src/icons'))
       .end()
+    // icon 配置
     config.module
       .rule('icons')
       .test(/\.svg$/)
@@ -60,6 +48,14 @@ module.exports = {
       })
       .end()
 
+    config.plugin('preload').tap(() => [
+      {
+        rel: 'preload',
+        fileBlacklist: [/\.map$/, /hot-update\.js$/, /runtime\..*\.js$/],
+        include: 'initial'
+      }
+    ])
+    config.plugins.delete('prefetch')
     config
       .when(process.env.NODE_ENV !== 'development',
         config => {
@@ -67,7 +63,6 @@ module.exports = {
             .plugin('ScriptExtHtmlWebpackPlugin')
             .after('html')
             .use('script-ext-html-webpack-plugin', [{
-            // `runtime` must same as runtimeChunk name. default is `runtime`
               inline: /runtime\..*\.js$/
             }])
             .end()

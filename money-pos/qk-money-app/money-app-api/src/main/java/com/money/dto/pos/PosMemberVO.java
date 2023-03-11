@@ -1,4 +1,4 @@
-package com.money.dto.pos;
+package com.money.dto.Pos;
 
 import lombok.Data;
 
@@ -31,7 +31,7 @@ public class PosMemberVO {
     private String type;
 
     /**
-     * 联系电话
+     * 手机号
      */
     private String phone;
 

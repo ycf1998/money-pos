@@ -1,4 +1,4 @@
-package com.money.dto.pos;
+package com.money.dto.Pos;
 
 import com.money.constant.GoodsStatus;
 import lombok.Data;
@@ -25,11 +25,6 @@ public class PosGoodsVO {
      * 商品名称
      */
     private String name;
-
-    /**
-     * 商品图片
-     */
-    private String pic;
 
     /**
      * 进价

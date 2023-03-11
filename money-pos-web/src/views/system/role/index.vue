@@ -4,20 +4,8 @@
     <div v-if="crud.props.searchToggle" class="filter-container">
       <el-input v-model="query.roleCode" placeholder="角色编码" style="width: 200px;" class="filter-item" @keyup.enter.native="crud.toQuery" />
       <el-input v-model="query.name" placeholder="角色名称/描述" style="width: 200px;" class="filter-item" @keyup.enter.native="crud.toQuery" />
-      <el-select
-        v-model="query.enabled"
-        clearable
-        placeholder="状态"
-        class="filter-item"
-        style="width: 90px"
-        @change="crud.toQuery"
-      >
-        <el-option
-          v-for="item in dict.switch"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value"
-        />
+      <el-select v-model="query.enabled" clearable placeholder="状态" class="filter-item" style="width: 90px" @change="crud.toQuery">
+        <el-option v-for="item in dict.switch" :key="item.value" :label="item.label" :value="item.value" />
       </el-select>
       <rr-operation />
     </div>
@@ -26,15 +14,7 @@
     <el-row :gutter="20">
       <el-col :span="16">
         <!-- 角色管理 -->
-        <el-table
-          ref="table"
-          v-loading="crud.loading"
-          highlight-current-row
-          :data="crud.data"
-          style="width: 100%;"
-          @selection-change="crud.selectionChangeHandler"
-          @current-change="handleCurrentChange"
-        >
+        <el-table ref="table" v-loading="crud.loading" highlight-current-row :data="crud.data" style="width: 100%;" @selection-change="crud.selectionChangeHandler" @current-change="handleCurrentChange">
           <el-table-column :selectable="checkboxT" type="selection" width="55" />
           <el-table-column prop="roleCode" label="角色编码" />
           <el-table-column prop="roleName" label="角色名称" />
@@ -42,28 +22,13 @@
           <el-table-column :show-overflow-tooltip="true" prop="description" label="描述" />
           <el-table-column label="状态" align="center" prop="enabled">
             <template slot-scope="scope">
-              <el-switch
-                v-model="scope.row.enabled"
-                active-color="#409EFF"
-                inactive-color="#F56C6C"
-                @change="changeEnabled(scope.row, scope.row.enabled)"
-              />
+              <el-switch v-model="scope.row.enabled" active-color="#409EFF" inactive-color="#F56C6C" @change="changeEnabled(scope.row, scope.row.enabled)" />
             </template>
           </el-table-column>
           <el-table-column prop="count" label="角色人数" />
-          <el-table-column
-            label="操作"
-            width="115"
-            align="center"
-            fixed="right"
-          >
+          <el-table-column label="操作" width="115" align="center" fixed="right">
             <template slot-scope="scope">
-              <ud-operation
-                :data="scope.row"
-                :permission="permission"
-                :disabled-edit="scope.row.level < user.level"
-                :disabled-del="scope.row.level < user.level"
-              />
+              <ud-operation :data="scope.row" :permission="permission" :disabled-edit="scope.row.level < user.level" :disabled-del="scope.row.level < user.level" />
             </template>
           </el-table-column>
         </el-table>
@@ -76,29 +41,9 @@
             <el-tooltip class="item" effect="dark" content="选择指定角色分配菜单" placement="top">
               <span class="role-span">权限分配</span>
             </el-tooltip>
-            <el-button
-              v-permission="['role:edit']"
-              :disabled="!showButton"
-              :loading="permissionLoad"
-              icon="el-icon-check"
-              size="mini"
-              style="float: right; padding: 6px 9px"
-              type="primary"
-              @click="saveConfig"
-            >保存</el-button>
+            <el-button v-permission="['role:edit']" :disabled="!showButton" :loading="permissionLoad" icon="el-icon-check" size="mini" style="float: right; padding: 6px 9px" type="primary" @click="saveConfig">保存</el-button>
           </div>
-          <el-tree
-            ref="permission"
-            lazy
-            :data="permissions"
-            :default-checked-keys="selectedPermissions"
-            :load="getPermissions"
-            :props="{ children: 'children', label: 'permissionName', isLeaf: 'leaf' }"
-            check-strictly
-            show-checkbox
-            node-key="id"
-            @check="permissionChange"
-          />
+          <el-tree ref="permission" lazy :data="permissions" :default-checked-keys="selectedPermissions" :load="getPermissions" :props="{ children: 'children', label: 'permissionName', isLeaf: 'leaf' }" check-strictly show-checkbox node-key="id" @check="permissionChange" />
         </el-card>
       </el-col>
     </el-row>
@@ -116,21 +61,11 @@
         </el-form-item>
         <el-form-item label="状态">
           <el-radio-group v-model="form.enabled">
-            <el-radio
-              v-for="item in dict.switch"
-              :key="item.id"
-              :label="item.value"
-            >{{ item.label }}</el-radio>
+            <el-radio v-for="item in dict.switch" :key="item.id" :label="item.value">{{ item.label }}</el-radio>
           </el-radio-group>
         </el-form-item>
         <el-form-item label="角色描述">
-          <el-input
-            v-model.trim="form.description"
-            style="width: 200px"
-            type="textarea"
-            maxlength="50"
-            show-word-limit
-          />
+          <el-input v-model.trim="form.description" style="width: 200px" type="textarea" maxlength="50" show-word-limit />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -155,7 +90,7 @@ export default {
   name: 'Role',
   components: { Pagination, rrOperation, udOperation, crudOperation },
   cruds() {
-    return CRUD({ title: '角色', url: '/roles', crudMethod: { ...crudRole }})
+    return CRUD({ title: '角色', url: '/roles', crudMethod: { ...crudRole } })
   },
   dicts: ['switch'],
   mixins: [presenter(), header(), form({
@@ -235,7 +170,7 @@ export default {
         this.$refs.permission.setCheckedKeys([])
         // 初始化默认选中的key
         this.selectedPermissions = []
-        val.permissions.forEach(function(data) {
+        val.permissions.forEach((data) => {
           _this.selectedPermissions.push(data.id)
         })
         this.showButton = true
@@ -259,7 +194,7 @@ export default {
         if (subIds.every(e => this.selectedPermissions.includes(e))) {
           this.selectedPermissions = this.selectedPermissions.filter(e => !subIds.includes(e))
         } else {
-        // 取已选中和本次选中（包含子节点）并集
+          // 取已选中和本次选中（包含子节点）并集
           this.selectedPermissions = [...new Set([...this.selectedPermissions, ...subIds])]
         }
         this.$refs.permission.setCheckedKeys(this.selectedPermissions)

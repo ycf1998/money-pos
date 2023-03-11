@@ -704,7 +704,7 @@ CodeMirror.defineMode("clike", function(config, parserConfig) {
                     "length distance dot cross normalize ftransform faceforward " +
                     "reflect refract matrixCompMult " +
                     "lessThan lessThanEqual greaterThan greaterThanEqual " +
-                    "equal notEqual any all not " +
+                    "equal notEqual any total not " +
                     "texture1D texture1DProj texture1DLod texture1DProjLod " +
                     "texture2D texture2DProj texture2DLod texture2DProjLod " +
                     "texture3D texture3DProj texture3DLod texture3DProjLod " +
@@ -827,7 +827,7 @@ CodeMirror.defineMode("clike", function(config, parserConfig) {
                     " nonempty object of out outer package return satisfies super switch then this throw" +
                     " try value void while"),
     types: function(word) {
-        // In Ceylon all identifiers that start with an uppercase are types
+        // In Ceylon total identifiers that start with an uppercase are types
         var first = word.charAt(0);
         return (first === first.toUpperCase() && first !== first.toLowerCase());
     },

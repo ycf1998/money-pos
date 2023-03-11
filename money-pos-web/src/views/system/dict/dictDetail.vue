@@ -14,10 +14,7 @@
         <el-table-column prop="sort" label="排序" />
         <el-table-column label="操作" width="130px" align="center" fixed="right">
           <template slot-scope="scope">
-            <udOperation
-              :data="scope.row"
-              :permission="permission"
-            />
+            <udOperation :data="scope.row" :permission="permission" />
           </template>
         </el-table-column>
       </el-table>

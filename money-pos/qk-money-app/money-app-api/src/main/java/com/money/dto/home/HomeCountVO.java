@@ -1,6 +1,6 @@
-package com.money.dto.home;
+package com.money.dto.Home;
 
-import com.money.dto.order.OrderCountVO;
+import com.money.dto.OmsOrder.OrderCountVO;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -26,7 +26,7 @@ public class HomeCountVO {
     /**
      * 所有
      */
-    OrderCountVO all;
+    OrderCountVO total;
 
     /**
      * 库存价值

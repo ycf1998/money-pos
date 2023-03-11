@@ -4,33 +4,15 @@
     <div v-if="crud.props.searchToggle" class="filter-container">
       <el-input v-model="query.name" placeholder="用户名/名称" style="width: 200px;" class="filter-item" @keyup.enter.native="crud.toQuery" />
       <el-input v-model.number="query.phone" placeholder="手机号" style="width: 200px;" class="filter-item" @keyup.enter.native="crud.toQuery" />
-      <el-select
-        v-model="query.enabled"
-        clearable
-        placeholder="状态"
-        class="filter-item"
-        style="width: 90px"
-        @change="crud.toQuery"
-      >
-        <el-option
-          v-for="item in dict.switch"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value"
-        />
+      <el-select v-model="query.enabled" clearable placeholder="状态" class="filter-item" style="width: 90px" @change="crud.toQuery">
+        <el-option v-for="item in dict.switch" :key="item.value" :label="item.label" :value="item.value" />
       </el-select>
       <rr-operation />
     </div>
     <!-- CRUD操作 -->
     <crud-operation :permission="permission" />
     <!-- 用户管理 -->
-    <el-table
-      ref="table"
-      v-loading="crud.loading"
-      :data="crud.data"
-      style="width: 100%;"
-      @selection-change="crud.selectionChangeHandler"
-    >
+    <el-table ref="table" v-loading="crud.loading" :data="crud.data" style="width: 100%;" @selection-change="crud.selectionChangeHandler">
       <el-table-column :selectable="checkboxT" type="selection" width="55" />
       <el-table-column :show-overflow-tooltip="true" prop="username" label="用户名" />
       <el-table-column :show-overflow-tooltip="true" prop="nickname" label="昵称" />
@@ -38,30 +20,15 @@
       <el-table-column :show-overflow-tooltip="true" prop="email" label="邮箱" />
       <el-table-column label="状态" align="center" prop="enabled">
         <template slot-scope="scope">
-          <el-switch
-            v-model="scope.row.enabled"
-            :disabled="user.id === scope.row.id"
-            active-color="#409EFF"
-            inactive-color="#F56C6C"
-            @change="changeEnabled(scope.row, scope.row.enabled)"
-          />
+          <el-switch v-model="scope.row.enabled" :disabled="user.id === scope.row.id" active-color="#409EFF" inactive-color="#F56C6C" @change="changeEnabled(scope.row, scope.row.enabled)" />
         </template>
       </el-table-column>
       <el-table-column prop="createTime" label="创建时间" />
       <el-table-column prop="updateTime" label="修改时间" />
       <el-table-column prop="lastTime" label="最近登录时间" />
-      <el-table-column
-        label="操作"
-        width="115"
-        align="center"
-        fixed="right"
-      >
+      <el-table-column label="操作" width="115" align="center" fixed="right">
         <template slot-scope="scope">
-          <ud-operation
-            :data="scope.row"
-            :permission="permission"
-            :disabled-del="scope.row.id === user.id"
-          />
+          <ud-operation :data="scope.row" :permission="permission" :disabled-del="scope.row.id === user.id" />
         </template>
       </el-table-column>
     </el-table>
@@ -84,36 +51,16 @@
         </el-form-item>
         <el-form-item label="状态">
           <el-radio-group v-model="form.enabled" :disabled="form.id === user.id">
-            <el-radio
-              v-for="item in dict.switch"
-              :key="item.id"
-              :label="item.value"
-            >{{ item.label }}</el-radio>
+            <el-radio v-for="item in dict.switch" :key="item.id" :label="item.value">{{ item.label }}</el-radio>
           </el-radio-group>
         </el-form-item>
         <el-form-item label="角色" prop="roles">
-          <el-select
-            v-model="selectedRoles"
-            style="width: 460px"
-            multiple
-            placeholder="请选择"
-          >
-            <el-option
-              v-for="item in roles"
-              :key="item.roleName"
-              :label="item.roleName"
-              :value="item.id"
-            />
+          <el-select v-model="selectedRoles" style="width: 460px" multiple placeholder="请选择">
+            <el-option v-for="item in roles" :key="item.roleName" :label="item.roleName" :value="item.id" />
           </el-select>
         </el-form-item>
         <el-form-item label="描述">
-          <el-input
-            v-model.trim="form.remark"
-            style="width: 460px"
-            type="textarea"
-            maxlength="250"
-            show-word-limit
-          />
+          <el-input v-model.trim="form.remark" style="width: 460px" type="textarea" maxlength="250" show-word-limit />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -139,7 +86,7 @@ export default {
   name: 'User',
   components: { Pagination, rrOperation, udOperation, crudOperation },
   cruds() {
-    return CRUD({ title: '用户', url: '/users', crudMethod: { ...crudUser }})
+    return CRUD({ title: '用户', url: '/users', crudMethod: { ...crudUser } })
   },
   dicts: ['switch'],
   mixins: [presenter(), header(), form({
@@ -209,7 +156,7 @@ export default {
       // 回显角色
       this.selectedRoles = []
       const _this = this
-      row.roles.forEach(function(role, index) {
+      row.roles.forEach((role, index) => {
         _this.selectedRoles.push(role.id)
       })
     },

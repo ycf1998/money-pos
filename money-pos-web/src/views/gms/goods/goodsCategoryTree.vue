@@ -1,44 +1,19 @@
 <template>
   <div>
-    <el-input
-      v-model="searchCategory"
-      placeholder="输入关键字进行过滤"
-    />
-    <el-tree
-      ref="tree"
-      class="filter-tree"
-      node-key="id"
-      highlight-current
-      icon-class="el-icon-collection-tag"
-      :data="categoryTree"
-      default-expand-all
-      :filter-node-method="filterCategory"
-      :expand-on-click-node="false"
-      @node-click="selectCategory"
-    >
+    <el-input v-model="searchCategory" placeholder="输入关键字进行过滤" />
+    <el-tree ref="tree" class="filter-tree" node-key="id" highlight-current icon-class="el-icon-collection-tag" :data="categoryTree" default-expand-all :filter-node-method="filterCategory" :expand-on-click-node="false" @node-click="selectCategory">
       <span slot-scope="{ node, data }" class="custom-tree-node">
         <span>{{ data.name }}</span>
         <span @click.stop>
           <template v-if="data.pid == -1">
-            <el-popover
-              v-model="data.visible"
-              placement="top"
-              width="260"
-            >
+            <el-popover v-model="data.visible" placement="top" width="260">
               <el-form ref="cateForm" :model="newChild" :rules="rules" label-width="80px">
-                <el-form-item label="图标" prop="icon">
-                  <el-upload
-                    class="avatar-uploader"
-                    action=""
-                    :auto-upload="false"
-                    :on-change="handleIconSuccess"
-                    :show-file-list="false"
-                    accept="image/*"
-                  >
+                <!-- <el-form-item label="图标" prop="icon">
+                  <el-upload class="avatar-uploader" action="" :auto-upload="false" :on-change="handleIconSuccess" :show-file-list="false" accept="image/*">
                     <img v-if="newChild.icon" :src="loadIcon(newChild.icon)" style="width: 50px;height: 50px">
                     <i v-else class="el-icon-plus" />
                   </el-upload>
-                </el-form-item>
+                </el-form-item> -->
                 <el-form-item label="分类名称" prop="name">
                   <el-input v-model="newChild.name" @keydown.native="keydown($event)" />
                 </el-form-item>
@@ -53,25 +28,14 @@
             </el-popover>
           </template>
           <template v-else>
-            <el-popover
-              v-model="data.visible"
-              placement="top"
-              width="260"
-            >
+            <el-popover v-model="data.visible" placement="top" width="260">
               <el-form ref="cateForm" :model="newChild" :rules="rules" label-width="80px">
-                <el-form-item label="图标" prop="icon">
-                  <el-upload
-                    class="avatar-uploader"
-                    action=""
-                    :auto-upload="false"
-                    :on-change="handleIconSuccess"
-                    :show-file-list="false"
-                    accept="image/*"
-                  >
+                <!-- <el-form-item label="图标" prop="icon">
+                  <el-upload class="avatar-uploader" action="" :auto-upload="false" :on-change="handleIconSuccess" :show-file-list="false" accept="image/*">
                     <img v-if="newChild.icon" :src="loadIcon(newChild.icon)" style="width: 50px;height: 50px">
                     <i v-else class="el-icon-plus" />
                   </el-upload>
-                </el-form-item>
+                </el-form-item> -->
                 <el-form-item label="分类名称" prop="name">
                   <el-input v-model="newChild.name" @keydown.native="keydown($event)" />
                 </el-form-item>

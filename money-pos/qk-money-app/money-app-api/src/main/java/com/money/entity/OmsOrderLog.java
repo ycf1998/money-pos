@@ -2,6 +2,7 @@ package com.money.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.money.mb.base.BaseEntity;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,31 +12,21 @@ import lombok.Setter;
  * </p>
  *
  * @author money
- * @since 2022-04-26
+ * @since 2023-02-27
  */
 @Getter
 @Setter
 @TableName("oms_order_log")
+@Schema(description = "订单操作日志")
 public class OmsOrderLog extends BaseEntity {
 
-    private static final long serialVersionUID = 1L;
-
-    /**
-     * 订单id
-     */
+    @Schema(description="订单id")
     private Long orderId;
 
-    /**
-     * 描述
-     */
+    @Schema(description="描述")
     private String description;
 
-    private Integer sort;
-
-    /**
-     * 租户id
-     */
+    @Schema(description="租户id")
     private Long tenantId;
-
 
 }

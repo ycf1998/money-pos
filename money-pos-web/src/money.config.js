@@ -1,6 +1,8 @@
 const config = {
   // 租户请求头
   tenantHeader: 'Y-tenant',
+  // token类型
+  tokenType: 'Bearer',
   // token请求头
   tokenHeader: 'Authorization',
   // requestId请求头
@@ -12,7 +14,12 @@ const config = {
   // 静态OSS路径
   localOSSPath: '/assets/',
   // 云OSS路径
-  cloudOSSPath: ''
+  cloudOSSPath: '',
+
+  // 语言
+  lang: 'zh-cn',
+  // 时区
+  timezone: 'GMT+08:00'
 }
 
 export default config

@@ -1,5 +1,5 @@
 import moneyConfig from '@/money.config'
-import { getToken } from '@/utils/auth'
+import tokenManage from '@/utils/tokenManage'
 
 export const TYPE = {
   LOCAL: 1,
@@ -12,7 +12,7 @@ export const TYPE = {
  */
 export function getHeaders() {
   const headers = {}
-  headers[moneyConfig.tokenHeader] = getToken()
+  headers[moneyConfig.tokenHeader] = tokenManage.getToken()
   return headers
 }
 

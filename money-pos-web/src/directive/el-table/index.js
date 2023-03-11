@@ -1,6 +1,13 @@
+/**
+ * 设置表格和底部高度差
+ * How to use
+ * <el-table height="100px" v-el-height-adaptive-table="{bottomOffset: 30}">...</el-table>
+ * el-table height is must be set
+ * bottomOffset: 30(default)
+ */
 import adaptive from './adaptive'
 
-const install = function(Vue) {
+const install = (Vue) => {
   Vue.directive('el-height-adaptive-table', adaptive)
 }
 

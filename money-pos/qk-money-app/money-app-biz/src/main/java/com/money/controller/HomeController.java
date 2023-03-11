@@ -1,7 +1,7 @@
 package com.money.controller;
 
+import com.money.dto.Home.HomeCountVO;
 import com.money.service.HomeService;
-import com.money.dto.home.HomeCountVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

@@ -1,40 +1,25 @@
 <template>
   <el-row class="address" type="flex" justify="space-between" :style="{flexDirection: direct}">
     <el-col>
-      <el-select v-model="p" placeholder="省份" @change="changeProvince">
-        <el-option
-          v-for="item in provinces"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value"
-        />
+      <el-select v-model="p" placeholder="省份" style="width: 220px;" @change="changeProvince">
+        <el-option v-for="item in provinces" :key="item.value" :label="item.label" :value="item.value" />
       </el-select>
     </el-col>
     <el-col>
-      <el-select v-model="c" placeholder="城市" @change="changeCity">
-        <el-option
-          v-for="item in cities"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value"
-        />
+      <el-select v-model="c" placeholder="城市" style="width: 220px;" @change="changeCity">
+        <el-option v-for="item in cities" :key="item.value" :label="item.label" :value="item.value" />
       </el-select>
     </el-col>
     <el-col>
-      <el-select v-model="d" placeholder="地区" @change="changeDistrict">
-        <el-option
-          v-for="item in districts"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value"
-        />
+      <el-select v-model="d" placeholder="地区" style="width: 220px;" @change="changeDistrict">
+        <el-option v-for="item in districts" :key="item.value" :label="item.label" :value="item.value" />
       </el-select>
     </el-col>
   </el-row>
 </template>
 
 <script>
-import provincesApi from '@/api/other/provinces'
+import provincesApi from '@/api/ums/provinces'
 
 export default {
   name: 'AddressLinkage',
@@ -67,7 +52,7 @@ export default {
     }
   },
   watch: {
-    district: function(val) {
+    district: function (val) {
       this.p = this.province
       this.c = this.city
       this.d = this.district
@@ -113,7 +98,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
- .address .el-col {
-   padding: 5px 0;
- }
+.address .el-col {
+  padding: 5px 0;
+}
 </style>

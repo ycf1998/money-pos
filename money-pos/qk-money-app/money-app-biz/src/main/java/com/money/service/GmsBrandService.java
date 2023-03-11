@@ -1,12 +1,12 @@
 package com.money.service;
 
+import com.money.dto.SelectVO;
+import com.money.entity.GmsBrand;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.money.common.vo.PageVO;
-import com.money.entity.GmsBrand;
-import com.money.dto.SelectVO;
-import com.money.dto.brand.BrandDTO;
-import com.money.dto.brand.BrandQueryDTO;
-import com.money.dto.brand.BrandVO;
+import com.money.dto.GmsBrand.GmsBrandDTO;
+import com.money.dto.GmsBrand.GmsBrandQueryDTO;
+import com.money.dto.GmsBrand.GmsBrandVO;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -18,9 +18,17 @@ import java.util.Set;
  * </p>
  *
  * @author money
- * @since 2022-04-04
+ * @since 2023-02-27
  */
 public interface GmsBrandService extends IService<GmsBrand> {
+
+    PageVO<GmsBrandVO> list(GmsBrandQueryDTO queryDTO);
+
+    void add(GmsBrandDTO addDTO, MultipartFile logo);
+
+    void update(GmsBrandDTO updateDTO, MultipartFile logo);
+
+    void delete(Set<Long> ids);
 
     /**
      * 获取品牌选择器
@@ -30,43 +38,10 @@ public interface GmsBrandService extends IService<GmsBrand> {
     List<SelectVO> getBrandSelect();
 
     /**
-     * 查询品牌列表
-     *
-     * @param queryDTO 查询dto
-     * @return {@link PageVO}<{@link BrandVO}>
-     */
-    PageVO<BrandVO> list(BrandQueryDTO queryDTO);
-
-    /**
-     * 添加品牌
-     *
-     * @param brandDTO 品牌dto
-     * @param logo     标志
-     * @return {@link Long}
-     */
-    Long add(BrandDTO brandDTO, MultipartFile logo);
-
-    /**
-     * 更新品牌
-     *
-     * @param brandDTO 品牌dto
-     * @param logo     标志
-     */
-    void update(BrandDTO brandDTO, MultipartFile logo);
-
-    /**
-     * 删除品牌
-     *
-     * @param ids id
-     */
-    void delete(Set<Long> ids);
-
-    /**
      * 更新商品数
      *
-     * @param brandId 品牌id
-     * @param step    步
+     * @param id   品牌id
+     * @param step 增/减商品数
      */
-    void updateGoodsCount(Long brandId, int step);
-
+    void updateGoodsCount(Long id, int step);
 }

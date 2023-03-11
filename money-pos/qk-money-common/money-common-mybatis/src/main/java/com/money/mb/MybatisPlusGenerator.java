@@ -24,7 +24,7 @@ public class MybatisPlusGenerator {
     /**
      * url
      */
-    private static final String url = "jdbc:mysql://127.0.0.1:3306/qk_money?useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT%2b8&useSSL=false&allowPublicKeyRetrieval=true";
+    private static final String url = "jdbc:mysql://127.0.0.1:3306/money_pos?useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT%2b8&useSSL=false&allowPublicKeyRetrieval=true";
     /**
      * 用户名
      */
@@ -139,6 +139,7 @@ public class MybatisPlusGenerator {
                     });
             injectionConfig.customMap(Collections.singletonMap("preAuthorize", false))
                     .beforeOutputFile((tableInfo, objectMap) -> {
+                        DTOAndVOTemplateMap.clear();
                         DTOAndVOTemplateMap.put(tableInfo.getEntityName() + "QueryDTO.java", "/templates/queryDto.java.ftl");
                         DTOAndVOTemplateMap.put(tableInfo.getEntityName() + "DTO.java", "/templates/dto.java.ftl");
                         DTOAndVOTemplateMap.put(tableInfo.getEntityName() + "VO.java", "/templates/vo.java.ftl");
@@ -194,7 +195,6 @@ public class MybatisPlusGenerator {
 
         /**
          * 开放身份验证
-         * 生成xml
          *
          * @param yesOrNo 是或否
          */
@@ -211,7 +211,7 @@ public class MybatisPlusGenerator {
          */
         public void targetTable(String table) {
             if ("%".equals(table)) {
-                strategyConfig.addInclude("all");
+                strategyConfig.addInclude("total");
                 return;
             }
             SqlLike like = null;

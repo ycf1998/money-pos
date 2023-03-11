@@ -2,36 +2,18 @@
   <div class="app-container">
     <!-- 搜索 -->
     <div v-if="crud.props.searchToggle" class="filter-container">
-      <el-input v-model="query.code" placeholder="会员号" style="width: 200px;" class="filter-item" @keyup.enter.native="crud.toQuery" />
-      <el-input v-model="query.name" placeholder="会员名称" style="width: 200px;" class="filter-item" @keyup.enter.native="crud.toQuery" />
-      <el-input v-model="query.phone" placeholder="手机号码" style="width: 200px;" class="filter-item" @keyup.enter.native="crud.toQuery" />
-      <el-select
-        v-model="query.type"
-        clearable
-        placeholder="会员类型"
-        class="filter-item"
-        @change="crud.toQuery"
-      >
-        <el-option
-          v-for="item in dict.memberType"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value"
-        />
+      <el-input v-model="query.code" placeholder="会员号" class="filter-item-200" @keyup.enter.native="crud.toQuery" />
+      <el-input v-model="query.name" placeholder="会员名称" class="filter-item-200" @keyup.enter.native="crud.toQuery" />
+      <el-input v-model="query.phone" placeholder="手机号码" class="filter-item-200" @keyup.enter.native="crud.toQuery" />
+      <el-select v-model="query.type" clearable placeholder="会员类型" class="filter-item-200" @change="crud.toQuery">
+        <el-option v-for="item in dict.memberType" :key="item.value" :label="item.label" :value="item.value" />
       </el-select>
       <rr-operation />
     </div>
     <!-- CRUD操作 -->
     <crud-operation :permission="permission" :hidden-columns="['code']" />
     <!-- 会员列表 -->
-    <el-table
-      ref="table"
-      v-loading="crud.loading"
-      :data="crud.data"
-      style="width: 100%;"
-      @selection-change="crud.selectionChangeHandler"
-      @sort-change="crud.sortChangeHandler"
-    >
+    <el-table ref="table" v-loading="crud.loading" :data="crud.data" style="width: 100%;" @selection-change="crud.selectionChangeHandler" @sort-change="crud.sortChangeHandler">
       <el-table-column type="selection" width="55" />
       <el-table-column :show-overflow-tooltip="true" prop="code" label="会员号" />
       <el-table-column :show-overflow-tooltip="true" prop="name" label="会员名称" />
@@ -55,12 +37,7 @@
         </template>
       </el-table-column>
       <el-table-column :show-overflow-tooltip="true" prop="remark" label="备注" />
-      <el-table-column
-        label="操作"
-        width="115"
-        align="center"
-        fixed="right"
-      >
+      <el-table-column label="操作" width="115" align="center" fixed="right">
         <template slot-scope="scope">
           <ud-operation :data="scope.row" :permission="permission" />
         </template>
@@ -69,51 +46,30 @@
     <!-- 分页 -->
     <pagination />
     <!--表单渲染-->
-    <el-dialog append-to-body :close-on-click-modal="false" :before-close="crud.cancelCU" :visible.sync="crud.status.cu > 0" :title="crud.status.title" width="460px">
-      <el-form ref="form" :inline="true" :model="form" :rules="rules" size="small" label-width="100px">
+    <el-dialog append-to-body :close-on-click-modal="false" :before-close="crud.cancelCU" :visible.sync="crud.status.cu > 0" :title="crud.status.title" width="420px">
+      <el-form ref="form" :inline="true" :model="form" :rules="rules" size="small" label-width="110px">
         <el-form-item label="会员名称" prop="name">
-          <el-input v-model="form.name" style="width: 200px;" @keydown.native="keydown($event)" />
+          <el-input v-model="form.name" style="width: 220px;" @keydown.native="keydown($event)" />
         </el-form-item>
         <el-form-item label="会员类型" prop="type">
-          <el-select
-            v-model="form.type"
-            style="width: 200px;"
-            placeholder="会员类型"
-          >
-            <el-option
-              v-for="item in dict.memberType"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            />
+          <el-select v-model="form.type" style="width: 220px;" placeholder="会员类型">
+            <el-option v-for="item in dict.memberType" :key="item.value" :label="item.label" :value="item.value" />
           </el-select>
         </el-form-item>
         <el-form-item label="手机号码" prop="phone">
-          <el-input v-model="form.phone" style="width: 200px;" @keydown.native="keydown($event)" />
+          <el-input v-model="form.phone" style="width: 220px;" @keydown.native="keydown($event)" />
         </el-form-item>
         <el-form-item label="抵用券" prop="coupon">
-          <Compute-Input v-model="form.coupon" style="width: 200px;" />
+          <Compute-Input v-model="form.coupon" style="width: 220px;" />
         </el-form-item>
         <el-form-item label="地址" prop="">
-          <Address-Linkage :province="form.province" :city="form.city" :district="form.district" @select-change="addressSelectChnage" />
+          <Address-Linkage style="width: 220px;" :province="form.province" :city="form.city" :district="form.district" @select-change="addressSelectChnage" />
         </el-form-item>
         <el-form-item label="详细地址">
-          <el-input
-            v-model.trim="form.address"
-            type="textarea"
-            style="width: 200px;"
-            maxlength="250"
-            show-word-limit
-          />
+          <el-input v-model.trim="form.address" type="textarea" style="width: 220px;" maxlength="250" show-word-limit />
         </el-form-item>
         <el-form-item label="备注">
-          <el-input
-            v-model.trim="form.remark"
-            type="textarea"
-            style="width: 200px;"
-            maxlength="250"
-            show-word-limit
-          />
+          <el-input v-model.trim="form.remark" type="textarea" style="width: 220px;" maxlength="250" show-word-limit />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -125,21 +81,22 @@
 </template>
 
 <script>
-import crudMember from '@/api/ums/member'
-import ComputeInput from '@/components/ComputeInput'
-import AddressLinkage from '@/components/AddressLinkage'
 import rrOperation from '@/components/Crud/RR.operation.vue'
 import udOperation from '@/components/Crud/UD.operation.vue'
 import crudOperation from '@/components/Crud/CRUD.operation.vue'
 import Pagination from '@/components/Crud/Pagination.vue'
 import CRUD, { presenter, header, form, crud } from '@/components/Crud/crud'
+
+import crudMember from '@/api/ums/member'
+import ComputeInput from '@/components/ComputeInput'
+import AddressLinkage from '@/components/AddressLinkage'
 import { validatePhone, validNonnegative } from '@/utils/validate'
 
 export default {
   name: 'Member',
   components: { Pagination, rrOperation, udOperation, crudOperation, ComputeInput, AddressLinkage },
   cruds() {
-    return CRUD({ title: '会员', url: '/members', crudMethod: { ...crudMember }})
+    return CRUD({ title: '会员', url: '/ums/member', crudMethod: { ...crudMember } })
   },
   mixins: [presenter(), header(), form({
     // 表单初始值
@@ -159,9 +116,9 @@ export default {
     return {
       // 操作权限定义
       permission: {
-        add: ['member:add'],
-        edit: ['member:edit'],
-        del: ['member:del']
+        add: ['umsMember:add'],
+        edit: ['umsMember:edit'],
+        del: ['umsMember:del']
       },
       phoneUrl: '',
       // 表单验证规则

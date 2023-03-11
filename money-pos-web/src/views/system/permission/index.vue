@@ -3,20 +3,8 @@
     <!-- 搜索 -->
     <div v-if="crud.props.searchToggle" class="filter-container">
       <el-input v-model="query.condition" placeholder="模糊搜索" style="width: 200px;" class="filter-item" @keyup.enter.native="crud.toQuery" />
-      <el-select
-        v-model="query.permissionType"
-        clearable
-        placeholder="类型"
-        class="filter-item"
-        style="width: 90px"
-        @change="crud.toQuery"
-      >
-        <el-option
-          v-for="item in dict.permissionType"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value"
-        />
+      <el-select v-model="query.permissionType" clearable placeholder="类型" class="filter-item" style="width: 90px" @change="crud.toQuery">
+        <el-option v-for="item in dict.permissionType" :key="item.value" :label="item.label" :value="item.value" />
       </el-select>
       <rr-operation />
     </div>
@@ -24,14 +12,7 @@
     <crud-operation :permission="permission" />
 
     <!-- 权限管理 -->
-    <el-table
-      v-loading="crud.loading"
-      :data="crud.data"
-      row-key="id"
-      @select="crud.selectChange"
-      @select-all="crud.selectAllChange"
-      @selection-change="crud.selectionChangeHandler"
-    >
+    <el-table v-loading="crud.loading" :data="crud.data" row-key="id" @select="crud.selectChange" @select-all="crud.selectAllChange" @selection-change="crud.selectionChangeHandler">
       <el-table-column type="selection" width="55" />
       <el-table-column prop="permissionName" label="权限名称" />
       <el-table-column prop="icon" label="图标" align="center" width="60px">
@@ -54,18 +35,9 @@
       </el-table-column>
       <el-table-column prop="sort" label="排序" />
       <el-table-column prop="createTime" label="创建时间" />
-      <el-table-column
-        label="操作"
-        width="115"
-        align="center"
-        fixed="right"
-      >
+      <el-table-column label="操作" width="115" align="center" fixed="right">
         <template slot-scope="scope">
-          <ud-operation
-            :data="scope.row"
-            :permission="permission"
-            msg="确定删除吗,如果存在下级节点则一并删除，此操作不能撤销！"
-          />
+          <ud-operation :data="scope.row" :permission="permission" msg="确定删除吗,如果存在下级节点则一并删除，此操作不能撤销！" />
         </template>
       </el-table-column>
     </el-table>
@@ -78,12 +50,7 @@
           </el-radio-group>
         </el-form-item>
         <el-form-item v-show="form.permissionType !== 'BUTTON'" label="图标" prop="icon">
-          <el-popover
-            placement="bottom-start"
-            width="400"
-            trigger="click"
-            @show="$refs['iconSelect'].reset()"
-          >
+          <el-popover placement="bottom-start" width="400" trigger="click" @show="$refs['iconSelect'].reset()">
             <IconSelect ref="iconSelect" @selected="selected" />
             <el-input slot="reference" v-model="form.icon" style="width: 450px;" placeholder="点击选择图标" readonly>
               <svg-icon v-if="form.icon" slot="prefix" :icon-class="form.icon" class="el-input__icon" style="height: 32px;width: 16px;" />
@@ -111,12 +78,7 @@
           <el-input v-model="form.componentPath" style="width: 178px;" placeholder="组件路径" @keydown.native="keydown($event)" />
         </el-form-item>
         <el-form-item label="上级类目" prop="parentId">
-          <treeselect
-            v-model="form.parentId"
-            :options="permissions"
-            style="width: 450px;"
-            placeholder="选择上级类目"
-          />
+          <treeselect v-model="form.parentId" :options="permissions" style="width: 450px;" placeholder="选择上级类目" />
         </el-form-item>
         <el-form-item label="排序" prop="sort">
           <el-input-number v-model.number="form.sort" :min="0" :max="999" controls-position="right" style="width: 100px;" />

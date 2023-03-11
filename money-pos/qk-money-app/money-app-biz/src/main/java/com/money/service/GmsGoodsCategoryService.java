@@ -1,10 +1,10 @@
 package com.money.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.money.dto.goodscategory.GoodsCategoryDTO;
-import com.money.entity.GmsGoodsCategory;
+import com.money.dto.GmsGoodsCategory.GmsGoodsCategoryDTO;
 import com.money.dto.SelectVO;
 import com.money.dto.TreeNodeVO;
+import com.money.entity.GmsGoodsCategory;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -16,9 +16,15 @@ import java.util.Set;
  * </p>
  *
  * @author money
- * @since 2022-04-04
+ * @since 2023-02-27
  */
 public interface GmsGoodsCategoryService extends IService<GmsGoodsCategory> {
+
+    void add(GmsGoodsCategoryDTO addDTO, MultipartFile icon);
+
+    void update(GmsGoodsCategoryDTO updateDTO, MultipartFile icon);
+
+    void delete(Set<Long> ids);
 
     /**
      * 得到商品类别选择器
@@ -43,35 +49,10 @@ public interface GmsGoodsCategoryService extends IService<GmsGoodsCategory> {
     List<Long> getAllSubId(Long pid);
 
     /**
-     * 添加分类
-     *
-     * @param goodsCategoryDTO 商品类别dto
-     * @param icon             图标
-     * @return {@link Long}
-     */
-    Long add(GoodsCategoryDTO goodsCategoryDTO, MultipartFile icon);
-
-    /**
-     * 更新分类
-     *
-     * @param goodsCategoryDTO 商品类别dto
-     * @param icon             图标
-     */
-    void update(GoodsCategoryDTO goodsCategoryDTO, MultipartFile icon);
-
-    /**
-     * 删除分类
-     *
-     * @param ids id
-     */
-    void delete(Set<Long> ids);
-
-    /**
      * 更新商品数
      *
      * @param categoryId 类别id
      * @param step            步
      */
     void updateGoodsCount(Long categoryId, int step);
-
 }
