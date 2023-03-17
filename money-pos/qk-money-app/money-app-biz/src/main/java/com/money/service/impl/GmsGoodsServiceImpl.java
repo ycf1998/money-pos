@@ -135,7 +135,7 @@ public class GmsGoodsServiceImpl extends ServiceImpl<GmsGoodsMapper, GmsGoods> i
     public void sell(Long goodsId, Integer qty) {
         if (qty > 0) {
             GmsGoods byId = this.getById(goodsId);
-            byId.setStock(byId.getStock() + qty);
+            byId.setStock(byId.getStock() - qty);
             byId.setSales(byId.getSales() + 1);
             byId.setStatus(byId.getStock() > 0 ? GoodsStatus.SALE.name() : GoodsStatus.SOLD_OUT.name());
             this.updateById(byId);

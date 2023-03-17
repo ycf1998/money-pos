@@ -1,5 +1,5 @@
 <template>
-  <div style="padding: 20px 50px">
+  <div :class="isMobile ? padding : ''">
     <el-card class="box-card">
       <div slot="header" class="clearfix">
         <span>订单状态：<el-tag :type="statusTag(order.status)">{{ dict.label.orderStatus[order.status] }}</el-tag></span>
@@ -148,21 +148,27 @@ export default {
   methods: {
     load() {
       const id = this.$route.params && this.$route.params.id
-      orderApi.getDetial(id).then(res => {
+      orderApi.getDetial(id).then((res) => {
         this.order = res.data.order
         this.orderDetail = res.data.orderDetail
-        this.orderDetail.forEach(e => { e.visible = false; e.tempReturn = 1 })
+        this.orderDetail.forEach((e) => {
+          e.visible = false
+          e.tempReturn = 1
+        })
         this.member = res.data.member
         this.printOrderInfo = {
           info: this.order,
-          detail: this.orderDetail.flatMap(o => {
-            return [Object.assign({ key: Math.random() }, o), Object.assign({ key: Math.random() }, o)]
+          detail: this.orderDetail.flatMap((o) => {
+            return [
+              Object.assign({ key: Math.random() }, o),
+              Object.assign({ key: Math.random() }, o)
+            ]
           }),
           member: this.member
         }
       })
 
-      orderApi.getLog(id).then(res => {
+      orderApi.getLog(id).then((res) => {
         this.log = res.data
       })
     },
@@ -187,7 +193,7 @@ export default {
           id: row.id,
           quantity: value
         }
-        orderApi.returnGoods(params).then(response => {
+        orderApi.returnGoods(params).then((response) => {
           this.$notify({
             title: 'Success',
             message: '退货成功',
@@ -226,7 +232,9 @@ export default {
           return
         }
         if (column.property === 'subTotal') {
-          let values = data.map(item => Number(item['quantity'] * item['goodsPrice']))
+          let values = data.map((item) =>
+            Number(item['quantity'] * item['goodsPrice'])
+          )
           sums[index] = values.reduce((prev, curr) => {
             const value = Number(curr)
             if (!isNaN(value)) {
@@ -235,7 +243,9 @@ export default {
               return prev
             }
           }, 0)
-          values = data.map(item => Number(item['returnQuantity'] * item['goodsPrice']))
+          values = data.map((item) =>
+            Number(item['returnQuantity'] * item['goodsPrice'])
+          )
           this.returnPrice = values.reduce((prev, curr) => {
             const value = Number(curr)
             if (!isNaN(value)) {
@@ -244,7 +254,9 @@ export default {
               return prev
             }
           }, 0)
-          values = data.map(item => Number(item['returnQuantity'] * item['coupon']))
+          values = data.map((item) =>
+            Number(item['returnQuantity'] * item['coupon'])
+          )
           this.returnCoupon = values.reduce((prev, curr) => {
             const value = Number(curr)
             if (!isNaN(value)) {
@@ -267,5 +279,9 @@ export default {
 }
 .margin-top {
   margin-top: 20px;
+}
+
+.padding {
+  padding: 20px 50px;
 }
 </style>

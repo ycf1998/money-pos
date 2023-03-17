@@ -58,7 +58,7 @@ money:
       # 密钥
       secret: money
       # access token过期时间 ms，默认8小时
-      ttl: 28800000
+      ttl: 2592000000
       # refresh token过期时间 ms，默认30天
       refresh-ttl: 2592000000
       # 策略：jwt（自动过期，默认）、redis

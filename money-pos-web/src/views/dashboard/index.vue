@@ -1,6 +1,6 @@
 <template>
   <div class="dashboard-container">
-    <el-tabs v-model="activeTab" @tab-click="handleClick">
+    <el-tabs v-model="activeTab">
       <el-tab-pane v-for="tab in totalTab" :key="tab.name" :label="tab.label" :name="tab.name">
         <el-row :gutter="20">
           <el-col :xs="12" :sm="6" style="padding-top: 10px;">
@@ -10,7 +10,7 @@
               </div>
               <el-row type="flex" justify="space-between" align="center">
                 <img src="orderCount.png" width="45" height="35">
-                <count-to :start-val="0" :decimals="2" :end-val="homeCount[tab.name].orderCount" :duration="3200" class="card-panel-num" />
+                <count-to :start-val="0" :end-val="homeCount[tab.name].orderCount" :duration="2200" class="card-panel-num" />
               </el-row>
             </el-card>
           </el-col>
@@ -21,7 +21,7 @@
               </div>
               <el-row type="flex" justify="space-between" align="center">
                 <img src="sale.png" width="45" height="35">
-                <count-to :start-val="0" :decimals="2" :end-val="homeCount[tab.name].saleCount" :duration="3200" class="card-panel-num" />
+                <count-to :start-val="0" :decimals="2" :end-val="homeCount[tab.name].saleCount" :duration="2200" class="card-panel-num" />
               </el-row>
             </el-card>
           </el-col>
@@ -32,7 +32,7 @@
               </div>
               <el-row type="flex" justify="space-between" align="center">
                 <img src="profit.png" width="45" height="35">
-                <count-to :start-val="0" :decimals="2" :end-val="homeCount[tab.name].profit" :duration="3200" class="card-panel-num" />
+                <count-to :start-val="0" :decimals="2" :end-val="homeCount[tab.name].profit" :duration="2200" class="card-panel-num" />
               </el-row>
             </el-card>
           </el-col>
@@ -43,7 +43,7 @@
               </div>
               <el-row type="flex" justify="space-between" align="center">
                 <img src="stockValue.png" width="45" height="35">
-                <count-to :start-val="0" :decimals="2" :end-val="homeCount.inventoryValue" :duration="3200" class="card-panel-num" />
+                <count-to :start-val="0" :decimals="2" :end-val="homeCount.inventoryValue" :duration="2200" class="card-panel-num" />
               </el-row>
             </el-card>
           </el-col>
@@ -93,7 +93,9 @@ export default {
     }
   },
   created() {
-    homeApi.getHomeCount().then(res => { this.homeCount = res.data })
+    homeApi.getHomeCount().then((res) => {
+      this.homeCount = res.data
+    })
   }
 }
 </script>

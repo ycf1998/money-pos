@@ -137,6 +137,9 @@
         <el-col :span="12">应付：{{ payAmount }}</el-col>
         <el-col :span="12">用券：{{ couponAmount }}</el-col>
       </el-row>
+      <el-row v-if="isMobile && currentMember" style="text-align: center;margin-bottom: 10px;font-size: 15px">
+        <el-col :span="12">余券：{{ calculator.Sub(currentMember.coupon, couponAmount) }}</el-col>
+      </el-row>
       <div slot="footer" class="dialog-footer">
         <el-button @click="showOrderDialog = false"> 取消 </el-button>
         <el-button type="primary" @click="settleAccounts()"> 提交 </el-button>
@@ -238,7 +241,10 @@ export default {
     queryGoods(barcodeOrName, cb) {
       let result = this.goodsList
       if (barcodeOrName) {
-        result = this.goodsList.filter(e => e.barcode.includes(barcodeOrName) || e.name.includes(barcodeOrName))
+        result = this.goodsList.filter(
+          (e) =>
+            e.barcode.includes(barcodeOrName) || e.name.includes(barcodeOrName)
+        )
       }
       cb(result.length > 10 ? [] : result)
     },
@@ -246,16 +252,18 @@ export default {
     queryMember(nameOrPhone, cb) {
       let result = this.memberList
       if (nameOrPhone) {
-        result = this.memberList.filter(e => e.name.includes(nameOrPhone) || e.phone.includes(nameOrPhone))
+        result = this.memberList.filter(
+          (e) => e.name.includes(nameOrPhone) || e.phone.includes(nameOrPhone)
+        )
       }
       cb(result.length > 10 ? [] : result)
     },
     // 回车商品
     enterBarcode() {
       if (!this.barcode?.length > 0) return
-      const goods = this.goodsList.find(e => e.barcode === this.barcode)
+      const goods = this.goodsList.find((e) => e.barcode === this.barcode)
       if (goods) {
-        let orderDetail = this.orderList.find(e => e.goodsId === goods.id)
+        let orderDetail = this.orderList.find((e) => e.goodsId === goods.id)
         if (!orderDetail) {
           orderDetail = {
             goodsId: goods.id,
@@ -284,11 +292,11 @@ export default {
     // 回车会员
     enterMember() {
       if (!this.member?.length > 0) return
-      const member = this.memberList.find(e => e.name === this.member)
+      const member = this.memberList.find((e) => e.name === this.member)
       if (member) {
         this.currentMember = member
         this.isVip = true
-        this.orderList.forEach(e => {
+        this.orderList.forEach((e) => {
           e.goodsPrice = e.vipPrice
         })
       }
@@ -296,7 +304,9 @@ export default {
     // 修改数量
     changeQuantity(goods) {
       if (goods.quantity === 0) {
-        this.orderList = this.orderList.filter(e => e.goodsId !== goods.goodsId)
+        this.orderList = this.orderList.filter(
+          (e) => e.goodsId !== goods.goodsId
+        )
       }
     },
     // 显示订单
@@ -325,7 +335,8 @@ export default {
         member: this.currentMember?.id,
         orderDetail: this.orderList
       }
-      posApi.settleAccounts(data)
+      posApi
+        .settleAccounts(data)
         .then((res) => {
           this.$notify({
             title: 'Success',
@@ -375,13 +386,17 @@ export default {
       if (!this.isVip) {
         this.member = null
         this.currentMember = null
-        this.orderList.forEach(e => { e.goodsPrice = e.salePrice })
+        this.orderList.forEach((e) => {
+          e.goodsPrice = e.salePrice
+        })
       } else if (!this.currentMember) {
         // 默认刷内部号
         const member = this.memberList.find((e) => e.type === 'INNER')
         this.member = member.name
         this.currentMember = member
-        this.orderList.forEach(e => { e.goodsPrice = e.vipPrice })
+        this.orderList.forEach((e) => {
+          e.goodsPrice = e.vipPrice
+        })
       }
     },
     // 清空商品
