@@ -43,7 +43,7 @@ public class UmsMemberServiceImpl extends ServiceImpl<UmsMemberMapper, UmsMember
                 .eq(UmsMember::getDeleted, false)
                 .orderByDesc(StrUtil.isBlank(queryDTO.getSort()), UmsMember::getUpdateTime)
                 .last(StrUtil.isNotBlank(queryDTO.getSort()), queryDTO.getOrderBySql())
-                .page(PageUtil.toPage(queryDTO, UmsMember.class));
+                .page(PageUtil.toPage(queryDTO));
         return VOUtil.toPageVO(page, UmsMemberVO.class);
     }
 

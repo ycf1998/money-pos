@@ -13,11 +13,7 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class PageUtil {
 
-    public Page toPage(PageRequest pageRequest) {
-        return Page.of(pageRequest.getPage(), pageRequest.getSize());
-    }
-
-    public <T> Page<T> toPage(PageRequest pageRequest, Class<T> t) {
+    public <T> Page<T> toPage(PageRequest pageRequest) {
         return new Page<>(pageRequest.getPage(), pageRequest.getSize());
     }
 }

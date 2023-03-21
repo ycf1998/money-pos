@@ -75,7 +75,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
                 .and(StrUtil.isNotBlank(queryDTO.getName()), wrapper -> wrapper.like(SysRole::getRoleName, queryDTO.getName())
                         .or(orWrapper -> orWrapper.like(SysRole::getDescription, queryDTO.getName())))
                 .orderByAsc(SysRole::getLevel)
-                .page(PageUtil.toPage(queryDTO, SysRole.class));
+                .page(PageUtil.toPage(queryDTO));
         return VOUtil.toPageVO(page, sysRole -> {
             SysRoleVO sysRoleVO = new SysRoleVO();
             BeanUtil.copyProperties(sysRole, sysRoleVO);

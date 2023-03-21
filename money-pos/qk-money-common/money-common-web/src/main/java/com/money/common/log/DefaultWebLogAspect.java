@@ -1,10 +1,7 @@
 package com.money.common.log;
 
 
-import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
-import com.money.common.constant.WebRequestConstant;
-import com.money.common.context.WebRequestContext;
 import com.money.common.context.WebRequestContextHolder;
 import com.money.common.util.IpUtil;
 import com.money.common.util.WebUtil;
@@ -15,7 +12,6 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
-import org.slf4j.MDC;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
@@ -27,7 +23,6 @@ import java.lang.reflect.Parameter;
 import java.net.URL;
 import java.time.Instant;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -54,21 +49,16 @@ public class DefaultWebLogAspect {
         LocalDateTime now = LocalDateTime.now();
         long startTime = Instant.now().toEpochMilli();
         log.info("=============================================");
-        // 获取当前请求对象
+
         HttpServletRequest request = WebUtil.getRequest();
-        // 链路追踪
-        String requestId = request.getHeader(WebRequestConstant.HEADER_REQUEST_ID);
-        MDC.put("requestId", requestId);
-        // 记录请求信息
-        Signature signature = joinPoint.getSignature();
-        MethodSignature methodSignature = (MethodSignature) signature;
-        Method method = methodSignature.getMethod();
         String requestMethod = request.getMethod();
         String url = request.getRequestURL().toString();
         log.info("{} {}", requestMethod, url);
-        // 填充上下文
-        this.fillRequestContext(request);
         log.info("{}", WebRequestContextHolder.getContext());
+
+        Signature signature = joinPoint.getSignature();
+        MethodSignature methodSignature = (MethodSignature) signature;
+        Method method = methodSignature.getMethod();
         // 执行
         Object result = null;
         try {
@@ -114,24 +104,6 @@ public class DefaultWebLogAspect {
             }
         }
         return argList.size() == 1 ? argList.get(0) : argList;
-    }
-
-    /**
-     * 填补请求上下文中
-     *
-     * @param request 请求
-     */
-    private void fillRequestContext(HttpServletRequest request) {
-        WebRequestContext context = new WebRequestContext();
-        String requestId = request.getHeader(WebRequestConstant.HEADER_REQUEST_ID);
-        String lang = request.getHeader(WebRequestConstant.HEADER_LANG);
-        context.setRequestId(requestId);
-        context.setLang(lang);
-        String timezone = request.getHeader(WebRequestConstant.HEADER_TIMEZONE);
-        if (StrUtil.isNotBlank(timezone)) {
-            context.setTimezone(ZoneId.of(timezone));
-        }
-        WebRequestContextHolder.setContext(context);
     }
 
 }

@@ -66,7 +66,7 @@ public class SysTenantServiceImpl extends ServiceImpl<SysTenantMapper, SysTenant
                 .like(StrUtil.isNotBlank(queryDTO.getTenantName()), SysTenant::getTenantName, queryDTO.getTenantName())
                 .eq(SysTenant::getDeleted, false)
                 .orderByAsc(SysTenant::getSort).orderByDesc(SysTenant::getUpdateTime)
-                .page(PageUtil.toPage(queryDTO, SysTenant.class));
+                .page(PageUtil.toPage(queryDTO));
         return VOUtil.toPageVO(page);
     }
 

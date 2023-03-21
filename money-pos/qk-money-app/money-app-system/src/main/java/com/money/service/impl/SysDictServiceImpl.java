@@ -45,7 +45,7 @@ public class SysDictServiceImpl extends ServiceImpl<SysDictMapper, SysDict> impl
                 .or(StrUtil.isNotBlank(queryDTO.getNameOrDesc()),
                         wrapper -> wrapper.like(StrUtil.isNotBlank(queryDTO.getNameOrDesc()), SysDict::getDescription, queryDTO.getNameOrDesc()))
                 .orderByDesc(SysDict::getUpdateTime)
-                .page(PageUtil.toPage(queryDTO, SysDict.class));
+                .page(PageUtil.toPage(queryDTO));
         return VOUtil.toPageVO(page);
     }
 

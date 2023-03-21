@@ -181,7 +181,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
                 .and(StrUtil.isNotBlank(queryDTO.getName()), wrapper -> wrapper.like(SysUser::getUsername, queryDTO.getName())
                         .or(orWrapper -> orWrapper.like(SysUser::getNickname, queryDTO.getName())))
                 .orderByDesc(SysUser::getUpdateTime)
-                .page(PageUtil.toPage(queryDTO, SysUser.class));
+                .page(PageUtil.toPage(queryDTO));
         return VOUtil.toPageVO(page, sysUser -> {
             SysUserVO sysUserVO = new SysUserVO();
             BeanUtil.copyProperties(sysUser, sysUserVO);

@@ -62,7 +62,7 @@ public class GmsGoodsServiceImpl extends ServiceImpl<GmsGoodsMapper, GmsGoods> i
                 .like(StrUtil.isNotBlank(queryDTO.getName()), GmsGoods::getName, queryDTO.getName())
                 .orderByDesc(StrUtil.isBlank(queryDTO.getSort()), GmsGoods::getUpdateTime)
                 .last(StrUtil.isNotBlank(queryDTO.getSort()), queryDTO.getOrderBySql())
-                .page(PageUtil.toPage(queryDTO, GmsGoods.class));
+                .page(PageUtil.toPage(queryDTO));
         return VOUtil.toPageVO(page, GmsGoodsVO.class);
     }
 

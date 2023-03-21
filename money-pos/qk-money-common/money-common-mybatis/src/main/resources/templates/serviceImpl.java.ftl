@@ -39,7 +39,7 @@ public class ${table.serviceImplName} extends ${superServiceImplClass}<${table.m
     public PageVO<${table.entityName}VO> list(${table.entityName}QueryDTO queryDTO) {
         Page<${table.entityName}> page = this.lambdaQuery()
                 .last(StrUtil.isNotBlank(queryDTO.getSort()), queryDTO.getOrderBySql())
-                .page(PageUtil.toPage(queryDTO, ${table.entityName}.class));
+                .page(PageUtil.toPage(queryDTO));
         return VOUtil.toPageVO(page, ${table.entityName}VO.class);
     }
 

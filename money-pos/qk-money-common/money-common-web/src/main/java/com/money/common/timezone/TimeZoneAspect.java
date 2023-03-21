@@ -88,7 +88,7 @@ public class TimeZoneAspect {
         }
         long outConsume = System.currentTimeMillis() - startTime;
         log.debug("Out parameter time zone convert consume: {} ms", outConsume);
-        log.debug("Time zone convert total consume: {} ms", inConsume + outConsume);
+        log.debug("Time zone convert all consume: {} ms", inConsume + outConsume);
         return result;
     }
 

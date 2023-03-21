@@ -211,7 +211,7 @@ public class MybatisPlusGenerator {
          */
         public void targetTable(String table) {
             if ("%".equals(table)) {
-                strategyConfig.addInclude("total");
+                strategyConfig.addInclude("all");
                 return;
             }
             SqlLike like = null;
