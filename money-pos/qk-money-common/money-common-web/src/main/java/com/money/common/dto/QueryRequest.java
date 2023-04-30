@@ -14,8 +14,6 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper=true)
 public class QueryRequest extends PageRequest implements ISortRequest {
 
-    private static final long serialVersionUID = 556891735255292270L;
-
     @Schema(description = "排序 createTime,desc;id,asc;")
     private String sort;
 

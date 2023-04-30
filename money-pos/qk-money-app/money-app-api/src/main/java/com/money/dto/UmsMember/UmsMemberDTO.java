@@ -7,6 +7,7 @@ import lombok.Data;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.math.BigDecimal;
 
 /**
 * <p>
@@ -46,6 +47,9 @@ public class UmsMemberDTO {
 
     @Schema(description="详细地址")
     private String address;
+
+    @Schema(description="抵用券")
+    private BigDecimal coupon;
 
     @Schema(description="备注")
     @Size(max = 255, groups = {ValidGroup.Save.class, ValidGroup.Update.class})

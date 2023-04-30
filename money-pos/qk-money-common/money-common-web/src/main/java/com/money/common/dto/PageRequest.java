@@ -4,7 +4,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 import javax.validation.constraints.Min;
-import java.io.Serializable;
 
 /**
  * @author : money
@@ -13,8 +12,7 @@ import java.io.Serializable;
  * @createTime : 2022-02-12 11:44:31
  */
 @Data
-public class PageRequest implements Serializable {
-    private static final long serialVersionUID = -835853272876609729L;
+public class PageRequest {
 
     @Schema(required = true, description = "当前页")
     @Min(value = 1, message = "当前页最小为1")

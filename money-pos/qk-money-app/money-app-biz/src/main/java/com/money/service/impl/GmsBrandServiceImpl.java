@@ -18,7 +18,6 @@ import com.money.oss.core.FolderPath;
 import com.money.oss.local.LocalOSS;
 import com.money.service.GmsBrandService;
 import com.money.util.PageUtil;
-import com.money.util.VOUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -46,7 +45,7 @@ public class GmsBrandServiceImpl extends ServiceImpl<GmsBrandMapper, GmsBrand> i
                 .like(StrUtil.isNotBlank(queryDTO.getName()), GmsBrand::getName, queryDTO.getName())
                 .last(StrUtil.isNotBlank(queryDTO.getSort()), queryDTO.getOrderBySql())
                 .page(PageUtil.toPage(queryDTO));
-        return VOUtil.toPageVO(page, GmsBrandVO.class);
+        return PageUtil.toPageVO(page, GmsBrandVO::new);
     }
 
     @Override

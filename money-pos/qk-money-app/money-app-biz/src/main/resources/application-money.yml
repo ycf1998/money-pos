@@ -27,6 +27,7 @@ money:
       - sys_tenant
       - sys_dict
       - sys_dict_detail
+      - provinces
   # 缓存
   cache:
     # 本地缓存

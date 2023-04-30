@@ -25,7 +25,6 @@ import com.money.service.SysRolePermissionRelationService;
 import com.money.service.SysRoleService;
 import com.money.service.SysUserRoleRelationService;
 import com.money.util.PageUtil;
-import com.money.util.VOUtil;
 import com.money.vo.SysRoleVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
@@ -76,7 +75,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
                         .or(orWrapper -> orWrapper.like(SysRole::getDescription, queryDTO.getName())))
                 .orderByAsc(SysRole::getLevel)
                 .page(PageUtil.toPage(queryDTO));
-        return VOUtil.toPageVO(page, sysRole -> {
+        return PageUtil.toPageVO(page, sysRole -> {
             SysRoleVO sysRoleVO = new SysRoleVO();
             BeanUtil.copyProperties(sysRole, sysRoleVO);
             List<SysPermission> permissionByRole = sysPermissionService.getPermissionByRole(Collections.singletonList(sysRoleVO.getId()));

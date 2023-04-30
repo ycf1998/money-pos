@@ -1,6 +1,7 @@
 package com.money.common.exception;
 
 
+import cn.hutool.core.util.StrUtil;
 import com.money.common.response.IStatus;
 
 /**
@@ -10,6 +11,8 @@ import com.money.common.response.IStatus;
  * @createTime : 2022-01-01 13:25:02
  */
 public class BaseException extends RuntimeException {
+
+    private static final long serialVersionUID = 3620837280475323035L;
 
     /**
      * 错误代码
@@ -26,6 +29,11 @@ public class BaseException extends RuntimeException {
 
     public BaseException(IStatus status) {
         super(status.getMessage());
+        this.errorCode = status.getCode();
+    }
+
+    public BaseException(IStatus status, Object... args) {
+        super(StrUtil.format(status.getMessage(), args));
         this.errorCode = status.getCode();
     }
 

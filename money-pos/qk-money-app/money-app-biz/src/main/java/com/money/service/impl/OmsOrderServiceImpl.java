@@ -4,6 +4,7 @@ import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.money.common.exception.BaseException;
+import com.money.common.util.BeanMapUtil;
 import com.money.common.vo.PageVO;
 import com.money.constant.OrderStatusEnum;
 import com.money.dto.OmsOrder.*;
@@ -15,7 +16,6 @@ import com.money.entity.OmsOrderLog;
 import com.money.mapper.OmsOrderMapper;
 import com.money.service.*;
 import com.money.util.PageUtil;
-import com.money.util.VOUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -53,7 +53,7 @@ public class OmsOrderServiceImpl extends ServiceImpl<OmsOrderMapper, OmsOrder> i
                 .orderByDesc(StrUtil.isBlank(queryDTO.getSort()), OmsOrder::getCreateTime)
                 .last(StrUtil.isNotBlank(queryDTO.getSort()), queryDTO.getOrderBySql())
                 .page(PageUtil.toPage(queryDTO));
-        return VOUtil.toPageVO(page, OmsOrderVO.class);
+        return PageUtil.toPageVO(page, OmsOrderVO::new);
     }
 
     @Override
@@ -88,9 +88,9 @@ public class OmsOrderServiceImpl extends ServiceImpl<OmsOrderMapper, OmsOrder> i
         if (order == null) {
             throw new BaseException("订单不存在");
         }
-        vo.setOrder(VOUtil.toVO(order, OmsOrderVO.class));
-        vo.setMember(VOUtil.toVO(umsMemberService.getById(order.getMemberId()), UmsMemberVO.class));
-        vo.setOrderDetail(VOUtil.toVO(omsOrderDetailService.getOrderDetail(order.getOrderNo()), OmsOrderDetailVO.class));
+        vo.setOrder(BeanMapUtil.to(order, OmsOrderVO::new));
+        vo.setMember(BeanMapUtil.to(umsMemberService.getById(order.getMemberId()), UmsMemberVO::new));
+        vo.setOrderDetail(BeanMapUtil.to(omsOrderDetailService.getOrderDetail(order.getOrderNo()), OmsOrderDetailVO::new));
         return vo;
     }
 

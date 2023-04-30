@@ -15,7 +15,6 @@ import com.money.mapper.SysDictMapper;
 import com.money.service.SysDictDetailService;
 import com.money.service.SysDictService;
 import com.money.util.PageUtil;
-import com.money.util.VOUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -46,7 +45,7 @@ public class SysDictServiceImpl extends ServiceImpl<SysDictMapper, SysDict> impl
                         wrapper -> wrapper.like(StrUtil.isNotBlank(queryDTO.getNameOrDesc()), SysDict::getDescription, queryDTO.getNameOrDesc()))
                 .orderByDesc(SysDict::getUpdateTime)
                 .page(PageUtil.toPage(queryDTO));
-        return VOUtil.toPageVO(page);
+        return PageUtil.toPageVO(page);
     }
 
     @Override

@@ -5,6 +5,7 @@ import cn.hutool.core.date.DatePattern;
 import cn.hutool.core.util.RandomUtil;
 import cn.hutool.core.util.StrUtil;
 import com.money.common.exception.BaseException;
+import com.money.common.util.BeanMapUtil;
 import com.money.constant.OrderStatusEnum;
 import com.money.dto.OmsOrder.OmsOrderVO;
 import com.money.dto.OmsOrderDetail.OmsOrderDetailDTO;
@@ -13,7 +14,6 @@ import com.money.dto.Pos.PosMemberVO;
 import com.money.dto.Pos.SettleAccountsDTO;
 import com.money.entity.*;
 import com.money.service.*;
-import com.money.util.VOUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,14 +36,14 @@ public class PosServiceImpl implements PosService {
     @Override
     public List<PosGoodsVO> listGoods(String barcode) {
         List<GmsGoods> gmsGoodsList = gmsGoodsService.lambdaQuery().like(StrUtil.isNotBlank(barcode), GmsGoods::getBarcode, barcode).list();
-        return VOUtil.toVO(gmsGoodsList, PosGoodsVO.class);
+        return BeanMapUtil.to(gmsGoodsList, PosGoodsVO::new);
     }
 
     @Override
     public List<PosMemberVO> listMember(String member) {
         List<UmsMember> memberList = umsMemberService.lambdaQuery().eq(UmsMember::getDeleted, false)
                 .like(StrUtil.isNotBlank(member), UmsMember::getName, member).list();
-        return VOUtil.toVO(memberList, PosMemberVO.class);
+        return BeanMapUtil.to(memberList, PosMemberVO::new);
     }
 
     @Override
@@ -111,7 +111,7 @@ public class PosServiceImpl implements PosService {
         log.setOrderId(order.getId());
         log.setDescription("完成订单");
         omsOrderLogService.saveBatch(ListUtil.of(log));
-        return VOUtil.toVO(order, OmsOrderVO.class);
+        return BeanMapUtil.to(order, OmsOrderVO::new);
     }
 
     /**

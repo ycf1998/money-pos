@@ -182,7 +182,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
                         .or(orWrapper -> orWrapper.like(SysUser::getNickname, queryDTO.getName())))
                 .orderByDesc(SysUser::getUpdateTime)
                 .page(PageUtil.toPage(queryDTO));
-        return VOUtil.toPageVO(page, sysUser -> {
+        return PageUtil.toPageVO(page, sysUser -> {
             SysUserVO sysUserVO = new SysUserVO();
             BeanUtil.copyProperties(sysUser, sysUserVO);
             sysUserVO.setRoles(sysRoleService.getRoles(sysUserVO.getId()));

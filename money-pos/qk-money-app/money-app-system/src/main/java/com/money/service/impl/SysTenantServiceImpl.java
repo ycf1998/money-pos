@@ -20,7 +20,6 @@ import com.money.oss.core.FolderPath;
 import com.money.oss.local.LocalOSS;
 import com.money.service.*;
 import com.money.util.PageUtil;
-import com.money.util.VOUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -67,7 +66,7 @@ public class SysTenantServiceImpl extends ServiceImpl<SysTenantMapper, SysTenant
                 .eq(SysTenant::getDeleted, false)
                 .orderByAsc(SysTenant::getSort).orderByDesc(SysTenant::getUpdateTime)
                 .page(PageUtil.toPage(queryDTO));
-        return VOUtil.toPageVO(page);
+        return PageUtil.toPageVO(page);
     }
 
     @Override

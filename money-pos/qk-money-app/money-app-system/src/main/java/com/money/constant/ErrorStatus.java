@@ -19,9 +19,9 @@ public enum ErrorStatus implements IStatus {
     DICT_ALREADY_EXIST(1006, "字典已存在"),
     DICT_LABEL_ALREADY_EXIST(1007, "字典标签已存在");
 
-    private int code;
+    final int code;
 
-    private String message;
+    final String message;
 
     ErrorStatus(int code, String message) {
         this.code = code;

@@ -24,7 +24,7 @@ public class MybatisPlusGenerator {
     /**
      * url
      */
-    private static final String url = "jdbc:mysql://127.0.0.1:3306/money_pos?useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT%2b8&useSSL=false&allowPublicKeyRetrieval=true";
+    private static final String url = "jdbc:mysql://127.0.0.1:3306/qk_money?useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT%2b8&useSSL=false&allowPublicKeyRetrieval=true";
     /**
      * 用户名
      */
@@ -234,7 +234,7 @@ public class MybatisPlusGenerator {
          * @param yesOrNo 是或否
          */
         public void extendBaseEntity(String yesOrNo) {
-            strategyConfig.entityBuilder().enableLombok().disableSerialVersionUID();
+            strategyConfig.entityBuilder().enableLombok().disableSerialVersionUID().enableChainModel();
             if ("Y".equalsIgnoreCase(yesOrNo)) {
                 strategyConfig.entityBuilder().superClass(BaseEntity.class)
                         .addIgnoreColumns("create_time", "create_by", "update_by", "update_time", "id");

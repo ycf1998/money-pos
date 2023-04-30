@@ -22,7 +22,6 @@ import com.money.service.GmsBrandService;
 import com.money.service.GmsGoodsCategoryService;
 import com.money.service.GmsGoodsService;
 import com.money.util.PageUtil;
-import com.money.util.VOUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -63,7 +62,7 @@ public class GmsGoodsServiceImpl extends ServiceImpl<GmsGoodsMapper, GmsGoods> i
                 .orderByDesc(StrUtil.isBlank(queryDTO.getSort()), GmsGoods::getUpdateTime)
                 .last(StrUtil.isNotBlank(queryDTO.getSort()), queryDTO.getOrderBySql())
                 .page(PageUtil.toPage(queryDTO));
-        return VOUtil.toPageVO(page, GmsGoodsVO.class);
+        return PageUtil.toPageVO(page, GmsGoodsVO::new);
     }
 
     @Override

@@ -18,12 +18,12 @@ public enum RStatus implements IStatus {
     /**
      * 代码
      */
-    private int code;
+    final int code;
 
     /**
      * 消息
      */
-    private String message;
+    final String message;
 
     RStatus(int code, String message) {
         this.code = code;
