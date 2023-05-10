@@ -9,6 +9,7 @@ import com.money.common.vo.PageVO;
 import com.money.constant.OrderStatusEnum;
 import com.money.dto.OmsOrder.*;
 import com.money.dto.OmsOrderDetail.OmsOrderDetailVO;
+import com.money.dto.OmsOrderLog.OmsOrderLogVO;
 import com.money.dto.UmsMember.UmsMemberVO;
 import com.money.entity.OmsOrder;
 import com.money.entity.OmsOrderDetail;
@@ -58,39 +59,52 @@ public class OmsOrderServiceImpl extends ServiceImpl<OmsOrderMapper, OmsOrder> i
 
     @Override
     public OrderCountVO countOrderAndSales(LocalDateTime startTime, LocalDateTime endTime) {
+        // 1.查询时间段内的所有订单详情
         List<OmsOrderDetail> omsOrderDetails = omsOrderDetailService.lambdaQuery()
+                // 仅查询需要用到的字段
                 .select(OmsOrderDetail::getOrderNo, OmsOrderDetail::getQuantity, OmsOrderDetail::getReturnQuantity,
                         OmsOrderDetail::getGoodsPrice, OmsOrderDetail::getPurchasePrice)
+                // 只统计已支付的订单
                 .eq(OmsOrderDetail::getStatus, OrderStatusEnum.PAID)
                 .ge(startTime != null, OmsOrderDetail::getCreateTime, startTime)
                 .le(endTime != null, OmsOrderDetail::getCreateTime, endTime)
                 .list();
+        // 2.通过去重订单详情的单号获取到订单数
         long count = omsOrderDetails.stream().map(OmsOrderDetail::getOrderNo).distinct().count();
+        // 3.计算销售额和成本
         BigDecimal saleCount = BigDecimal.ZERO;
         BigDecimal costCount = BigDecimal.ZERO;
         for (OmsOrderDetail omsOrderDetail : omsOrderDetails) {
+            // 商品数量需要减去退货的数量
             int quantity = omsOrderDetail.getQuantity() - omsOrderDetail.getReturnQuantity();
             saleCount = saleCount.add(omsOrderDetail.getGoodsPrice().multiply(new BigDecimal(quantity)));
             costCount = costCount.add(omsOrderDetail.getPurchasePrice().multiply(new BigDecimal(quantity)));
         }
+        // 4.返回 VO
         OrderCountVO vo = new OrderCountVO();
         vo.setOrderCount(count);
         vo.setSaleCount(saleCount);
         vo.setCostCount(costCount);
+        // 销售额 - 成本 = 利润
         vo.setProfit(saleCount.subtract(costCount));
         return vo;
     }
 
     @Override
-    public OrderDetailVO getDetail(Long id) {
+    public OrderDetailVO getOrderDetail(Long id) {
         OrderDetailVO vo = new OrderDetailVO();
         OmsOrder order = this.getById(id);
         if (order == null) {
             throw new BaseException("订单不存在");
         }
+        // 订单信息
         vo.setOrder(BeanMapUtil.to(order, OmsOrderVO::new));
+        // 会员信息
         vo.setMember(BeanMapUtil.to(umsMemberService.getById(order.getMemberId()), UmsMemberVO::new));
-        vo.setOrderDetail(BeanMapUtil.to(omsOrderDetailService.getOrderDetail(order.getOrderNo()), OmsOrderDetailVO::new));
+        // 订单详情
+        vo.setOrderDetail(BeanMapUtil.to(omsOrderDetailService.listByOrderNo(order.getOrderNo()), OmsOrderDetailVO::new));
+        // 订单日志
+        vo.setOrderLog(BeanMapUtil.to(omsOrderLogService.listByOrderId(id), OmsOrderLogVO::new));
         return vo;
     }
 
@@ -98,7 +112,7 @@ public class OmsOrderServiceImpl extends ServiceImpl<OmsOrderMapper, OmsOrder> i
     @Transactional(rollbackFor = Exception.class)
     public void returnOrder(Set<Long> ids) {
         ids.stream().map(this::getById).forEach(order -> {
-            List<OmsOrderDetail> orderDetails = omsOrderDetailService.getOrderDetail(order.getOrderNo());
+            List<OmsOrderDetail> orderDetails = omsOrderDetailService.listByOrderNo(order.getOrderNo());
             AtomicReference<BigDecimal> returnPrice = new AtomicReference<>(BigDecimal.ZERO);
             AtomicReference<BigDecimal> returnCoupon = new AtomicReference<>(BigDecimal.ZERO);
             orderDetails.forEach(orderDetail -> {

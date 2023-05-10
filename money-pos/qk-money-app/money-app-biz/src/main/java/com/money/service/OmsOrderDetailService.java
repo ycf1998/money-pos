@@ -21,6 +21,6 @@ public interface OmsOrderDetailService extends IService<OmsOrderDetail> {
      * @param orderNo 订单号
      * @return {@link List}<{@link OmsOrderDetail}>
      */
-    List<OmsOrderDetail> getOrderDetail(String orderNo);
+    List<OmsOrderDetail> listByOrderNo(String orderNo);
 
 }

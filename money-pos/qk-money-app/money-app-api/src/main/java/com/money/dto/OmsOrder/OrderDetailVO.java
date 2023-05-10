@@ -1,6 +1,7 @@
 package com.money.dto.OmsOrder;
 
 import com.money.dto.OmsOrderDetail.OmsOrderDetailVO;
+import com.money.dto.OmsOrderLog.OmsOrderLogVO;
 import com.money.dto.UmsMember.UmsMemberVO;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
@@ -33,5 +34,10 @@ public class OrderDetailVO {
      * 订单详情
      */
     private List<OmsOrderDetailVO> orderDetail;
+
+    /**
+     * 订单日志
+     */
+    private List<OmsOrderLogVO> orderLog;
 
 }

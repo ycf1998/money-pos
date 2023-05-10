@@ -22,7 +22,7 @@ import java.util.List;
 public class OmsOrderDetailServiceImpl extends ServiceImpl<OmsOrderDetailMapper, OmsOrderDetail> implements OmsOrderDetailService {
 
     @Override
-    public List<OmsOrderDetail> getOrderDetail(String orderNo) {
+    public List<OmsOrderDetail> listByOrderNo(String orderNo) {
         return this.lambdaQuery().eq(OmsOrderDetail::getOrderNo, orderNo).list();
     }
 }

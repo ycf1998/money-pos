@@ -1,8 +1,6 @@
 package com.money.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.money.common.util.BeanMapUtil;
-import com.money.dto.OmsOrderLog.OmsOrderLogVO;
 import com.money.entity.OmsOrderLog;
 import com.money.mapper.OmsOrderLogMapper;
 import com.money.service.OmsOrderLogService;
@@ -24,7 +22,7 @@ import java.util.List;
 public class OmsOrderLogServiceImpl extends ServiceImpl<OmsOrderLogMapper, OmsOrderLog> implements OmsOrderLogService {
 
     @Override
-    public List<OmsOrderLogVO> list(Long orderId) {
-        return BeanMapUtil.to(this.lambdaQuery().eq(OmsOrderLog::getOrderId, orderId).orderByDesc(OmsOrderLog::getCreateTime).list(), OmsOrderLogVO::new);
+    public List<OmsOrderLog> listByOrderId(Long orderId) {
+        return this.lambdaQuery().eq(OmsOrderLog::getOrderId, orderId).orderByDesc(OmsOrderLog::getCreateTime).list();
     }
 }

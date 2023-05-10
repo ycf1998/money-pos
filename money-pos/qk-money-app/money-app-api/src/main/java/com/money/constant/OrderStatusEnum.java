@@ -9,10 +9,6 @@ package com.money.constant;
 public enum OrderStatusEnum {
 
     /**
-     * 已确认
-     */
-    CONFIRMED,
-    /**
      * 已支付
      */
     PAID,

@@ -1,6 +1,6 @@
 import request from '@/api/request'
 
-export function count(params) {
+export function count (params) {
   return request({
     url: `/oms/order/count`,
     method: 'get',
@@ -8,14 +8,14 @@ export function count(params) {
   })
 }
 
-export function getDetial(id) {
+export function getDetial (id) {
   return request({
     url: `/oms/order/detail?id=${id}`,
     method: 'get'
   })
 }
 
-export function returnOrder(data) {
+export function returnOrder (data) {
   return request({
     url: `/oms/order/returnOrder`,
     method: 'delete',
@@ -23,7 +23,7 @@ export function returnOrder(data) {
   })
 }
 
-export function returnGoods(data) {
+export function returnGoods (data) {
   return request({
     url: `/oms/order/returnGoods`,
     method: 'delete',
@@ -31,12 +31,5 @@ export function returnGoods(data) {
   })
 }
 
-export function getLog(id) {
-  return request({
-    url: `/oms/orderLog?id=${id}`,
-    method: 'get'
-  })
-}
-
-export default { count, getDetial, returnOrder, returnGoods, getLog }
+export default { count, getDetial, returnOrder, returnGoods }
 

@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Tag(name = "pos", description = "订单操作日志")
+@Tag(name = "pos", description = "收银")
 @RestController
 @RequestMapping("/pos")
 @RequiredArgsConstructor

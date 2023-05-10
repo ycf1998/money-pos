@@ -1,7 +1,6 @@
 package com.money.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.money.dto.OmsOrderLog.OmsOrderLogVO;
 import com.money.entity.OmsOrderLog;
 
 import java.util.List;
@@ -17,10 +16,11 @@ import java.util.List;
 public interface OmsOrderLogService extends IService<OmsOrderLog> {
 
     /**
-     * 列表
+     * 根据订单id查询
      *
      * @param orderId 订单id
-     * @return {@link List}<{@link OmsOrderLogVO}>
+     * @return {@link List}<{@link OmsOrderLog}>
      */
-    List<OmsOrderLogVO> list(Long orderId);
+    List<OmsOrderLog> listByOrderId(Long orderId);
+
 }

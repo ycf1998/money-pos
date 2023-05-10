@@ -50,8 +50,8 @@ public class OmsOrderController {
     @Operation(summary = "订单详情")
     @GetMapping("/detail")
     @PreAuthorize("@rbac.hasPermission('omsOrder:list')")
-    public OrderDetailVO getDetail(@RequestParam Long id) {
-        return omsOrderService.getDetail(id);
+    public OrderDetailVO orderDetail(@RequestParam Long id) {
+        return omsOrderService.getOrderDetail(id);
     }
 
     @Operation(summary = "退单")

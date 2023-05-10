@@ -35,7 +35,7 @@ public interface OmsOrderService extends IService<OmsOrder> {
      * @param id id
      * @return {@link OrderDetailVO}
      */
-    OrderDetailVO getDetail(Long id);
+    OrderDetailVO getOrderDetail(Long id);
 
     /**
      * 退单

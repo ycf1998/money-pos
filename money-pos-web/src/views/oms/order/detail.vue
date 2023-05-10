@@ -156,6 +156,7 @@ export default {
           e.tempReturn = 1
         })
         this.member = res.data.member
+        this.log = res.data.orderLog
         this.printOrderInfo = {
           info: this.order,
           detail: this.orderDetail.flatMap((o) => {
@@ -166,10 +167,6 @@ export default {
           }),
           member: this.member
         }
-      })
-
-      orderApi.getLog(id).then((res) => {
-        this.log = res.data
       })
     },
     // 退货
