@@ -1,5 +1,5 @@
-import moneyConfig from '@/money.config'
-import tokenManage from '@/utils/tokenManage'
+import MoneyConfig from '@/money.config'
+import TokenManage from '@/utils/tokenManage'
 
 export const TYPE = {
   LOCAL: 1,
@@ -10,9 +10,9 @@ export const TYPE = {
  * 获取请求头部，用于直接上传携带
  * @returns
  */
-export function getHeaders() {
+export function getHeaders () {
   const headers = {}
-  headers[moneyConfig.tokenHeader] = tokenManage.getToken()
+  headers[MoneyConfig.tokenHeader] = TokenManage.getToken()
   return headers
 }
 
@@ -23,12 +23,12 @@ export function getHeaders() {
  * @param {*} type
  * @returns
  */
-export function loadImage(url, type = TYPE.LOCAL) {
+export function loadImage (url, type = TYPE.LOCAL) {
   if (url && !url.includes('http')) {
     if (type === TYPE.LOCAL) {
-      url = process.env.VUE_APP_BASE_API + moneyConfig.localOSSPath + url
+      url = process.env.VUE_APP_BASE_API + MoneyConfig.localOSSPath + url
     } else if (type === TYPE.CLOUD) {
-      url = moneyConfig.cloudOSSPath + url
+      url = MoneyConfig.cloudOSSPath + url
     }
   }
   return url

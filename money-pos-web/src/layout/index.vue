@@ -34,11 +34,11 @@ export default {
   mixins: [ResizeMixin],
   computed: {
     ...mapState({
-      sidebar: state => state.app.sidebar,
-      device: state => state.app.device,
-      showSettings: state => state.settings.showSettings,
-      needTagsView: state => state.settings.tagsView,
-      fixedHeader: state => state.settings.fixedHeader
+      sidebar: (state) => state.app.sidebar,
+      device: (state) => state.app.device,
+      showSettings: (state) => state.settings.showSettings,
+      needTagsView: (state) => state.settings.tagsView,
+      fixedHeader: (state) => state.settings.fixedHeader
     }),
     classObj() {
       return {
@@ -59,7 +59,7 @@ export default {
 
 <style lang="scss" scoped>
 @import '~@/styles/mixin.scss';
-@import '~@/styles/variables.scss';
+@import '~@/styles/variables.module.scss';
 
 .app-wrapper {
   @include clearfix;

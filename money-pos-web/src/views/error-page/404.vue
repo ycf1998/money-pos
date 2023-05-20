@@ -21,7 +21,6 @@
 </template>
 
 <script>
-
 export default {
   name: 'Page404',
   computed: {
@@ -33,8 +32,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.wscn-http404-container{
-  transform: translate(-50%,-50%);
+.wscn-http404-container {
+  transform: translate(-50%, -50%);
   position: absolute;
   top: 40%;
   left: 50%;

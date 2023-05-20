@@ -33,7 +33,6 @@
   </div>
 </template>
 <script>
-import { isMobile } from '@/utils/index'
 import CRUD, { crud } from './crud'
 
 function sortWithRef(src, ref) {
@@ -75,7 +74,7 @@ export default {
   },
   data() {
     return {
-      isMobile: isMobile(),
+      isMobile: false,
       tableColumns: [],
       allColumnsSelected: true,
       allColumnsSelectedIndeterminate: false,
@@ -85,6 +84,9 @@ export default {
     }
   },
   watch: {
+    '$store.getters.device'() {
+      this.isMobile = this.$store.getters.device === 'mobile'
+    },
     'crud.props.table'() {
       this.updateTableColumns()
       this.tableColumns.forEach((column) => {
@@ -145,7 +147,7 @@ export default {
           this.crud.delAllLoading = true
           this.crud.doDelete(datas)
         })
-        .catch(() => { })
+        .catch(() => {})
     },
     handleCheckAllChange(val) {
       if (val === false) {

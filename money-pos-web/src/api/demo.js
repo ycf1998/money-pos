@@ -1,7 +1,8 @@
 import request from '@/api/request'
+
 export function add(data) {
   return request({
-    url: '/template',
+    url: '/demo',
     method: 'post',
     data
   })
@@ -9,7 +10,7 @@ export function add(data) {
 
 export function edit(data) {
   return request({
-    url: '/template',
+    url: '/demo',
     method: 'put',
     data
   })
@@ -17,7 +18,7 @@ export function edit(data) {
 
 export function del(ids) {
   return request({
-    url: '/template',
+    url: '/demo',
     method: 'delete',
     data: ids
   })

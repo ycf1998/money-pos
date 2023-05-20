@@ -1,4 +1,4 @@
-import { constantRoutes, asyncRoutes } from '@/router'
+import { constantRoutes } from '@/router'
 import Layout from '@/layout/index'
 import { buildRouter } from '@/api/system/permission'
 
@@ -9,21 +9,18 @@ const state = {
 
 const mutations = {
   SET_ROUTES: (state, routes) => {
-    state.addRoutes = routes
     state.routes = constantRoutes.concat(routes)
+    state.addRoutes = routes
   }
 }
 
-// 【qk-money】 从后端获取动态路由
 const actions = {
-  generateRoutes({ commit }, roles) {
+  generateRoutes ({ commit }) {
     return new Promise(resolve => {
       buildRouter().then(res => {
-        let accessedRoutes = asyncRoutes
-        // 【qk-money】前端调试时注释这两行，不使用后端传来的菜单，使用路由文件动态路由数组的菜单
-        accessedRoutes = res.data
+        let accessedRoutes = res.data
         collatingOfData(null, accessedRoutes)
-        // 404 page must be placed at the end !!!
+        // 404 页面放最后
         accessedRoutes.push({ path: '*', redirect: '/404', hidden: true })
         commit('SET_ROUTES', accessedRoutes)
         resolve(accessedRoutes)

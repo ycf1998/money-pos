@@ -1,10 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import Layout from '@/layout'
 
 Vue.use(Router)
-
-/* Layout */
-import Layout from '@/layout'
 
 export const constantRoutes = [
   {
@@ -75,8 +73,6 @@ export const constantRoutes = [
   }
 ]
 
-export const asyncRoutes = []
-
 const createRouter = () => new Router({
   // mode: 'history', // require service support
   scrollBehavior: () => ({ y: 0 }),
@@ -84,10 +80,16 @@ const createRouter = () => new Router({
 })
 
 const router = createRouter()
-
-export function resetRouter() {
+export function resetRouter () {
   const newRouter = createRouter()
   router.matcher = newRouter.matcher
 }
 
-export default router
+// 解决路由版本问题：Uncaught (in promise) Error: Redirected when going from “/login?redirect=%2Fdashboard“ to “/“ via
+const originalPush = Router.prototype.push
+Router.prototype.push = function push (location, onResolve, onReject) {
+  if (onResolve || onReject) return originalPush.call(this, location, onResolve, onReject)
+  return originalPush.call(this, location).catch(err => err)
+}
+
+export default router;

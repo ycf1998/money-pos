@@ -1,6 +1,3 @@
-/**
- * 权限校验
- */
 import permission from './permission'
 
 const install = (Vue) => {

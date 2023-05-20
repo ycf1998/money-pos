@@ -1,23 +1,15 @@
-import { login, logout, getInfo } from '@/api/auth'
-import tokenManage from '@/utils/tokenManage'
 import { resetRouter } from '@/router'
+import { login, logout, getInfo } from '@/api/system/auth'
+import TokenManage from '@/utils/tokenManage'
 
 const state = {
-  tenant: null,
-  token: tokenManage.getToken(),
-  user: {},
   username: null,
+  user: {},
   roles: [],
   permissions: []
 }
 
 const mutations = {
-  SET_TENANT: (state, tenant) => {
-    state.tenant = tenant
-  },
-  SET_TOKEN: (state, token) => {
-    state.token = token
-  },
   SET_USERNAME: (state, username) => {
     state.username = username
   },
@@ -34,13 +26,12 @@ const mutations = {
 
 const actions = {
   // 登录
-  login({ commit }, userInfo) {
-    const { username, password } = userInfo
+  login ({ commit }, loginInfo) {
+    const { username, password } = loginInfo
     return new Promise((resolve, reject) => {
       login({ username: username.trim(), password: password }).then(response => {
         const { data } = response
-        commit('SET_TOKEN', data.accessToken)
-        tokenManage.setToken(data.accessToken)
+        TokenManage.setToken(data.accessToken)
         resolve()
       }).catch(error => {
         reject(error)
@@ -48,7 +39,7 @@ const actions = {
     })
   },
   // 获取用户信息
-  getInfo({ commit, state }) {
+  getInfo ({ commit }) {
     return new Promise((resolve, reject) => {
       getInfo().then(response => {
         const { data } = response
@@ -76,16 +67,13 @@ const actions = {
     })
   },
   // 登出
-  logout({ commit, state, dispatch }) {
+  logout ({ commit, state, dispatch }) {
     return new Promise((resolve, reject) => {
       logout(state.token).then(() => {
-        commit('SET_TOKEN', '')
         commit('SET_ROLES', [])
         commit('SET_PERMISSIONS', [])
-
-        tokenManage.removeToken()
+        TokenManage.removeToken()
         resetRouter()
-
         dispatch('tagsView/delAllViews', null, { root: true })
 
         resolve()
@@ -95,12 +83,12 @@ const actions = {
     })
   },
   // 重置token
-  resetToken({ commit }) {
+  resetToken ({ commit }) {
     return new Promise(resolve => {
-      commit('SET_TOKEN', '')
       commit('SET_ROLES', [])
       commit('SET_PERMISSIONS', [])
-      tokenManage.removeToken()
+      TokenManage.removeToken()
+
       resolve()
     })
   }

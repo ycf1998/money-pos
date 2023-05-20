@@ -1,14 +1,12 @@
-import variables from '@/styles/element-variables.scss'
-import defaultSettings from '@/settings'
-
-const { showSettings, tagsView, fixedHeader, sidebarLogo } = defaultSettings
+import variables from '@/styles/element-variables.module.scss'
+import MoneyConfig from '@/money.config'
 
 const state = {
   theme: variables.theme,
-  showSettings: showSettings,
-  tagsView: tagsView,
-  fixedHeader: fixedHeader,
-  sidebarLogo: sidebarLogo
+  showSettings: MoneyConfig.settings.showSettings,
+  tagsView: MoneyConfig.settings.tagsView,
+  fixedHeader: MoneyConfig.settings.fixedHeader,
+  sidebarLogo: MoneyConfig.settings.sidebarLogo
 }
 
 const mutations = {
@@ -21,7 +19,7 @@ const mutations = {
 }
 
 const actions = {
-  changeSetting({ commit }, data) {
+  changeSetting ({ commit }, data) {
     commit('CHANGE_SETTING', data)
   }
 }

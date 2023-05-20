@@ -6,7 +6,7 @@ export default class Dict {
     this.dict = dict
   }
 
-  async init(names, completeCallback) {
+  async init (names, completeCallback) {
     if (names === undefined) {
       throw new Error('need Dict names')
     }

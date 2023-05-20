@@ -1,35 +1,26 @@
-'use strict'
+const { defineConfig } = require('@vue/cli-service')
 const path = require('path')
-const defaultSettings = require('./src/settings.js')
 
-function resolve(dir) {
+function resolve (dir) {
   return path.join(__dirname, dir)
 }
 
-const name = defaultSettings.title
-module.exports = {
+module.exports = defineConfig({
   publicPath: process.env.ENV === 'staging' ? '/money-pos-demo' : '/money-pos',
   outputDir: 'dist',
   assetsDir: 'static',
-  lintOnSave: process.env.NODE_ENV === 'development',
-  productionSourceMap: false,
+  transpileDependencies: true,
+  lintOnSave: false,
   devServer: {
     port: 9528,
-    open: true,
-    overlay: {
-      warnings: false,
-      errors: true
-    }
+    open: true
   },
   configureWebpack: {
-    name: name,
     resolve: {
-      alias: {
-        '@': resolve('src')
-      }
-    }
+      fallback: { path: require.resolve("path-browserify") },
+    },
   },
-  chainWebpack(config) {
+  chainWebpack (config) {
     // svg 配置
     config.module
       .rule('svg')
@@ -47,25 +38,9 @@ module.exports = {
         symbolId: 'icon-[name]'
       })
       .end()
-
-    config.plugin('preload').tap(() => [
-      {
-        rel: 'preload',
-        fileBlacklist: [/\.map$/, /hot-update\.js$/, /runtime\..*\.js$/],
-        include: 'initial'
-      }
-    ])
-    config.plugins.delete('prefetch')
     config
       .when(process.env.NODE_ENV !== 'development',
         config => {
-          config
-            .plugin('ScriptExtHtmlWebpackPlugin')
-            .after('html')
-            .use('script-ext-html-webpack-plugin', [{
-              inline: /runtime\..*\.js$/
-            }])
-            .end()
           config
             .optimization.splitChunks({
               chunks: 'all',
@@ -95,4 +70,4 @@ module.exports = {
         }
       )
   }
-}
+})

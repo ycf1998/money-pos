@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import commonApi from '@/api/common'
 import { parseTime } from '@/utils/index'
 import Vue from 'vue'
@@ -10,7 +11,7 @@ import Vue from 'vue'
  * @example
  * 要使用多crud时，请在关联crud的组件处使用crud-tag进行标记，如：<jobForm :job-status="dict.job_status" crud-tag="job" />
  */
-function CRUD(options) {
+function CRUD (options) {
   const defaultOptions = {
     tag: 'default',
     // id字段名
@@ -37,10 +38,10 @@ function CRUD(options) {
     time: 50,
     // CRUD Method
     crudMethod: {
-      add: (form) => { },
-      del: (id) => { },
-      edit: (form) => { },
-      get: (id) => { }
+      add: form => { },
+      del: id => { },
+      edit: form => { },
+      get: id => { }
     },
     // 主页操作栏显示哪些按钮
     optShow: {
@@ -65,7 +66,7 @@ function CRUD(options) {
       add: CRUD.STATUS.NORMAL,
       edit: CRUD.STATUS.NORMAL,
       // 添加或编辑状态
-      get cu() {
+      get cu () {
         if (this.add === CRUD.STATUS.NORMAL && this.edit === CRUD.STATUS.NORMAL) {
           return CRUD.STATUS.NORMAL
         } else if (this.add === CRUD.STATUS.PREPARED || this.edit === CRUD.STATUS.PREPARED) {
@@ -76,11 +77,11 @@ function CRUD(options) {
         throw new Error('wrong crud\'s cu status')
       },
       // 标题
-      get title() {
+      get title () {
         return this.add > CRUD.STATUS.NORMAL ? `新增${crud.title}` : this.edit > CRUD.STATUS.NORMAL ? `编辑${crud.title}` : crud.title
       },
       // 是否修改状态
-      get isEdit() {
+      get isEdit () {
         return !(this.add > CRUD.STATUS.NORMAL)
       }
     },
@@ -109,25 +110,25 @@ function CRUD(options) {
     /**
      * 通用的提示
      */
-    submitSuccessNotify() {
+    submitSuccessNotify () {
       crud.notify(crud.msg.submit, CRUD.NOTIFICATION_TYPE.SUCCESS)
     },
-    addSuccessNotify() {
+    addSuccessNotify () {
       crud.notify(crud.msg.add, CRUD.NOTIFICATION_TYPE.SUCCESS)
     },
-    editSuccessNotify() {
+    editSuccessNotify () {
       crud.notify(crud.msg.edit, CRUD.NOTIFICATION_TYPE.SUCCESS)
     },
-    delSuccessNotify() {
+    delSuccessNotify () {
       crud.notify(crud.msg.del, CRUD.NOTIFICATION_TYPE.SUCCESS)
     },
     // 搜索
-    toQuery() {
+    toQuery () {
       crud.page.page = 1
       crud.refresh()
     },
     // 刷新
-    refresh() {
+    refresh () {
       if (!callVmHook(crud, CRUD.HOOK.beforeRefresh)) {
         return
       }
@@ -164,7 +165,7 @@ function CRUD(options) {
     /**
      * 启动添加
      */
-    toAdd() {
+    toAdd () {
       crud.resetForm()
       if (!(callVmHook(crud, CRUD.HOOK.beforeToAdd, crud.form) && callVmHook(crud, CRUD.HOOK.beforeToCU, crud.form))) {
         return
@@ -177,7 +178,7 @@ function CRUD(options) {
      * 启动编辑
      * @param {*} data 数据项
      */
-    toEdit(data) {
+    toEdit (data) {
       crud.resetForm(JSON.parse(JSON.stringify(data)))
       if (!(callVmHook(crud, CRUD.HOOK.beforeToEdit, crud.form) && callVmHook(crud, CRUD.HOOK.beforeToCU, crud.form))) {
         return
@@ -191,14 +192,14 @@ function CRUD(options) {
      * 启动删除
      * @param {*} data 数据项
      */
-    toDelete(data) {
+    toDelete (data) {
       crud.getDataStatus(crud.getDataId(data)).delete = CRUD.STATUS.PREPARED
     },
     /**
      * 取消删除
      * @param {*} data 数据项
      */
-    cancelDelete(data) {
+    cancelDelete (data) {
       if (!callVmHook(crud, CRUD.HOOK.beforeDeleteCancel, data)) {
         return
       }
@@ -208,7 +209,7 @@ function CRUD(options) {
     /**
      * 取消新增/编辑
      */
-    cancelCU() {
+    cancelCU () {
       const addStatus = crud.status.add
       const editStatus = crud.status.edit
       if (addStatus === CRUD.STATUS.PREPARED) {
@@ -239,7 +240,7 @@ function CRUD(options) {
     /**
      * 提交新增/编辑
      */
-    submitCU() {
+    submitCU () {
       if (!callVmHook(crud, CRUD.HOOK.beforeValidateCU)) {
         return
       }
@@ -260,7 +261,7 @@ function CRUD(options) {
     /**
      * 执行添加
      */
-    doAdd() {
+    doAdd () {
       if (!callVmHook(crud, CRUD.HOOK.beforeSubmit)) {
         return
       }
@@ -279,7 +280,7 @@ function CRUD(options) {
     /**
      * 执行编辑
      */
-    doEdit() {
+    doEdit () {
       if (!callVmHook(crud, CRUD.HOOK.beforeSubmit)) {
         return
       }
@@ -300,7 +301,7 @@ function CRUD(options) {
      * 执行删除
      * @param {*} data 数据项
      */
-    doDelete(data) {
+    doDelete (data) {
       let delAll = false
       let dataStatus
       const ids = []
@@ -336,7 +337,7 @@ function CRUD(options) {
     /**
      * 获取查询参数
      */
-    getQueryParams() {
+    getQueryParams () {
       // 清除参数无值的情况
       Object.keys(crud.query).length !== 0 && Object.keys(crud.query).forEach(item => {
         if (crud.query[item] === null || crud.query[item] === '') crud.query[item] = undefined
@@ -361,18 +362,18 @@ function CRUD(options) {
       }
     },
     // 当前页改变
-    pageChangeHandler(e) {
+    pageChangeHandler (e) {
       crud.page.page = e
       crud.refresh()
     },
     // 每页条数改变
-    sizeChangeHandler(e) {
+    sizeChangeHandler (e) {
       crud.page.size = e
       crud.page.page = 1
       crud.refresh()
     },
     // 排序改变
-    sortChangeHandler(orderBy) {
+    sortChangeHandler (orderBy) {
       let { order } = orderBy
       if (order === null) {
         crud.sort = []
@@ -383,20 +384,20 @@ function CRUD(options) {
       crud.refresh()
     },
     // 预防删除第二页最后一条数据时，或者多选删除第二页的数据时，页码错误导致请求无数据
-    dleChangePage(size) {
+    dleChangePage (size) {
       if (crud.data.length === size && crud.page.page !== 1) {
         crud.page.page -= 1
       }
     },
     // 选择改变
-    selectionChangeHandler(val) {
+    selectionChangeHandler (val) {
       crud.selections = val
     },
     /**
      * 重置查询参数
      * @param {Boolean} toQuery 重置后进行查询操作
      */
-    resetQuery(toQuery = true) {
+    resetQuery (toQuery = true) {
       const defaultQuery = JSON.parse(JSON.stringify(crud.defaultQuery))
       const query = crud.query
       Object.keys(query).forEach(key => {
@@ -412,7 +413,7 @@ function CRUD(options) {
      * 重置表单
      * @param {Array} data 数据
      */
-    resetForm(data) {
+    resetForm (data) {
       const form = data || (typeof crud.defaultForm === 'object' ? JSON.parse(JSON.stringify(crud.defaultForm)) : crud.defaultForm.apply(crud.findVM('form')))
       const crudFrom = crud.form
       for (const key in form) {
@@ -431,9 +432,9 @@ function CRUD(options) {
     /**
      * 重置数据状态
      */
-    resetDataStatus() {
+    resetDataStatus () {
       const dataStatus = {}
-      function resetStatus(datas) {
+      function resetStatus (datas) {
         datas.forEach(e => {
           dataStatus[crud.getDataId(e)] = {
             delete: 0,
@@ -451,14 +452,14 @@ function CRUD(options) {
      * 获取数据状态
      * @param {Number | String} id 数据项id
      */
-    getDataStatus(id) {
+    getDataStatus (id) {
       return crud.dataStatus[id]
     },
     /**
      * 用于树形表格多选, 选中所有
      * @param selection
      */
-    selectAllChange(selection) {
+    selectAllChange (selection) {
       // 如果选中的数目与请求到的数目相同就选中子节点，否则就清空选中
       if (selection && selection.length === crud.data.length) {
         selection.forEach(val => {
@@ -473,7 +474,7 @@ function CRUD(options) {
      * @param selection
      * @param row
      */
-    selectChange(selection, row) {
+    selectChange (selection, row) {
       // 如果selection中存在row代表是选中，否则是取消选中
       if (selection.find(val => { return crud.getDataId(val) === crud.getDataId(row) })) {
         if (row.children) {
@@ -494,7 +495,7 @@ function CRUD(options) {
      * @param selection
      * @param data
      */
-    toggleRowSelection(selection, data) {
+    toggleRowSelection (selection, data) {
       if (data.children) {
         data.children.forEach(val => {
           crud.getTable().toggleRowSelection(val, false)
@@ -504,26 +505,26 @@ function CRUD(options) {
         })
       }
     },
-    findVM(type) {
+    findVM (type) {
       return crud.vms.find(vm => vm && vm.type === type).vm
     },
-    notify(title, type = CRUD.NOTIFICATION_TYPE.INFO) {
+    notify (title, type = CRUD.NOTIFICATION_TYPE.INFO) {
       crud.vms[0].vm.$notify({
         title,
         type,
         duration: 2500
       })
     },
-    updateProp(name, value) {
+    updateProp (name, value) {
       Vue.set(crud.props, name, value)
     },
-    getDataId(data) {
+    getDataId (data) {
       return data[this.idField]
     },
-    getTable() {
+    getTable () {
       return this.findVM('presenter').$refs.table
     },
-    attchTable() {
+    attchTable () {
       const table = this.getTable()
       this.updateProp('table', table)
       const that = this
@@ -563,7 +564,7 @@ function CRUD(options) {
      * @param {*} vm 组件实例
      * @param {Number} index 该参数内部使用
      */
-    registerVM(type, vm, index = -1) {
+    registerVM (type, vm, index = -1) {
       const vmObj = {
         type,
         vm: vm
@@ -583,7 +584,7 @@ function CRUD(options) {
      * 取消注册组件实例
      * @param {*} vm 组件实例
      */
-    unregisterVM(type, vm) {
+    unregisterVM (type, vm) {
       for (let i = this.vms.length - 1; i >= 0; i--) {
         if (this.vms[i] === undefined) {
           continue
@@ -605,7 +606,7 @@ function CRUD(options) {
 }
 
 // hook VM
-function callVmHook(crud, hook) {
+function callVmHook (crud, hook) {
   if (crud.debug) {
     console.log('callVmHook: ' + hook)
   }
@@ -629,7 +630,7 @@ function callVmHook(crud, hook) {
   return ret
 }
 
-function mergeOptions(src, opts) {
+function mergeOptions (src, opts) {
   const optsRet = {
     ...src
   }
@@ -647,7 +648,7 @@ function mergeOptions(src, opts) {
  * @param {*} vm
  * @param {string} tag
  */
-function lookupCrud(vm, tag) {
+function lookupCrud (vm, tag) {
   tag = tag || vm.$attrs['crud-tag'] || 'default'
   // function lookupCrud(vm, tag) {
   if (vm.$crud) {
@@ -662,18 +663,18 @@ function lookupCrud(vm, tag) {
 /**
  * crud主页
  */
-function presenter(crud) {
+function presenter (crud) {
   if (crud) {
     console.warn('[CRUD warn]: ' + 'please use $options.cruds() { return CRUD(...) or [CRUD(...), ...] }')
   }
   return {
-    data() {
+    data () {
       // 在data中返回crud，是为了将crud与当前实例关联，组件观测crud相关属性变化
       return {
         crud: this.crud
       }
     },
-    beforeCreate() {
+    beforeCreate () {
       this.$crud = this.$crud || {}
       let cruds = this.$options.cruds instanceof Function ? this.$options.cruds() : crud
       if (!(cruds instanceof Array)) {
@@ -691,19 +692,19 @@ function presenter(crud) {
     methods: {
       parseTime
     },
-    created() {
+    created () {
       for (const k in this.$crud) {
         if (this.$crud[k].queryOnPresenterCreated) {
           this.$crud[k].toQuery()
         }
       }
     },
-    destroyed() {
+    destroyed () {
       for (const k in this.$crud) {
         this.$crud[k].unregisterVM('presenter', this)
       }
     },
-    mounted() {
+    mounted () {
       // 如果table未实例化（例如使用了v-if），请稍后在适当时机crud.attchTable刷新table信息
       if (this.$refs.table !== undefined) {
         this.crud.attchTable()
@@ -715,19 +716,19 @@ function presenter(crud) {
 /**
  * 头部
  */
-function header() {
+function header () {
   return {
-    data() {
+    data () {
       return {
         crud: this.crud,
         query: this.crud.query
       }
     },
-    beforeCreate() {
+    beforeCreate () {
       this.crud = lookupCrud(this)
       this.crud.registerVM('header', this, 1)
     },
-    destroyed() {
+    destroyed () {
       this.crud.unregisterVM('header', this)
     }
   }
@@ -736,19 +737,19 @@ function header() {
 /**
  * 分页
  */
-function pagination() {
+function pagination () {
   return {
-    data() {
+    data () {
       return {
         crud: this.crud,
         page: this.crud.page
       }
     },
-    beforeCreate() {
+    beforeCreate () {
       this.crud = lookupCrud(this)
       this.crud.registerVM('pagination', this, 2)
     },
-    destroyed() {
+    destroyed () {
       this.crud.unregisterVM('pagination', this)
     }
   }
@@ -757,23 +758,23 @@ function pagination() {
 /**
  * 表单
  */
-function form(defaultForm) {
+function form (defaultForm) {
   return {
-    data() {
+    data () {
       return {
         crud: this.crud,
         form: this.crud.form
       }
     },
-    beforeCreate() {
+    beforeCreate () {
       this.crud = lookupCrud(this)
       this.crud.registerVM('form', this, 3)
     },
-    created() {
+    created () {
       this.crud.defaultForm = defaultForm
       this.crud.resetForm()
     },
-    destroyed() {
+    destroyed () {
       this.crud.unregisterVM('form', this)
     }
   }
@@ -782,22 +783,22 @@ function form(defaultForm) {
 /**
  * crud
  */
-function crud(options = {}) {
+function crud (options = {}) {
   const defaultOptions = {
     type: undefined
   }
   options = mergeOptions(defaultOptions, options)
   return {
-    data() {
+    data () {
       return {
         crud: this.crud
       }
     },
-    beforeCreate() {
+    beforeCreate () {
       this.crud = lookupCrud(this)
       this.crud.registerVM(options.type, this)
     },
-    destroyed() {
+    destroyed () {
       this.crud.unregisterVM(options.type, this)
     }
   }

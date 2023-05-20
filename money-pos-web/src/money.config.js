@@ -1,4 +1,24 @@
 const config = {
+  // 前端开发模式 
+  dev: false,
+  // 标题
+  title: 'QK-Money',
+  // 语言
+  lang: 'zh-cn',
+  // 时区
+  timezone: 'GMT+08:00',
+  // 右侧设置按钮
+  settings: {
+    // 显示设置按钮
+    showSettings: true,
+    // 侧边栏Logo
+    sidebarLogo: true,
+    // 标签页模式
+    tagsView: false,
+    // 固定头部
+    fixedHeader: false,
+  },
+
   // 租户请求头
   tenantHeader: 'Y-tenant',
   // token类型
@@ -15,11 +35,6 @@ const config = {
   localOSSPath: '/assets/',
   // 云OSS路径
   cloudOSSPath: '',
-
-  // 语言
-  lang: 'zh-cn',
-  // 时区
-  timezone: 'GMT+08:00'
 }
 
 export default config

@@ -1,8 +1,7 @@
-import defaultSettings from '@/settings'
+import MoneyConfig from '@/money.config'
 
-export default function getPageTitle(pageTitle) {
-  // 【qk-money】：租户标签title
-  const title = window.tenant ? window.tenant.tenantName : defaultSettings.title
+export default function getPageTitle (pageTitle) {
+  const title = window.tenant ? window.tenant.tenantName : MoneyConfig.title
   if (pageTitle) {
     return `${title} - ${pageTitle}`
   }

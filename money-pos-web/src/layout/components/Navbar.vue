@@ -61,11 +61,7 @@ export default {
     Search
   },
   computed: {
-    ...mapGetters([
-      'sidebar',
-      'user',
-      'device'
-    ])
+    ...mapGetters(['sidebar', 'user', 'device'])
   },
   methods: {
     toggleSideBar() {

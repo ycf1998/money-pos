@@ -14,6 +14,7 @@
 </template>
 
 <script>
+import MoneyConfig from '@/money.config'
 import oss from '@/utils/oss'
 
 export default {
@@ -31,8 +32,7 @@ export default {
     }
   },
   created() {
-    // 【qk-money】：租户相关UI变更
-    const title = window.tenant?.tenantName || 'QK-Money'
+    const title = window.tenant?.tenantName || MoneyConfig.title
     const logo = oss.loadImage(window.tenant?.logo, oss.TYPE.LOCAL) || 'https://wpimg.wallstcn.com/69a1c46c-eb1c-4b46-8bd4-e9e686ef5251.png'
     this.title = title
     this.logo = logo

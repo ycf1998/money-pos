@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import { getInfo } from '@/api/auth'
+import { getInfo } from '@/api/system/auth'
 import UserCard from './components/UserCard'
 import Account from './components/Account'
 
