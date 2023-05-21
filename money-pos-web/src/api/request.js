@@ -15,11 +15,15 @@ instance.interceptors.request.use(
   async config => {
     // 租户处理
     let tenantQuery = window.location.search.substring(1).match(new RegExp('(^|&)tenant=([^&]*)(&|$)', 'i'))
-    if (tenantQuery && !window.tenant) {
-      const tenantCode = tenantQuery[2].replace('/', '')
-      window.tenant = await axios
-        .get(`${process.env.VUE_APP_BASE_API}/tenants/byCode?code=${tenantCode}`)
-        .then(res => res.data?.data)
+    if (tenantQuery) {
+      if (!window.tenant) {
+        const tenantCode = tenantQuery[2].replace('/', '')
+        window.tenant = await axios
+          .get(`${process.env.VUE_APP_BASE_API}/tenants/byCode?code=${tenantCode}`)
+          .then(res => res.data?.data)
+      }
+      // 租户
+      config.headers[MoneyConfig.tenantHeader] = window.tenant.id
     }
     // 鉴权头
     config.headers[MoneyConfig.tokenHeader] = `${MoneyConfig.tokenType} ${TokenManage.getToken()}`
