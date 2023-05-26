@@ -2,8 +2,8 @@ package com.money.common.util;
 
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.HttpUtil;
-import cn.hutool.json.JSONObject;
-import cn.hutool.json.JSONUtil;
+import com.alibaba.fastjson2.JSON;
+import com.alibaba.fastjson2.JSONObject;
 import lombok.Data;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
@@ -57,9 +57,9 @@ public class IpUtil {
             paramsMap.put("ip", ip);
             paramsMap.put("accessKey", "alibaba-inc");
             String response = HttpUtil.get("https://ip.taobao.com/outGetIpInfo", paramsMap);
-            JSONObject resObj = JSONUtil.parseObj(response);
-            if (!resObj.isEmpty() && resObj.getInt("code") == 0) {
-                return resObj.getJSONObject("data").toBean(IpAddress.class);
+            JSONObject resObj = JSON.parseObject(response);
+            if (!resObj.isEmpty() && resObj.getIntValue("code") == 0) {
+                return resObj.getObject("data", IpAddress.class);
             }
         } catch (Exception e) {
             log.error("获取IP真实地址信息失败", e);

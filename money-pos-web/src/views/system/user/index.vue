@@ -2,65 +2,71 @@
   <div class="app-container">
     <!-- 搜索 -->
     <div v-if="crud.props.searchToggle" class="filter-container">
-      <el-input v-model="query.name" placeholder="用户名/名称" style="width: 200px;" class="filter-item" @keyup.enter.native="crud.toQuery" />
-      <el-input v-model.number="query.phone" placeholder="手机号" style="width: 200px;" class="filter-item" @keyup.enter.native="crud.toQuery" />
-      <el-select v-model="query.enabled" clearable placeholder="状态" class="filter-item" style="width: 90px" @change="crud.toQuery">
+      <el-input v-model="query.name" placeholder="用户名/昵称" class="filter-item-200" @keyup.enter.native="crud.toQuery" />
+      <el-input v-model.number="query.phone" placeholder="手机号" class="filter-item-200" @keyup.enter.native="crud.toQuery" />
+      <el-select v-model="query.enabled" clearable placeholder="状态" class="filter-item-200" @change="crud.toQuery">
         <el-option v-for="item in dict.switch" :key="item.value" :label="item.label" :value="item.value" />
       </el-select>
       <rr-operation />
     </div>
     <!-- CRUD操作 -->
-    <crud-operation :permission="permission" />
+    <crud-operation :permission="permission" :hidden-columns="['createTime', 'updateTime', 'remark']" />
     <!-- 用户管理 -->
-    <el-table ref="table" v-loading="crud.loading" :data="crud.data" style="width: 100%;" @selection-change="crud.selectionChangeHandler">
-      <el-table-column :selectable="checkboxT" type="selection" width="55" />
+    <el-table ref="table" v-loading="crud.loading" :data="crud.data" @selection-change="crud.selectionChangeHandler" @sort-change="crud.sortChangeHandler">
+      <el-table-column :selectable="row => row.id !== user.id" type="selection" width="55" />
       <el-table-column :show-overflow-tooltip="true" prop="username" label="用户名" />
       <el-table-column :show-overflow-tooltip="true" prop="nickname" label="昵称" />
       <el-table-column :show-overflow-tooltip="true" prop="phone" label="手机号" />
       <el-table-column :show-overflow-tooltip="true" prop="email" label="邮箱" />
-      <el-table-column label="状态" align="center" prop="enabled">
+      <el-table-column label="最高角色" prop="roles">
+        <template slot-scope="scope">
+          <el-tag type="warning">{{ scope.row.roles[0].roleName }}</el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column label="状态" prop="enabled">
         <template slot-scope="scope">
           <el-switch v-model="scope.row.enabled" :disabled="user.id === scope.row.id" active-color="#409EFF" inactive-color="#F56C6C" @change="changeEnabled(scope.row, scope.row.enabled)" />
         </template>
       </el-table-column>
       <el-table-column prop="createTime" label="创建时间" />
       <el-table-column prop="updateTime" label="修改时间" />
-      <el-table-column prop="lastTime" label="最近登录时间" />
-      <el-table-column label="操作" width="115" align="center" fixed="right">
+      <el-table-column sortable prop="lastTime" label="最近登录时间" />
+      <el-table-column prop="remark" label="备注" />
+      <el-table-column align="center" label="操作" width="115" fixed="right">
         <template slot-scope="scope">
-          <ud-operation :data="scope.row" :permission="permission" :disabled-del="scope.row.id === user.id" />
+          <ud-operation :data="scope.row" :permission="permission" :disabled-edit="scope.row.id === user.id" :disabled-del="scope.row.id === user.id" />
         </template>
       </el-table-column>
     </el-table>
     <!-- 分页 -->
     <pagination />
     <!--表单渲染-->
-    <el-dialog append-to-body :close-on-click-modal="false" :before-close="crud.cancelCU" :visible.sync="crud.status.cu > 0" :title="crud.status.title" width="600px">
-      <el-form ref="form" :inline="true" :model="form" :rules="rules" size="small" label-width="80px">
+    <el-dialog append-to-body :close-on-click-modal="false" :before-close="crud.cancelCU" :visible.sync="crud.status.cu > 0" :title="crud.status.title" width="380px">
+      <el-form ref="form" :inline="true" :model="form" :rules="rules" label-width="80px">
         <el-form-item label="用户名" prop="username">
-          <el-input v-model="form.username" :disabled="crud.status.isEdit" @keydown.native="keydown($event)" />
+          <el-input v-model="form.username" :disabled="crud.status.isEdit" style="width: 220px;" @keydown.native="keydown($event)" />
         </el-form-item>
         <el-form-item label="昵称" prop="nickname">
-          <el-input v-model="form.nickname" @keydown.native="keydown($event)" />
+          <el-input v-model="form.nickname" style="width: 220px;" @keydown.native="keydown($event)" />
         </el-form-item>
         <el-form-item label="手机号" prop="phone">
-          <el-input v-model.number="form.phone" />
+          <el-input v-model.number="form.phone" style="width: 220px;" />
         </el-form-item>
         <el-form-item label="邮箱" prop="email">
-          <el-input v-model="form.email" @keydown.native="keydown($event)" />
+          <el-input v-model="form.email" style="width: 220px;" @keydown.native="keydown($event)" />
         </el-form-item>
         <el-form-item label="状态">
-          <el-radio-group v-model="form.enabled" :disabled="form.id === user.id">
+          <el-radio-group v-model="form.enabled">
             <el-radio v-for="item in dict.switch" :key="item.id" :label="item.value">{{ item.label }}</el-radio>
           </el-radio-group>
         </el-form-item>
         <el-form-item label="角色" prop="roles">
-          <el-select v-model="selectedRoles" style="width: 460px" multiple placeholder="请选择">
+          <el-select v-model="selectedRoles" style="width: 220px" multiple placeholder="请选择">
             <el-option v-for="item in roles" :key="item.roleName" :label="item.roleName" :value="item.id" />
           </el-select>
         </el-form-item>
         <el-form-item label="描述">
-          <el-input v-model.trim="form.remark" style="width: 460px" type="textarea" maxlength="250" show-word-limit />
+          <el-input v-model.trim="form.remark" style="width: 220px" type="textarea" maxlength="250" show-word-limit />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -73,33 +79,39 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import crudUser from '@/api/system/user'
-import { getAll } from '@/api/system/role'
 import rrOperation from '@/components/Crud/RR.operation.vue'
 import udOperation from '@/components/Crud/UD.operation.vue'
 import crudOperation from '@/components/Crud/CRUD.operation.vue'
 import Pagination from '@/components/Crud/Pagination.vue'
 import CRUD, { presenter, header, form, crud } from '@/components/Crud/crud'
+
+import userApi from '@/api/system/user'
+import { getAllRole } from '@/api/system/role'
 import { validatePhone } from '@/utils/validate'
 
 export default {
   name: 'User',
   components: { Pagination, rrOperation, udOperation, crudOperation },
   cruds() {
-    return CRUD({ title: '用户', url: '/users', crudMethod: { ...crudUser } })
+    return CRUD({ title: '用户', url: '/users', crudMethod: { ...userApi } })
   },
+  mixins: [
+    presenter(),
+    header(),
+    form({
+      // 表单初始值
+      id: null,
+      username: null,
+      nickname: null,
+      email: null,
+      phone: null,
+      remark: null,
+      enabled: 'true',
+      roles: []
+    }),
+    crud()
+  ],
   dicts: ['switch'],
-  mixins: [presenter(), header(), form({
-    // 表单初始值
-    id: null,
-    username: null,
-    nickname: null,
-    email: null,
-    phone: null,
-    remark: null,
-    enabled: true,
-    roles: []
-  }), crud()],
   data() {
     return {
       // 操作权限定义
@@ -122,9 +134,7 @@ export default {
           { required: true, message: '请输入用户昵称', trigger: 'blur' },
           { min: 2, max: 20, message: '长度在 2 到 20 个字符', trigger: 'blur' }
         ],
-        email: [
-          { type: 'email', message: '请输入正确的邮箱地址', trigger: 'blur' }
-        ],
+        email: [{ type: 'email', message: '请输入正确的邮箱地址', trigger: 'blur' }],
         phone: [
           { required: true, message: '请输入手机号', trigger: 'blur' },
           { trigger: 'blur', validator: validatePhone }
@@ -133,9 +143,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters([
-      'user'
-    ])
+    ...mapGetters(['user'])
   },
   created() {
     // 修改新增成功提示信息
@@ -143,9 +151,8 @@ export default {
   },
   methods: {
     // 新增与编辑前做的操作
-    [CRUD.HOOK.afterToCU](crud, form) {
-      this.getRoles()
-      form.enabled = form.enabled.toString() || 'true'
+    async [CRUD.HOOK.afterToCU]() {
+      this.roles = await getAllRole().then((res) => res.data)
     },
     // 新增弹窗前操作
     [CRUD.HOOK.beforeToAdd]() {
@@ -153,10 +160,11 @@ export default {
     },
     // 修改弹窗前操作
     [CRUD.HOOK.beforeToEdit](crud, row) {
+      this.form.enabled = row.enabled.toString()
       // 回显角色
       this.selectedRoles = []
       const _this = this
-      row.roles.forEach((role, index) => {
+      row.roles.forEach((role) => {
         _this.selectedRoles.push(role.id)
       })
     },
@@ -172,35 +180,36 @@ export default {
       crud.form.roles = this.selectedRoles
       return true
     },
-    // 获取所有角色
-    getRoles() {
-      getAll().then(res => { this.roles = res.data })
-    },
     // 改变用户状态
     changeEnabled(data, val) {
-      this.$confirm('此操作将 "' + this.dict.label.switch[val] + '" ' + data.username + ', 是否继续？', '提示', {
+      let confirm = `此操作将${val ? '启用' : '禁用'}用户 【${data.username}】，是否继续？`
+      this.$confirm(confirm, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
-      }).then(() => {
-        crudUser.changeStatus(data.id, val).then(res => {
-          this.crud.notify(this.dict.label.switch[val] + '成功', CRUD.NOTIFICATION_TYPE.SUCCESS)
-        }).catch(() => {
+      })
+        .then(() => {
+          userApi
+            .edit({
+              id: data.id,
+              enabled: val
+            })
+            .then(() => {
+              this.crud.submitSuccessNotify()
+            })
+            .catch(() => {
+              data.enabled = !data.enabled
+            })
+        })
+        .catch(() => {
           data.enabled = !data.enabled
         })
-      }).catch(() => {
-        data.enabled = !data.enabled
-      })
     },
     // 禁止输入空格
     keydown(e) {
       if (e.keyCode === 32) {
         e.returnValue = false
       }
-    },
-    // 复选框是否可选
-    checkboxT(row, rowIndex) {
-      return row.id !== this.user.id
     }
   }
 }

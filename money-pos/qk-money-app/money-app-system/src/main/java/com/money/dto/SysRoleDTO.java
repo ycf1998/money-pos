@@ -21,20 +21,20 @@ public class SysRoleDTO {
     private String roleCode;
 
     @Schema(description = "角色名称")
-    @NotBlank(message = "角色名称不允许为空", groups = {ValidGroup.Save.class, ValidGroup.Update.class})
+    @NotBlank(message = "角色名称不允许为空", groups = {ValidGroup.Save.class})
     private String roleName;
 
     @Schema(description = "角色级别")
-    @NotNull(message = "角色级别不允许为空", groups = {ValidGroup.Save.class, ValidGroup.Update.class})
-    @Min(value = 1, groups = {ValidGroup.Save.class, ValidGroup.Update.class})
+    @NotNull(message = "角色级别不允许为空", groups = {ValidGroup.Save.class})
+    @Min(value = 1, groups = {ValidGroup.Save.class})
     private Integer level;
 
     @Schema(description = "描述")
-    @Size(max = 255, message = "描述最长不允许超过255个字符", groups = {ValidGroup.Save.class, ValidGroup.Update.class})
+    @Size(max = 255, message = "描述最长不允许超过255个字符", groups = {ValidGroup.Save.class})
     private String description;
 
     @Schema(description = "可用状态")
-    @NotNull(message = "可用状态不允许为空", groups = {ValidGroup.Save.class, ValidGroup.Update.class})
+    @NotNull(message = "可用状态不允许为空", groups = {ValidGroup.Save.class})
     private Boolean enabled;
 
 }

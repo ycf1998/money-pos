@@ -61,7 +61,7 @@ public class SysDictController {
     @Operation(summary = "获取字典详情")
     @GetMapping("/detail")
     public List<SysDictDetail> listSysDictDetail(@RequestParam String dict) {
-        return sysDictDetailService.list(dict);
+        return sysDictDetailService.listByDict(dict);
     }
 
     @Operation(summary = "添加字典详情")

@@ -1,6 +1,8 @@
 package com.money.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.money.common.exception.BaseException;
 import com.money.constant.ErrorStatus;
@@ -10,12 +12,12 @@ import com.money.mapper.SysDictDetailMapper;
 import com.money.service.SysDictDetailService;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 /**
  * <p>
- *  服务实现类
+ * 服务实现类
  * </p>
  *
  * @author money
@@ -25,16 +27,19 @@ import java.util.Set;
 public class SysDictDetailServiceImpl extends ServiceImpl<SysDictDetailMapper, SysDictDetail> implements SysDictDetailService {
 
     @Override
-    public List<SysDictDetail> list(String dict) {
+    public List<SysDictDetail> listByDict(String dict) {
         return this.lambdaQuery().eq(SysDictDetail::getDict, dict).orderByAsc(SysDictDetail::getSort).list();
     }
 
     @Override
     public void add(SysDictDetailDTO sysDictDetailDTO) {
         // 字典标签唯一
-        boolean exists = this.lambdaQuery().eq(SysDictDetail::getLabel, sysDictDetailDTO.getLabel()).eq(SysDictDetail::getDict, sysDictDetailDTO.getDict()).exists();
+        boolean exists = this.lambdaQuery()
+                .eq(SysDictDetail::getDict, sysDictDetailDTO.getDict())
+                .eq(SysDictDetail::getLabel, sysDictDetailDTO.getLabel())
+                .exists();
         if (exists) {
-            throw new BaseException(ErrorStatus.DICT_LABEL_ALREADY_EXIST);
+            throw new BaseException(ErrorStatus.DATA_ALREADY_EXIST, "字典标签");
         }
         SysDictDetail sysDictDetail = new SysDictDetail();
         BeanUtil.copyProperties(sysDictDetailDTO, sysDictDetail);
@@ -43,13 +48,16 @@ public class SysDictDetailServiceImpl extends ServiceImpl<SysDictDetailMapper, S
 
     @Override
     public void updateById(SysDictDetailDTO sysDictDetailDTO) {
-        // 字典标签唯一
-        boolean exists = this.lambdaQuery()
-                .ne(SysDictDetail::getId, sysDictDetailDTO.getId())
-                .eq(SysDictDetail::getLabel, sysDictDetailDTO.getLabel())
-                .eq(SysDictDetail::getDict, sysDictDetailDTO.getDict()).exists();
-        if (exists) {
-            throw new BaseException(ErrorStatus.DICT_LABEL_ALREADY_EXIST);
+        if (StrUtil.isNotBlank(sysDictDetailDTO.getLabel())) {
+            SysDictDetail byId = this.getById(sysDictDetailDTO.getId());
+            // 字典标签唯一
+            boolean exists = this.lambdaQuery()
+                    .ne(SysDictDetail::getDict, byId.getDict())
+                    .eq(SysDictDetail::getLabel, sysDictDetailDTO.getLabel())
+                    .exists();
+            if (exists) {
+                throw new BaseException(ErrorStatus.DATA_ALREADY_EXIST, "字典标签");
+            }
         }
         SysDictDetail sysDictDetail = new SysDictDetail();
         BeanUtil.copyProperties(sysDictDetailDTO, sysDictDetail);
@@ -57,7 +65,14 @@ public class SysDictDetailServiceImpl extends ServiceImpl<SysDictDetailMapper, S
     }
 
     @Override
-    public void deleteById(Set<Long> ids) {
+    public void deleteById(Collection<Long> ids) {
         this.removeBatchByIds(ids);
+    }
+
+    @Override
+    public void deleteByDict(Collection<String> dictList) {
+        if (CollUtil.isNotEmpty(dictList)) {
+            this.lambdaUpdate().in(SysDictDetail::getDict, dictList).remove();
+        }
     }
 }

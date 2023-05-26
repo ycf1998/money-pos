@@ -1,5 +1,12 @@
 import request from '@/api/request'
 
+export function buildRouter() {
+  return request({
+    url: '/auth/router',
+    method: 'get'
+  })
+}
+
 /**
  * 登录
  * @param {*} data

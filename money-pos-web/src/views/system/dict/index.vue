@@ -2,11 +2,11 @@
   <div class="app-container">
     <!-- 搜索 -->
     <div v-if="crud.props.searchToggle" class="filter-container">
-      <el-input v-model="query.nameOrDesc" placeholder="字典名或者描述" style="width: 200px;" class="filter-item" @keyup.enter.native="crud.toQuery" />
+      <el-input v-model="query.nameOrDesc" placeholder="字典名或者描述" class="filter-item-200" @keyup.enter.native="crud.toQuery" />
       <rr-operation />
     </div>
     <el-row :gutter="20">
-      <el-col :span="12">
+      <el-col :sm="24" :md="12">
         <el-card class="box-card" shadow="never">
           <div slot="header" class="clearfix">
             <span class="role-span">字典</span>
@@ -28,7 +28,7 @@
           <pagination />
         </el-card>
       </el-col>
-      <el-col :span="12">
+      <el-col :sm="24" :md="12">
         <!-- 字典详情管理 -->
         <el-card class="box-card" shadow="never">
           <div slot="header" class="clearfix">
@@ -43,12 +43,12 @@
     </el-row>
     <!--字典表单渲染-->
     <el-dialog append-to-body :close-on-click-modal="false" :before-close="crud.cancelCU" :visible.sync="crud.status.cu > 0" :title="crud.status.title" width="360px">
-      <el-form ref="form" :inline="true" :model="form" :rules="rules" size="small" label-width="80px">
+      <el-form ref="form" :inline="true" :model="form" :rules="rules" label-width="80px">
         <el-form-item label="字典名" prop="name">
-          <el-input v-model="form.name" @keydown.native="keydown($event)" />
+          <el-input v-model="form.name" :disabled="crud.status.isEdit" style="width: 220px;" @keydown.native="keydown($event)" />
         </el-form-item>
         <el-form-item label="字典描述">
-          <el-input v-model.trim="form.description" type="textarea" maxlength="250" show-word-limit />
+          <el-input v-model.trim="form.description" type="textarea" maxlength="250" show-word-limit style="width: 220px;" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -61,7 +61,7 @@
 
 <script>
 import dictDetail from './dictDetail'
-import crudDict from '@/api/system/dict'
+import dictApi from '@/api/system/dict'
 import rrOperation from '@/components/Crud/RR.operation.vue'
 import udOperation from '@/components/Crud/UD.operation.vue'
 import crudOperation from '@/components/Crud/CRUD.operation.vue'
@@ -72,14 +72,19 @@ export default {
   name: 'Dict',
   components: { Pagination, rrOperation, udOperation, crudOperation, dictDetail },
   cruds() {
-    return CRUD({ title: '字典', url: '/dict', crudMethod: { ...crudDict } })
+    return CRUD({ title: '字典', url: '/dict', crudMethod: { ...dictApi } })
   },
-  mixins: [presenter(), header(), form({
-    // 表单初始值
-    id: null,
-    name: null,
-    description: null
-  }), crud()],
+  mixins: [
+    presenter(),
+    header(),
+    form({
+      // 表单初始值
+      id: null,
+      name: null,
+      description: null
+    }),
+    crud()
+  ],
   data() {
     return {
       // 操作权限定义
@@ -92,9 +97,7 @@ export default {
       showButton: false,
       // 表单验证规则
       rules: {
-        name: [
-          { required: true, message: '请输入字典名', trigger: 'blur' }
-        ]
+        name: [{ required: true, message: '请输入字典名', trigger: 'blur' }]
       }
     }
   },

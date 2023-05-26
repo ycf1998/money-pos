@@ -2,20 +2,19 @@
   <div class="app-container">
     <!-- 搜索 -->
     <div v-if="crud.props.searchToggle" class="filter-container">
-      <el-input v-model="query.condition" placeholder="模糊搜索" style="width: 200px;" class="filter-item" @keyup.enter.native="crud.toQuery" />
-      <el-select v-model="query.permissionType" clearable placeholder="类型" class="filter-item" style="width: 90px" @change="crud.toQuery">
+      <el-input v-model="query.condition" placeholder="模糊搜索" class="filter-item-200" @keyup.enter.native="crud.toQuery" />
+      <el-select v-model="query.permissionType" clearable placeholder="类型" class="filter-item-200" @change="crud.toQuery">
         <el-option v-for="item in dict.permissionType" :key="item.value" :label="item.label" :value="item.value" />
       </el-select>
       <rr-operation />
     </div>
     <!-- CRUD操作 -->
-    <crud-operation :permission="permission" />
-
+    <crud-operation :permission="permission" :hidden-columns="['sort', 'createTime']" />
     <!-- 权限管理 -->
     <el-table v-loading="crud.loading" :data="crud.data" row-key="id" @select="crud.selectChange" @select-all="crud.selectAllChange" @selection-change="crud.selectionChangeHandler">
       <el-table-column type="selection" width="55" />
       <el-table-column prop="permissionName" label="权限名称" />
-      <el-table-column prop="icon" label="图标" align="center" width="60px">
+      <el-table-column prop="icon" label="图标">
         <template slot-scope="scope">
           <svg-icon :icon-class="scope.row.icon ? scope.row.icon : ''" />
         </template>
@@ -27,15 +26,14 @@
         </template>
       </el-table-column>
       <el-table-column prop="componentPath" label="组件路径" />
-      <el-table-column prop="hidden" label="隐藏" width="75px">
+      <el-table-column prop="hidden" label="隐藏">
         <template slot-scope="scope">
-          <span v-if="scope.row.hidden">是</span>
-          <span v-else>否</span>
+          <el-tag v-if="scope.row.hidden" type="info">是</el-tag>
         </template>
       </el-table-column>
-      <el-table-column prop="sort" label="排序" />
-      <el-table-column prop="createTime" label="创建时间" />
-      <el-table-column label="操作" width="115" align="center" fixed="right">
+      <!-- <el-table-column prop="sort" label="排序" />
+      <el-table-column prop="createTime" label="创建时间" /> -->
+      <el-table-column align="center" label="操作" width="115" fixed="right">
         <template slot-scope="scope">
           <ud-operation :data="scope.row" :permission="permission" msg="确定删除吗,如果存在下级节点则一并删除，此操作不能撤销！" />
         </template>
@@ -104,7 +102,6 @@
 
 <script>
 import IconSelect from '@/components/IconSelect'
-import crudPermission from '@/api/system/permission'
 import rrOperation from '@/components/Crud/RR.operation.vue'
 import udOperation from '@/components/Crud/UD.operation.vue'
 import crudOperation from '@/components/Crud/CRUD.operation.vue'
@@ -112,28 +109,35 @@ import CRUD, { presenter, header, form, crud } from '@/components/Crud/crud'
 import Treeselect from '@riophae/vue-treeselect'
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 
+import permissionApi from '@/api/system/permission'
+
 export default {
   name: 'Permission',
   components: { IconSelect, rrOperation, udOperation, crudOperation, Treeselect },
   cruds() {
-    return CRUD({ title: '权限', url: '/permissions', crudMethod: { ...crudPermission }, isPage: false })
+    return CRUD({ title: '权限', url: '/permissions', crudMethod: { ...permissionApi }, isPage: false })
   },
   dicts: ['permissionType', 'yesOrNo'],
-  mixins: [presenter(), header(), form({
-    // 表单初始值
-    id: null,
-    permissionName: null,
-    permissionType: 'DIR',
-    icon: null,
-    iframe: false,
-    hidden: false,
-    permission: null,
-    routerPath: null,
-    sort: 999,
-    componentName: null,
-    componentPath: null,
-    parentId: null
-  }), crud()],
+  mixins: [
+    presenter(),
+    header(),
+    form({
+      // 表单初始值
+      id: null,
+      permissionName: null,
+      permissionType: 'DIR',
+      icon: null,
+      iframe: false,
+      hidden: false,
+      permission: null,
+      routerPath: null,
+      sort: 999,
+      componentName: null,
+      componentPath: null,
+      parentId: null
+    }),
+    crud()
+  ],
   data() {
     return {
       // 操作权限定义
@@ -153,57 +157,41 @@ export default {
       // 表单验证规则
       rules: [],
       dirRules: {
-        icon: [
-          { required: true, message: '请选择图标', trigger: 'change' }
-        ],
+        icon: [{ required: true, message: '请选择图标', trigger: 'change' }],
         permissionName: [
           { required: true, message: '请输入名称', trigger: 'blur' },
           { min: 2, max: 20, message: '长度在 2 到 20 个字符', trigger: 'blur' }
         ],
-        routerPath: [
-          { required: true, message: '请填写路由地址', trigger: 'blur' }
-        ],
-        parentId: [
-          { required: true, message: '请选择上级菜单', trigger: 'blur' }
-        ]
+        routerPath: [{ required: true, message: '请填写路由地址', trigger: 'blur' }],
+        parentId: [{ required: true, message: '请选择上级菜单', trigger: 'blur' }]
       },
       menuRules: {
-        icon: [
-          { required: true, message: '请选择菜单图标', trigger: 'change' }
-        ],
+        icon: [{ required: true, message: '请选择菜单图标', trigger: 'change' }],
         permissionName: [
           { required: true, message: '请输入名称', trigger: 'blur' },
           { min: 2, max: 20, message: '长度在 2 到 20 个字符', trigger: 'blur' }
         ],
-        routerPath: [
-          { required: true, message: '请填写路由地址', trigger: 'blur' }
-        ],
-        parentId: [
-          { required: true, message: '请选择上级菜单', trigger: 'blur' }
-        ]
+        routerPath: [{ required: true, message: '请填写路由地址', trigger: 'blur' }],
+        parentId: [{ required: true, message: '请选择上级菜单', trigger: 'blur' }]
       },
       buttonRules: {
         permissionName: [
           { required: true, message: '请输入名称', trigger: 'blur' },
           { min: 2, max: 20, message: '长度在 2 到 20 个字符', trigger: 'blur' }
         ],
-        permission: [
-          { required: true, message: '请填写权限标识', trigger: 'blur' }
-        ],
-        parentId: [
-          { required: true, message: '请选择上级菜单', trigger: 'blur' }
-        ]
+        permission: [{ required: true, message: '请填写权限标识', trigger: 'blur' }],
+        parentId: [{ required: true, message: '请选择上级菜单', trigger: 'blur' }]
       }
     }
   },
   methods: {
     // 查询后做的操作
-    [CRUD.HOOK.afterRefresh](curd, form) {
+    [CRUD.HOOK.afterRefresh](curd) {
       // 生成下拉树需要的结构
       const root = [{ id: 0, label: '顶级类目', children: null }]
       const tempFunc = (node, data) => {
         node.children = []
-        data.forEach(element => {
+        data.forEach((element) => {
           const childrenNode = {
             id: element.id,
             label: element.permissionName
@@ -232,20 +220,30 @@ export default {
     },
     // 切换类型
     changeType(type) {
-      Object.keys(this.type).forEach(k => { this.type[k] = k === type })
+      Object.keys(this.type).forEach((k) => {
+        this.type[k] = k === type
+      })
       switch (type) {
-        case 'DIR': this.rules = this.dirRules; break
-        case 'MENU': this.rules = this.menuRules; break
-        case 'BUTTON': this.rules = this.buttonRules; break
-        default: this.rules = this.dirRules; break
+        case 'DIR':
+          this.rules = this.dirRules
+          break
+        case 'MENU':
+          this.rules = this.menuRules
+          break
+        case 'BUTTON':
+          this.rules = this.buttonRules
+          break
+        default:
+          this.rules = this.dirRules
+          break
       }
       setTimeout(() => {
         this.$refs['form'].clearValidate()
       }, 50)
     },
     // 选中图标
-    selected(name) {
-      this.form.icon = name
+    selected(icon) {
+      this.form.icon = icon
     },
     // 禁止输入空格
     keydown(e) {

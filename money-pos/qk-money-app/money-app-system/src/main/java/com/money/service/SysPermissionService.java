@@ -6,7 +6,6 @@ import com.money.dto.SysPermissionDTO;
 import com.money.dto.query.SysPermissionQueryDTO;
 import com.money.entity.SysPermission;
 import com.money.vo.SysPermissionVO;
-import com.money.vo.VueRouterVO;
 
 import java.util.List;
 import java.util.Set;
@@ -25,7 +24,7 @@ public interface SysPermissionService extends IService<SysPermission> {
      * @param roleIds 权限id
      * @return {@link List}<{@link SysPermission}>
      */
-    List<SysPermission> getPermissionByRole(List<Long> roleIds);
+    List<SysPermission> getByRole(List<Long> roleIds);
 
     /**
      * 查询权限列表
@@ -63,11 +62,4 @@ public interface SysPermissionService extends IService<SysPermission> {
      */
     List<Long> getAllSubIds(Long id);
 
-    /**
-     * 得到vue路由器
-     *
-     * @param userId 用户id
-     * @return {@link List}<{@link VueRouterVO}>
-     */
-    List<VueRouterVO> getVueRouter(Long userId);
 }

@@ -1,6 +1,6 @@
 import { constantRoutes } from '@/router'
 import Layout from '@/layout/index'
-import { buildRouter } from '@/api/system/permission'
+import { buildRouter } from '@/api/system/auth'
 
 const state = {
   routes: [],
@@ -15,7 +15,7 @@ const mutations = {
 }
 
 const actions = {
-  generateRoutes ({ commit }) {
+  generateRoutes({ commit }) {
     return new Promise(resolve => {
       buildRouter().then(res => {
         let accessedRoutes = res.data

@@ -1,6 +1,6 @@
 import request from '@/api/request'
 
-export function getAll() {
+export function getAllRole() {
   return request({
     url: '/roles/all',
     method: 'get'
@@ -31,13 +31,6 @@ export function del(ids) {
   })
 }
 
-export function changeStatus(id, enabled) {
-  return request({
-    url: `/roles/changeStatus?id=${id}&enabled=${enabled}`,
-    method: 'post'
-  })
-}
-
 export function configurePermissions(id, permissionIds) {
   return request({
     url: `/roles/${id}/permission`,
@@ -46,4 +39,4 @@ export function configurePermissions(id, permissionIds) {
   })
 }
 
-export default { add, edit, del, changeStatus, configurePermissions }
+export default { add, edit, del, configurePermissions }

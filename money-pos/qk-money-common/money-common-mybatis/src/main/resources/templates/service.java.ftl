@@ -7,7 +7,7 @@ import ${package.Other}.${table.entityName}.${table.entityName}DTO;
 import ${package.Other}.${table.entityName}.${table.entityName}QueryDTO;
 import ${package.Other}.${table.entityName}.${table.entityName}VO;
 
-import java.util.Set;
+import java.util.Collection;
 
 /**
  * <p>
@@ -28,6 +28,6 @@ public interface ${table.serviceName} extends ${superServiceClass}<${entity}> {
 
     void update(${table.entityName}DTO updateDTO);
 
-    void delete(Set<Long> ids);
+    void delete(Collection<Long> ids);
 }
 </#if>

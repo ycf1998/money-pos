@@ -2,39 +2,40 @@
   <div class="app-container">
     <!-- 搜索 -->
     <div v-if="crud.props.searchToggle" class="filter-container">
-      <el-input v-model="query.roleCode" placeholder="角色编码" style="width: 200px;" class="filter-item" @keyup.enter.native="crud.toQuery" />
-      <el-input v-model="query.name" placeholder="角色名称/描述" style="width: 200px;" class="filter-item" @keyup.enter.native="crud.toQuery" />
-      <el-select v-model="query.enabled" clearable placeholder="状态" class="filter-item" style="width: 90px" @change="crud.toQuery">
+      <el-input v-model="query.roleCode" placeholder="角色编码" class="filter-item-200" @keyup.enter.native="crud.toQuery" />
+      <el-input v-model="query.name" placeholder="角色名称/描述" class="filter-item-200" @keyup.enter.native="crud.toQuery" />
+      <el-select v-model="query.enabled" clearable placeholder="状态" class="filter-item-200" @change="crud.toQuery">
         <el-option v-for="item in dict.switch" :key="item.value" :label="item.label" :value="item.value" />
       </el-select>
       <rr-operation />
     </div>
-    <!-- CRUD操作 -->
-    <crud-operation :permission="permission" />
+
     <el-row :gutter="20">
-      <el-col :span="16">
+      <el-col :sm="24" :md="16">
+        <!-- CRUD操作 -->
+        <crud-operation :permission="permission" />
         <!-- 角色管理 -->
-        <el-table ref="table" v-loading="crud.loading" highlight-current-row :data="crud.data" style="width: 100%;" @selection-change="crud.selectionChangeHandler" @current-change="handleCurrentChange">
-          <el-table-column :selectable="checkboxT" type="selection" width="55" />
+        <el-table ref="table" v-loading="crud.loading" highlight-current-row :data="crud.data" @selection-change="crud.selectionChangeHandler" @current-change="handleCurrentChange">
+          <el-table-column :selectable="row => row.level > user.level" type="selection" width="55" />
           <el-table-column prop="roleCode" label="角色编码" />
           <el-table-column prop="roleName" label="角色名称" />
           <el-table-column prop="level" label="角色级别" />
           <el-table-column :show-overflow-tooltip="true" prop="description" label="描述" />
-          <el-table-column label="状态" align="center" prop="enabled">
+          <el-table-column label="状态" prop="enabled">
             <template slot-scope="scope">
               <el-switch v-model="scope.row.enabled" active-color="#409EFF" inactive-color="#F56C6C" @change="changeEnabled(scope.row, scope.row.enabled)" />
             </template>
           </el-table-column>
           <el-table-column prop="count" label="角色人数" />
-          <el-table-column label="操作" width="115" align="center" fixed="right">
+          <el-table-column align="center" label="操作" width="115" fixed="right">
             <template slot-scope="scope">
-              <ud-operation :data="scope.row" :permission="permission" :disabled-edit="scope.row.level < user.level" :disabled-del="scope.row.level < user.level" />
+              <ud-operation :data="scope.row" :permission="permission" :disabled-edit="scope.row.level <= user.level" :disabled-del="scope.row.level <= user.level" />
             </template>
           </el-table-column>
         </el-table>
         <pagination />
       </el-col>
-      <el-col :span="8">
+      <el-col :sm="24" :md="8">
         <!-- 菜单授权 -->
         <el-card class="box-card" shadow="never">
           <div slot="header" class="clearfix">
@@ -48,16 +49,16 @@
       </el-col>
     </el-row>
     <!--表单渲染-->
-    <el-dialog append-to-body :close-on-click-modal="false" :before-close="crud.cancelCU" :visible.sync="crud.status.cu > 0" :title="crud.status.title" width="350px">
-      <el-form ref="form" :inline="true" :model="form" :rules="rules" size="small" label-width="80px">
+    <el-dialog append-to-body :close-on-click-modal="false" :before-close="crud.cancelCU" :visible.sync="crud.status.cu > 0" :title="crud.status.title" width="360px">
+      <el-form ref="form" :inline="true" :model="form" :rules="rules" label-width="80px">
         <el-form-item label="角色编码" prop="roleCode">
-          <el-input v-model="form.roleCode" :disabled="crud.status.isEdit" @keydown.native="keydown($event)" />
+          <el-input v-model="form.roleCode" :disabled="crud.status.isEdit" style="width: 220px;" @keydown.native="keydown($event)" />
         </el-form-item>
         <el-form-item label="角色名称" prop="roleName">
-          <el-input v-model="form.roleName" @keydown.native="keydown($event)" />
+          <el-input v-model="form.roleName" style="width: 220px;" @keydown.native="keydown($event)" />
         </el-form-item>
         <el-form-item label="角色级别" prop="level">
-          <el-input-number v-model.number="form.level" :min="user.level" :max="99" />
+          <el-input-number v-model.number="form.level" style="width: 220px;" :min="user.level" :max="99" />
         </el-form-item>
         <el-form-item label="状态">
           <el-radio-group v-model="form.enabled">
@@ -65,7 +66,7 @@
           </el-radio-group>
         </el-form-item>
         <el-form-item label="角色描述">
-          <el-input v-model.trim="form.description" style="width: 200px" type="textarea" maxlength="50" show-word-limit />
+          <el-input v-model.trim="form.description" style="width: 220px;" type="textarea" maxlength="50" show-word-limit />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -78,30 +79,36 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import crudRole from '@/api/system/role'
-import { getPermissionsLazy, getAllSubIds } from '@/api/system/permission'
 import rrOperation from '@/components/Crud/RR.operation.vue'
 import udOperation from '@/components/Crud/UD.operation.vue'
 import crudOperation from '@/components/Crud/CRUD.operation.vue'
 import Pagination from '@/components/Crud/Pagination.vue'
 import CRUD, { presenter, header, form, crud } from '@/components/Crud/crud'
 
+import roleApi from '@/api/system/role'
+import { getPermissionsLazy, getAllSubIds } from '@/api/system/permission'
+
 export default {
   name: 'Role',
   components: { Pagination, rrOperation, udOperation, crudOperation },
   cruds() {
-    return CRUD({ title: '角色', url: '/roles', crudMethod: { ...crudRole } })
+    return CRUD({ title: '角色', url: '/roles', crudMethod: { ...roleApi } })
   },
   dicts: ['switch'],
-  mixins: [presenter(), header(), form({
-    // 表单初始值
-    id: null,
-    roleCode: null,
-    roleName: null,
-    level: 1,
-    description: null,
-    enabled: true
-  }), crud()],
+  mixins: [
+    presenter(),
+    header(),
+    form({
+      // 表单初始值
+      id: null,
+      roleCode: null,
+      roleName: null,
+      level: 1,
+      description: null,
+      enabled: 'true'
+    }),
+    crud()
+  ],
   data() {
     return {
       // 操作权限定义
@@ -132,67 +139,75 @@ export default {
     }
   },
   computed: {
-    ...mapGetters([
-      'user'
-    ])
+    ...mapGetters(['user'])
   },
   methods: {
-    // 新增弹窗前操作
-    [CRUD.HOOK.beforeToAdd](crud, form) {
-      form.enabled = 'true'
-    },
     // 修改弹窗前操作
-    [CRUD.HOOK.beforeToEdit](crud, form) {
-      form.enabled = form.enabled.toString()
+    [CRUD.HOOK.beforeToEdit](crud, row) {
+      this.form.enabled = row.enabled.toString()
     },
     // 修改角色可用状态
     changeEnabled(data, val) {
-      this.$confirm('此操作将 "' + this.dict.label.switch[val] + '" ' + data.roleName + ', 是否继续？', '提示', {
+      let confirm = `此操作将${val ? '启用' : '禁用'}角色 【${data.roleName}】，是否继续？`
+      this.$confirm(confirm, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
-      }).then(() => {
-        crudRole.changeStatus(data.id, val).then(res => {
-          this.crud.notify(this.dict.label.switch[val] + '成功', CRUD.NOTIFICATION_TYPE.SUCCESS)
-        }).catch(() => {
+      })
+        .then(() => {
+          roleApi
+            .edit({
+              id: data.id,
+              enabled: val
+            })
+            .then(() => {
+              this.crud.submitSuccessNotify()
+            })
+            .catch(() => {
+              data.enabled = !data.enabled
+            })
+        })
+        .catch(() => {
           data.enabled = !data.enabled
         })
-      }).catch(() => {
-        data.enabled = !data.enabled
-      })
     },
     // 选中角色
-    handleCurrentChange(val) {
-      if (val) {
+    handleCurrentChange(role) {
+      this.showButton = false
+      if (role) {
         const _this = this
-        this.selectedRole = val.id
+        this.selectedRole = role.id
         // 清空原本选中
         this.$refs.permission.setCheckedKeys([])
         // 初始化默认选中的key
         this.selectedPermissions = []
-        val.permissions.forEach((data) => {
+        role.permissions.forEach((data) => {
           _this.selectedPermissions.push(data.id)
         })
-        this.showButton = true
+        if (role.level > this.user.level) {
+          this.showButton = true
+        }
       }
     },
     // 加载下级权限
     getPermissions(node, resolve) {
       setTimeout(() => {
-        getPermissionsLazy(node.data.id ? node.data.id : 0).then(res => {
+        getPermissionsLazy(node.data.id ? node.data.id : 0).then((res) => {
           // el-tree 根据leaf属性显示展开按钮
-          res.data.forEach(e => { e.leaf = e.subCount === 0 })
+          res.data.forEach((e) => {
+            e.leaf = e.subCount === 0
+          })
           resolve(res.data)
         })
       }, 100)
     },
     // 选中权限
     permissionChange(permission) {
-      getAllSubIds(permission.id).then(res => {
+      getAllSubIds(permission.id).then((res) => {
         const subIds = res.data
         // 如果已有下级被选中，有漏选补选，无漏选反向
-        if (subIds.every(e => this.selectedPermissions.includes(e))) {
-          this.selectedPermissions = this.selectedPermissions.filter(e => !subIds.includes(e))
+        if (subIds.every((e) => this.selectedPermissions.includes(e))) {
+          this.selectedPermissions = this.selectedPermissions.filter((e) => !subIds.includes(e))
         } else {
           // 取已选中和本次选中（包含子节点）并集
           this.selectedPermissions = [...new Set([...this.selectedPermissions, ...subIds])]
@@ -203,24 +218,22 @@ export default {
     // 保存权限配置
     saveConfig() {
       this.permissionLoad = true
-      crudRole.configurePermissions(this.selectedRole, this.selectedPermissions).then(() => {
-        this.crud.notify('保存成功', CRUD.NOTIFICATION_TYPE.SUCCESS)
-        this.permissionLoad = false
-        this.crud.refresh()
-      }).catch(err => {
-        this.permissionLoad = false
-        console.log(err.response.data.message)
-      })
+      roleApi
+        .configurePermissions(this.selectedRole, this.selectedPermissions)
+        .then(() => {
+          this.crud.submitSuccessNotify()
+          this.permissionLoad = false
+          this.crud.refresh()
+        })
+        .catch(() => {
+          this.permissionLoad = false
+        })
     },
     // 禁止输入空格
     keydown(e) {
       if (e.keyCode === 32) {
         e.returnValue = false
       }
-    },
-    // 复选框是否可选
-    checkboxT(row, rowIndex) {
-      return !(row.level < this.user.level)
     }
   }
 }

@@ -1,12 +1,5 @@
 import request from '@/api/request'
 
-export function buildRouter() {
-  return request({
-    url: '/permissions/router',
-    method: 'get'
-  })
-}
-
 export function getPermissionsLazy(pid) {
   return request({
     url: `/permissions/lazy?parentId=${pid}`,

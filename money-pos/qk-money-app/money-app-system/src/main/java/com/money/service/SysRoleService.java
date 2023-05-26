@@ -9,6 +9,7 @@ import com.money.entity.SysUserRoleRelation;
 import com.money.common.vo.PageVO;
 import com.money.vo.SysRoleVO;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -26,7 +27,7 @@ public interface SysRoleService extends IService<SysRole> {
      * @param userId 用户id
      * @return {@link Integer}
      */
-    Integer getLevel(Long userId);
+    Integer getHighestLevel(Long userId);
 
     /**
      * 获取用户所有角色
@@ -34,14 +35,14 @@ public interface SysRoleService extends IService<SysRole> {
      * @param userId 用户id
      * @return {@link List}<{@link SysRole}>
      */
-    List<SysRole> getRoles(Long userId);
+    List<SysRole> getByUser(Long userId);
 
     /**
      * 获取所有角色
      *
      * @return {@link List}<{@link SysRole}>
      */
-    List<SysRole> getAllRoles();
+    List<SysRole> getAll();
 
     /**
      * 查询角色列表
@@ -70,7 +71,7 @@ public interface SysRoleService extends IService<SysRole> {
      *
      * @param ids ids
      */
-    void deleteById(Set<Long> ids);
+    void deleteById(Collection<Long> ids);
 
     /**
      * 配置权限
@@ -79,14 +80,6 @@ public interface SysRoleService extends IService<SysRole> {
      * @param permissions 权限
      */
     void configurePermissions(Long id, Set<Long> permissions);
-
-    /**
-     * 修改可用状态
-     *
-     * @param id      id
-     * @param enabled 启用
-     */
-    void changeStatus(Long id, Boolean enabled);
 
     /**
      * 关联角色
@@ -101,37 +94,5 @@ public interface SysRoleService extends IService<SysRole> {
      * @param userId 用户id
      */
     void relevanceByUser(Long userId);
-
-    /**
-     * 更新角色人数
-     *
-     * @param id   id
-     * @param step 步
-     */
-    void updateRoleCount(List<Long> id, long step);
-
-    /**
-     * 检查角色级别
-     *
-     * @param userId     用户id
-     * @param checkLevel 检查级别
-     */
-    void checkLevel(Long userId, Integer checkLevel);
-
-    /**
-     * 检查角色级别
-     *
-     * @param userId  用户id
-     * @param roleIds 角色id
-     */
-    void checkLevelByRoleId(Long userId, Set<Long> roleIds);
-
-    /**
-     * 检查角色级别
-     *
-     * @param userId        用户id
-     * @param checkUserIds 检查的用户
-     */
-    void checkLevelByUserId(Long userId, Set<Long> checkUserIds);
 
 }

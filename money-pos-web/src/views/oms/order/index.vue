@@ -2,7 +2,7 @@
   <div class="app-container">
     <!-- 搜索 -->
     <div v-if="crud.props.searchToggle" class="filter-container">
-      <el-date-picker v-model="datePicker" class="filter-item-200" type="datetimerange" :picker-options="pickerOptions" value-format="yyyy-MM-dd HH:mm:ss" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" align="right" style="margin-right:10px" />
+      <el-date-picker v-model="datePicker" class="filter-item" type="datetimerange" :picker-options="pickerOptions" value-format="yyyy-MM-dd HH:mm:ss" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" align="right" style="margin-right:10px" />
       <el-input v-model="query.orderNo" placeholder="订单号" class="filter-item-200" @keyup.enter.native="crud.toQuery" />
       <el-input v-model="query.member" placeholder="会员" class="filter-item-200" @keyup.enter.native="crud.toQuery" />
       <el-select v-model="query.status" clearable placeholder="状态" class="filter-item-200" @change="crud.toQuery">
@@ -81,30 +81,32 @@ export default {
       calculator: calculator,
       datePicker: [dayjs().startOf('M').format('YYYY-MM-DD HH:mm:ss'), dayjs().endOf('M').format('YYYY-MM-DD HH:mm:ss')],
       pickerOptions: {
-        shortcuts: [{
-          text: '今天',
-          onClick(picker) {
-            picker.$emit('pick', [dayjs().startOf('d').toDate(), dayjs().endOf('d').toDate()])
+        shortcuts: [
+          {
+            text: '今天',
+            onClick(picker) {
+              picker.$emit('pick', [dayjs().startOf('d').toDate(), dayjs().endOf('d').toDate()])
+            }
+          },
+          {
+            text: '本月',
+            onClick(picker) {
+              picker.$emit('pick', [dayjs().startOf('M').toDate(), dayjs().endOf('M').toDate()])
+            }
+          },
+          {
+            text: '最近7天',
+            onClick(picker) {
+              picker.$emit('pick', [dayjs().subtract(6, 'd').startOf('d').toDate(), dayjs().endOf('d').toDate()])
+            }
+          },
+          {
+            text: '最近30天',
+            onClick(picker) {
+              picker.$emit('pick', [dayjs().subtract(29, 'd').startOf('d').toDate(), dayjs().endOf('d').toDate()])
+            }
           }
-        },
-        {
-          text: '本月',
-          onClick(picker) {
-            picker.$emit('pick', [dayjs().startOf('M').toDate(), dayjs().endOf('M').toDate()])
-          }
-        },
-        {
-          text: '最近7天',
-          onClick(picker) {
-            picker.$emit('pick', [dayjs().subtract(6, 'd').startOf('d').toDate(), dayjs().endOf('d').toDate()])
-          }
-        },
-        {
-          text: '最近30天',
-          onClick(picker) {
-            picker.$emit('pick', [dayjs().subtract(29, 'd').startOf('d').toDate(), dayjs().endOf('d').toDate()])
-          }
-        }]
+        ]
       }
     }
   },
@@ -116,10 +118,14 @@ export default {
     },
     // 查询后
     [CRUD.HOOK.afterRefresh]() {
-      orderApi.count({
-        startTime: this.query.startTime,
-        endTime: this.query.endTime
-      }).then(res => { this.countInfo = res.data })
+      orderApi
+        .count({
+          startTime: this.query.startTime,
+          endTime: this.query.endTime
+        })
+        .then((res) => {
+          this.countInfo = res.data
+        })
     },
     // 退货
     handleReturn(row) {
@@ -128,7 +134,7 @@ export default {
         confirmButtonText: '确定',
         type: 'warning'
       }).then(() => {
-        orderApi.returnOrder([row.id]).then(response => {
+        orderApi.returnOrder([row.id]).then((response) => {
           this.$notify({
             title: 'Success',
             message: '退单成功',

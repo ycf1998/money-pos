@@ -2,15 +2,15 @@ package com.money.controller;
 
 
 import com.money.common.dto.ValidGroup;
+import com.money.common.vo.PageVO;
 import com.money.dto.ChangePasswordDTO;
 import com.money.dto.SysUserDTO;
 import com.money.dto.UpdateProfileDTO;
 import com.money.dto.query.SysUserQueryDTO;
 import com.money.security.SecurityGuard;
 import com.money.security.annotation.CurrentUser;
-import com.money.service.SysRoleService;
+import com.money.service.SysAuthService;
 import com.money.service.SysUserService;
-import com.money.common.vo.PageVO;
 import com.money.vo.SysUserVO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -29,8 +29,8 @@ import java.util.Set;
 @RequestMapping("/users")
 public class SysUserController {
 
+    private final SysAuthService sysAuthService;
     private final SysUserService sysUserService;
-    private final SysRoleService sysRoleService;
 
     @Operation(summary = "上传头像")
     @PostMapping("/uploadAvatar")
@@ -61,7 +61,7 @@ public class SysUserController {
     @PostMapping
     @PreAuthorize("@rbac.hasPermission('user:add')")
     public void addSysUser(@Validated(ValidGroup.Save.class) @RequestBody SysUserDTO sysUserDTO) {
-        sysRoleService.checkLevelByRoleId(SecurityGuard.getRbacUser().getUserId(), sysUserDTO.getRoles());
+        sysAuthService.checkLevelForRole(SecurityGuard.getRbacUser().getUserId(), sysUserDTO.getRoles());
         sysUserService.add(sysUserDTO);
     }
 
@@ -69,8 +69,8 @@ public class SysUserController {
     @PutMapping
     @PreAuthorize("@rbac.hasPermission('user:edit')")
     public void updateSysUser(@Validated(ValidGroup.Update.class) @RequestBody SysUserDTO sysUserDTO) {
-        sysRoleService.checkLevelByUserId(SecurityGuard.getRbacUser().getUserId(), Collections.singleton(sysUserDTO.getId()));
-        sysRoleService.checkLevelByRoleId(SecurityGuard.getRbacUser().getUserId(), sysUserDTO.getRoles());
+        sysAuthService.checkLevelForUser(SecurityGuard.getRbacUser().getUserId(), Collections.singleton(sysUserDTO.getId()));
+        sysAuthService.checkLevelForRole(SecurityGuard.getRbacUser().getUserId(), sysUserDTO.getRoles());
         sysUserService.updateById(sysUserDTO);
     }
 
@@ -78,15 +78,8 @@ public class SysUserController {
     @DeleteMapping
     @PreAuthorize("@rbac.hasPermission('user:del')")
     public void deleteSysUser(@RequestBody Set<Long> ids) {
-        sysRoleService.checkLevelByUserId(SecurityGuard.getRbacUser().getUserId(), ids);
+        sysAuthService.checkLevelForUser(SecurityGuard.getRbacUser().getUserId(), ids);
         sysUserService.deleteById(ids);
     }
 
-    @Operation(summary = "更改用户状态")
-    @PostMapping("/changeStatus")
-    @PreAuthorize("@rbac.hasPermission('user:edit')")
-    public void changeStatus(@RequestParam Long id, @RequestParam Boolean enabled) {
-        sysRoleService.checkLevelByUserId(SecurityGuard.getRbacUser().getUserId(), Collections.singleton(id));
-        sysUserService.changeStatus(id, enabled);
-    }
 }

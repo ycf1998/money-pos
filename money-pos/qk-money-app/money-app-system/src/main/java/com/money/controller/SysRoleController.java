@@ -5,6 +5,7 @@ import com.money.dto.SysRoleDTO;
 import com.money.dto.query.SysRoleQueryDTO;
 import com.money.entity.SysRole;
 import com.money.security.SecurityGuard;
+import com.money.service.SysAuthService;
 import com.money.service.SysRoleService;
 import com.money.common.vo.PageVO;
 import com.money.vo.SysRoleVO;
@@ -25,13 +26,14 @@ import java.util.Set;
 @RequestMapping("/roles")
 public class SysRoleController {
 
+    private final SysAuthService sysAuthService;
     private final SysRoleService sysRoleService;
 
     @Operation(summary = "获取所有角色信息")
     @GetMapping("/all")
     @PreAuthorize("@rbac.hasPermission('role:list', 'user:add', 'user:edit')")
     public List<SysRole> getAllRoles() {
-        return sysRoleService.getAllRoles();
+        return sysRoleService.getAll();
     }
 
     @Operation(summary = "分页查询角色信息")
@@ -45,7 +47,7 @@ public class SysRoleController {
     @PostMapping
     @PreAuthorize("@rbac.hasPermission('role:add')")
     public void addSysRole(@Validated(ValidGroup.Save.class) @RequestBody SysRoleDTO sysRoleDTO) {
-        sysRoleService.checkLevel(SecurityGuard.getRbacUser().getUserId(), sysRoleDTO.getLevel());
+        sysAuthService.checkLevel(SecurityGuard.getRbacUser().getUserId(), sysRoleDTO.getLevel());
         sysRoleService.add(sysRoleDTO);
     }
 
@@ -53,8 +55,8 @@ public class SysRoleController {
     @PutMapping
     @PreAuthorize("@rbac.hasPermission('role:edit')")
     public void updateSysRole(@Validated(ValidGroup.Update.class) @RequestBody SysRoleDTO sysRoleDTO) {
-        sysRoleService.checkLevelByRoleId(SecurityGuard.getRbacUser().getUserId(), Collections.singleton(sysRoleDTO.getId()));
-        sysRoleService.checkLevel(SecurityGuard.getRbacUser().getUserId(), sysRoleDTO.getLevel());
+        sysAuthService.checkLevel(SecurityGuard.getRbacUser().getUserId(), sysRoleDTO.getLevel());
+        sysAuthService.checkLevelForRole(SecurityGuard.getRbacUser().getUserId(), Collections.singleton(sysRoleDTO.getId()));
         sysRoleService.updateById(sysRoleDTO);
     }
 
@@ -62,23 +64,15 @@ public class SysRoleController {
     @DeleteMapping
     @PreAuthorize("@rbac.hasPermission('role:del')")
     public void deleteSysRole(@RequestBody Set<Long> ids) {
-        sysRoleService.checkLevelByRoleId(SecurityGuard.getRbacUser().getUserId(), ids);
+        sysAuthService.checkLevelForRole(SecurityGuard.getRbacUser().getUserId(), ids);
         sysRoleService.deleteById(ids);
-    }
-
-    @Operation(summary = "更改角色状态")
-    @PostMapping("/changeStatus")
-    @PreAuthorize("@rbac.hasPermission('role:edit')")
-    public void changeStatus(@RequestParam Long id, @RequestParam Boolean enabled) {
-        sysRoleService.checkLevelByRoleId(SecurityGuard.getRbacUser().getUserId(), Collections.singleton(id));
-        sysRoleService.changeStatus(id, enabled);
     }
 
     @Operation(summary = "角色配置权限")
     @PostMapping("/{id}/permission")
     @PreAuthorize("@rbac.hasPermission('role:edit')")
     public void configurePermissions(@PathVariable Long id, @RequestBody Set<Long> permissions) {
-        sysRoleService.checkLevelByRoleId(SecurityGuard.getRbacUser().getUserId(), Collections.singleton(id));
+        sysAuthService.checkLevelForRole(SecurityGuard.getRbacUser().getUserId(), Collections.singleton(id));
         sysRoleService.configurePermissions(id, permissions);
     }
 }

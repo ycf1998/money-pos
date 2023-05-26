@@ -1,6 +1,6 @@
 import request from '@/api/request'
 
-export function add(data) {
+export function add (data) {
   return request({
     url: '/dict',
     method: 'post',
@@ -8,7 +8,7 @@ export function add(data) {
   })
 }
 
-export function edit(data) {
+export function edit (data) {
   return request({
     url: '/dict',
     method: 'put',
@@ -16,7 +16,7 @@ export function edit(data) {
   })
 }
 
-export function del(ids) {
+export function del (ids) {
   return request({
     url: '/dict',
     method: 'delete',
@@ -24,7 +24,7 @@ export function del(ids) {
   })
 }
 
-export function getDetail(dict) {
+export function getDetail (dict) {
   return request({
     url: `/dict/detail?dict=${dict}`,
     method: 'get'

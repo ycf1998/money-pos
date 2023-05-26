@@ -15,7 +15,7 @@ import ${package.Other}.${table.entityName}.${table.entityName}DTO;
 import ${package.Other}.${table.entityName}.${table.entityName}QueryDTO;
 import ${package.Other}.${table.entityName}.${table.entityName}VO;
 
-import java.util.Set;
+import java.util.Collection;
 
 /**
  * <p>
@@ -57,7 +57,7 @@ public class ${table.serviceImplName} extends ${superServiceImplClass}<${table.m
     }
 
     @Override
-    public void delete(Set<Long> ids) {
+    public void delete(Collection<Long> ids) {
         this.removeByIds(ids);
     }
 

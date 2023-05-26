@@ -2,10 +2,8 @@ package com.money.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollectionUtil;
-import cn.hutool.core.collection.ListUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
-import com.baomidou.mybatisplus.extension.conditions.update.LambdaUpdateChainWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.money.common.exception.BaseException;
 import com.money.constant.ErrorStatus;
@@ -14,13 +12,10 @@ import com.money.dto.SysPermissionDTO;
 import com.money.dto.query.SysPermissionQueryDTO;
 import com.money.entity.SysPermission;
 import com.money.entity.SysRolePermissionRelation;
-import com.money.exception.PermissionRelatedException;
 import com.money.mapper.SysPermissionMapper;
-import com.money.mapper.SysRolePermissionRelationMapper;
 import com.money.service.SysPermissionService;
+import com.money.service.SysRolePermissionRelationService;
 import com.money.vo.SysPermissionVO;
-import com.money.vo.VueRouterVO;
-import com.money.vo.VueRouterVO.Meta;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,14 +36,16 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, SysPermission> implements SysPermissionService {
 
-    private final SysRolePermissionRelationMapper sysRolePermissionRelationMapper;
+    private final SysRolePermissionRelationService sysRolePermissionRelationService;
 
     @Override
-    public List<SysPermission> getPermissionByRole(List<Long> roleIds) {
+    public List<SysPermission> getByRole(List<Long> roleIds) {
         if (CollectionUtil.isEmpty(roleIds)) {
             return Collections.emptyList();
         }
-        return sysRolePermissionRelationMapper.selectPermissionByRole(roleIds);
+        List<Long> permissionIdList = sysRolePermissionRelationService.getRelationByRole(roleIds)
+                .stream().map(SysRolePermissionRelation::getPermissionId).collect(Collectors.toList());
+        return permissionIdList.isEmpty() ? Collections.emptyList() : this.listByIds(permissionIdList);
     }
 
     @Override
@@ -79,7 +76,7 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
         if (StrUtil.isNotBlank(permissionDTO.getPermission())) {
             boolean exists = this.lambdaQuery().eq(SysPermission::getPermission, permissionDTO.getPermission()).exists();
             if (exists) {
-                throw new PermissionRelatedException(ErrorStatus.PERMISSION_ALREADY_EXIST);
+                throw new BaseException(ErrorStatus.DATA_ALREADY_EXIST, "权限");
             }
         }
         SysPermission sysPermission = new SysPermission();
@@ -97,7 +94,7 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
             boolean exists = this.lambdaQuery().eq(SysPermission::getPermission, permissionDTO.getPermission())
                     .ne(SysPermission::getId, permissionDTO.getId()).exists();
             if (exists) {
-                throw new PermissionRelatedException(ErrorStatus.PERMISSION_ALREADY_EXIST);
+                throw new BaseException(ErrorStatus.DATA_ALREADY_EXIST, "权限");
             }
         }
         SysPermission sysPermission = this.getById(permissionDTO.getId());
@@ -121,7 +118,7 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
             temp.addAll(allSubIds);
         });
         // 删除角色权限关联关系
-        new LambdaUpdateChainWrapper<>(sysRolePermissionRelationMapper).in(SysRolePermissionRelation::getPermissionId, temp).remove();
+        sysRolePermissionRelationService.lambdaUpdate().in(SysRolePermissionRelation::getPermissionId, temp).remove();
         this.removeBatchByIds(temp);
     }
 
@@ -131,22 +128,6 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
         allSubIds.add(id);
         recursionFillSubIds(id, allSubIds);
         return allSubIds;
-    }
-
-    @Override
-    public List<VueRouterVO> getVueRouter(Long userId) {
-        // todo 超级管理员放行所有权限
-        List<SysPermission> sysPermissions;
-        if (userId == 1) {
-            sysPermissions = this.lambdaQuery().in(SysPermission::getPermissionType, ListUtil.of(PermissionType.DIR, PermissionType.MENU)).orderByAsc(SysPermission::getSort).list();
-        } else {
-            sysPermissions = sysRolePermissionRelationMapper.selectPermissionByUser(userId);
-            // 过滤目录和菜单
-            sysPermissions = sysPermissions.stream()
-                    .filter(sysPermission -> ListUtil.of(PermissionType.DIR.name(), PermissionType.MENU.name()).contains(sysPermission.getPermissionType()))
-                    .collect(Collectors.toList());
-        }
-        return this.recursionFillRouter(0L, sysPermissions);
     }
 
     /**
@@ -172,30 +153,6 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
             subIds.add(subId);
             recursionFillSubIds(subId, subIds);
         });
-    }
-
-    /**
-     * 递归填补路由器
-     */
-    private List<VueRouterVO> recursionFillRouter(Long parentId, List<SysPermission> sysPermissions) {
-        List<VueRouterVO> routers = sysPermissions.stream().filter(sysPermission -> parentId.equals(sysPermission.getParentId()))
-                .map(sysPermission -> {
-                    // 对于空字符串得返回null，防止序列化回去
-                    VueRouterVO routerVO = new VueRouterVO();
-                    routerVO.setId(sysPermission.getId());
-                    routerVO.setPath(sysPermission.getRouterPath());
-                    routerVO.setName(sysPermission.getComponentName());
-                    Meta meta = new Meta();
-                    meta.setTitle(sysPermission.getPermissionName());
-                    meta.setIcon(sysPermission.getIcon());
-                    routerVO.setMeta(meta);
-                    routerVO.setHidden(sysPermission.getHidden());
-                    routerVO.setIframe(sysPermission.getIframe());
-                    routerVO.setComponent(PermissionType.DIR.name().equals(sysPermission.getPermissionType()) ? "Layout" : sysPermission.getComponentPath());
-                    return routerVO;
-                }).collect(Collectors.toList());
-        routers.forEach(router -> router.setChildren(this.recursionFillRouter(router.getId(), sysPermissions)));
-        return routers;
     }
 
     /**
@@ -240,7 +197,7 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
             }
         } else if (PermissionType.BUTTON.name().equals(permissionType)
                 && StrUtil.isBlank(permissionDTO.getPermission())) {
-                throw new BaseException("权限标识不允许为空");
+            throw new BaseException("权限标识不允许为空");
         }
     }
 }

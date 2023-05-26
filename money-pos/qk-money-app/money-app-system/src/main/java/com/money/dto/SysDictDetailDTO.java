@@ -14,19 +14,19 @@ public class SysDictDetailDTO {
     @NotNull(groups = ValidGroup.Update.class)
     private Long id;
 
-    @Schema(description="字典名")
-    @NotBlank(message = "字典名不允许为空", groups = {ValidGroup.Save.class, ValidGroup.Update.class})
+    @Schema(description = "字典名")
+    @NotBlank(message = "字典名不允许为空", groups = {ValidGroup.Save.class})
     private String dict;
 
-    @Schema(description="字典标签")
-    @NotBlank(message = "字典标签不允许为空", groups = {ValidGroup.Save.class, ValidGroup.Update.class})
+    @Schema(description = "字典标签")
+    @NotBlank(message = "字典标签不允许为空", groups = {ValidGroup.Save.class})
     private String label;
 
-    @Schema(description="字典值")
-    @NotBlank(message = "字典值不允许为空", groups = {ValidGroup.Save.class, ValidGroup.Update.class})
+    @Schema(description = "字典值")
+    @NotBlank(message = "字典值不允许为空", groups = {ValidGroup.Save.class})
     private String value;
 
-    @Schema(description="排序")
-    @NotNull(groups = {ValidGroup.Save.class, ValidGroup.Update.class})
+    @Schema(description = "排序")
+    @NotNull(groups = {ValidGroup.Save.class})
     private Integer sort;
 }

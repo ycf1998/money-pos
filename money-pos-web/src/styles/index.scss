@@ -5,6 +5,11 @@
 @import './sidebar.scss';
 @import './btn.scss';
 
+html {
+  height: 100%;
+  box-sizing: border-box;
+}
+
 body {
   height: 100%;
   -moz-osx-font-smoothing: grayscale;
@@ -13,17 +18,24 @@ body {
   font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial, sans-serif;
 }
 
-label {
-  font-weight: 700;
+/*全局滚动条*/
+::-webkit-scrollbar{
+  height: 9px;
+  width: 9px;
 }
 
-html {
-  height: 100%;
-  box-sizing: border-box;
+::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  border-style: dashed;
+  border-color: transparent;
+  border-width: 2px;
+  background-color: rgba(157, 165, 183, 0.4);
+  background-clip: padding-box;
 }
 
-#app {
-  height: 100%;
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(157, 165, 183, 0.7);
+  cursor: pointer !important;
 }
 
 *,
@@ -119,24 +131,13 @@ aside {
   }
 }
 
+#app {
+  height: 100%;
+}
+
 .app-container {
   max-height: calc(100vh - 50px);
   padding: 20px;
-}
-
-#content-container {
-  max-height: calc(100vh - 230px);
-  max-width: 100vw;
-  overflow: auto;
-}
-
-.components-container {
-  margin: 30px 50px;
-  position: relative;
-}
-
-.pagination-container {
-  margin-top: 30px;
 }
 
 .text-center {
@@ -196,6 +197,10 @@ aside {
   }
 }
 
+label {
+  font-weight: 700;
+}
+
 //refine vue-multiselect plugin
 .multiselect {
   line-height: 16px;
@@ -203,24 +208,4 @@ aside {
 
 .multiselect--active {
   z-index: 1000 !important;
-}
-
-/*全局滚动条*/
-::-webkit-scrollbar{
-  height: 9px;
-  width: 9px;
-}
-
-::-webkit-scrollbar-thumb {
-  border-radius: 10px;
-  border-style: dashed;
-  border-color: transparent;
-  border-width: 2px;
-  background-color: rgba(157, 165, 183, 0.4);
-  background-clip: padding-box;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: rgba(157, 165, 183, 0.7);
-  cursor: pointer !important;
 }

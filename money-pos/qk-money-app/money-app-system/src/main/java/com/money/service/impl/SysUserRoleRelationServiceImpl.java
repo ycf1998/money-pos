@@ -8,6 +8,8 @@ import com.money.service.SysUserRoleRelationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * 管理员角色关联表(SysAdminRoleRelation)表服务实现类
  *
@@ -17,4 +19,8 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class SysUserRoleRelationServiceImpl extends ServiceImpl<SysUserRoleRelationMapper, SysUserRoleRelation> implements SysUserRoleRelationService {
+    @Override
+    public List<SysUserRoleRelation> getRelationByUser(Long userId) {
+        return this.lambdaQuery().eq(SysUserRoleRelation::getUserId, userId).list();
+    }
 }

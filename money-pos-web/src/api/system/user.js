@@ -40,11 +40,4 @@ export function del(ids) {
   })
 }
 
-export function changeStatus(id, enabled) {
-  return request({
-    url: `/users/changeStatus?id=${id}&enabled=${enabled}`,
-    method: 'post'
-  })
-}
-
-export default { add, edit, del, changeStatus }
+export default { add, edit, del }

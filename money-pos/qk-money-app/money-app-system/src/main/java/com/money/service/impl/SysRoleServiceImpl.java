@@ -2,10 +2,8 @@ package com.money.service.impl;
 
 
 import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.money.common.exception.BaseException;
@@ -13,13 +11,8 @@ import com.money.common.vo.PageVO;
 import com.money.constant.ErrorStatus;
 import com.money.dto.SysRoleDTO;
 import com.money.dto.query.SysRoleQueryDTO;
-import com.money.entity.SysPermission;
-import com.money.entity.SysRole;
-import com.money.entity.SysRolePermissionRelation;
-import com.money.entity.SysUserRoleRelation;
-import com.money.exception.RoleRelatedException;
+import com.money.entity.*;
 import com.money.mapper.SysRoleMapper;
-import com.money.security.SecurityGuard;
 import com.money.service.SysPermissionService;
 import com.money.service.SysRolePermissionRelationService;
 import com.money.service.SysRoleService;
@@ -27,14 +20,10 @@ import com.money.service.SysUserRoleRelationService;
 import com.money.util.PageUtil;
 import com.money.vo.SysRoleVO;
 import lombok.RequiredArgsConstructor;
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -52,18 +41,25 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     private final SysRolePermissionRelationService sysRolePermissionRelationService;
 
     @Override
-    public Integer getLevel(Long userId) {
-        return Optional.ofNullable(this.baseMapper.getLevel(userId)).orElse(Integer.MAX_VALUE);
+    public Integer getHighestLevel(Long userId) {
+        List<Long> roleIdList = sysUserRoleRelationService.getRelationByUser(userId)
+                .stream().map(SysUserRoleRelation::getRoleId).collect(Collectors.toList());
+        return this.listByIds(roleIdList).stream().map(SysRole::getLevel).min(Integer::compareTo)
+                .orElse(Integer.MAX_VALUE);
     }
 
     @Override
-    public List<SysRole> getRoles(Long userId) {
-        return this.baseMapper.selectRoleList(userId);
+    public List<SysRole> getByUser(Long userId) {
+        List<Long> relationRoleIdList = sysUserRoleRelationService.getRelationByUser(userId)
+                .stream().map(SysUserRoleRelation::getRoleId).collect(Collectors.toList());
+        return this.listByIds(relationRoleIdList)
+                .stream().sorted(Comparator.comparing(SysRole::getLevel))
+                .collect(Collectors.toList());
     }
 
     @Override
-    public List<SysRole> getAllRoles() {
-        return this.list(new LambdaQueryWrapper<SysRole>().eq(SysRole::getEnabled, true).orderByAsc(SysRole::getLevel));
+    public List<SysRole> getAll() {
+        return this.lambdaQuery().eq(SysRole::getEnabled, true).orderByAsc(SysRole::getLevel).list();
     }
 
     @Override
@@ -73,12 +69,13 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
                 .like(StrUtil.isNotBlank(queryDTO.getRoleCode()), SysRole::getRoleCode, queryDTO.getRoleCode())
                 .and(StrUtil.isNotBlank(queryDTO.getName()), wrapper -> wrapper.like(SysRole::getRoleName, queryDTO.getName())
                         .or(orWrapper -> orWrapper.like(SysRole::getDescription, queryDTO.getName())))
-                .orderByAsc(SysRole::getLevel)
+                .orderByAsc(StrUtil.isBlank(queryDTO.getSort()), SysRole::getLevel)
+                .last(StrUtil.isNotBlank(queryDTO.getSort()), queryDTO.getOrderBySql())
                 .page(PageUtil.toPage(queryDTO));
         return PageUtil.toPageVO(page, sysRole -> {
             SysRoleVO sysRoleVO = new SysRoleVO();
             BeanUtil.copyProperties(sysRole, sysRoleVO);
-            List<SysPermission> permissionByRole = sysPermissionService.getPermissionByRole(Collections.singletonList(sysRoleVO.getId()));
+            List<SysPermission> permissionByRole = sysPermissionService.getByRole(Collections.singletonList(sysRoleVO.getId()));
             sysRoleVO.setPermissions(permissionByRole);
             return sysRoleVO;
         });
@@ -89,7 +86,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
         // 唯一性判断
         boolean exists = this.lambdaQuery().eq(SysRole::getRoleCode, sysRoleDTO.getRoleCode()).exists();
         if (exists) {
-            throw new RoleRelatedException(ErrorStatus.ROLE_ALREADY_EXIST);
+            throw new BaseException(ErrorStatus.DATA_ALREADY_EXIST, "角色");
         }
         SysRole sysRole = new SysRole();
         BeanUtil.copyProperties(sysRoleDTO, sysRole);
@@ -109,20 +106,19 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void deleteById(Set<Long> ids) {
+    public void deleteById(Collection<Long> ids) {
         // 删除角色用户关联关系
-        sysUserRoleRelationService.remove(new LambdaQueryWrapper<SysUserRoleRelation>().in(SysUserRoleRelation::getRoleId, ids));
+        sysUserRoleRelationService.lambdaUpdate().in(SysUserRoleRelation::getRoleId, ids).remove();
         // 删除角色权限关联关系
-        sysRolePermissionRelationService.remove(new LambdaQueryWrapper<SysRolePermissionRelation>().in(SysRolePermissionRelation::getRoleId, ids));
+        sysRolePermissionRelationService.lambdaUpdate().in(SysRolePermissionRelation::getRoleId, ids).remove();
         this.removeBatchByIds(ids);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    @CacheEvict(cacheNames = "user", allEntries = true)
     public void configurePermissions(Long id, Set<Long> permissions) {
         // 先删除在重新关联
-        sysRolePermissionRelationService.remove(new LambdaQueryWrapper<SysRolePermissionRelation>().eq(SysRolePermissionRelation::getRoleId, id));
+        sysRolePermissionRelationService.lambdaUpdate().eq(SysRolePermissionRelation::getRoleId, id).remove();
         List<SysRolePermissionRelation> relations = permissions.stream().map(permission -> {
             SysRolePermissionRelation sysRolePermissionRelation = new SysRolePermissionRelation();
             sysRolePermissionRelation.setRoleId(id);
@@ -133,57 +129,29 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     }
 
     @Override
-    public void changeStatus(Long id, Boolean enabled) {
-        this.lambdaUpdate().eq(SysRole::getId, id).set(SysRole::getEnabled, enabled).update();
-    }
-
-    @Override
     @Transactional(rollbackFor = Exception.class)
     public void relate(List<SysUserRoleRelation> userRoleRelations) {
         sysUserRoleRelationService.saveBatch(userRoleRelations);
-        this.updateRoleCount(userRoleRelations.stream().map(SysUserRoleRelation::getRoleId).collect(Collectors.toList()), 1);
+        this.updateCount(userRoleRelations.stream().map(SysUserRoleRelation::getRoleId).collect(Collectors.toList()), 1);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void relevanceByUser(Long userId) {
-        List<Long> roleIds = sysUserRoleRelationService.listObjs(new LambdaQueryWrapper<SysUserRoleRelation>().select(SysUserRoleRelation::getRoleId)
-                .eq(SysUserRoleRelation::getUserId, userId), e -> Long.valueOf(String.valueOf(e)));
-        if (CollectionUtil.isNotEmpty(roleIds)) {
-            sysUserRoleRelationService.remove(new LambdaQueryWrapper<SysUserRoleRelation>()
-                    .eq(SysUserRoleRelation::getUserId, userId));
-            this.updateRoleCount(roleIds, -1);
-        }
+        List<Long> roleIdList = sysUserRoleRelationService.getRelationByUser(userId)
+                .stream().map(SysUserRoleRelation::getRoleId).collect(Collectors.toList());
+        sysUserRoleRelationService.lambdaUpdate().eq(SysUserRoleRelation::getUserId, userId).remove();
+        this.updateCount(roleIdList, -1);
     }
 
-    @Override
-    public void updateRoleCount(List<Long> id, long step) {
+    /**
+     * 更新角色关联用户数
+     *
+     * @param id   id
+     * @param step 一步
+     */
+    private void updateCount(List<Long> id, long step) {
         this.lambdaUpdate().in(SysRole::getId, id).setSql("count = count + " + step).update();
     }
 
-    @Override
-    public void checkLevel(Long userId, Integer checkLevel) {
-        Integer level = this.getLevel(userId);
-        if (level > checkLevel) {
-            throw new BaseException("权限不足，你的角色级别低于操作的角色级别");
-        }
-    }
-
-    @Override
-    public void checkLevelByRoleId(Long userId, Set<Long> roleIds) {
-        Integer level = this.getLevel(userId);
-        Integer min = this.listByIds(roleIds).stream().map(SysRole::getLevel).min(Integer::compare).orElse(Integer.MAX_VALUE);
-        if (level > min) {
-            throw new BaseException("权限不足，你的角色级别低于操作的角色级别");
-        }
-    }
-
-    @Override
-    public void checkLevelByUserId(Long userId, Set<Long> checkUserIds) {
-        Integer level = this.getLevel(SecurityGuard.getRbacUser().getUserId());
-        Integer min = checkUserIds.stream().map(this::getLevel).min(Integer::compare).orElse(Integer.MAX_VALUE);
-        if (level > min) {
-            throw new BaseException("角色权限不足，不能操作比自己级别高的用户");
-        }
-    }
 }

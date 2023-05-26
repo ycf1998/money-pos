@@ -26,7 +26,7 @@ const mutations = {
 
 const actions = {
   // 登录
-  login ({ commit }, loginInfo) {
+  login({ commit }, loginInfo) {
     const { username, password } = loginInfo
     return new Promise((resolve, reject) => {
       login({ username: username.trim(), password: password }).then(response => {
@@ -39,7 +39,7 @@ const actions = {
     })
   },
   // 获取用户信息
-  getInfo ({ commit }) {
+  getInfo({ commit }) {
     return new Promise((resolve, reject) => {
       getInfo().then(response => {
         const { data } = response
@@ -53,12 +53,12 @@ const actions = {
           reject('getInfo: roles must be a non-null array!')
         }
 
-        commit('SET_PERMISSIONS', permissions.map(role => role.permission))
-        commit('SET_ROLES', roles.map(role => role.roleCode))
-        commit('SET_USERNAME', info.username)
         // 获取最高角色级别
         info.level = roles.map(role => role.level).reduce((pre, next) => pre > next ? next : pre)
+        commit('SET_USERNAME', info.username)
         commit('SET_USER', info)
+        commit('SET_PERMISSIONS', permissions.map(role => role.permission))
+        commit('SET_ROLES', roles.map(role => role.roleCode))
 
         resolve(data)
       }).catch(error => {
@@ -67,9 +67,11 @@ const actions = {
     })
   },
   // 登出
-  logout ({ commit, state, dispatch }) {
+  logout({ commit, state, dispatch }) {
     return new Promise((resolve, reject) => {
       logout(state.token).then(() => {
+        commit('SET_USERNAME', null)
+        commit('SET_USER', {})
         commit('SET_ROLES', [])
         commit('SET_PERMISSIONS', [])
         TokenManage.removeToken()
@@ -83,8 +85,10 @@ const actions = {
     })
   },
   // 重置token
-  resetToken ({ commit }) {
+  resetToken({ commit }) {
     return new Promise(resolve => {
+      commit('SET_USERNAME', null)
+      commit('SET_USER', {})
       commit('SET_ROLES', [])
       commit('SET_PERMISSIONS', [])
       TokenManage.removeToken()

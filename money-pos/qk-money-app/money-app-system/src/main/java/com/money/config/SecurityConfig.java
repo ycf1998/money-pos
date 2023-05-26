@@ -5,14 +5,13 @@ import com.money.entity.SysRole;
 import com.money.entity.SysUser;
 import com.money.security.custom.RbacSecurityConfig;
 import com.money.security.model.RbacUser;
-import com.money.service.SysUserService;
+import com.money.service.SysAuthService;
+import com.money.vo.UserInfoVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -25,18 +24,16 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    private final SysUserService sysUserService;
+    private final SysAuthService sysAuthService;
 
     @Bean
     public RbacSecurityConfig rbacSecurityConfig() {
         return username -> {
-            SysUser sysUser = Optional
-                    .ofNullable(sysUserService.getByUsername(username))
-                    .orElseThrow(() -> new UsernameNotFoundException("用户名或密码错误"));
-            List<SysRole> roles = sysUserService.getRoles(sysUser.getId());
-            List<String> roleCodeList = roles
+            UserInfoVO userInfo = sysAuthService.getUserInfo(username);
+            SysUser sysUser = userInfo.getInfo();
+            List<String> roleCodes = userInfo.getRoles()
                     .stream().map(SysRole::getRoleCode).collect(Collectors.toList());
-            List<String> permissions = sysUserService.getPermissions(sysUser.getId())
+            List<String> permissions = userInfo.getPermissions()
                     .stream().map(SysPermission::getPermission).collect(Collectors.toList());
             // 返回装填的rbac user
             RbacUser rbacUser = new RbacUser();
@@ -44,7 +41,7 @@ public class SecurityConfig {
             rbacUser.setUsername(sysUser.getUsername());
             rbacUser.setPassword(sysUser.getPassword());
             rbacUser.setEnabled(sysUser.getEnabled());
-            rbacUser.setRoles(roleCodeList);
+            rbacUser.setRoles(roleCodes);
             rbacUser.setPermissions(permissions);
             return rbacUser;
         };

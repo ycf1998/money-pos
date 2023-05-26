@@ -8,7 +8,7 @@ import lombok.Setter;
 
 /**
  * <p>
- * 
+ *
  * </p>
  *
  * @author money
@@ -27,13 +27,13 @@ public class SysDictDetail extends BaseEntity {
     @Schema(description="字典名")
     private String dict;
 
-    @Schema(description="字典标签")
+    @Schema(description = "字典标签")
     private String label;
 
-    @Schema(description="字典值")
+    @Schema(description = "字典值")
     private String value;
 
-    @Schema(description="排序")
+    @Schema(description = "排序")
     private Integer sort;
 
 }

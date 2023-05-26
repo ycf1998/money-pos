@@ -73,9 +73,11 @@ public class SysTenantServiceImpl extends ServiceImpl<SysTenantMapper, SysTenant
     @Transactional(rollbackFor = Exception.class)
     public void add(SysTenantDTO sysTenantDTO, MultipartFile logo) {
         // 租户code唯一
-        boolean exists = this.lambdaQuery().eq(SysTenant::getTenantCode, sysTenantDTO.getTenantCode()).eq(SysTenant::getDeleted, false).exists();
+        boolean exists = this.lambdaQuery()
+                .eq(SysTenant::getTenantCode, sysTenantDTO.getTenantCode())
+                .eq(SysTenant::getDeleted, false).exists();
         if (exists) {
-            throw new BaseException(ErrorStatus.TENANT_ALREADY_EXIST);
+            throw new BaseException(ErrorStatus.DATA_ALREADY_EXIST, "租户");
         }
         SysTenant sysTenant = new SysTenant();
         BeanUtil.copyProperties(sysTenantDTO, sysTenant);
@@ -96,7 +98,7 @@ public class SysTenantServiceImpl extends ServiceImpl<SysTenantMapper, SysTenant
                 .eq(SysTenant::getDeleted, false)
                 .eq(SysTenant::getTenantCode, sysTenantDTO.getTenantCode()).exists();
         if (exists) {
-            throw new BaseException(ErrorStatus.TENANT_ALREADY_EXIST);
+            throw new BaseException(ErrorStatus.DATA_ALREADY_EXIST, "租户");
         }
         SysTenant sysTenant = this.getById(sysTenantDTO.getId());
         BeanUtil.copyProperties(sysTenantDTO, sysTenant, CopyOptions.create().ignoreNullValue());

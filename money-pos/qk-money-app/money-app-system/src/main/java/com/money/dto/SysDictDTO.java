@@ -16,11 +16,11 @@ public class SysDictDTO {
     private Long id;
 
     @Schema(description="字典名")
-    @NotBlank(message = "字典名不允许为空", groups = {ValidGroup.Save.class, ValidGroup.Update.class})
+    @NotBlank(message = "字典名不允许为空", groups = {ValidGroup.Save.class})
     private String name;
 
     @Schema(description="字典描述")
-    @Size(max = 255, groups = {ValidGroup.Save.class, ValidGroup.Update.class})
+    @Size(max = 255, groups = {ValidGroup.Save.class})
     private String description;
 
 }

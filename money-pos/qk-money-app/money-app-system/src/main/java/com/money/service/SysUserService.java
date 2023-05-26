@@ -2,21 +2,15 @@ package com.money.service;
 
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.money.common.vo.PageVO;
 import com.money.dto.ChangePasswordDTO;
-import com.money.dto.LoginDTO;
 import com.money.dto.SysUserDTO;
 import com.money.dto.UpdateProfileDTO;
 import com.money.dto.query.SysUserQueryDTO;
-import com.money.entity.SysPermission;
-import com.money.entity.SysRole;
 import com.money.entity.SysUser;
-import com.money.vo.AuthTokenVO;
-import com.money.vo.OwnInfoVO;
-import com.money.common.vo.PageVO;
 import com.money.vo.SysUserVO;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -34,53 +28,6 @@ public interface SysUserService extends IService<SysUser> {
      * @return {@link SysUser}
      */
     SysUser getByUsername(String username);
-
-    /**
-     * 获取角色列表
-     *
-     * @param userId 用户id
-     * @return {@link List}<{@link SysRole}>
-     */
-    List<SysRole> getRoles(Long userId);
-
-    /**
-     * 获得权限列表
-     *
-     * @param userId   用户id
-     * @return {@link List}<{@link SysPermission}>
-     */
-    List<SysPermission> getPermissions(Long userId);
-
-    /**
-     * 得到信息
-     *
-     * @param username 用户名
-     * @return {@link OwnInfoVO}
-     */
-    OwnInfoVO getOwnInfo(String username);
-
-    /**
-     * 登录
-     *
-     * @param loginDto 登录dto
-     * @return {@link AuthTokenVO}
-     */
-    AuthTokenVO login(LoginDTO loginDto);
-
-    /**
-     * 注销
-     *
-     * @param token 令牌
-     */
-    void logout(String token);
-
-    /**
-     * 刷新令牌
-     *
-     * @param refreshToken 刷新令牌
-     * @return {@link AuthTokenVO}
-     */
-    AuthTokenVO refreshToken(String refreshToken);
 
     // ============================================================
 
@@ -140,11 +87,4 @@ public interface SysUserService extends IService<SysUser> {
      */
     void deleteById(Set<Long> ids);
 
-    /**
-     * 修改可用状态
-     *
-     * @param enabled 启用
-     * @param id      id
-     */
-    void changeStatus(Long id, Boolean enabled);
 }

@@ -4,8 +4,8 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.money.dto.SysDictDetailDTO;
 import com.money.entity.SysDictDetail;
 
+import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 /**
  * <p>
@@ -23,19 +23,19 @@ public interface SysDictDetailService extends IService<SysDictDetail> {
      * @param dict dict
      * @return {@link List}<{@link SysDictDetail}>
      */
-    List<SysDictDetail> list(String dict);
+    List<SysDictDetail> listByDict(String dict);
 
     /**
      * 添加字典详情
      *
-     * @param sysDictDetailDTO
+     * @param sysDictDetailDTO 系统字典详情dto
      */
     void add(SysDictDetailDTO sysDictDetailDTO);
 
     /**
      * 更新字典详情
      *
-     * @param sysDictDetailDTO
+     * @param sysDictDetailDTO 系统字典详情dto
      */
     void updateById(SysDictDetailDTO sysDictDetailDTO);
 
@@ -44,7 +44,13 @@ public interface SysDictDetailService extends IService<SysDictDetail> {
      *
      * @param ids id
      */
-    void deleteById(Set<Long> ids);
+    void deleteById(Collection<Long> ids);
 
+    /**
+     * 删除字典
+     *
+     * @param dictList 字典
+     */
+    void deleteByDict(Collection<String> dictList);
 
 }

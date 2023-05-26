@@ -55,7 +55,7 @@ public class ${entity}VO {
 
     <#if field.comment!?length gt 0>
     <#if swagger>
-    @Schema(description="${field.comment}")
+    @Schema(description = "${field.comment}")
     <#else>
     /**
     * ${field.comment}

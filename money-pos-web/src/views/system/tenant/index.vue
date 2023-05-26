@@ -2,8 +2,8 @@
   <div class="app-container">
     <!-- 搜索 -->
     <div v-if="crud.props.searchToggle" class="filter-container">
-      <el-input v-model="query.tenantCode" placeholder="编码" style="width: 200px;" class="filter-item" @keyup.enter.native="crud.toQuery" />
-      <el-input v-model="query.tenantName" placeholder="名称" style="width: 200px;" class="filter-item" @keyup.enter.native="crud.toQuery" />
+      <el-input v-model="query.tenantCode" placeholder="编码" class="filter-item-200" @keyup.enter.native="crud.toQuery" />
+      <el-input v-model="query.tenantName" placeholder="名称" class="filter-item-200" @keyup.enter.native="crud.toQuery" />
       <rr-operation />
     </div>
     <!-- CRUD操作 -->
@@ -59,30 +59,36 @@
 </template>
 
 <script>
-import oss from '@/utils/oss'
-import crudTenant from '@/api/system/tenant'
 import rrOperation from '@/components/Crud/RR.operation.vue'
 import udOperation from '@/components/Crud/UD.operation.vue'
 import crudOperation from '@/components/Crud/CRUD.operation.vue'
 import Pagination from '@/components/Crud/Pagination.vue'
 import CRUD, { presenter, header, form, crud } from '@/components/Crud/crud'
+import oss from '@/utils/oss'
+
+import tenantApi from '@/api/system/tenant'
 
 export default {
   name: 'Tenant',
   components: { Pagination, rrOperation, udOperation, crudOperation },
   cruds() {
-    return CRUD({ title: '租户', url: '/tenants', crudMethod: { ...crudTenant } })
+    return CRUD({ title: '租户', url: '/tenants', crudMethod: { ...tenantApi } })
   },
-  mixins: [presenter(), header(), form({
-    // 表单初始值
-    id: null,
-    tenantCode: null,
-    tenantName: null,
-    tenantDesc: null,
-    domain: null,
-    logo: null,
-    logoFile: null
-  }), crud()],
+  mixins: [
+    presenter(),
+    header(),
+    form({
+      // 表单初始值
+      id: null,
+      tenantCode: null,
+      tenantName: null,
+      tenantDesc: null,
+      domain: null,
+      logo: null,
+      logoFile: null
+    }),
+    crud()
+  ],
   data() {
     return {
       // 操作权限定义
@@ -93,12 +99,8 @@ export default {
       },
       // 表单验证规则
       rules: {
-        tenantCode: [
-          { required: true, message: '请输入租户编码', trigger: 'blur' }
-        ],
-        tenantName: [
-          { required: true, message: '请输入租户名称', trigger: 'blur' }
-        ]
+        tenantCode: [{ required: true, message: '请输入租户编码', trigger: 'blur' }],
+        tenantName: [{ required: true, message: '请输入租户名称', trigger: 'blur' }]
       }
     }
   },

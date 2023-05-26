@@ -5,12 +5,11 @@ import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.money.common.exception.BaseException;
-import com.money.dto.SysDictDTO;
-import com.money.dto.query.SysDictQueryDTO;
 import com.money.common.vo.PageVO;
 import com.money.constant.ErrorStatus;
+import com.money.dto.SysDictDTO;
+import com.money.dto.query.SysDictQueryDTO;
 import com.money.entity.SysDict;
-import com.money.entity.SysDictDetail;
 import com.money.mapper.SysDictMapper;
 import com.money.service.SysDictDetailService;
 import com.money.service.SysDictService;
@@ -53,7 +52,7 @@ public class SysDictServiceImpl extends ServiceImpl<SysDictMapper, SysDict> impl
         // 字典唯一
         boolean exists = this.lambdaQuery().eq(SysDict::getName, sysDictDTO.getName()).exists();
         if (exists) {
-            throw new BaseException(ErrorStatus.DICT_ALREADY_EXIST);
+            throw new BaseException(ErrorStatus.DATA_ALREADY_EXIST, "字典");
         }
         SysDict sysDict = new SysDict();
         BeanUtil.copyProperties(sysDictDTO, sysDict);
@@ -62,13 +61,10 @@ public class SysDictServiceImpl extends ServiceImpl<SysDictMapper, SysDict> impl
 
     @Override
     public void updateById(SysDictDTO sysDictDTO) {
-        // 字典唯一
-        boolean exists = this.lambdaQuery().ne(SysDict::getId, sysDictDTO.getId()).eq(SysDict::getName, sysDictDTO.getName()).exists();
-        if (exists) {
-            throw new BaseException(ErrorStatus.DICT_ALREADY_EXIST);
-        }
         SysDict sysDict = new SysDict();
         BeanUtil.copyProperties(sysDictDTO, sysDict);
+        // 字典名不允许修改
+        sysDict.setName(null);
         this.updateById(sysDict);
     }
 
@@ -77,6 +73,6 @@ public class SysDictServiceImpl extends ServiceImpl<SysDictMapper, SysDict> impl
     public void deleteById(Set<Long> ids) {
         List<String> dictList = this.listByIds(ids).stream().map(SysDict::getName).collect(Collectors.toList());
         this.removeBatchByIds(ids);
-        sysDictDetailService.lambdaUpdate().in(SysDictDetail::getDict, dictList).remove();
+        sysDictDetailService.deleteByDict(dictList);
     }
 }

@@ -19,19 +19,19 @@
         </el-table-column>
       </el-table>
       <!--字典详情表单渲染-->
-      <el-dialog append-to-body :close-on-click-modal="false" :before-close="crud.cancelCU" :visible.sync="crud.status.cu > 0" :title="crud.status.title" width="400px">
-        <el-form ref="form" :inline="true" :model="form" :rules="rules" size="small" label-width="80px">
+      <el-dialog append-to-body :close-on-click-modal="false" :before-close="crud.cancelCU" :visible.sync="crud.status.cu > 0" :title="crud.status.title" width="360px">
+        <el-form ref="form" :inline="true" :model="form" :rules="rules" label-width="80px">
           <el-form-item label="字典名" prop="dict">
-            <el-input v-model="form.dict" readonly @keydown.native="keydown($event)" />
+            <el-input v-model="form.dict" disabled style="width: 220px;" @keydown.native="keydown($event)" />
           </el-form-item>
           <el-form-item label="字典标签" prop="label">
-            <el-input v-model="form.label" @keydown.native="keydown($event)" />
+            <el-input v-model="form.label" style="width: 220px;" @keydown.native="keydown($event)" />
           </el-form-item>
           <el-form-item label="字典值" prop="value">
-            <el-input v-model="form.value" @keydown.native="keydown($event)" />
+            <el-input v-model="form.value" style="width: 220px;" @keydown.native="keydown($event)" />
           </el-form-item>
           <el-form-item label="排序" prop="sort">
-            <el-input-number v-model.number="form.sort" :min="0" :max="999" controls-position="right" style="width: 100px;" />
+            <el-input-number v-model.number="form.sort" :min="0" :max="999" controls-position="right" style="width: 220px;" />
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
@@ -44,7 +44,7 @@
 </template>
 
 <script>
-import crudDictDetail from '@/api/system/dictDetail'
+import dictDetailApi from '@/api/system/dictDetail'
 import udOperation from '@/components/Crud/UD.operation.vue'
 import CRUD, { presenter, header, form, crud } from '@/components/Crud/crud'
 
@@ -52,16 +52,21 @@ export default {
   name: 'DictDetail',
   components: { udOperation },
   cruds() {
-    return CRUD({ title: '字典详情', url: '/dict/detail', crudMethod: { ...crudDictDetail }, queryOnPresenterCreated: false, isPage: false })
+    return CRUD({ title: '字典详情', url: '/dict/detail', crudMethod: { ...dictDetailApi }, queryOnPresenterCreated: false, isPage: false })
   },
-  mixins: [presenter(), header(), form({
-    // 表单初始值
-    id: null,
-    dict: null,
-    label: null,
-    value: null,
-    sort: 999
-  }), crud()],
+  mixins: [
+    presenter(),
+    header(),
+    form({
+      // 表单初始值
+      id: null,
+      dict: null,
+      label: null,
+      value: null,
+      sort: 999
+    }),
+    crud()
+  ],
   data() {
     return {
       // 操作权限定义
@@ -72,18 +77,10 @@ export default {
       },
       // 表单验证规则
       rules: {
-        dict: [
-          { required: true, message: '请输入字典名', trigger: 'blur' }
-        ],
-        label: [
-          { required: true, message: '请输入字典标签', trigger: 'blur' }
-        ],
-        value: [
-          { required: true, message: '请输入字典值', trigger: 'blur' }
-        ],
-        sort: [
-          { required: true, message: '请输入排序', trigger: 'blur' }
-        ]
+        dict: [{ required: true, message: '请输入字典名', trigger: 'blur' }],
+        label: [{ required: true, message: '请输入字典标签', trigger: 'blur' }],
+        value: [{ required: true, message: '请输入字典值', trigger: 'blur' }],
+        sort: [{ required: true, message: '请输入排序', trigger: 'blur' }]
       }
     }
   },

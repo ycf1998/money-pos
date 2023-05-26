@@ -18,15 +18,15 @@ public class SysPermissionDTO {
     private String icon;
 
     @Schema(description = "权限名称")
-    @NotBlank(message = "权限名称不允许为空", groups = {ValidGroup.Save.class, ValidGroup.Update.class})
+    @NotBlank(message = "权限名称不允许为空", groups = {ValidGroup.Save.class})
     private String permissionName;
 
     @Schema(description = "资源类型")
-    @NotBlank(message = "权限类型不允许为空", groups = {ValidGroup.Save.class, ValidGroup.Update.class})
+    @NotBlank(message = "权限类型不允许为空", groups = {ValidGroup.Save.class})
     private String permissionType;
 
     @Schema(description = "父编码")
-    @NotNull(message = "父编码不允许为空", groups = {ValidGroup.Save.class, ValidGroup.Update.class})
+    @NotNull(message = "父编码不允许为空", groups = {ValidGroup.Save.class})
     private Long parentId;
 
     @Schema(description = "权限标识")
@@ -36,11 +36,11 @@ public class SysPermissionDTO {
     private String routerPath;
 
     @Schema(description = "是否外链菜单")
-    @NotNull(groups = {ValidGroup.Save.class, ValidGroup.Update.class})
+    @NotNull(groups = {ValidGroup.Save.class})
     private Boolean iframe;
 
     @Schema(description = "是否隐藏")
-    @NotNull(groups = {ValidGroup.Save.class, ValidGroup.Update.class})
+    @NotNull(groups = {ValidGroup.Save.class})
     private Boolean hidden;
 
     @Schema(description = "组件名称")
@@ -50,6 +50,6 @@ public class SysPermissionDTO {
     private String componentPath;
 
     @Schema(description = "排序")
-    @NotNull(groups = {ValidGroup.Save.class, ValidGroup.Update.class})
+    @NotNull(groups = {ValidGroup.Save.class})
     private Integer sort;
 }

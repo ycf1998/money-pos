@@ -10,11 +10,11 @@ const config = {
   // 右侧设置按钮
   settings: {
     // 显示设置按钮
-    showSettings: true,
+    showSettings: false,
     // 侧边栏Logo
     sidebarLogo: true,
     // 标签页模式
-    tagsView: false,
+    tagsView: true,
     // 固定头部
     fixedHeader: false,
   },

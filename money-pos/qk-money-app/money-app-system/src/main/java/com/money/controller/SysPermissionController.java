@@ -5,10 +5,8 @@ import com.money.common.dto.ValidGroup;
 import com.money.dto.SysPermissionDTO;
 import com.money.dto.query.SysPermissionQueryDTO;
 import com.money.entity.SysPermission;
-import com.money.security.annotation.CurrentUser;
 import com.money.service.SysPermissionService;
 import com.money.vo.SysPermissionVO;
-import com.money.vo.VueRouterVO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -27,12 +25,6 @@ import java.util.Set;
 public class SysPermissionController {
 
     private final SysPermissionService sysPermissionService;
-
-    @Operation(summary = "获取VUE菜单")
-    @GetMapping("/router")
-    public List<VueRouterVO> getVueRouter(@CurrentUser Long userId) {
-        return sysPermissionService.getVueRouter(userId);
-    }
 
     @Operation(summary = "懒加载权限树结构")
     @GetMapping("/lazy")
