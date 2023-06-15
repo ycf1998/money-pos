@@ -69,8 +69,8 @@ public class MybatisPlusGenerator {
             answer.fileOverride(s);
         } while (!yesOrNo.contains(s));
         do {
-            System.out.print("是否开启swagger[Y|N]？(Y)：");
-            s = StrUtil.blankToDefault(scanner.nextLine(), "Y");
+            System.out.print("是否开启swagger[Y|N]？(N)：");
+            s = StrUtil.blankToDefault(scanner.nextLine(), "N");
             answer.openSwagger(s);
         } while (!yesOrNo.contains(s));
         do {

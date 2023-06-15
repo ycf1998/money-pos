@@ -47,8 +47,10 @@ public class ${entity}DTO {
     private static final long serialVersionUID = 1L;
 </#if>
 
+<#if superEntityClass??>
     @NotNull(groups = ValidGroup.Update.class)
     private Long id;
+</#if>
 <#-- ----------  BEGIN 字段循环遍历  ---------->
 <#list table.fields as field>
     <#if field.propertyName != "id" && field.propertyName != "sort" && field.propertyName != "tenantId">

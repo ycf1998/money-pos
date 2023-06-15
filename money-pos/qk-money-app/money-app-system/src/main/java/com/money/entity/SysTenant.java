@@ -42,7 +42,4 @@ public class SysTenant extends BaseEntity {
     @Schema(description = "逻辑删除")
     private Boolean deleted;
 
-    private Integer sort;
-
-
 }

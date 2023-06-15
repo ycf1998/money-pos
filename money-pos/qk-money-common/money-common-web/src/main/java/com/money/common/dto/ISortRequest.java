@@ -23,7 +23,7 @@ public interface ISortRequest {
      *
      * @return {@link String}
      */
-    String getSort();
+    String getOrderBy();
 
     /**
      * 得到排序顺序
@@ -32,7 +32,7 @@ public interface ISortRequest {
      */
     @JsonIgnore
     default List<QueryRequest.SortingOrder> getSortingOrder() {
-        String sort = this.getSort();
+        String sort = this.getOrderBy();
         if (StrUtil.isNotBlank(sort)) {
             return Arrays.stream(sort.split(";")).map(propWithOrderByStr -> {
                 String[] propWithOrderBy = propWithOrderByStr.split(",");

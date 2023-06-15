@@ -33,7 +33,7 @@ function CRUD(options) {
     // 重置表单
     defaultForm: () => { },
     // 排序规则, 支持多字段排序 ['id,desc', 'createTime,asc']
-    sort: [],
+    orderBy: [],
     // 数据显示等待时间(ms)
     time: 50,
     // CRUD Method
@@ -349,13 +349,13 @@ function CRUD(options) {
         return {
           page: crud.page.page,
           size: crud.page.size,
-          sort: crud.sort,
+          orderBy: crud.orderBy,
           ...crud.query,
           ...crud.params
         }
       } else {
         return {
-          sort: crud.sort,
+          orderBy: crud.orderBy,
           ...crud.query,
           ...crud.params
         }
@@ -376,10 +376,10 @@ function CRUD(options) {
     sortChangeHandler(orderBy) {
       let { order } = orderBy
       if (order === null) {
-        crud.sort = []
+        crud.orderBy = []
       } else {
         order = (order === 'descending' ? 'desc' : 'asc')
-        crud.sort = [`${orderBy.prop},${order}`]
+        crud.orderBy = [`${orderBy.prop},${order}`]
       }
       crud.refresh()
     },

@@ -1,17 +1,17 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : t-money
+ Source Server         : localhost
  Source Server Type    : MySQL
- Source Server Version : 80027
- Source Host           : 175.178.102.32:3306
- Source Schema         : money_pos_demo
+ Source Server Version : 80026
+ Source Host           : localhost:3306
+ Source Schema         : money_pos
 
  Target Server Type    : MySQL
- Target Server Version : 80027
+ Target Server Version : 80026
  File Encoding         : 65001
 
- Date: 26/05/2023 23:21:18
+ Date: 15/06/2023 23:29:07
 */
 
 CREATE DATABASE IF NOT EXISTS `money_pos` CHARACTER SET 'utf8mb4';
@@ -88,7 +88,7 @@ INSERT INTO `gms_goods` VALUES (1488083019636981761, 0, 0, '6955470904010', '爱
 INSERT INTO `gms_goods` VALUES (1488083512274763777, 0, 0, '6955470914651', '洁净控油洗发水', '', '', '', '', '', 18.00, 40.00, 20.00, 20.00, 1, 0, 'SALE', 'money', '2022-01-31 20:41:21', 'money', '2022-04-30 13:01:18', 0);
 INSERT INTO `gms_goods` VALUES (1488084268776210433, 0, 0, '6955470937087', '抑菌内衣洗衣液', '', '', '', '', '', 14.93, 35.00, 25.00, 10.00, 0, 2, 'SOLD_OUT', 'money', '2022-04-26 17:04:26', 'money', '2022-04-30 13:01:18', 0);
 INSERT INTO `gms_goods` VALUES (1488354540397793281, 0, 0, '6955470911841', '超凡洁净洁厕', '', '', '', '', '', 5.10, 12.00, 6.00, 6.00, 6, 13, 'SALE', 'money', '2022-04-28 14:53:36', 'money', '2022-04-30 13:01:18', 0);
-INSERT INTO `gms_goods` VALUES (1488355061607174146, 0, 0, '6955470912244', '重油污净', '', '', '', '', '', 7.20, 18.00, 9.00, 9.00, 4, 64, 'SALE', 'money', '2022-04-29 22:05:31', 'money', '2022-04-30 19:48:55', 0);
+INSERT INTO `gms_goods` VALUES (1488355061607174146, 0, 0, '6955470912244', '重油污净', '', '', '', '', '', 7.20, 18.00, 9.00, 9.00, 2, 64, 'SALE', 'money', '2022-04-29 22:05:31', 'money', '2022-04-30 19:48:55', 0);
 INSERT INTO `gms_goods` VALUES (1488355668917227522, 0, 0, '6955470903440', '天然海藻牙膏', '', '', '', '', '', 5.60, 10.00, 7.00, 3.00, 3, 34, 'SALE', 'money', '2022-04-19 13:15:19', 'money', '2022-04-30 13:01:19', 0);
 INSERT INTO `gms_goods` VALUES (1488356238075891714, 0, 0, '6955470914453', '绿茶牙膏', '', '', '', '', '', 6.90, 11.00, 8.00, 3.00, 10, 7, 'SALE', 'money', '2022-04-19 13:11:53', 'money', '2022-04-30 13:01:19', 0);
 INSERT INTO `gms_goods` VALUES (1488358086757322754, 0, 0, '6955470907349', '薄荷牙膏', '', '', '', '', '', 7.00, 11.00, 8.00, 3.00, 7, 2, 'SALE', 'money', '2022-03-19 13:53:52', 'money', '2022-04-30 13:01:19', 0);
@@ -96,8 +96,8 @@ INSERT INTO `gms_goods` VALUES (1488359120493875201, 0, 0, '6955470903525', '清
 INSERT INTO `gms_goods` VALUES (1488359596320886786, 0, 0, '6955470903518', '滋养柔顺洗发水', '', '', '', '', '', 17.01, 29.00, 19.00, 10.00, 7, 27, 'SALE', 'money', '2022-04-29 08:39:31', 'money', '2022-04-30 13:01:19', 0);
 INSERT INTO `gms_goods` VALUES (1488361012577964034, 0, 0, '6955470916624', '清凉爽肤沐浴露', '', '', '', '', '', 15.52, 35.00, 20.00, 15.00, 1, 14, 'SALE', 'money', '2022-04-28 14:53:36', 'money', '2022-04-30 13:01:19', 0);
 INSERT INTO `gms_goods` VALUES (1488361550245793794, 0, 0, '6955470913180', '多效2公斤', '', '', '', '', '', 15.12, 34.00, 17.00, 17.00, -2, 49, 'SOLD_OUT', 'money', '2022-04-27 15:11:21', 'money', '2022-04-30 13:01:20', 0);
-INSERT INTO `gms_goods` VALUES (1488362032292958209, 0, 0, '6955470903532', '清盈滋养沐浴露', '', '', '', '', '', 13.97, 29.00, 19.00, 10.00, 13, 33, 'SALE', 'money', '2022-04-29 08:39:31', 'money', '2022-04-30 13:01:20', 0);
-INSERT INTO `gms_goods` VALUES (1488363280383610882, 0, 0, '6955470907912', '柔顺剂薰衣草', '', '', '', '', '', 11.70, 18.00, 13.00, 5.00, 3, 2, 'SALE', 'money', '2022-03-19 15:01:24', 'money', '2022-04-30 13:01:20', 0);
+INSERT INTO `gms_goods` VALUES (1488362032292958209, 0, 0, '6955470903532', '清盈滋养沐浴露', '', '', '', '', '', 13.97, 29.00, 19.00, 10.00, 10, 32, 'SALE', 'money', '2022-04-29 08:39:31', 'money', '2022-04-30 13:01:20', 0);
+INSERT INTO `gms_goods` VALUES (1488363280383610882, 0, 0, '6955470907912', '柔顺剂薰衣草', '', '', '', '', '', 11.70, 18.00, 13.00, 5.00, 2, 1, 'SALE', 'money', '2022-03-19 15:01:24', 'money', '2022-04-30 13:01:20', 0);
 INSERT INTO `gms_goods` VALUES (1488364342100365314, 0, 0, '6955470915146', '固体管道通', '', '', '', '', '', 7.98, 14.00, 9.00, 5.00, 2, 8, 'SALE', 'money', '2022-03-15 18:54:08', 'money', '2022-04-30 13:01:20', 0);
 INSERT INTO `gms_goods` VALUES (1488365342139879425, 0, 0, '111111', '喷头', '', '', '', '', '', 0.64, 2.00, 1.50, 0.50, 42, 6, 'SALE', 'money', '2022-04-28 18:26:21', 'money', '2022-04-30 13:01:20', 0);
 INSERT INTO `gms_goods` VALUES (1488376486145560578, 0, 0, '6955470930576', '亲轻棉日用', '', '', '', '', '', 7.00, 17.00, 10.00, 7.00, 27, 46, 'SALE', 'money', '2022-04-27 15:10:25', 'money', '2022-04-30 13:01:20', 0);
@@ -215,6 +215,7 @@ CREATE TABLE `oms_order_log`  (
 -- ----------------------------
 -- Records of oms_order_log
 -- ----------------------------
+INSERT INTO `oms_order_log` VALUES (1656309547227369473, 1656309547093151745, '完成订单', 'money', '2023-05-10 22:45:43', 'money', '2023-05-10 22:45:43', 0);
 
 -- ----------------------------
 -- Table structure for provinces
@@ -3643,23 +3644,22 @@ CREATE TABLE `sys_dict`  (
   `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
   `name` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '字典名',
   `description` varchar(125) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '' COMMENT '字典描述',
-  `sort` int NOT NULL DEFAULT 999 COMMENT '排序',
   `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `create_time` datetime NOT NULL,
   `update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `update_time` datetime NOT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1629751225758216195 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1629751225758216194 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_dict
 -- ----------------------------
-INSERT INTO `sys_dict` VALUES (1, 'switch', '开关', 1, '', '2022-03-05 16:22:32', '', '2022-03-05 16:22:34');
-INSERT INTO `sys_dict` VALUES (2, 'permissionType', '权限类型', 1, '', '2022-03-06 12:02:55', '', '2022-03-06 12:02:58');
-INSERT INTO `sys_dict` VALUES (3, 'yesOrNo', '是否', 2, '', '2022-03-05 16:22:32', '', '2022-03-05 16:22:34');
-INSERT INTO `sys_dict` VALUES (1629418139531063298, 'memberType', '会员类型', 999, 'money', '2023-02-25 17:48:52', 'money', '2023-02-25 17:48:52');
-INSERT INTO `sys_dict` VALUES (1629745205996666882, 'goodsStatus', '商品状态', 999, 'money', '2023-02-26 15:28:31', 'money', '2023-02-26 15:28:31');
-INSERT INTO `sys_dict` VALUES (1629751225758216194, 'orderStatus', '订单状态', 999, 'money', '2023-02-26 15:52:26', 'money', '2023-02-26 15:52:32');
+INSERT INTO `sys_dict` VALUES (1, 'switch', '开关', '', '2022-03-05 16:22:32', '', '2022-03-05 16:22:34');
+INSERT INTO `sys_dict` VALUES (2, 'permissionType', '权限类型', '', '2022-03-06 12:02:55', '', '2022-03-06 12:02:58');
+INSERT INTO `sys_dict` VALUES (3, 'yesOrNo', '是否', '', '2022-03-05 16:22:32', '', '2022-03-05 16:22:34');
+INSERT INTO `sys_dict` VALUES (1629418139531063298, 'memberType', '会员类型', 'money', '2023-02-25 17:48:52', 'money', '2023-02-25 17:48:52');
+INSERT INTO `sys_dict` VALUES (1629745205996666882, 'goodsStatus', '商品状态', 'money', '2023-02-26 15:28:31', 'money', '2023-02-26 15:28:31');
+INSERT INTO `sys_dict` VALUES (1629751225758216194, 'orderStatus', '订单状态', 'money', '2023-02-26 15:52:26', 'money', '2023-02-26 15:52:32');
 
 -- ----------------------------
 -- Table structure for sys_dict_detail
@@ -3676,7 +3676,7 @@ CREATE TABLE `sys_dict_detail`  (
   `update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `update_time` datetime NOT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1630931426294759426 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1630931426294759425 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_dict_detail
@@ -3694,10 +3694,8 @@ INSERT INTO `sys_dict_detail` VALUES (1629418584148258818, 'memberType', '铂金
 INSERT INTO `sys_dict_detail` VALUES (1629745263274082306, 'goodsStatus', '在售', 'SALE', 1, 'money', '2023-02-26 15:28:45', 'money', '2023-02-26 15:28:45');
 INSERT INTO `sys_dict_detail` VALUES (1629745293364019202, 'goodsStatus', '售罄', 'SOLD_OUT', 2, 'money', '2023-02-26 15:28:52', 'money', '2023-02-26 15:28:52');
 INSERT INTO `sys_dict_detail` VALUES (1629745331712540673, 'goodsStatus', '下架', 'UN_SHELVE', 3, 'money', '2023-02-26 15:29:01', 'money', '2023-02-26 15:29:01');
-INSERT INTO `sys_dict_detail` VALUES (1629751289117372418, 'OrderStatus', '已确认', 'CONFIRMED', 1, 'money', '2023-02-26 15:52:41', 'money', '2023-02-26 15:52:41');
-INSERT INTO `sys_dict_detail` VALUES (1629751322239791106, 'OrderStatus', '已支付', 'PAID', 2, 'money', '2023-02-26 15:52:49', 'money', '2023-02-26 15:52:49');
-INSERT INTO `sys_dict_detail` VALUES (1629751363172003842, 'OrderStatus', '已完成', 'DONE', 3, 'money', '2023-02-26 15:52:59', 'money', '2023-02-26 15:52:59');
-INSERT INTO `sys_dict_detail` VALUES (1629751418805252098, 'OrderStatus', '已退单', 'RETURN', 4, 'money', '2023-02-26 15:53:12', 'money', '2023-02-26 15:53:20');
+INSERT INTO `sys_dict_detail` VALUES (1629751322239791106, 'OrderStatus', '已支付', 'PAID', 1, 'money', '2023-02-26 15:52:49', 'money', '2023-02-26 15:52:49');
+INSERT INTO `sys_dict_detail` VALUES (1629751418805252098, 'OrderStatus', '已退单', 'RETURN', 2, 'money', '2023-02-26 15:53:12', 'money', '2023-02-26 15:53:20');
 INSERT INTO `sys_dict_detail` VALUES (1630931426294759425, 'memberType', '内部会员', 'INNER', 4, 'money', '2023-03-01 22:02:08', 'money', '2023-03-01 22:02:13');
 
 -- ----------------------------
@@ -3783,7 +3781,6 @@ CREATE TABLE `sys_role`  (
   `description` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '角色描述',
   `count` bigint NOT NULL DEFAULT 0 COMMENT '角色人数',
   `enabled` tinyint(1) NOT NULL DEFAULT 1 COMMENT '可用状态：0-禁用；1-启用',
-  `sort` int NOT NULL DEFAULT 999 COMMENT '排序',
   `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `create_time` datetime NOT NULL,
   `update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
@@ -3795,9 +3792,9 @@ CREATE TABLE `sys_role`  (
 -- ----------------------------
 -- Records of sys_role
 -- ----------------------------
-INSERT INTO `sys_role` VALUES (1, 'SUPER_ADMIN', '超级管理员', 0, '拥有全部权限的人', 1, 1, 999, '', '2021-09-07 22:49:27', 'admin', '2022-03-06 11:40:47', 0);
-INSERT INTO `sys_role` VALUES (1502845638751055873, 'ADMIN', '管理员', 1, '管理员', 1, 1, 999, 'admin', '2022-03-13 11:14:56', 'admin', '2022-03-13 11:14:56', 0);
-INSERT INTO `sys_role` VALUES (1502845786646409218, 'GUEST', '游客', 99, '只能查不能改', 1, 1, 999, 'admin', '2022-03-13 11:15:32', 'admin', '2022-03-13 11:15:42', 0);
+INSERT INTO `sys_role` VALUES (1, 'SUPER_ADMIN', '超级管理员', 0, '拥有全部权限的人', 1, 1, '', '2021-09-07 22:49:27', 'admin', '2022-03-06 11:40:47', 0);
+INSERT INTO `sys_role` VALUES (1502845638751055873, 'ADMIN', '管理员', 1, '管理员', 1, 1, 'admin', '2022-03-13 11:14:56', 'admin', '2022-03-13 11:14:56', 0);
+INSERT INTO `sys_role` VALUES (1502845786646409218, 'GUEST', '游客', 99, '只能查不能改', 1, 1, 'admin', '2022-03-13 11:15:32', 'admin', '2022-03-13 11:15:42', 0);
 
 -- ----------------------------
 -- Table structure for sys_role_permission_relation
@@ -3809,60 +3806,33 @@ CREATE TABLE `sys_role_permission_relation`  (
   `role_id` bigint UNSIGNED NOT NULL COMMENT '角色id',
   `tenant_id` bigint UNSIGNED NOT NULL DEFAULT 0 COMMENT '租户id',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1634414771006853123 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '角色资源权限关联表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1507375871487504390 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '角色资源权限关联表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_role_permission_relation
 -- ----------------------------
-INSERT INTO `sys_role_permission_relation` VALUES (1662116432919605249, 1501921151197130754, 1502845638751055873, 0);
-INSERT INTO `sys_role_permission_relation` VALUES (1662116432923799554, 1502278787507806210, 1502845638751055873, 0);
-INSERT INTO `sys_role_permission_relation` VALUES (1662116432927993858, 1629731649087565825, 1502845638751055873, 0);
-INSERT INTO `sys_role_permission_relation` VALUES (1662116432927993859, 1629707726832730113, 1502845638751055873, 0);
-INSERT INTO `sys_role_permission_relation` VALUES (1662116432927993860, 1629732461629108226, 1502845638751055873, 0);
-INSERT INTO `sys_role_permission_relation` VALUES (1662116432927993861, 1503738104236822529, 1502845638751055873, 0);
-INSERT INTO `sys_role_permission_relation` VALUES (1662116432927993862, 1629767886267736065, 1502845638751055873, 0);
-INSERT INTO `sys_role_permission_relation` VALUES (1662116432927993863, 1629707539397672961, 1502845638751055873, 0);
-INSERT INTO `sys_role_permission_relation` VALUES (1662116432932188162, 1629768001384603649, 1502845638751055873, 0);
-INSERT INTO `sys_role_permission_relation` VALUES (1662116432932188163, 1503736683986800642, 1502845638751055873, 0);
-INSERT INTO `sys_role_permission_relation` VALUES (1662116432932188164, 1503754013445804034, 1502845638751055873, 0);
-INSERT INTO `sys_role_permission_relation` VALUES (1662116432932188165, 1629731729861472258, 1502845638751055873, 0);
-INSERT INTO `sys_role_permission_relation` VALUES (1662116432932188166, 1503753702563991553, 1502845638751055873, 0);
-INSERT INTO `sys_role_permission_relation` VALUES (1662116432932188167, 1629390281492361218, 1502845638751055873, 0);
-INSERT INTO `sys_role_permission_relation` VALUES (1662116432932188168, 1629732239595237378, 1502845638751055873, 0);
-INSERT INTO `sys_role_permission_relation` VALUES (1662116432932188169, 1629390817495052289, 1502845638751055873, 0);
-INSERT INTO `sys_role_permission_relation` VALUES (1662116432936382465, 1629732061718999041, 1502845638751055873, 0);
-INSERT INTO `sys_role_permission_relation` VALUES (1662116432936382466, 1503753930130149377, 1502845638751055873, 0);
-INSERT INTO `sys_role_permission_relation` VALUES (1662116432936382467, 1502863016289398785, 1502845638751055873, 0);
-INSERT INTO `sys_role_permission_relation` VALUES (1662116432936382468, 1629388418109894657, 1502845638751055873, 0);
-INSERT INTO `sys_role_permission_relation` VALUES (1662116432936382469, 1629707272975482881, 1502845638751055873, 0);
-INSERT INTO `sys_role_permission_relation` VALUES (1662116432936382470, 1629390745160085505, 1502845638751055873, 0);
-INSERT INTO `sys_role_permission_relation` VALUES (1662116432936382471, 1629707668649345025, 1502845638751055873, 0);
-INSERT INTO `sys_role_permission_relation` VALUES (1662116432936382472, 1503738191579009025, 1502845638751055873, 0);
-INSERT INTO `sys_role_permission_relation` VALUES (1662116432940576769, 1629731562059952129, 1502845638751055873, 0);
-INSERT INTO `sys_role_permission_relation` VALUES (1662116432940576770, 1634214613527801857, 1502845638751055873, 0);
-INSERT INTO `sys_role_permission_relation` VALUES (1662116432940576771, 1629707621962547201, 1502845638751055873, 0);
-INSERT INTO `sys_role_permission_relation` VALUES (1662116432940576772, 1629731810069147650, 1502845638751055873, 0);
-INSERT INTO `sys_role_permission_relation` VALUES (1662116432940576773, 1629390135195037697, 1502845638751055873, 0);
-INSERT INTO `sys_role_permission_relation` VALUES (1662116681880907778, 1501921151197130754, 1502845786646409218, 0);
-INSERT INTO `sys_role_permission_relation` VALUES (1662116681880907779, 1502278787507806210, 1502845786646409218, 0);
-INSERT INTO `sys_role_permission_relation` VALUES (1662116681880907780, 1629731649087565825, 1502845786646409218, 0);
-INSERT INTO `sys_role_permission_relation` VALUES (1662116681880907781, 1629732061718999041, 1502845786646409218, 0);
-INSERT INTO `sys_role_permission_relation` VALUES (1662116681880907782, 1629707726832730113, 1502845786646409218, 0);
-INSERT INTO `sys_role_permission_relation` VALUES (1662116681880907783, 1502863016289398785, 1502845786646409218, 0);
-INSERT INTO `sys_role_permission_relation` VALUES (1662116681880907784, 1629388418109894657, 1502845786646409218, 0);
-INSERT INTO `sys_role_permission_relation` VALUES (1662116681880907785, 1629707272975482881, 1502845786646409218, 0);
-INSERT INTO `sys_role_permission_relation` VALUES (1662116681880907786, 1629707539397672961, 1502845786646409218, 0);
-INSERT INTO `sys_role_permission_relation` VALUES (1662116681880907787, 1629390745160085505, 1502845786646409218, 0);
-INSERT INTO `sys_role_permission_relation` VALUES (1662116681880907788, 1629707668649345025, 1502845786646409218, 0);
-INSERT INTO `sys_role_permission_relation` VALUES (1662116681880907789, 1629731729861472258, 1502845786646409218, 0);
-INSERT INTO `sys_role_permission_relation` VALUES (1662116681880907790, 1629731562059952129, 1502845786646409218, 0);
-INSERT INTO `sys_role_permission_relation` VALUES (1662116681880907791, 1634214613527801857, 1502845786646409218, 0);
-INSERT INTO `sys_role_permission_relation` VALUES (1662116681880907792, 1629390281492361218, 1502845786646409218, 0);
-INSERT INTO `sys_role_permission_relation` VALUES (1662116681880907793, 1629732239595237378, 1502845786646409218, 0);
-INSERT INTO `sys_role_permission_relation` VALUES (1662116681880907794, 1629707621962547201, 1502845786646409218, 0);
-INSERT INTO `sys_role_permission_relation` VALUES (1662116681880907795, 1629390817495052289, 1502845786646409218, 0);
-INSERT INTO `sys_role_permission_relation` VALUES (1662116681880907796, 1629731810069147650, 1502845786646409218, 0);
-INSERT INTO `sys_role_permission_relation` VALUES (1662116681880907797, 1629390135195037697, 1502845786646409218, 0);
+INSERT INTO `sys_role_permission_relation` VALUES (1507375843830263810, 1501921151197130754, 1502845638751055873, 0);
+INSERT INTO `sys_role_permission_relation` VALUES (1507375843830263811, 1502278787507806210, 1502845638751055873, 0);
+INSERT INTO `sys_role_permission_relation` VALUES (1507375843830263812, 1503753930130149377, 1502845638751055873, 0);
+INSERT INTO `sys_role_permission_relation` VALUES (1507375843830263813, 1503754468678782978, 1502845638751055873, 0);
+INSERT INTO `sys_role_permission_relation` VALUES (1507375843830263814, 1507371669973479425, 1502845638751055873, 0);
+INSERT INTO `sys_role_permission_relation` VALUES (1507375843830263815, 1503738104236822529, 1502845638751055873, 0);
+INSERT INTO `sys_role_permission_relation` VALUES (1507375843830263816, 1502863016289398785, 1502845638751055873, 0);
+INSERT INTO `sys_role_permission_relation` VALUES (1507375843830263817, 1507371776840151041, 1502845638751055873, 0);
+INSERT INTO `sys_role_permission_relation` VALUES (1507375843830263818, 1503754297878335489, 1502845638751055873, 0);
+INSERT INTO `sys_role_permission_relation` VALUES (1507375843830263819, 1503736683986800642, 1502845638751055873, 0);
+INSERT INTO `sys_role_permission_relation` VALUES (1507375843830263820, 1503754013445804034, 1502845638751055873, 0);
+INSERT INTO `sys_role_permission_relation` VALUES (1507375843830263821, 1507371725170520065, 1502845638751055873, 0);
+INSERT INTO `sys_role_permission_relation` VALUES (1507375843830263822, 1507371326556450818, 1502845638751055873, 0);
+INSERT INTO `sys_role_permission_relation` VALUES (1507375843830263823, 1503738191579009025, 1502845638751055873, 0);
+INSERT INTO `sys_role_permission_relation` VALUES (1507375843830263824, 1502863270971731970, 1502845638751055873, 0);
+INSERT INTO `sys_role_permission_relation` VALUES (1507375843830263825, 1503753702563991553, 1502845638751055873, 0);
+INSERT INTO `sys_role_permission_relation` VALUES (1507375843830263826, 1503754393558798337, 1502845638751055873, 0);
+INSERT INTO `sys_role_permission_relation` VALUES (1507375871487504386, 1501921151197130754, 1502845786646409218, 0);
+INSERT INTO `sys_role_permission_relation` VALUES (1507375871487504387, 1502278787507806210, 1502845786646409218, 0);
+INSERT INTO `sys_role_permission_relation` VALUES (1507375871487504388, 1507371326556450818, 1502845786646409218, 0);
+INSERT INTO `sys_role_permission_relation` VALUES (1507375871487504389, 1502863270971731970, 1502845786646409218, 0);
+INSERT INTO `sys_role_permission_relation` VALUES (1507375871487504390, 1502863016289398785, 1502845786646409218, 0);
 
 -- ----------------------------
 -- Table structure for sys_tenant
@@ -3881,7 +3851,6 @@ CREATE TABLE `sys_tenant`  (
   `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `sort` int NOT NULL DEFAULT 99,
   `tenant_id` bigint UNSIGNED NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
@@ -3889,7 +3858,7 @@ CREATE TABLE `sys_tenant`  (
 -- ----------------------------
 -- Records of sys_tenant
 -- ----------------------------
-INSERT INTO `sys_tenant` VALUES (0, 'M', 'https://wpimg.wallstcn.com/69a1c46c-eb1c-4b46-8bd4-e9e686ef5251.png', '', 'www.money.com', '麦尼科技', '主租户', 0, '', '2022-05-29 10:15:22', '', '2022-03-26 14:06:28', 99, 0);
+INSERT INTO `sys_tenant` VALUES (0, 'M', 'https://wpimg.wallstcn.com/69a1c46c-eb1c-4b46-8bd4-e9e686ef5251.png', '', 'www.money.com', '麦尼科技', '主租户', 0, '', '2022-05-29 10:15:22', '', '2022-03-26 14:06:28', 0);
 
 -- ----------------------------
 -- Table structure for sys_user
@@ -3907,7 +3876,6 @@ CREATE TABLE `sys_user`  (
   `enabled` tinyint(1) NOT NULL DEFAULT 1 COMMENT '可用状态：0-禁用；1-启用',
   `init_login` tinyint(1) NOT NULL DEFAULT 1 COMMENT '初次登录：0-不是；1-是',
   `last_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '最后登录时间',
-  `sort` int NOT NULL DEFAULT 99,
   `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
@@ -3920,9 +3888,9 @@ CREATE TABLE `sys_user`  (
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-INSERT INTO `sys_user` VALUES (1, 'money', '$2a$10$W6oaOSARIA3DsZy1DkdfUuqI3L7a885Ci7AYvpQK.9NGbeVhcZihi', 'money', 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif', '18120800000', 'money@qq.com', '俺是一个超级管理员！', 1, 1, '2023-05-26 23:19:41', 99, 'money', '2022-03-03 23:12:57', 'money', '2022-03-25 23:41:26', 0);
-INSERT INTO `sys_user` VALUES (1502254138862391297, 'admin', '$2a$10$630Mdca6BcyUJpKC2LNT7eT93.k9pmpcQoes4qm/j2o.pnb725zE6', 'admin', 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif', '18120803972', 'admin@qq.com', '', 1, 1, '2022-09-03 12:07:07', 99, 'money', '2022-03-11 20:04:32', 'money', '2022-03-25 23:41:06', 0);
-INSERT INTO `sys_user` VALUES (1504612500111388673, 'guest', '$2a$10$Nj/4Tn.cj2SEdoIUqMz7FOczatNV/AltEu07ieTpAO.5hEGV7lZqC', 'guest', 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif', '18120800002', 'guest@qq.com', '', 1, 1, '2022-09-03 12:07:24', 99, 'money', '2022-03-18 08:15:49', 'money', '2022-03-25 23:41:00', 0);
+INSERT INTO `sys_user` VALUES (1, 'money', '$2a$10$W6oaOSARIA3DsZy1DkdfUuqI3L7a885Ci7AYvpQK.9NGbeVhcZihi', 'money', 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif', '18120800000', 'money@qq.com', '俺是一个超级管理员！', 1, 1, '2023-06-15 23:23:20', '', '2022-03-03 23:12:57', 'money', '2022-03-25 23:41:26', 0);
+INSERT INTO `sys_user` VALUES (1502254138862391297, 'admin', '$2a$10$630Mdca6BcyUJpKC2LNT7eT93.k9pmpcQoes4qm/j2o.pnb725zE6', 'admin', 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif', '18120803972', 'admin@qq.com', '', 1, 1, '2022-09-03 12:07:07', 'admin', '2022-03-11 20:04:32', 'money', '2022-03-25 23:41:06', 0);
+INSERT INTO `sys_user` VALUES (1504612500111388673, 'guest', '$2a$10$Nj/4Tn.cj2SEdoIUqMz7FOczatNV/AltEu07ieTpAO.5hEGV7lZqC', 'guest', 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif', '18120800002', 'guest@qq.com', '', 1, 1, '2022-09-03 12:07:24', '001', '2022-03-18 08:15:49', 'money', '2022-03-25 23:41:00', 0);
 
 -- ----------------------------
 -- Table structure for sys_user_role_relation
@@ -3965,9 +3933,9 @@ CREATE TABLE `ums_member`  (
   `remark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '' COMMENT '备注',
   `deleted` tinyint(1) NOT NULL DEFAULT 0 COMMENT '逻辑删除',
   `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `create_time` datetime NOT NULL,
   `update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `update_time` datetime NOT NULL,
   `tenant_id` bigint UNSIGNED NOT NULL DEFAULT 0 COMMENT '租户id',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '会员表' ROW_FORMAT = DYNAMIC;
@@ -3975,6 +3943,6 @@ CREATE TABLE `ums_member`  (
 -- ----------------------------
 -- Records of ums_member
 -- ----------------------------
-INSERT INTO `ums_member` VALUES (1520264587222609921, '60496847', '内部', 'INNER', '18120801234', '福建省', '厦门市', '集美', '五缘湾', 999906.00, 137.00, 93.00, 3, 0, '', 0, 'money', '2022-04-30 12:51:37', 'money', '2022-04-30 19:48:55', 0);
+INSERT INTO `ums_member` VALUES (1520264587222609921, '60496847', '内部', 'INNER', '18120801234', '福建省', '厦门市', '集美', '五缘湾', 999941.00, 67.00, 58.00, 3, 0, '', 0, 'money', '2022-04-30 12:51:37', 'money', '2022-04-30 19:48:55', 0);
 
 SET FOREIGN_KEY_CHECKS = 1;

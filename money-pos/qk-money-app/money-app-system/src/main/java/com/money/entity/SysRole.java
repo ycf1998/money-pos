@@ -39,11 +39,7 @@ public class SysRole extends BaseEntity {
     @Schema(description = "可用状态：0-禁用；1-启用")
     private Boolean enabled;
 
-    @Schema(description = "排序")
-    private Integer sort;
-
     @Schema(description = "租户id")
     private Long tenantId;
-
 
 }

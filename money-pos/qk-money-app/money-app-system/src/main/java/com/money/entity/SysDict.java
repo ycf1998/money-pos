@@ -30,7 +30,4 @@ public class SysDict extends BaseEntity {
     @Schema(description = "字典描述")
     private String description;
 
-    @Schema(description = "排序")
-    private Integer sort;
-
 }

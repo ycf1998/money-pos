@@ -69,8 +69,8 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
                 .like(StrUtil.isNotBlank(queryDTO.getRoleCode()), SysRole::getRoleCode, queryDTO.getRoleCode())
                 .and(StrUtil.isNotBlank(queryDTO.getName()), wrapper -> wrapper.like(SysRole::getRoleName, queryDTO.getName())
                         .or(orWrapper -> orWrapper.like(SysRole::getDescription, queryDTO.getName())))
-                .orderByAsc(StrUtil.isBlank(queryDTO.getSort()), SysRole::getLevel)
-                .last(StrUtil.isNotBlank(queryDTO.getSort()), queryDTO.getOrderBySql())
+                .orderByAsc(StrUtil.isBlank(queryDTO.getOrderBy()), SysRole::getLevel)
+                .last(StrUtil.isNotBlank(queryDTO.getOrderBy()), queryDTO.getOrderBySql())
                 .page(PageUtil.toPage(queryDTO));
         return PageUtil.toPageVO(page, sysRole -> {
             SysRoleVO sysRoleVO = new SysRoleVO();

@@ -12,8 +12,6 @@ import lombok.Data;
 @Data
 public class SysPermissionQueryDTO {
 
-    private static final long serialVersionUID = -5513332778675097648L;
-
     @Schema(description = "parentId")
     private Long parentId;
 

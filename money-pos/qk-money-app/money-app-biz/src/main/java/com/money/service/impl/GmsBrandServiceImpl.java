@@ -43,7 +43,7 @@ public class GmsBrandServiceImpl extends ServiceImpl<GmsBrandMapper, GmsBrand> i
     public PageVO<GmsBrandVO> list(GmsBrandQueryDTO queryDTO) {
         Page<GmsBrand> page = this.lambdaQuery()
                 .like(StrUtil.isNotBlank(queryDTO.getName()), GmsBrand::getName, queryDTO.getName())
-                .last(StrUtil.isNotBlank(queryDTO.getSort()), queryDTO.getOrderBySql())
+                .last(StrUtil.isNotBlank(queryDTO.getOrderBy()), queryDTO.getOrderBySql())
                 .page(PageUtil.toPage(queryDTO));
         return PageUtil.toPageVO(page, GmsBrandVO::new);
     }

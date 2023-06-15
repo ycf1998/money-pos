@@ -51,8 +51,8 @@ public class OmsOrderServiceImpl extends ServiceImpl<OmsOrderMapper, OmsOrder> i
                 .like(StrUtil.isNotBlank(queryDTO.getMember()), OmsOrder::getMember, queryDTO.getMember())
                 .ge(queryDTO.getStartTime() != null, OmsOrder::getCreateTime, queryDTO.getStartTime())
                 .le(queryDTO.getEndTime() != null, OmsOrder::getCreateTime, queryDTO.getEndTime())
-                .orderByDesc(StrUtil.isBlank(queryDTO.getSort()), OmsOrder::getCreateTime)
-                .last(StrUtil.isNotBlank(queryDTO.getSort()), queryDTO.getOrderBySql())
+                .orderByDesc(StrUtil.isBlank(queryDTO.getOrderBy()), OmsOrder::getCreateTime)
+                .last(StrUtil.isNotBlank(queryDTO.getOrderBy()), queryDTO.getOrderBySql())
                 .page(PageUtil.toPage(queryDTO));
         return PageUtil.toPageVO(page, OmsOrderVO::new);
     }

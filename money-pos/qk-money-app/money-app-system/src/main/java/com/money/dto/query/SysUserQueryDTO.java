@@ -3,6 +3,7 @@ package com.money.dto.query;
 import com.money.common.dto.QueryRequest;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * @author : money
@@ -10,6 +11,7 @@ import lombok.Data;
  * @description : 系统用户查询dto
  * @createTime : 2022-03-05 12:21:04
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
 public class SysUserQueryDTO extends QueryRequest {
 

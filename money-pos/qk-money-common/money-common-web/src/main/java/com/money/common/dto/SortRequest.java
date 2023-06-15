@@ -15,5 +15,5 @@ public class SortRequest implements ISortRequest {
     private static final long serialVersionUID = 4432103394522401613L;
 
     @Schema(description = "排序 createTime,desc;id,asc;")
-    private String sort;
+    private String orderBy;
 }

@@ -56,7 +56,4 @@ public class SysUser extends BaseEntity {
     @Schema(description = "租户id")
     private Long tenantId;
 
-    private Integer sort;
-
-
 }

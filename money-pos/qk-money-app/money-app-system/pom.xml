@@ -16,15 +16,15 @@
     <description>系统模块</description>
 
     <dependencies>
-        <!-- api模块 -->
-        <dependency>
-            <groupId>com.money</groupId>
-            <artifactId>money-app-api</artifactId>
-        </dependency>
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <scope>runtime</scope>
+        </dependency>
+        <!-- api模块 -->
+        <dependency>
+            <groupId>com.money</groupId>
+            <artifactId>money-app-api</artifactId>
         </dependency>
         <!-- 安全模块 -->
         <dependency>

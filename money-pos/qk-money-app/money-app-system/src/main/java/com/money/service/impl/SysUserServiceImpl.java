@@ -92,8 +92,8 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
                 .like(StrUtil.isNotBlank(queryDTO.getPhone()), SysUser::getPhone, queryDTO.getPhone())
                 .and(StrUtil.isNotBlank(queryDTO.getName()), wrapper -> wrapper.like(SysUser::getUsername, queryDTO.getName())
                         .or(orWrapper -> orWrapper.like(SysUser::getNickname, queryDTO.getName())))
-                .orderByDesc(StrUtil.isBlank(queryDTO.getSort()), SysUser::getLastTime)
-                .last(StrUtil.isNotBlank(queryDTO.getSort()), queryDTO.getOrderBySql())
+                .orderByDesc(StrUtil.isBlank(queryDTO.getOrderBy()), SysUser::getLastTime)
+                .last(StrUtil.isNotBlank(queryDTO.getOrderBy()), queryDTO.getOrderBySql())
                 .page(PageUtil.toPage(queryDTO));
         return PageUtil.toPageVO(page, sysUser -> {
             SysUserVO sysUserVO = new SysUserVO();

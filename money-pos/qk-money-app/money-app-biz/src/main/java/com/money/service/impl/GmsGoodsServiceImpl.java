@@ -59,8 +59,8 @@ public class GmsGoodsServiceImpl extends ServiceImpl<GmsGoodsMapper, GmsGoods> i
                 .eq(ObjectUtil.isNotNull(queryDTO.getStatus()), GmsGoods::getStatus, queryDTO.getStatus())
                 .like(StrUtil.isNotBlank(queryDTO.getBarcode()), GmsGoods::getBarcode, queryDTO.getBarcode())
                 .like(StrUtil.isNotBlank(queryDTO.getName()), GmsGoods::getName, queryDTO.getName())
-                .orderByDesc(StrUtil.isBlank(queryDTO.getSort()), GmsGoods::getUpdateTime)
-                .last(StrUtil.isNotBlank(queryDTO.getSort()), queryDTO.getOrderBySql())
+                .orderByDesc(StrUtil.isBlank(queryDTO.getOrderBy()), GmsGoods::getUpdateTime)
+                .last(StrUtil.isNotBlank(queryDTO.getOrderBy()), queryDTO.getOrderBySql())
                 .page(PageUtil.toPage(queryDTO));
         return PageUtil.toPageVO(page, GmsGoodsVO::new);
     }

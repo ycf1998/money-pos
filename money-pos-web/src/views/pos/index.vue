@@ -184,10 +184,7 @@ export default {
   },
   computed: {
     total: function () {
-      return this.orderList.reduce(
-        (prev, next) => (prev.quantity | 0) + (next.quantity | 0),
-        0
-      )
+      return this.orderList.reduce((prev, next) => (prev.quantity | 0) + (next.quantity | 0), 0)
     },
     totalAmount: function () {
       let val = 0.0
@@ -241,10 +238,7 @@ export default {
     queryGoods(barcodeOrName, cb) {
       let result = this.goodsList
       if (barcodeOrName) {
-        result = this.goodsList.filter(
-          (e) =>
-            e.barcode.includes(barcodeOrName) || e.name.includes(barcodeOrName)
-        )
+        result = this.goodsList.filter((e) => e.barcode.includes(barcodeOrName) || e.name.includes(barcodeOrName))
       }
       cb(result.length > 10 ? [] : result)
     },
@@ -252,9 +246,7 @@ export default {
     queryMember(nameOrPhone, cb) {
       let result = this.memberList
       if (nameOrPhone) {
-        result = this.memberList.filter(
-          (e) => e.name.includes(nameOrPhone) || e.phone.includes(nameOrPhone)
-        )
+        result = this.memberList.filter((e) => e.name.includes(nameOrPhone) || e.phone.includes(nameOrPhone))
       }
       cb(result.length > 10 ? [] : result)
     },
@@ -304,9 +296,7 @@ export default {
     // 修改数量
     changeQuantity(goods) {
       if (goods.quantity === 0) {
-        this.orderList = this.orderList.filter(
-          (e) => e.goodsId !== goods.goodsId
-        )
+        this.orderList = this.orderList.filter((e) => e.goodsId !== goods.goodsId)
       }
     },
     // 显示订单
@@ -348,10 +338,7 @@ export default {
           const printOrderInfo = {
             info: res.data,
             detail: this.orderList.flatMap((o) => {
-              return [
-                Object.assign({ key: Math.random() }, o),
-                Object.assign({ key: Math.random() }, o)
-              ]
+              return [Object.assign({ key: Math.random() }, o), Object.assign({ key: Math.random() }, o)]
             }),
             member: Object.assign({}, this.currentMember)
           }
@@ -374,6 +361,7 @@ export default {
       this.isVip = false
       this.tool.editPrice = false
       this.clearOrderList()
+      this.loadInit()
     },
     // ============================ 工具 ===============================
     // 刷新

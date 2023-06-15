@@ -45,7 +45,9 @@ public class ${entity}VO {
     private static final long serialVersionUID = 1L;
 </#if>
 
+<#if superEntityClass??>
     private Long id;
+</#if>
 <#-- ----------  BEGIN 字段循环遍历  ---------->
 <#list table.fields as field>
     <#if field.propertyName != "id" && field.propertyName != "sort" && field.propertyName != "tenantId">

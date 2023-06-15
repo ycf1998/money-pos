@@ -40,8 +40,8 @@ public class UmsMemberServiceImpl extends ServiceImpl<UmsMemberMapper, UmsMember
                 .like(StrUtil.isNotBlank(queryDTO.getPhone()), UmsMember::getPhone, queryDTO.getPhone())
                 .eq(StrUtil.isNotBlank(queryDTO.getType()), UmsMember::getType, queryDTO.getType())
                 .eq(UmsMember::getDeleted, false)
-                .orderByDesc(StrUtil.isBlank(queryDTO.getSort()), UmsMember::getUpdateTime)
-                .last(StrUtil.isNotBlank(queryDTO.getSort()), queryDTO.getOrderBySql())
+                .orderByDesc(StrUtil.isBlank(queryDTO.getOrderBy()), UmsMember::getUpdateTime)
+                .last(StrUtil.isNotBlank(queryDTO.getOrderBy()), queryDTO.getOrderBySql())
                 .page(PageUtil.toPage(queryDTO));
         return PageUtil.toPageVO(page, UmsMemberVO::new);
     }
