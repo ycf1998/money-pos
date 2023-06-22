@@ -1,8 +1,9 @@
 package com.money.common.log;
 
 
-import cn.hutool.json.JSONUtil;
+import cn.hutool.core.collection.ListUtil;
 import com.money.common.context.WebRequestContextHolder;
+import com.money.common.util.DefaultJackson;
 import com.money.common.util.IpUtil;
 import com.money.common.util.WebUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -20,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
-import java.net.URL;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -30,7 +30,7 @@ import java.util.List;
 /**
  * @author : money
  * @version : 1.0.0
- * @description : 默认全局web日志方面
+ * @description : 默认全局 Web 日志方面
  * @createTime : 2022-01-01 13:26:12
  */
 @Slf4j
@@ -62,26 +62,28 @@ public class DefaultWebLogAspect {
         // 执行
         Object result = null;
         try {
-           result = joinPoint.proceed();
+            result = joinPoint.proceed();
         } finally {
             long endTime = Instant.now().toEpochMilli();
             long spendTime = endTime - startTime;
             WebLog webLog = WebLog.builder()
-                    .basePath(url.replace(new URL(url).getPath(), ""))
+                    .requestId(WebRequestContextHolder.getContext().getRequestId())
+                    .requestTime(now)
                     .ip(IpUtil.getIp(request))
                     .method(requestMethod)
-                    .parameter(this.getParameter(method, joinPoint.getArgs()))
                     .url(url)
                     .uri(request.getRequestURI())
+                    .parameter(this.getParameter(method, joinPoint.getArgs()))
                     .result(result)
-                    .operationTime(now.toString())
                     .spendTime(spendTime)
                     .build();
-            log.info("detail {}", JSONUtil.toJsonStr(webLog));
+            log.info("detail {}", DefaultJackson.writeAsString(webLog));
             log.info("spend time: {}ms", spendTime);
         }
         return result;
     }
+
+    private final static List<String> ignoreParams = ListUtil.of("javax.servlet.http.HttpServletRequest", "javax.servlet.http.HttpServletResponse");
 
     /**
      * 得到参数
@@ -94,13 +96,19 @@ public class DefaultWebLogAspect {
         List<Object> argList = new ArrayList<>();
         Parameter[] parameters = method.getParameters();
         for (int i = 0; i < parameters.length; i++) {
-            //将RequestParam注解修饰的参数作为请求参数
-            RequestParam requestParam = parameters[i].getAnnotation(RequestParam.class);
+            Parameter parameter = parameters[i];
+            String typeName = parameter.getParameterizedType().getTypeName();
+            // 忽略 Request 和 Response
+            if (ignoreParams.contains(typeName)) {
+                continue;
+            }
+            // 将 RequestParam 注解修饰的参数作为请求参数
+            RequestParam requestParam = parameter.getAnnotation(RequestParam.class);
             if (requestParam != null) {
-                String key = requestParam.value().equals("") ? parameters[i].getName() : requestParam.value();
+                String key = requestParam.value().equals("") ? parameter.getName() : requestParam.value();
                 argList.add(Collections.singletonMap(key, args[i]));
             } else {
-                argList.add(Collections.singletonMap(parameters[i].getName(), args[i]));
+                argList.add(Collections.singletonMap(parameter.getName(), args[i]));
             }
         }
         return argList.size() == 1 ? argList.get(0) : argList;

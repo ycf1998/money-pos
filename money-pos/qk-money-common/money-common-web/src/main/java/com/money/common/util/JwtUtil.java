@@ -42,7 +42,7 @@ public class JwtUtil {
         if (secret.length() < 4) {
             throw new InvalidKeyException("密钥长度不能少于4位");
         }
-        // 0.11.2的jjwt为了安全性，密码必须大于32位，为了补充自定义密码没那么长补加固定尾缀
+        // 0.11.2 的 jjwt 为了安全性，密码必须大于 32 位，为了补充自定义密码没那么长添加固定尾缀
         this.privateKey = Keys.hmacShaKeyFor(Decoders.BASE64.decode(secret + "bW9uZXktMTk5ODA3MDktMjAyMTA5MTExMDU4NDA="));
     }
 

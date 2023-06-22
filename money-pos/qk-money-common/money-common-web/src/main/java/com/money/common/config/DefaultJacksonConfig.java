@@ -32,12 +32,12 @@ public class DefaultJacksonConfig {
     @Bean
     public Jackson2ObjectMapperBuilderCustomizer jackson2ObjectMapperBuilderCustomizer() {
         return builder -> builder
-                // 不序列化null值，字段为null时返回json不返回该字段
+                // 字段值为 null 时不返回该字段
                 .serializationInclusion(JsonInclude.Include.NON_NULL)
                 .locale(Locale.CHINA)
                 .timeZone(TimeZone.getTimeZone(ZoneId.systemDefault()))
                 .dateFormat(new SimpleDateFormat(DatePattern.NORM_DATETIME_PATTERN))
-                // 雪花ID长19位，超过js Number精度只有16位，所以当长度超过16位的Long类型转为String返回
+                // 雪花ID长19位，而 JS Number 类型的精度只有16位，所以长度超过16位的Long类型转为String返回
                 .serializerByType(Long.class, new JsonSerializer<Long>() {
                     @Override
                     public void serialize(Long aLong, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException {

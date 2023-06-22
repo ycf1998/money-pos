@@ -1,7 +1,7 @@
 package com.money.common.response;
 
 
-import cn.hutool.json.JSONUtil;
+import com.money.common.util.DefaultJackson;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
@@ -35,7 +35,7 @@ public class DefaultResponseHandler implements ResponseBodyAdvice<Object> {
         }
         // 当返回类型是String时，用的是StringHttpMessageConverter转换器，无法转换为Json格式
         if (o instanceof String) {
-            return JSONUtil.toJsonStr(R.success(o));
+            return DefaultJackson.writeAsString(R.success(o));
         }
         return R.success(o);
     }

@@ -4,6 +4,8 @@ package com.money.common.log;
 import lombok.Builder;
 import lombok.Data;
 
+import java.time.LocalDateTime;
+
 /**
  * @author : money
  * @version : 1.0.0
@@ -15,33 +17,33 @@ import lombok.Data;
 public class WebLog {
 
     /**
-     * 操作时间
+     * 请求id
      */
-    private String operationTime;
+    private String requestId;
     /**
-     * IP地址
+     * 请求时间
+     */
+    private LocalDateTime requestTime;
+    /**
+     * IP
      */
     private String ip;
     /**
-     * 操作描述
+     * 描述
      */
     private String description;
     /**
-     * 请求类型
+     * 请求方法
      */
     private String method;
-    /**
-     * 根路径
-     */
-    private String basePath;
-    /**
-     * URI
-     */
-    private String uri;
     /**
      * URL
      */
     private String url;
+    /**
+     * URI
+     */
+    private String uri;
     /**
      * 请求参数
      */
@@ -51,7 +53,7 @@ public class WebLog {
      */
     private Object result;
     /**
-     * 消耗时间
+     * 消耗时间（ms）
      */
     private long spendTime;
 }

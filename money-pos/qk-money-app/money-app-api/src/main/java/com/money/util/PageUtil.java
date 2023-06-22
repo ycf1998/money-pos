@@ -25,11 +25,11 @@ public class PageUtil {
         return new Page<>(pageRequest.getPage(), pageRequest.getSize());
     }
 
-    public static <T> PageVO<T> toPageVO(IPage<T> page) {
+    public <T> PageVO<T> toPageVO(IPage<T> page) {
         return new PageVO<>(page.getCurrent(), page.getSize(), page.getPages(), page.getTotal(), page.getRecords());
     }
 
-    public static <T, R> PageVO<R> toPageVO(IPage<T> page, Supplier<R> supplier) {
+    public <T, R> PageVO<R> toPageVO(IPage<T> page, Supplier<R> supplier) {
         List<R> records = BeanMapUtil.to(page.getRecords(), supplier);
         return new PageVO<>(page.getCurrent(), page.getSize(), page.getPages(), page.getTotal(), records);
     }

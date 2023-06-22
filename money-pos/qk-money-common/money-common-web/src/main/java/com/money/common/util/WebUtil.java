@@ -1,6 +1,5 @@
 package com.money.common.util;
 
-import cn.hutool.json.JSONUtil;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -46,7 +45,7 @@ public class WebUtil {
     }
 
     /**
-     * json响应
+     * json 响应
      *
      * @param response   响应
      * @param httpStatus http状态
@@ -59,7 +58,7 @@ public class WebUtil {
         response.setStatus(httpStatus.value());
         try {
             ServletOutputStream outputStream = response.getOutputStream();
-            outputStream.write(JSONUtil.toJsonStr(o).getBytes(StandardCharsets.UTF_8));
+            outputStream.write(DefaultJackson.writeAsString(o).getBytes(StandardCharsets.UTF_8));
             outputStream.flush();
             outputStream.close();
         } catch (IOException e) {

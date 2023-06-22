@@ -48,7 +48,7 @@ public interface ISortRequest {
     }
 
     /**
-     * 获取order by语句
+     * 获取 order by 语句
      *
      * @return {@link String}
      */

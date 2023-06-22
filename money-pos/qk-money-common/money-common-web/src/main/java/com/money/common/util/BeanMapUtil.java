@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 /**
  * @author : money
  * @version : 1.0.0
- * @description : 对象转换工具
+ * @description : 对象复制工具
  * @createTime : 2023-04-06 22:31:53
  */
 @UtilityClass

@@ -15,10 +15,12 @@ import java.util.Map;
 public class JwtPayload implements Serializable {
 
     private static final long serialVersionUID = 3135427936015434777L;
+
     /**
      * 载体
      */
     private final Map<String, Object> claims;
+
     /**
      * 到期时间：单位秒
      */

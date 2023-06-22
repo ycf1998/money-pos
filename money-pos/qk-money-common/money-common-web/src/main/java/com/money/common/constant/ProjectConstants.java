@@ -11,14 +11,10 @@ public interface ProjectConstants {
     /**
      * 作者
      */
-    String AUTHOR = "money";
+    String AUTHOR = "麦尼Money";
     /**
      * 项目名称
      */
-    String PROJECT_NAME = "qk-money";
-    /**
-     * 项目版本
-     */
-    String PROJECT_VERSION = "1.0.0";
+    String PROJECT_NAME = "QK-MONEY";
 
 }

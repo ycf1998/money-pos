@@ -14,11 +14,11 @@ import javax.validation.constraints.Min;
 @Data
 public class PageRequest {
 
-    @Schema(required = true, description = "当前页")
+    @Schema(description = "当前页")
     @Min(value = 1, message = "当前页最小为1")
     private long page = 1;
 
-    @Schema(required = true, description = "页大小")
+    @Schema(description = "页大小")
     @Min(value = 1, message = "页大小最小为1")
     private long size = 10;
 }

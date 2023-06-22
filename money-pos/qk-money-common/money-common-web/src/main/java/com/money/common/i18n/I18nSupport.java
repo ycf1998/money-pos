@@ -1,8 +1,7 @@
 package com.money.common.i18n;
 
 import cn.hutool.core.util.StrUtil;
-import com.money.common.constant.WebRequestConstant;
-import com.money.common.util.WebUtil;
+import com.money.common.context.WebRequestContextHolder;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.ClassPathResource;
@@ -69,14 +68,17 @@ public class I18nSupport {
         return prop;
     }
 
-    public String get(String key) {
-        // 获取请求头里的客户端语言（不能从中WebRequestContextHolder获取，因为Spring Validation（JSR303参数校验）是在webLog切面前，此时未装填上下文）
-        String lang = WebUtil.getRequest().getHeader(WebRequestConstant.HEADER_LANG);
+    public String get(String key, Object... args) {
+        String lang = WebRequestContextHolder.getContext().getLang();
+        String val;
         // 客户端未传语言 || 未开启多语言 || 不支持该语言
         if (StrUtil.isBlank(lang) || i18nProperties == null || !i18nProperties.isSupport(lang)) {
-            return key;
+            val = StrUtil.indexedFormat(key, args);
+        } else {
+            val = Optional.ofNullable(loadI18nProp(lang).getProperty(key)).orElse(key);
         }
-        return Optional.ofNullable(loadI18nProp(lang).getProperty(key)).orElse(key);
+        // 使用 {0}..{n} 占位
+        return MessageFormat.format(val, args);
     }
 
 }

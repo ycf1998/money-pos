@@ -128,32 +128,12 @@ public class R<T> implements Serializable {
     }
 
     /**
-     * 未登录返回结果
-     *
-     * @param data 数据
-     * @return {@link R}<{@link T}>
-     */
-    public static <T> R<T> unauthorized(T data) {
-        return new R<>(RStatus.UNAUTHORIZED.getCode(), RStatus.UNAUTHORIZED.getMessage(), data);
-    }
-
-    /**
      * 未授权返回结果
      *
      * @return {@link R}<{@link T}>
      */
     public static <T> R<T> forbidden() {
         return fail(RStatus.FORBIDDEN.getCode(), RStatus.FORBIDDEN.getMessage());
-    }
-
-    /**
-     * 未授权返回结果
-     *
-     * @param data 数据
-     * @return {@link R}<{@link T}>
-     */
-    public static <T> R<T> forbidden(T data) {
-        return new R<>(RStatus.FORBIDDEN.getCode(), RStatus.FORBIDDEN.getMessage(), data);
     }
 
 }

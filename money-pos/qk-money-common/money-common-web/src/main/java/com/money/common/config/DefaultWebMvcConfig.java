@@ -23,11 +23,6 @@ import java.util.Date;
 @Configuration(proxyBeanMethods = false)
 public class DefaultWebMvcConfig implements WebMvcConfigurer {
 
-    /**
-     * 跨域
-     *
-     * @param registry 注册表
-     */
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")

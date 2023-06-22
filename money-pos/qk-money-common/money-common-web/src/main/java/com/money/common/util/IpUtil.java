@@ -17,7 +17,7 @@ import java.util.Map;
 public class IpUtil {
 
     /**
-     * 获得Ip
+     * 获取 IP
      *
      * @param request 请求
      * @return {@link String}
@@ -46,7 +46,7 @@ public class IpUtil {
     }
 
     /**
-     * 获得ip真实地址
+     * 获得 IP 的地理位置
      *
      * @param ip 知识产权
      * @return {@link IpAddress}
@@ -62,7 +62,7 @@ public class IpUtil {
                 return resObj.getObject("data", IpAddress.class);
             }
         } catch (Exception e) {
-            log.error("获取IP真实地址信息失败", e);
+            log.error("获取 IP 地理位置信息失败", e);
         }
         return null;
     }
