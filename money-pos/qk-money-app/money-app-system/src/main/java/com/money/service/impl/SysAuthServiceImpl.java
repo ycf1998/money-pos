@@ -5,7 +5,7 @@ import cn.hutool.core.collection.ListUtil;
 import cn.hutool.core.util.StrUtil;
 import com.money.common.exception.BaseException;
 import com.money.common.response.RStatus;
-import com.money.constant.ErrorStatus;
+import com.money.constant.SysErrorStatus;
 import com.money.constant.PermissionType;
 import com.money.dto.LoginDTO;
 import com.money.entity.SysPermission;
@@ -93,7 +93,7 @@ public class SysAuthServiceImpl implements SysAuthService {
     public AuthTokenVO login(LoginDTO loginDto) {
         SysUser sysUser = sysUserService.getByUsername(loginDto.getUsername());
         if (sysUser == null || !passwordEncoder.matches(loginDto.getPassword(), sysUser.getPassword())) {
-            throw new BaseException(ErrorStatus.USER_NOT_FOUND);
+            throw new BaseException(SysErrorStatus.USER_NOT_FOUND);
         }
         AuthTokenVO authTokenVO = new AuthTokenVO();
         authTokenVO.setTokenType(securityTokenSupport.getTokenConfig().getTokenType());
@@ -111,7 +111,7 @@ public class SysAuthServiceImpl implements SysAuthService {
     public UserInfoVO getUserInfo(String username) {
         SysUser sysUser = sysUserService.getByUsername(username);
         if (sysUser == null) {
-            throw new BaseException(ErrorStatus.USER_NOT_FOUND);
+            throw new BaseException(SysErrorStatus.USER_NOT_FOUND);
         }
         sysUser.setPassword(null);
         List<SysRole> roles = sysRoleService.getByUser(sysUser.getId());

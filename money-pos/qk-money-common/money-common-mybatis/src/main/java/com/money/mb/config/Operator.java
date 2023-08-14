@@ -8,5 +8,7 @@ package com.money.mb.config;
  */
 @FunctionalInterface
 public interface Operator {
+
     String getUsername();
+
 }

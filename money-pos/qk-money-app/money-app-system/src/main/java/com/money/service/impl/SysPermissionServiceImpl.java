@@ -6,7 +6,7 @@ import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.money.common.exception.BaseException;
-import com.money.constant.ErrorStatus;
+import com.money.constant.SysErrorStatus;
 import com.money.constant.PermissionType;
 import com.money.dto.SysPermissionDTO;
 import com.money.dto.query.SysPermissionQueryDTO;
@@ -76,7 +76,7 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
         if (StrUtil.isNotBlank(permissionDTO.getPermission())) {
             boolean exists = this.lambdaQuery().eq(SysPermission::getPermission, permissionDTO.getPermission()).exists();
             if (exists) {
-                throw new BaseException(ErrorStatus.DATA_ALREADY_EXIST, "权限");
+                throw new BaseException(SysErrorStatus.DATA_ALREADY_EXIST, "权限标识已存在");
             }
         }
         SysPermission sysPermission = new SysPermission();
@@ -94,7 +94,7 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
             boolean exists = this.lambdaQuery().eq(SysPermission::getPermission, permissionDTO.getPermission())
                     .ne(SysPermission::getId, permissionDTO.getId()).exists();
             if (exists) {
-                throw new BaseException(ErrorStatus.DATA_ALREADY_EXIST, "权限");
+                throw new BaseException(SysErrorStatus.DATA_ALREADY_EXIST, "权限标识已存在");
             }
         }
         SysPermission sysPermission = this.getById(permissionDTO.getId());

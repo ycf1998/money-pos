@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.money.common.exception.BaseException;
 import com.money.common.vo.PageVO;
-import com.money.constant.ErrorStatus;
+import com.money.constant.SysErrorStatus;
 import com.money.dto.SysDictDTO;
 import com.money.dto.query.SysDictQueryDTO;
 import com.money.entity.SysDict;
@@ -52,7 +52,7 @@ public class SysDictServiceImpl extends ServiceImpl<SysDictMapper, SysDict> impl
         // 字典唯一
         boolean exists = this.lambdaQuery().eq(SysDict::getName, sysDictDTO.getName()).exists();
         if (exists) {
-            throw new BaseException(ErrorStatus.DATA_ALREADY_EXIST, "字典");
+            throw new BaseException(SysErrorStatus.DATA_ALREADY_EXIST, "字典已存在");
         }
         SysDict sysDict = new SysDict();
         BeanUtil.copyProperties(sysDictDTO, sysDict);

@@ -1,22 +1,21 @@
-package ${package.Other}.${table.entityName};
+<#assign entityLower = table.entityName?lower_case>
+package ${packageOther}.${entityLower};
 
 <#list table.importPackages as pkg>
-<#if pkg!="com.baomidou.mybatisplus.annotation.TableName" && pkg!="com.money.mb.base.BaseEntity">
+<#if pkg!="com.baomidou.mybatisplus.annotation.TableName" && pkg!="com.money.mb.base.BaseEntity"
+&& pkg!="com.baomidou.mybatisplus.annotation.IdType" && pkg!="com.baomidou.mybatisplus.annotation.TableId">
 import ${pkg};
 </#if>
 </#list>
-<#if entitySerialVersionUID>
-import java.io.Serializable;
-</#if>
-<#if swagger>
+<#if springdoc>
 import io.swagger.v3.oas.annotations.media.Schema;
 </#if>
 <#if entityLombokModel>
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+</#if>
 <#if chainModel>
 import lombok.experimental.Accessors;
-</#if>
 </#if>
 import com.money.common.dto.QueryRequest;
 
@@ -31,31 +30,20 @@ import com.money.common.dto.QueryRequest;
 <#if entityLombokModel>
 @Data
 @EqualsAndHashCode(callSuper = true)
+</#if>
 <#if chainModel>
 @Accessors(chain = true)
 </#if>
-</#if>
-<#if swagger>
+<#if springdoc>
 @Schema(description = "${table.comment!}")
 </#if>
-<#if entitySerialVersionUID>
-public class ${entity}QueryDTO extends QueryRequest implements Serializable {
-<#else>
 public class ${entity}QueryDTO extends QueryRequest {
-</#if>
-<#if entitySerialVersionUID>
 
-    private static final long serialVersionUID = 1L;
-</#if>
 <#-- ----------  BEGIN 字段循环遍历  ---------->
 <#list table.fields as field>
     <#if field.propertyName != "sort" && field.propertyName != "tenantId">
-    <#if field.keyFlag>
-        <#assign keyPropertyName="${field.propertyName}"/>
-    </#if>
-
     <#if field.comment!?length gt 0>
-    <#if swagger>
+    <#if springdoc>
     @Schema(description = "${field.comment}")
     <#else>
     /**

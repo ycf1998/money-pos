@@ -28,15 +28,15 @@ public interface ISortRequest {
     /**
      * 得到排序顺序
      *
-     * @return {@link List}<{@link QueryRequest.SortingOrder}>
+     * @return {@link List}<{@link SortingOrder}>
      */
     @JsonIgnore
-    default List<QueryRequest.SortingOrder> getSortingOrder() {
+    default List<SortingOrder> getSortingOrder() {
         String sort = this.getOrderBy();
         if (StrUtil.isNotBlank(sort)) {
             return Arrays.stream(sort.split(";")).map(propWithOrderByStr -> {
                 String[] propWithOrderBy = propWithOrderByStr.split(",");
-                QueryRequest.SortingOrder sortingOrder = new QueryRequest.SortingOrder();
+                SortingOrder sortingOrder = new SortingOrder();
                 // 转下划线
                 sortingOrder.setProp(StrUtil.toUnderlineCase(propWithOrderBy[0]));
                 sortingOrder.setOrderBy(propWithOrderBy[1].toUpperCase());
@@ -55,7 +55,7 @@ public interface ISortRequest {
     @NonNull
     @JsonIgnore
     default String getOrderBySql() {
-        List<QueryRequest.SortingOrder> sortingOrderList = this.getSortingOrder();
+        List<SortingOrder> sortingOrderList = this.getSortingOrder();
         if (CollectionUtil.isNotEmpty(sortingOrderList)) {
             StringBuilder sb = new StringBuilder("ORDER BY");
             sortingOrderList.forEach(sortingOrder -> {

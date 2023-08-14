@@ -1,11 +1,12 @@
+<#assign entityLower = table.entityName?lower_case>
 package ${package.Service};
 
 import ${package.Entity}.${entity};
 import ${superServiceClassPackage};
 import com.money.common.vo.PageVO;
-import ${package.Other}.${table.entityName}.${table.entityName}DTO;
-import ${package.Other}.${table.entityName}.${table.entityName}QueryDTO;
-import ${package.Other}.${table.entityName}.${table.entityName}VO;
+import ${packageOther}.${entityLower}.${table.entityName}DTO;
+import ${packageOther}.${entityLower}.${table.entityName}QueryDTO;
+import ${packageOther}.${entityLower}.${table.entityName}VO;
 
 import java.util.Collection;
 

@@ -1,27 +1,36 @@
+<#assign entityLower = table.entityName?lower_case>
+<#assign entityUncap = table.entityName?uncap_first>
+<#assign serviceVar = table.serviceName?uncap_first>
 package ${package.Controller};
 
-import lombok.RequiredArgsConstructor;
-import java.util.Set;
-import org.springframework.web.bind.annotation.*;
-import com.money.common.vo.PageVO;
-import com.money.common.dto.ValidGroup;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.validation.annotation.Validated;
-
-import ${package.Service}.${table.serviceName};
-import ${package.Other}.${table.entityName}.${table.entityName}DTO;
-import ${package.Other}.${table.entityName}.${table.entityName}QueryDTO;
-import ${package.Other}.${table.entityName}.${table.entityName}VO;
-
-<#if swagger>
+<#if springdoc>
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 </#if>
 <#if superControllerClassPackage??>
 import ${superControllerClassPackage};
 </#if>
-<#assign entityUncap = table.entityName?uncap_first>
-<#assign serviceVar = table.serviceName?uncap_first>
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import lombok.RequiredArgsConstructor;
+import org.springframework.validation.annotation.Validated;
+<#if preAuthorize>
+import org.springframework.security.access.prepost.PreAuthorize;
+</#if>
+import com.money.common.dto.ValidGroup;
+import com.money.common.vo.PageVO;
+import ${package.Service}.${table.serviceName};
+import ${packageOther}.${entityLower}.${table.entityName}DTO;
+import ${packageOther}.${entityLower}.${table.entityName}QueryDTO;
+import ${packageOther}.${entityLower}.${table.entityName}VO;
+
+import java.util.Set;
+
 /**
  * <p>
  * ${table.comment!} 前端控制器
@@ -30,18 +39,11 @@ import ${superControllerClassPackage};
  * @author ${author}
  * @since ${date}
  */
-<#if swagger>
+<#if springdoc>
 @Tag(name = "${entityUncap}", description = "${table.comment!}")
 </#if>
-<#if restControllerStyle>
 @RestController
-<#else>
-@Controller
-</#if>
 @RequestMapping("<#if package.ModuleName?? && package.ModuleName != "">/${package.ModuleName}</#if>/<#if controllerMappingHyphenStyle??>${controllerMappingHyphen}<#else>${table.entityPath}</#if>")
-<#if kotlin>
-class ${table.controllerName}<#if superControllerClass??> : ${superControllerClass}()</#if>
-<#else>
 @RequiredArgsConstructor
 <#if superControllerClass??>
 public class ${table.controllerName} extends ${superControllerClass} {
@@ -51,9 +53,9 @@ public class ${table.controllerName} {
 
     private final ${table.serviceName} ${serviceVar};
 
-<#if swagger>
+    <#if springdoc>
     @Operation(summary = "分页查询")
-</#if>
+    </#if>
     @GetMapping
     <#if preAuthorize>
     @PreAuthorize("@rbac.hasPermission('${entityUncap}:list')")
@@ -62,7 +64,7 @@ public class ${table.controllerName} {
         return ${serviceVar}.list(queryDTO);
     }
 
-    <#if swagger>
+    <#if springdoc>
     @Operation(summary = "添加")
     </#if>
     @PostMapping
@@ -73,7 +75,7 @@ public class ${table.controllerName} {
         ${serviceVar}.add(addDTO);
     }
 
-    <#if swagger>
+    <#if springdoc>
     @Operation(summary = "修改")
     </#if>
     @PutMapping
@@ -84,7 +86,7 @@ public class ${table.controllerName} {
         ${serviceVar}.update(updateDTO);
     }
 
-    <#if swagger>
+    <#if springdoc>
     @Operation(summary = "删除")
     </#if>
     @DeleteMapping
@@ -94,5 +96,5 @@ public class ${table.controllerName} {
     public void delete(@RequestBody Set<Long> ids) {
         ${serviceVar}.delete(ids);
     }
+
 }
-</#if>

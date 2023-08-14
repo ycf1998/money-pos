@@ -1,3 +1,4 @@
+<#assign entityLower = table.entityName?lower_case>
 package ${package.ServiceImpl};
 
 import ${package.Entity}.${entity};
@@ -11,9 +12,9 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.money.common.vo.PageVO;
-import ${package.Other}.${table.entityName}.${table.entityName}DTO;
-import ${package.Other}.${table.entityName}.${table.entityName}QueryDTO;
-import ${package.Other}.${table.entityName}.${table.entityName}VO;
+import ${packageOther}.${entityLower}.${table.entityName}DTO;
+import ${packageOther}.${entityLower}.${table.entityName}QueryDTO;
+import ${packageOther}.${entityLower}.${table.entityName}VO;
 
 import java.util.Collection;
 
@@ -27,11 +28,6 @@ import java.util.Collection;
  */
 @Service
 @RequiredArgsConstructor
-<#if kotlin>
-open class ${table.serviceImplName} : ${superServiceImplClass}<${table.mapperName}, ${entity}>(), ${table.serviceName} {
-
-}
-<#else>
 public class ${table.serviceImplName} extends ${superServiceImplClass}<${table.mapperName}, ${entity}> implements ${table.serviceName} {
 
     @Override
@@ -62,4 +58,3 @@ public class ${table.serviceImplName} extends ${superServiceImplClass}<${table.m
     }
 
 }
-</#if>

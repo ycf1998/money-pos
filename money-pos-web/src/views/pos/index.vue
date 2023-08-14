@@ -295,7 +295,7 @@ export default {
     },
     // 修改数量
     changeQuantity(goods) {
-      if (goods.quantity === 0) {
+      if (goods.quantity == 0) {
         this.orderList = this.orderList.filter((e) => e.goodsId !== goods.goodsId)
       }
     },

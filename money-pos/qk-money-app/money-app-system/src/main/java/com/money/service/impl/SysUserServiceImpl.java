@@ -8,7 +8,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.money.common.exception.BaseException;
 import com.money.common.vo.PageVO;
-import com.money.constant.ErrorStatus;
+import com.money.constant.SysErrorStatus;
 import com.money.dto.ChangePasswordDTO;
 import com.money.dto.SysUserDTO;
 import com.money.dto.UpdateProfileDTO;
@@ -77,7 +77,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     public void changePassword(String username, ChangePasswordDTO changePasswordDTO) {
         SysUser sysUser = this.getByUsername(username);
         if (sysUser == null || !passwordEncoder.matches(changePasswordDTO.getOldPassword(), sysUser.getPassword())) {
-            throw new BaseException(ErrorStatus.OLD_PASSWORD_ERROR);
+            throw new BaseException(SysErrorStatus.OLD_PASSWORD_ERROR);
         }
         sysUser.setPassword(passwordEncoder.encode(changePasswordDTO.getNewPassword()));
         this.updateById(sysUser);
@@ -108,7 +108,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     public void add(SysUserDTO sysUserDTO) {
         // 唯一性判断
         if (this.getByUsername(sysUserDTO.getUsername()) != null) {
-            throw new BaseException(ErrorStatus.DATA_ALREADY_EXIST, "用户");
+            throw new BaseException(SysErrorStatus.DATA_ALREADY_EXIST, "用户已存在");
         }
         SysUser sysUser = new SysUser();
         BeanUtil.copyProperties(sysUserDTO, sysUser);

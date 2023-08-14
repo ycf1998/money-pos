@@ -11,7 +11,7 @@ import com.money.common.exception.BaseException;
 import com.money.dto.SysTenantDTO;
 import com.money.dto.query.SysTenantQueryDTO;
 import com.money.common.vo.PageVO;
-import com.money.constant.ErrorStatus;
+import com.money.constant.SysErrorStatus;
 import com.money.entity.*;
 import com.money.mapper.SysTenantMapper;
 import com.money.oss.OSSDelegate;
@@ -77,7 +77,7 @@ public class SysTenantServiceImpl extends ServiceImpl<SysTenantMapper, SysTenant
                 .eq(SysTenant::getTenantCode, sysTenantDTO.getTenantCode())
                 .eq(SysTenant::getDeleted, false).exists();
         if (exists) {
-            throw new BaseException(ErrorStatus.DATA_ALREADY_EXIST, "租户");
+            throw new BaseException(SysErrorStatus.DATA_ALREADY_EXIST, "租户已存在");
         }
         SysTenant sysTenant = new SysTenant();
         BeanUtil.copyProperties(sysTenantDTO, sysTenant);
@@ -98,7 +98,7 @@ public class SysTenantServiceImpl extends ServiceImpl<SysTenantMapper, SysTenant
                 .eq(SysTenant::getDeleted, false)
                 .eq(SysTenant::getTenantCode, sysTenantDTO.getTenantCode()).exists();
         if (exists) {
-            throw new BaseException(ErrorStatus.DATA_ALREADY_EXIST, "租户");
+            throw new BaseException(SysErrorStatus.DATA_ALREADY_EXIST, "租户已存在");
         }
         SysTenant sysTenant = this.getById(sysTenantDTO.getId());
         BeanUtil.copyProperties(sysTenantDTO, sysTenant, CopyOptions.create().ignoreNullValue());

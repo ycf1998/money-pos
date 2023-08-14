@@ -1,10 +1,13 @@
 package com.money.mb;
 
 import cn.hutool.core.collection.ListUtil;
+import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.StrUtil;
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.core.enums.SqlLike;
 import com.baomidou.mybatisplus.generator.AutoGenerator;
 import com.baomidou.mybatisplus.generator.config.*;
+import com.baomidou.mybatisplus.generator.config.builder.CustomFile;
 import com.baomidou.mybatisplus.generator.config.po.LikeTable;
 import com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine;
 import com.money.mb.base.BaseEntity;
@@ -12,6 +15,7 @@ import lombok.Getter;
 
 import java.io.File;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author : money
@@ -99,6 +103,8 @@ public class MybatisPlusGenerator {
     @Getter
     public static class Answer {
 
+        private final String PROJECT_PATH = System.getProperty("user.dir") + "/qk-money-app";
+
         /**
          * 全局配置
          */
@@ -124,29 +130,45 @@ public class MybatisPlusGenerator {
          */
         private final StrategyConfig.Builder strategyConfig = new StrategyConfig.Builder();
 
-        public Answer() {
-            Map<String, String> DTOAndVOTemplateMap = new HashMap<>();
-            globalConfig.disableOpenDir().outputDir(new File("qk-money-app/money-app-biz/src/main/java/").getAbsolutePath());
-            packageConfig.parent("com.money").other("dto")
-                    .pathInfo(new HashMap<OutputFile, String>() {
-                        private static final long serialVersionUID = 2846316720798527526L;
+        /**
+         * 自定义参数
+         */
+        private final Map<String, Object> customMap = new HashMap<>();
 
-                        {
-                            put(OutputFile.entity, new File("qk-money-app/money-app-api/src/main/java/com/money/entity").getAbsolutePath());
-                            put(OutputFile.mapperXml, new File("qk-money-app/money-app-biz/src/main/resources/mapper").getAbsolutePath());
-                            put(OutputFile.other, new File("qk-money-app/money-app-api/src/main/java/com/money/dto").getAbsolutePath());
-                        }
-                    });
-            injectionConfig.customMap(Collections.singletonMap("preAuthorize", false))
-                    .beforeOutputFile((tableInfo, objectMap) -> {
-                        DTOAndVOTemplateMap.clear();
-                        DTOAndVOTemplateMap.put(tableInfo.getEntityName() + "QueryDTO.java", "/templates/queryDto.java.ftl");
-                        DTOAndVOTemplateMap.put(tableInfo.getEntityName() + "DTO.java", "/templates/dto.java.ftl");
-                        DTOAndVOTemplateMap.put(tableInfo.getEntityName() + "VO.java", "/templates/vo.java.ftl");
-                    })
-                    .customFile(DTOAndVOTemplateMap);
+        /**
+         * 自定义文件
+         */
+        private final List<CustomFile.Builder> customFileBuilders = this.loadCustomFileBuilders();
+
+
+        public Answer() {
+            globalConfig.disableOpenDir().outputDir(PROJECT_PATH + "/money-app-biz/src/main/java/");
+            packageConfig.parent("com.money").pathInfo(MapUtil.builder(new HashMap<OutputFile, String>())
+                    .put(OutputFile.entity, PROJECT_PATH + "/money-app-api/src/main/java/com/money/entity")
+                    .put(OutputFile.xml, PROJECT_PATH + "/money-app-biz/src/main/resources/mapper")
+                    .build());
+            injectionConfig.customMap(customMap);
+            strategyConfig.entityBuilder().disableSerialVersionUID()
+                    .enableLombok().enableChainModel()
+                    .idType(IdType.ASSIGN_ID);
+            strategyConfig.mapperBuilder().enableBaseColumnList().enableBaseResultMap();
             strategyConfig.serviceBuilder().formatServiceFileName("%sService");
             strategyConfig.controllerBuilder().enableRestStyle();
+        }
+
+        private List<CustomFile.Builder> loadCustomFileBuilders() {
+            customMap.put("packageOther", "com.money.dto");
+            String dtoFilePath = PROJECT_PATH + "/money-app-api/src/main/java/com/money/dto";
+            CustomFile.Builder queryDTO = new CustomFile.Builder().fileName("").filePath(dtoFilePath)
+                    .formatNameFunction((tableInfo -> tableInfo.getEntityName().toLowerCase() + File.separator + tableInfo.getEntityName() + "QueryDTO.java"))
+                    .templatePath("/templates/queryDto.java.ftl");
+            CustomFile.Builder DTO = new CustomFile.Builder().fileName("").filePath(dtoFilePath)
+                    .formatNameFunction((tableInfo -> tableInfo.getEntityName().toLowerCase() + File.separator +tableInfo.getEntityName() + "DTO.java"))
+                    .templatePath("/templates/dto.java.ftl");
+            CustomFile.Builder VO = new CustomFile.Builder().fileName("").filePath(dtoFilePath)
+                    .formatNameFunction((tableInfo -> tableInfo.getEntityName().toLowerCase() + File.separator +tableInfo.getEntityName() + "VO.java"))
+                    .templatePath("/templates/vo.java.ftl");
+            return ListUtil.of(queryDTO, DTO, VO);
         }
 
         /**
@@ -165,7 +187,7 @@ public class MybatisPlusGenerator {
          */
         public void openSwagger(String yesOrNo) {
             if ("Y".equalsIgnoreCase(yesOrNo)) {
-                globalConfig.enableSwagger();
+                globalConfig.enableSpringdoc();
             }
         }
 
@@ -176,8 +198,13 @@ public class MybatisPlusGenerator {
          */
         public void fileOverride(String yesOrNo) {
             if ("Y".equalsIgnoreCase(yesOrNo)) {
-                globalConfig.fileOverride();
+                strategyConfig.entityBuilder().enableFileOverride();
+                strategyConfig.mapperBuilder().enableFileOverride();
+                strategyConfig.serviceBuilder().enableFileOverride();
+                strategyConfig.controllerBuilder().enableFileOverride();
+                customFileBuilders.forEach(CustomFile.Builder::enableFileOverride);
             }
+            injectionConfig.customFile(customFileBuilders.stream().map(CustomFile.Builder::build).collect(Collectors.toList()));
         }
 
         /**
@@ -188,8 +215,6 @@ public class MybatisPlusGenerator {
         public void generateXml(String yesOrNo) {
             if ("N".equalsIgnoreCase(yesOrNo)) {
                 templateConfig.disable(TemplateType.XML);
-            } else {
-                strategyConfig.mapperBuilder().enableBaseColumnList().enableBaseResultMap();
             }
         }
 
@@ -199,9 +224,7 @@ public class MybatisPlusGenerator {
          * @param yesOrNo 是或否
          */
         public void openAuth(String yesOrNo) {
-            if ("Y".equalsIgnoreCase(yesOrNo)) {
-                injectionConfig.customMap(Collections.singletonMap("preAuthorize", true));
-            }
+            customMap.put("preAuthorize", "Y".equalsIgnoreCase(yesOrNo));
         }
 
         /**
@@ -211,7 +234,7 @@ public class MybatisPlusGenerator {
          */
         public void targetTable(String table) {
             if ("%".equals(table)) {
-                strategyConfig.addInclude("all");
+                strategyConfig.addInclude(".*");
                 return;
             }
             SqlLike like = null;
@@ -234,7 +257,6 @@ public class MybatisPlusGenerator {
          * @param yesOrNo 是或否
          */
         public void extendBaseEntity(String yesOrNo) {
-            strategyConfig.entityBuilder().enableLombok().disableSerialVersionUID().enableChainModel();
             if ("Y".equalsIgnoreCase(yesOrNo)) {
                 strategyConfig.entityBuilder().superClass(BaseEntity.class)
                         .addIgnoreColumns("create_time", "create_by", "update_by", "update_time", "id");

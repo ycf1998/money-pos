@@ -5,7 +5,7 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.money.common.exception.BaseException;
-import com.money.constant.ErrorStatus;
+import com.money.constant.SysErrorStatus;
 import com.money.dto.SysDictDetailDTO;
 import com.money.entity.SysDictDetail;
 import com.money.mapper.SysDictDetailMapper;
@@ -39,7 +39,7 @@ public class SysDictDetailServiceImpl extends ServiceImpl<SysDictDetailMapper, S
                 .eq(SysDictDetail::getLabel, sysDictDetailDTO.getLabel())
                 .exists();
         if (exists) {
-            throw new BaseException(ErrorStatus.DATA_ALREADY_EXIST, "字典标签");
+            throw new BaseException(SysErrorStatus.DATA_ALREADY_EXIST, "字典标签已存在");
         }
         SysDictDetail sysDictDetail = new SysDictDetail();
         BeanUtil.copyProperties(sysDictDetailDTO, sysDictDetail);
@@ -56,7 +56,7 @@ public class SysDictDetailServiceImpl extends ServiceImpl<SysDictDetailMapper, S
                     .eq(SysDictDetail::getLabel, sysDictDetailDTO.getLabel())
                     .exists();
             if (exists) {
-                throw new BaseException(ErrorStatus.DATA_ALREADY_EXIST, "字典标签");
+                throw new BaseException(SysErrorStatus.DATA_ALREADY_EXIST, "字典标签已存在");
             }
         }
         SysDictDetail sysDictDetail = new SysDictDetail();

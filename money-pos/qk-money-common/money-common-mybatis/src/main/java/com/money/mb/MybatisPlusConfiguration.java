@@ -1,6 +1,8 @@
 package com.money.mb;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.IdUtil;
+import com.baomidou.mybatisplus.core.incrementer.IdentifierGenerator;
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.InnerInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
@@ -15,6 +17,16 @@ import java.util.List;
 
 @Configuration(proxyBeanMethods = false)
 public class MybatisPlusConfiguration {
+
+    /**
+     * 主键生成策略
+     *
+     * @return {@link IdentifierGenerator}
+     */
+    @Bean
+    public IdentifierGenerator idGenerator() {
+        return entity -> IdUtil.getSnowflakeNextId();
+    }
 
     /**
      * 操作者
@@ -41,7 +53,7 @@ public class MybatisPlusConfiguration {
     }
 
     /**
-     * mybatis+元对象处理器
+     * 元对象处理器
      *
      * @param operator 操作符
      * @return {@link MybatisPlusMetaObjectHandler}

@@ -8,7 +8,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.money.common.exception.BaseException;
 import com.money.common.vo.PageVO;
-import com.money.constant.ErrorStatus;
+import com.money.constant.SysErrorStatus;
 import com.money.dto.SysRoleDTO;
 import com.money.dto.query.SysRoleQueryDTO;
 import com.money.entity.*;
@@ -86,7 +86,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
         // 唯一性判断
         boolean exists = this.lambdaQuery().eq(SysRole::getRoleCode, sysRoleDTO.getRoleCode()).exists();
         if (exists) {
-            throw new BaseException(ErrorStatus.DATA_ALREADY_EXIST, "角色");
+            throw new BaseException(SysErrorStatus.DATA_ALREADY_EXIST, "角色已存在");
         }
         SysRole sysRole = new SysRole();
         BeanUtil.copyProperties(sysRoleDTO, sysRole);
