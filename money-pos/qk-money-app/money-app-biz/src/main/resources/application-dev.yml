@@ -1,0 +1,73 @@
+spring:
+  config:
+    # 引入对象存储的配置
+    import: oss.properties
+  # mysql
+  datasource:
+    # 如果存在多个数据源，监控的时候可以通过名字来区分开来
+    name: mysql
+    # 连接数据库的url
+    url: jdbc:mysql://127.0.0.1:3306/money_pos?useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT%2b8&allowPublicKeyRetrieval=true&useSSL=false
+    # 连接数据库的账号
+    username: root
+    # 连接数据库的密码
+    password: root
+    # 使用Hikari数据池
+    type: com.zaxxer.hikari.HikariDataSource
+    hikari:
+      minimum-idle: 5
+      # 空闲连接存活最大时间，默认600000（10分钟）
+      idle-timeout: 180000
+      # 连接池最大连接数，默认是10
+      maximum-pool-size: 10
+      # 此属性控制从池返回的连接的默认自动提交行为,默认值：true
+      auto-commit: true
+      # 连接池名称
+      pool-name: MyHikariCP
+      # 此属性控制池中连接的最长生命周期，值0表示无限生命周期，默认1800000即30分钟
+      max-lifetime: 1800000
+      # 数据库连接超时时间,默认30秒，即30000
+      connection-timeout: 30000
+      connection-test-query: SELECT 1
+  # redis
+  redis:
+    host: 192.168.169.128 # Redis服务器地址
+    database: 0 # Redis数据库索引（默认为0）
+    port: 6379 # Redis服务器连接端口
+    password: # Redis服务器连接密码（默认为空）
+    timeout: 1000ms # 连接超时时间
+    lettuce:
+      pool:
+        max-active: 8 # 连接池最大连接数
+        max-idle: 8 # 连接池最大空闲连接数
+        min-idle: 0 # 连接池最小空闲连接数
+        max-wait: -1ms # 连接池最大阻塞等待时间，负值表示没有限制
+  # spring boot admin
+  boot:
+    admin:
+      client:
+        url: http://192.168.169.128:9999
+# 定时任务XXL-JOB
+xxl:
+  job:
+    access-token: MONEY # XXL-JOB调度中心设置的token
+    admin:
+      address: http://127.0.0.1:8000/xxl-job-admin # XXL-JOB调度中心地址
+    executor:
+      app-name: ${spring.application.name} # 执行器名称
+      address:
+      ip: # 指定IP注册，不填自动获取
+      port: 0 # 指定端口注册，填0自动获取
+      log-path: log/xxl-job/jobhandler # 日志存储路径
+      log-retention-days: 30 # 日志存储天数
+# actuator
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: ALWAYS
+    logfile:
+      external-file: log/service.log

@@ -1,0 +1,35 @@
+.bg-base-100 {
+    background-color: var(--el-bg-color-page);
+}
+
+nav.bg-base-100 {
+    background-color: var(--el-bg-color);
+}
+
+aside.bg-base-100 {
+    background-color: var(--el-bg-color);
+}
+
+.bg-base-200 {
+    background-color: var(--el-bg-color);
+}
+
+/*全局滚动条*/
+::-webkit-scrollbar{
+    height: 10px;
+    width: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    border-style: dashed;
+    border-color: transparent;
+    border-width: 2px;
+    background-color: rgba(157, 165, 183, 0.4);
+    background-clip: padding-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(157, 165, 183, 0.7);
+    cursor: pointer !important;
+}

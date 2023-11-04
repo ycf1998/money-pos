@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.money</groupId>
+        <artifactId>qk-money-parent</artifactId>
+        <version>${revision}</version>
+        <relativePath>../qk-money-parent/pom.xml</relativePath>
+    </parent>
+
+    <artifactId>qk-money-app</artifactId>
+    <name>qk-money-app</name>
+    <packaging>pom</packaging>
+    <description>应用模块</description>
+
+    <modules>
+        <!-- api层 -->
+        <module>money-app-api</module>
+        <!-- 系统模块 -->
+        <module>money-app-system</module>
+        <!-- 业务层 -->
+        <module>money-app-biz</module>
+    </modules>
+</project>

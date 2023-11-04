@@ -1,0 +1,18 @@
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+HELP.md
+log/
+# 忽略所有路径下的mvnw文件
+**/mvnw
+# 忽略所有路径下的mvnw.cmd文件
+**/mvnw.cmd
+# 忽略所有路径下的.MVN目录
+**/.mvn
+# 忽略所有路径下的target目录，这是打包之后生成的，本地打包用的不需要提交
+**/target/
+!**/src/main/**
+!**/src/test/**

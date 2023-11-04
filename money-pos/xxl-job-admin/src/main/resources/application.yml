@@ -1,0 +1,72 @@
+server:
+    port: 8000
+    servlet:
+        context-path: /xxl-job-admin
+xxl:
+    job:
+        # 访问令牌，执行器工程需填写相同令牌
+        accessToken: MONEY
+        # 国际化
+        i18n: zh_CN
+        # 日志保留天数
+        logretentiondays: 30
+        # 任务线程池
+        triggerpool:
+            fast:
+                max: 200
+            slow:
+                max: 100
+spring:
+    datasource:
+        url: jdbc:mysql://127.0.0.1:3306/xxl_job?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&serverTimezone=Asia/Shanghai
+        password: root
+        username: root
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        type: com.zaxxer.hikari.HikariDataSource
+        hikari:
+            auto-commit: true
+            connection-test-query: SELECT 1
+            connection-timeout: 10000
+            idle-timeout: 30000
+            max-lifetime: 900000
+            maximum-pool-size: 30
+            minimum-idle: 10
+            pool-name: HikariCP
+            validation-timeout: 1000
+    freemarker:
+        charset: UTF-8
+        request-context-attribute: request
+        settings:
+            number_format: 0.##########
+        suffix: .ftl
+        templateLoaderPath: classpath:/templates/
+    mail:
+        from: xxx@qq.com
+        host: smtp.qq.com
+        password: xxx
+        port: 25
+        properties:
+            mail:
+                smtp:
+                    auth: true
+                    socketFactory:
+                        class: javax.net.ssl.SSLSocketFactory
+                    starttls:
+                        enable: true
+                        required: true
+        username: xxx@qq.com
+    mvc:
+        servlet:
+            load-on-startup: 0
+        static-path-pattern: /static/**
+    web:
+        resources:
+            static-locations: classpath:/static/
+mybatis:
+    mapper-locations: classpath:/mybatis-mapper/*Mapper.xml
+management:
+    health:
+        mail:
+            enabled: false
+    server:
+        base-path: /actuator

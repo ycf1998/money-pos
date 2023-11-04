@@ -1,0 +1,4 @@
+/src/main/resources/application-prod.yml
+/src/main/resources/oss-prod.properties
+/src/main/resources/application-demo.yml
+/src/main/resources/oss-demo.properties
