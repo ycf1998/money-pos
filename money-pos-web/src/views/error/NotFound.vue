@@ -9,7 +9,7 @@
 
             <p class="mt-4 text-gray-500 dark:text-gray-300">We can't find that page.</p>
 
-            <a href="/" class="inline-block px-5 py-3 mt-6 text-sm font-medium text-white bg-indigo-600 rounded hover:bg-indigo-700 focus:outline-none focus:ring">
+            <a href="" class="inline-block px-5 py-3 mt-6 text-sm font-medium text-white bg-indigo-600 rounded hover:bg-indigo-700 focus:outline-none focus:ring">
                 Go Back Home
             </a>
         </div>

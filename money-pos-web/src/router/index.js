@@ -8,6 +8,10 @@ import NotFound from "@/views/error/NotFound.vue";
 const defaultRouterList = [
     {
         path: '/',
+        redirect: () => "dashboard"
+    },
+    {
+        path: '/dashboard',
         component: Layout,
         children: [
             {
