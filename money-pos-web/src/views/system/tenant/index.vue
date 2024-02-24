@@ -21,7 +21,7 @@
                 />
             </template>
             <template #loginLink="{scope}">
-                <el-link :href="'login?tenant=' + scope.row.tenantCode" target="_blank" type="primary">点击前往
+                <el-link :href="'?tenant=' + scope.row.tenantCode" target="_blank" type="primary">点击前往
                 </el-link>
             </template>
             <template #opt="{scope}">
