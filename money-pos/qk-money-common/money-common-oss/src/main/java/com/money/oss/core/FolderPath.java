@@ -1,5 +1,7 @@
 package com.money.oss.core;
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import java.util.StringJoiner;
@@ -11,13 +13,10 @@ import java.util.StringJoiner;
  * @createTime : 2022-01-01 16:47:50
  */
 @Getter
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class FolderPath {
 
-    private String folderPath = "";
-
-    private FolderPath(String folderPath) {
-        this.folderPath = folderPath;
-    }
+    private String folderPath;
 
     public static FolderPathBuilder builder() {
         return new FolderPathBuilder();
@@ -28,7 +27,7 @@ public class FolderPath {
      */
     public static class FolderPathBuilder {
 
-        private final StringJoiner path = new StringJoiner("/", "", "/");
+        private final StringJoiner path = new StringJoiner("/", "", "/").setEmptyValue("");
 
         public FolderPathBuilder cd(String path) {
             if (path.contains("/") || path.contains("\\")) {

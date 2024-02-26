@@ -8,7 +8,7 @@ import java.lang.annotation.Target;
 /**
  * @author : money
  * @version : 1.0.0
- * @description : 忽视全球反应
+ * @description : 忽视全局响应
  * @createTime : 2022-01-01 13:26:38
  */
 @Target({ElementType.TYPE, ElementType.METHOD})

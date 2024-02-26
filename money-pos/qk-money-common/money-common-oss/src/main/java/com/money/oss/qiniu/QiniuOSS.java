@@ -64,7 +64,7 @@ public class QiniuOSS implements OSSInterface {
             return ret.key;
         } catch (IOException e) {
             log.error("【七牛云OSS】文件 {} 上传失败。", originalFilename, e);
-            throw new UploadFailedException();
+            throw new UploadFailedException(e);
         }
     }
 
@@ -81,7 +81,7 @@ public class QiniuOSS implements OSSInterface {
             bucketManager.delete(config.getBucket(), uri);
         } catch (QiniuException ex) {
             log.error("【七牛云OSS】文件 {} 删除失败", uri);
-            throw new DeleteFailedException();
+            throw new DeleteFailedException(ex);
         }
     }
 

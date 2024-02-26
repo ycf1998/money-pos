@@ -66,11 +66,7 @@ public class SecurityTokenSupport {
      */
     public String generateToken(String username) {
         String tokenId = IdUtil.objectId();
-        JwtPayload jwtPayload = JwtPayload.builder(tokenConfig.getTtl())
-                // tokenId
-                .id(tokenId)
-                // username
-                .audience(username);
+        JwtPayload jwtPayload = JwtPayload.builder(tokenConfig.getTtl()).id(tokenId).audience(username).build();
         tokenStrategy.saveToken(accessTokenCacheKey(username), tokenId, tokenConfig.getTtl(), TimeUnit.MILLISECONDS);
         return jwtUtil.generateJwt(jwtPayload);
     }
@@ -83,11 +79,7 @@ public class SecurityTokenSupport {
      */
     public String generateRefreshToken(String username) {
         String tokenId = IdUtil.objectId();
-        JwtPayload jwtPayload = JwtPayload.builder(tokenConfig.getRefreshTtl())
-                // tokenId
-                .id(tokenId)
-                // username
-                .audience(username);
+        JwtPayload jwtPayload = JwtPayload.builder(tokenConfig.getRefreshTtl()).id(tokenId).audience(username).build();
         tokenStrategy.saveToken(refreshTokenCacheKey(username), tokenId, tokenConfig.getRefreshTtl(), TimeUnit.MILLISECONDS);
         return jwtUtil.generateJwt(jwtPayload);
     }

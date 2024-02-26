@@ -1,17 +1,16 @@
 package com.money.common.log;
 
 
-import cn.hutool.core.collection.ListUtil;
+import com.money.common.constant.ProjectConstants;
 import com.money.common.context.WebRequestContextHolder;
-import com.money.common.util.DefaultJackson;
 import com.money.common.util.IpUtil;
+import com.money.common.util.JacksonUtil;
 import com.money.common.util.WebUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.Signature;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.core.annotation.Order;
@@ -40,11 +39,7 @@ import java.util.List;
 @ConditionalOnProperty(prefix = "money.web", name = "web-log-aspect", matchIfMissing = true)
 public class DefaultWebLogAspect {
 
-    @Pointcut("execution(public * com.money..controller..*.*(..))")
-    public void webLog() {
-    }
-
-    @Around("webLog()")
+    @Around("execution(public * com.money..controller..*.*(..))")
     public Object doAround(ProceedingJoinPoint joinPoint) throws Throwable {
         LocalDateTime now = LocalDateTime.now();
         long startTime = Instant.now().toEpochMilli();
@@ -77,13 +72,12 @@ public class DefaultWebLogAspect {
                     .result(result)
                     .spendTime(spendTime)
                     .build();
-            log.info("detail {}", DefaultJackson.writeAsString(webLog));
+            log.info("detail {}", JacksonUtil.writeAsString(webLog));
             log.info("spend time: {}ms", spendTime);
         }
         return result;
     }
 
-    private final static List<String> ignoreParams = ListUtil.of("javax.servlet.http.HttpServletRequest", "javax.servlet.http.HttpServletResponse");
 
     /**
      * 得到参数
@@ -98,8 +92,8 @@ public class DefaultWebLogAspect {
         for (int i = 0; i < parameters.length; i++) {
             Parameter parameter = parameters[i];
             String typeName = parameter.getParameterizedType().getTypeName();
-            // 忽略 Request 和 Response
-            if (ignoreParams.contains(typeName) || typeName.contains("org.springframework")) {
+            // 仅记录 JDK 和用户包下的参数
+            if (!typeName.startsWith("java.") && !typeName.startsWith(ProjectConstants.PACKAGE)) {
                 continue;
             }
             // 将 RequestParam 注解修饰的参数作为请求参数

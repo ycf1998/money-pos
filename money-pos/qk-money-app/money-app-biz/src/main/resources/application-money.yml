@@ -34,14 +34,14 @@ money:
     local:
       # 提供者 hutool（默认）、caffeine
       provider: hutool
-      # 过期时间：ms，0代表永不过期
-      ttl: 86400000
       # hutool-cache参数
       hutool:
         # 失效策略：LRU（默认）、LFU、FIFO、TIMED、WEAK
         strategy: LRU
         # 容量
         capacity: 102400
+        # 过期时间：ms，0代表永不过期
+        ttl: 86400000
     # redis 缓存
     redis:
       # 开关，默认关闭

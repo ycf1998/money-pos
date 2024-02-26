@@ -14,13 +14,17 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public class HutoolCacheProperties {
 
     /**
+     * 策略
+     */
+    private String strategy = "LRU";
+
+    /**
      * 容量
      */
     private int capacity = 102400;
 
     /**
-     * 策略
+     * 过期时间：ms，0代表永不过期
      */
-    private String strategy = "LRU";
-
+    private long ttl = 0L;
 }

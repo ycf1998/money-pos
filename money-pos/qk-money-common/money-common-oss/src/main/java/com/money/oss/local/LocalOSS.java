@@ -1,5 +1,6 @@
 package com.money.oss.local;
 
+import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.StrUtil;
 import com.money.oss.core.OSSInterface;
 import com.money.oss.exception.DeleteFailedException;
@@ -33,16 +34,13 @@ public class LocalOSS implements OSSInterface {
         String finalPath = StrUtil.appendIfMissing(config.getBucket(), "/") + uri;
         log.info("【本地OSS】文件 {} 上传就绪，准备上传至 {}。", originalFilename, finalPath);
         File dest = new File(finalPath);
-        // 父文件夹不存在则创建-
-        if (!dest.getParentFile().exists()) {
-            dest.getParentFile().mkdirs();
-        }
+        FileUtil.mkdir(dest.getParentFile());
         try {
             file.transferTo(dest);
             log.info("【本地OSS】文件 {} 上传成功！[{}]", originalFilename, uri);
         } catch (IOException e) {
             log.error("【本地OSS】文件 {} 上传失败！", originalFilename, e);
-            throw new UploadFailedException();
+            throw new UploadFailedException(e);
         }
         return uri;
     }
@@ -55,7 +53,7 @@ public class LocalOSS implements OSSInterface {
             Files.deleteIfExists(Paths.get(finalPath));
         } catch (IOException | InvalidPathException e) {
             log.error("【本地OSS】文件 {} 删除失败", uri, e);
-            throw new DeleteFailedException();
+            throw new DeleteFailedException(e);
         }
     }
 

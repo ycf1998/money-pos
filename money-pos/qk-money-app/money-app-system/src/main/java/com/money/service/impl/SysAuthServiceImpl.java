@@ -114,7 +114,7 @@ public class SysAuthServiceImpl implements SysAuthService {
     public UserInfoVO getUserInfo(String username) {
         SysUser sysUser = sysUserService.getByUsername(username);
         if (sysUser == null) {
-            throw new BaseException(SysErrorStatus.USER_NOT_FOUND);
+            return null;
         }
         sysUser.setPassword(null);
         List<SysRole> roles = sysRoleService.getByUser(sysUser.getId());

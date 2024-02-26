@@ -1,5 +1,6 @@
 package com.money.oss.core;
 
+import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.RandomUtil;
 
 import java.time.Instant;
@@ -16,13 +17,13 @@ public interface FileNameStrategy {
      */
     FileNameStrategy ORIGINAL = (rawName, fileType) -> rawName + "." + fileType;
     /**
-     * 时间戳：高并发且业务简单的情况下时间戳会相同，应选择其他策略
+     * 时间戳 + 3 位随机数（减少高并发下的碰撞）
      */
-    FileNameStrategy TIMESTAMP = (rawName, fileType) -> getTimestamp() + "." + fileType;
+    FileNameStrategy TIMESTAMP = (rawName, fileType) -> getTimestamp() + RandomUtil.randomString(3) + "." + fileType;
     /**
-     * 时间戳 + 3位随机字符
+     * 雪花 ID
      */
-    FileNameStrategy TIMESTAMP_H = (rawName, fileType) -> getTimestamp() + RandomUtil.randomString(3) + "." + fileType;
+    FileNameStrategy SNOWFLAKE_ID = (rawName, fileType) -> IdUtil.getSnowflakeNextIdStr() + "." + fileType;
     /**
      * 原始与时间戳
      */

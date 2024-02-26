@@ -58,7 +58,7 @@ public class WebUtil {
         response.setStatus(httpStatus.value());
         try {
             ServletOutputStream outputStream = response.getOutputStream();
-            outputStream.write(DefaultJackson.writeAsString(o).getBytes(StandardCharsets.UTF_8));
+            outputStream.write(JacksonUtil.writeAsString(o).getBytes(StandardCharsets.UTF_8));
             outputStream.flush();
             outputStream.close();
         } catch (IOException e) {

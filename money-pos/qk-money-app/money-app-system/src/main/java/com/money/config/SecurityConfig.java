@@ -30,6 +30,9 @@ public class SecurityConfig {
     public RbacSecurityConfig rbacSecurityConfig() {
         return username -> {
             UserInfoVO userInfo = sysAuthService.getUserInfo(username);
+            if (userInfo == null) {
+                return null;
+            }
             SysUser sysUser = userInfo.getInfo();
             List<String> roleCodes = userInfo.getRoles()
                     .stream().map(SysRole::getRoleCode).collect(Collectors.toList());

@@ -12,9 +12,15 @@ public interface ProjectConstants {
      * 作者
      */
     String AUTHOR = "麦尼Money";
+
     /**
      * 项目名称
      */
     String PROJECT_NAME = "QK-MONEY";
+
+    /**
+     * 包
+     */
+    String PACKAGE = "com.money";
 
 }

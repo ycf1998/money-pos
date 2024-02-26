@@ -1,8 +1,8 @@
 package com.money.common.response;
 
 
-import com.money.common.i18n.I18nSupport;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,6 +16,7 @@ import java.io.Serializable;
  */
 @Getter
 @Setter
+@AllArgsConstructor
 public class R<T> implements Serializable {
 
     private static final long serialVersionUID = -9068318251197180009L;
@@ -28,18 +29,10 @@ public class R<T> implements Serializable {
 
     @Schema(description = "返回数据")
     private T data;
-
-    public R() {
-    }
-
-    public R(int code, String message, T data) {
-        this.code = code;
-        this.message = I18nSupport.get(message);
-        this.data = data;
-    }
+    
 
     /**
-     * 成功返回结果
+     * 成功
      *
      * @return {@link R}<{@link String}>
      */
@@ -48,7 +41,7 @@ public class R<T> implements Serializable {
     }
 
     /**
-     * 成功返回结果
+     * 成功
      *
      * @param data 数据
      * @return {@link R}<{@link T}>
@@ -58,7 +51,7 @@ public class R<T> implements Serializable {
     }
 
     /**
-     * 成功返回结果
+     * 成功
      *
      * @param message 消息
      * @param data    数据
@@ -69,7 +62,7 @@ public class R<T> implements Serializable {
     }
 
     /**
-     * 失败返回结果
+     * 失败
      *
      * @return {@link R}<{@link T}>
      */
@@ -78,7 +71,7 @@ public class R<T> implements Serializable {
     }
 
     /**
-     * 失败返回结果
+     * 失败
      *
      * @param message 消息
      * @return {@link R}<{@link T}>
@@ -89,7 +82,7 @@ public class R<T> implements Serializable {
 
     /**
      * 失败
-     * 失败返回结果
+     * 失败
      *
      * @param code    代码
      * @param message 消息
@@ -100,7 +93,7 @@ public class R<T> implements Serializable {
     }
 
     /**
-     * 参数验证失败返回结果
+     * 参数校验失败
      *
      * @return {@link R}<{@link T}>
      */
@@ -109,7 +102,7 @@ public class R<T> implements Serializable {
     }
 
     /**
-     * 参数验证失败返回结果
+     * 参数校验失败
      *
      * @param message 消息
      * @return {@link R}<{@link T}>
@@ -119,7 +112,7 @@ public class R<T> implements Serializable {
     }
 
     /**
-     * 未登录返回结果
+     * 未认证
      *
      * @return {@link R}<{@link T}>
      */
@@ -128,7 +121,7 @@ public class R<T> implements Serializable {
     }
 
     /**
-     * 未授权返回结果
+     * 未授权
      *
      * @return {@link R}<{@link T}>
      */

@@ -84,20 +84,4 @@ public class JwtUtil {
         }
     }
 
-    public static void main(String[] args) {
-        JwtUtil jwtUtil = new JwtUtil();
-        JwtPayload jwtPayload = JwtPayload.builder(60000).claims("username", "money");
-        String jwt = jwtUtil.generateJwt(jwtPayload);
-        Claims claims = jwtUtil.resolveJwt(jwt);
-        System.out.println(jwt);
-        System.out.println(claims);
-
-        jwtUtil = new JwtUtil("123456");
-        jwtPayload = JwtPayload.builder(60000).claims("username", "money");
-        jwt = jwtUtil.generateJwt(jwtPayload);
-        claims = jwtUtil.resolveJwt(jwt);
-        System.out.println(jwt);
-        System.out.println(claims);
-    }
-
 }

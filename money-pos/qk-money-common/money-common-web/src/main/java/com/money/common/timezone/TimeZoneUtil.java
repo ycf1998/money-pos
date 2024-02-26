@@ -2,6 +2,7 @@ package com.money.common.timezone;
 
 import cn.hutool.core.collection.ListUtil;
 import cn.hutool.core.util.ReflectUtil;
+import com.money.common.constant.ProjectConstants;
 import com.money.common.timezone.annotation.TZParam;
 import com.money.common.timezone.converter.DefaultTimeZoneConverter;
 import com.money.common.timezone.converter.TimeZoneConverter;
@@ -79,7 +80,7 @@ public class TimeZoneUtil {
         try {
             Class<?> targetClass = target.getClass();
             // 用户包的Bean才会做处理
-            if (!targetClass.getName().contains("com.money")) {
+            if (!targetClass.getName().contains(ProjectConstants.PACKAGE)) {
                 return;
             }
             Field[] fields = ReflectUtil.getFieldsDirectly(targetClass, true);

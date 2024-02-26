@@ -12,10 +12,12 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(prefix = "local")
 @Data
 public class LocalOSSConfig {
+
     /**
      * 目标空间 如 F:/qk-money/
      */
     private String bucket;
+
     /**
      * 资源处理器
      */

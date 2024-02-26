@@ -19,6 +19,7 @@
         <module>money-common-oss</module>
         <module>money-common-cache</module>
         <module>money-common-swagger</module>
+        <module>money-common-schedule</module>
         <module>money-common-mail</module>
     </modules>
 </project>

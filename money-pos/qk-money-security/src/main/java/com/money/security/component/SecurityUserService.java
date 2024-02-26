@@ -24,6 +24,9 @@ public class SecurityUserService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         RbacUser rbacUser = rbacSecurityConfig.loadRbacUser(username);
+        if (rbacUser == null) {
+            throw new UsernameNotFoundException("Account [" + username + "] has not found");
+        }
         if (!rbacUser.getEnabled()) {
             throw new DisabledException("Account [" + username + "] has been disabled");
         }

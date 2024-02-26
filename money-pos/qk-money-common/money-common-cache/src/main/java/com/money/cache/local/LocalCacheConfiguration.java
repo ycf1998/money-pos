@@ -1,7 +1,7 @@
 package com.money.cache.local;
 
+import com.money.cache.local.hutool.HutoolCache;
 import com.money.cache.local.hutool.HutoolCacheProperties;
-import com.money.cache.local.hutool.HutoolCacheService;
 import lombok.Data;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -26,14 +26,9 @@ public class LocalCacheConfiguration {
      */
     private String provider = "hutool";
 
-    /**
-     * 过期时间：ms，0代表永不过期
-     */
-    private long ttl = 0L;
-
     @Bean
     @ConditionalOnProperty(prefix="money.cache.local", name = "provider", havingValue="hutool", matchIfMissing = true)
-    public HutoolCacheService hutoolCacheService(HutoolCacheProperties properties) {
-        return new HutoolCacheService(properties, ttl);
+    public HutoolCache hutoolCacheService(HutoolCacheProperties properties) {
+        return new HutoolCache(properties);
     }
 }

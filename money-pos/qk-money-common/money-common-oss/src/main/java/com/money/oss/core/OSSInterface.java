@@ -16,8 +16,8 @@ public interface OSSInterface {
     /**
      * 上传
      *
-     * @param file        文件
-     * @param uri 文件地址
+     * @param file 文件
+     * @param uri  文件地址
      * @return {@link String}
      */
     String upload(@NonNull MultipartFile file, @NonNull String uri) throws UploadFailedException;
@@ -25,7 +25,7 @@ public interface OSSInterface {
     /**
      * 删除
      *
-     * @param uri uri
+     * @param uri 文件地址（upload 方法的返回值）
      */
     void delete(@NonNull String uri) throws DeleteFailedException;
 

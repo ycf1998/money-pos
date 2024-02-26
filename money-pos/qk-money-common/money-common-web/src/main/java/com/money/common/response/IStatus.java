@@ -11,4 +11,5 @@ public interface IStatus {
     int getCode();
 
     String getMessage();
+
 }

@@ -1,7 +1,7 @@
 package com.money.common.response;
 
 
-import com.money.common.util.DefaultJackson;
+import com.money.common.util.JacksonUtil;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
@@ -26,16 +26,15 @@ public class DefaultResponseHandler implements ResponseBodyAdvice<Object> {
                 && !methodParameter.hasMethodAnnotation(IgnoreGlobalResponse.class);
     }
 
-
     @Override
     public Object beforeBodyWrite(Object o, MethodParameter methodParameter, MediaType mediaType, Class aClass, ServerHttpRequest serverHttpRequest, ServerHttpResponse serverHttpResponse) {
-        // 当已经是R类型就无需处理
+        // 当已经是 R 类型就无需处理
         if (o instanceof R) {
             return o;
         }
-        // 当返回类型是String时，用的是StringHttpMessageConverter转换器，无法转换为Json格式
+        // 当返回类型是 String 时，用的是 StringHttpMessageConverter 转换器，无法转换为 JSON 格式
         if (o instanceof String) {
-            return DefaultJackson.writeAsString(R.success(o));
+            return JacksonUtil.writeAsString(R.success(o));
         }
         return R.success(o);
     }

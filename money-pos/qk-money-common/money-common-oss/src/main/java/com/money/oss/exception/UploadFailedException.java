@@ -8,4 +8,8 @@ package com.money.oss.exception;
  */
 public class UploadFailedException extends Exception {
     private static final long serialVersionUID = -1262418407208247745L;
+
+    public UploadFailedException(Throwable cause) {
+        super(cause);
+    }
 }

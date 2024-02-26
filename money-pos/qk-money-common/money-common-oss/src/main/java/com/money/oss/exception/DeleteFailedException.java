@@ -8,4 +8,8 @@ package com.money.oss.exception;
  */
 public class DeleteFailedException extends Exception {
     private static final long serialVersionUID = 2752845463412351325L;
+
+    public DeleteFailedException(Throwable cause) {
+        super(cause);
+    }
 }
