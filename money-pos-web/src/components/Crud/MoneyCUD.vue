@@ -22,13 +22,10 @@
                 </el-icon>
             </el-button>
             <el-popover trigger="click" placement="bottom-start">
-                <el-checkbox v-model="checkAll" :indeterminate="isIndeterminate" @change="handleCheckAllChange">全选
-                </el-checkbox>
+                <el-checkbox label="全选" v-model="checkAll" :indeterminate="isIndeterminate" @change="handleCheckAllChange" />
                 <el-checkbox-group v-model="checked" @change="handleCheckedChange">
                     <el-checkbox class="w-full" v-for="(col, index) in moneyCrud.columns" :key="index"
-                                 :label="col.prop">
-                        {{ col.label }}
-                    </el-checkbox>
+                                 :label="col.label" :value="col.prop" />
                 </el-checkbox-group>
                 <template #reference>
                     <el-button plain class="p-3">

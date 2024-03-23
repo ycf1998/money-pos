@@ -1,10 +1,10 @@
 <script setup>
 import {onMounted, onUnmounted, ref, watch} from 'vue'
-import {useRoute} from "vue-router";
-import {useUserStore} from "@/store";
+import {useRoute} from "vue-router"
+import {useUserStore} from "@/store"
 import {useFullscreen} from '@vueuse/core'
 import {handleScroll, isDark, scrolling, sidebarState, toggleDarkMode,} from '@/composables'
-import {useGlobalProp} from "@/composables/globalProp.js";;
+import {useGlobalProp} from "@/composables/globalProp.js"
 import Logo from '@/layouts/Logo.vue'
 
 const {isFullscreen, toggle: toggleFullScreen} = useFullscreen()
@@ -34,18 +34,19 @@ function logout() {
 <template>
     <!-- PC nav -->
     <nav aria-label="secondary" :class="[
-        'sticky bg-base-100 top-0 z-10 px-6 py-3 flex items-center justify-between border-b border-gray-200 transition-transform duration-500 dark:border-gray-600',
+        'sticky bg-base-100 top-0 z-10 px-6 py-3 flex items-center justify-between transition-transform duration-500',
         {
             '-translate-y-full': scrolling.down,
             'translate-y-0': scrolling.up,
         },
     ]">
-        <div class="flex items-center gap-2">
-            <label class="swap" @click="sidebarState.isOpen = !sidebarState.isOpen">
-                <svg-icon name="menu-close" class="w-6 h-6 hidden md:block lg:hidden"  />
-            </label>
-            <el-breadcrumb separator="/">
 
+        <div class="flex items-center gap-2">
+            <a href="javascript:void(0)" @click="sidebarState.isOpen = !sidebarState.isOpen">
+                <svg-icon name="menu-open" class="w-5 h-5 hidden lg:block" v-show="sidebarState.isOpen" />
+                <svg-icon name="menu-close" class="w-5 h-5 hidden lg:block" v-show="!sidebarState.isOpen" />
+            </a>
+            <el-breadcrumb separator="/">
                 <el-breadcrumb-item v-for="item in breadcrumb" :to="{path: item.path}"> {{ item.meta.title }}
                 </el-breadcrumb-item>
             </el-breadcrumb>
@@ -99,7 +100,7 @@ function logout() {
             <span class="sr-only">Money</span>
         </router-link>
 
-        <label class="swap" @click="sidebarState.isOpen = !sidebarState.isOpen">
+        <label @click="sidebarState.isOpen = !sidebarState.isOpen">
             <svg-icon name="menu" v-show="!sidebarState.isOpen" />
             <svg-icon name="window-close" v-show="sidebarState.isOpen" class="w-6 h-6" />
         </label>

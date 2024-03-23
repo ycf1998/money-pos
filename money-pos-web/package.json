@@ -11,13 +11,13 @@
     "tailwind": "npx tailwindcss -i ./src/style/tailwind.css --watch"
   },
   "dependencies": {
-    "@element-plus/icons-vue": "^2.1.0",
+    "@element-plus/icons-vue": "^2.3.1",
     "@vueuse/core": "^10.4.1",
     "@vueuse/integrations": "^10.4.1",
-    "axios": "^1.5.0",
+    "axios": "^1.6.8",
     "dayjs": "^1.11.10",
     "echarts": "^5.4.3",
-    "element-plus": "^2.3.14",
+    "element-plus": "^2.6.2",
     "nprogress": "^0.2.0",
     "number-precision": "^1.6.0",
     "pinia": "^2.1.4",

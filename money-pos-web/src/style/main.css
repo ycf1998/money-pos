@@ -1,17 +1,9 @@
 .bg-base-100 {
-    background-color: var(--el-bg-color-page);
-}
-
-nav.bg-base-100 {
-    background-color: var(--el-bg-color);
-}
-
-aside.bg-base-100 {
     background-color: var(--el-bg-color);
 }
 
 .bg-base-200 {
-    background-color: var(--el-bg-color);
+    background-color: var(--el-bg-color-page);
 }
 
 /*全局滚动条*/

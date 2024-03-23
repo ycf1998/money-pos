@@ -21,7 +21,7 @@ onMounted(() => {
     </transition>
 
     <aside style="transition-property: width, transform;transition-duration: 150ms;" :class="[
-        'fixed bg-base-100 inset-y-0 z-20 py-4 flex flex-col space-y-6 shadow-lg dark:border-r border-gray-600',
+        'fixed bg-base-100 inset-y-0 z-20 py-4 flex flex-col space-y-6 shadow-lg',
         {
             'translate-x-0 w-60':
                 sidebarState.isOpen || sidebarState.isHovered,

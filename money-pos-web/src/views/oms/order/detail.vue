@@ -1,5 +1,5 @@
 <template>
-    <el-card v-if="order.id">
+    <el-card v-if="order.id" class="flex-1 rounded-md bg-base-100 sm:m-2 my-2">
         <template #header>
             <div class="flex justify-between items-center">
                 <span>订单状态：

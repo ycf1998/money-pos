@@ -1,6 +1,6 @@
 <template>
     <!-- Footer -->
-    <footer class="flex flex-col flex-shrink-0 w-full gap-2 px-6 py-4 md:flex-row md:justify-between">
+    <footer class="flex flex-col flex-shrink-0 w-full gap-2 px-6 pt-2 pb-4 md:flex-row md:justify-between">
         <p class="text-sm text-gray-500 dark:text-gray-400">
             &#169;
             <span>{{ new Date().getFullYear() }}</span> QK-Money UI, All rights reserved

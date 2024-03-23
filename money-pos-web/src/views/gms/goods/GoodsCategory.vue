@@ -1,5 +1,5 @@
 <template>
-    <el-input v-model="filterText" placeholder="输入关键字过滤" class="w-full" />
+    <el-input v-model="filterText" placeholder="输入关键字过滤" class="w-full mb-4" />
 
     <el-tree
         ref="treeRef"

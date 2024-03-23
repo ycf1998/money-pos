@@ -33,7 +33,7 @@
                 {{ NP.minus(scope.row.payAmount, scope.row.costAmount) }}
             </template>
             <template #status="{scope}">
-                <el-tag :type="statusColor[scope.row.status] || ''">
+                <el-tag :type="statusColor[scope.row.status] || 'primary'">
                     {{ dict.orderStatusKv[scope.row.status] }}
                 </el-tag>
             </template>
