@@ -2,7 +2,7 @@
 
 <p align="center">Money - Spring Boot 2.7 & VueJS 3 Cashier System</p>
 
-> 原 vue2 版本：[old-vue2](https://github.com/ycf1998/money-pos/tree/main-vue2)
+> 原 vue2 版本：main-vue2 分支
 
 ## 介绍
 
