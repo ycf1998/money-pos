@@ -47,12 +47,12 @@ public class GmsGoodsDTO {
     private String description;
 
     @Schema(description = "进价")
-    @NotNull(groups = {ValidGroup.Save.class, ValidGroup.Update.class})
+    @NotNull(groups = {ValidGroup.Save.class})
     @DecimalMin(value = "0", groups = {ValidGroup.Save.class, ValidGroup.Update.class})
     private BigDecimal purchasePrice;
 
     @Schema(description = "售价")
-    @NotNull(groups = {ValidGroup.Save.class, ValidGroup.Update.class})
+    @NotNull(groups = {ValidGroup.Save.class})
     @DecimalMin(value = "0", groups = {ValidGroup.Save.class, ValidGroup.Update.class})
     private BigDecimal salePrice;
 

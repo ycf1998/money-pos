@@ -18,7 +18,8 @@
                     <el-select v-model="moneyCrud.query.categoryId" clearable class="w-full md:!w-48 md:!hidden"
                                placeholder="分类"
                                @change="moneyCrud.doQuery">
-                        <el-option v-for="item in categories" :key="item.value" :label="item.label" :value="item.value" />
+                        <el-option v-for="item in categories" :key="item.value" :label="item.label"
+                                   :value="item.value" />
                     </el-select>
                     <el-select v-model="moneyCrud.query.status" clearable placeholder="状态" class="md:!w-48"
                                @change="moneyCrud.doQuery">
@@ -46,6 +47,13 @@
                         <el-tag :type="statusColor[scope.row.status] || 'primary'">
                             {{ dict.goodsStatusKv[scope.row.status] }}
                         </el-tag>
+                    </template>
+                    <template #stock="{scope}">
+                        <el-input v-if="editCell.id === scope.row.id" v-model="scope.row.stock" style="width: 55px"
+                                  @change="value => updateCell(value, scope.row)"
+                                  @focusout="updateCell(null, scope.row)" />
+                        <span v-else @click="startEditCell(scope.row.id, 'stock', scope.row.stock)">{{ scope.row.stock
+                            }}</span>
                     </template>
                     <template #opt="{scope}">
                         <MoneyUD :money-crud="moneyCrud" :scope="scope" />
@@ -106,7 +114,8 @@
                             </el-select>
                         </el-form-item>
                         <el-form-item label="分类" prop="categoryId" class="!w-full">
-                            <el-select v-model="moneyCrud.form.categoryId" class="w-full" placeholder="请选择" clearable>
+                            <el-select v-model="moneyCrud.form.categoryId" class="w-full" placeholder="请选择"
+                                       clearable>
                                 <el-option v-for="item in categories" :key="item.value" :label="item.label"
                                            :value="item.value" />
                             </el-select>
@@ -252,5 +261,28 @@ function handlePicSuccess(file) {
 function computeVipPrice() {
     // VIP 价格 = 售价 - 用券
     moneyCrud.value.form.vipPrice = NP.minus(moneyCrud.value.form.salePrice, moneyCrud.value.form.coupon)
+}
+
+// 编辑单元格
+const editCell = ref({})
+
+function startEditCell(id, field, origin) {
+    editCell.value.id = id
+    editCell.value.field = field
+    editCell.value.origin = origin
+}
+
+function updateCell(value, row) {
+    if (value === editCell.value.origin || !/^\d+$/.test(value)) {
+        row[editCell.value.field] = editCell.value.origin
+        editCell.value = {}
+        return
+    }
+    goodsApi.edit({
+        id: row.id,
+        [editCell.value.field]: value
+    }).then(() => moneyCrud.value.messageOk())
+        .catch(() => row[editCell.value.field] = editCell.value.origin)
+    editCell.value = {}
 }
 </script>
