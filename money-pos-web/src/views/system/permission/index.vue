@@ -5,7 +5,7 @@
             <el-input v-model.number="moneyCrud.query.condition" placeholder="名称/编码" class="md:!w-48"
                       @keyup.enter.native="moneyCrud.doQuery" />
             <el-select v-model="moneyCrud.query.permissionType" clearable placeholder="资源类型" class="md:!w-48">
-                <el-option v-for="item in dict.permissionType" :key="item.value" :label="item.label"
+                <el-option v-for="item in dict.permissionType" :key="item.value" :label="item.desc"
                            :value="item.value" @keyup.enter.native="moneyCrud.doQuery" />
             </el-select>
         </MoneyRR>
@@ -32,7 +32,7 @@
             <el-form-item label="资源类型" prop="permissionType" class="w-full">
                 <el-radio-group v-model="moneyCrud.form.permissionType" @change="changePermissionType">
                     <el-radio-button v-for="(item, index) in dict.permissionType" :key="index" :label="item.value">
-                        {{ item.label }}
+                        {{ item.desc }}
                     </el-radio-button>
                 </el-radio-group>
             </el-form-item>

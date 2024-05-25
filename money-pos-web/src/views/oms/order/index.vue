@@ -13,7 +13,7 @@
                       @keyup.enter.native="moneyCrud.doQuery" />
             <el-select v-model="moneyCrud.query.status" clearable placeholder="状态" class="md:!w-48"
                        @change="moneyCrud.doQuery">
-                <el-option v-for="item in dict.orderStatus" :key="item.value" :label="item.label" :value="item.value" />
+                <el-option v-for="item in dict.orderStatus" :key="item.value" :label="item.desc" :value="item.value" />
             </el-select>
         </MoneyRR>
         <!-- 操作行 -->

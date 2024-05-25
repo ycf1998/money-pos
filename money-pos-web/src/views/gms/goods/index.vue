@@ -23,7 +23,7 @@
                     </el-select>
                     <el-select v-model="moneyCrud.query.status" clearable placeholder="状态" class="md:!w-48"
                                @change="moneyCrud.doQuery">
-                        <el-option v-for="item in dict.goodsStatus" :key="item.value" :label="item.label"
+                        <el-option v-for="item in dict.goodsStatus" :key="item.value" :label="item.desc"
                                    :value="item.value" />
                     </el-select>
                 </MoneyRR>
@@ -98,7 +98,7 @@
                     <div class="flex justify-between gap-2">
                         <el-form-item label="状态" prop="status" class="!w-full">
                             <el-select v-model="moneyCrud.form.status" placeholder="请选择" class="w-full">
-                                <el-option v-for="item in dict.goodsStatus" :key="item.value" :label="item.label"
+                                <el-option v-for="item in dict.goodsStatus" :key="item.value" :label="item.desc"
                                            :value="item.value" />
                             </el-select>
                         </el-form-item>

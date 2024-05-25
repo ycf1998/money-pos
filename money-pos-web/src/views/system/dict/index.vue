@@ -36,11 +36,11 @@
         </div>
         <!-- 表单 -->
         <MoneyForm :money-crud="moneyCrud" :rules="rules">
-            <el-form-item label="字典名称" prop="name">
-                <el-input v-model.trim="moneyCrud.form.name" />
+            <el-form-item label="字典名称" prop="dictName">
+                <el-input v-model.trim="moneyCrud.form.dictName" />
             </el-form-item>
             <el-form-item label="字典描述">
-                <el-input v-model.trim="moneyCrud.form.description" type="textarea" maxlength="250" show-word-limit />
+                <el-input v-model.trim="moneyCrud.form.dictDesc" type="textarea" maxlength="250" show-word-limit />
             </el-form-item>
         </MoneyForm>
         <!-- 表单 -->
@@ -48,15 +48,19 @@
             <el-form-item label="字典名" prop="dict">
                 <el-input v-model.trim="moneyCrud2.form.dict" placeholder="点击表格选中字典" disabled />
             </el-form-item>
-            <el-form-item label="字典标签" prop="label">
-                <el-input v-model.trim="moneyCrud2.form.label" />
-            </el-form-item>
             <el-form-item label="字典值" prop="value">
                 <el-input v-model.trim="moneyCrud2.form.value" />
             </el-form-item>
+            <el-form-item label="中文描述" prop="cnDesc">
+                <el-input v-model.trim="moneyCrud2.form.cnDesc" />
+            </el-form-item>
+            <!-- TODO 多语言 -->
+            <!--            <el-form-item label="英文描述" prop="enDesc">-->
+            <!--                <el-input v-model.trim="moneyCrud2.form.enDesc" />-->
+            <!--            </el-form-item>-->
             <el-form-item label="隐藏" prop="hidden">
                 <el-radio-group v-model="moneyCrud2.form.hidden">
-                    <el-radio v-for="(item, index) in [true, false]" :key="index" :label="item">
+                    <el-radio v-for="(item, index) in [true, false]" :key="index" :value="item">
                         {{ item ? '是' : '否' }}
                     </el-radio>
                 </el-radio-group>
@@ -82,8 +86,8 @@ import dictApi from "@/api/system/dict.js";
 
 const userStore = useUserStore()
 const columns = [
-    {prop: 'name', label: '字典名称'},
-    {prop: 'description', label: '字典描述'},
+    {prop: 'dictName', label: '字典名称'},
+    {prop: 'dictDesc', label: '字典描述'},
     {
         prop: 'opt',
         label: '操作',
@@ -95,7 +99,7 @@ const columns = [
     }
 ]
 const rules = {
-    name: [{required: true, message: '请输入字典名称'}]
+    dictName: [{required: true, message: '请输入字典名称'}]
 }
 const moneyCrud = ref(new MoneyCrud({
     columns,
@@ -111,8 +115,10 @@ const moneyCrud = ref(new MoneyCrud({
 moneyCrud.value.init(moneyCrud)
 
 const columns2 = [
-    {prop: 'label', label: '字典标签'},
     {prop: 'value', label: '字典值'},
+    {prop: 'cnDesc', label: '中文描述'},
+    // TODO 多语言
+    {prop: 'enDesc', label: '英文描述', show: false},
     {prop: 'hidden', label: '隐藏'},
     {prop: 'sort', label: '排序', sortable: true},
     {
@@ -127,8 +133,8 @@ const columns2 = [
 ]
 const rules2 = {
     dict: [{required: true, message: '请选择字典'}],
-    label: [{required: true, message: '请输入字典标签'}],
     value: [{required: true, message: '请输入字典值'}],
+    cnDesc: [{required: true, message: '请输入中文描述'}],
 }
 const moneyCrud2 = ref(new MoneyCrud({
     columns: columns2,
@@ -156,11 +162,16 @@ moneyCrud2.value.init(moneyCrud2)
 let currentDict = null
 // 字典行点击查询字典详情
 moneyCrud.value.currentChange = async (currentRow) => {
+    if (!currentRow) return
     currentDict = currentRow
-    const dict = currentRow.name
+    const dict = currentRow.dictName
     const {data} = await dictApi.getDetail(dict)
     moneyCrud2.value.data = data
     moneyCrud2.value.defaultForm.dict = dict
+}
+moneyCrud.value.Hook.afterDoQuery = () => {
+    moneyCrud2.value.data = []
+    moneyCrud2.value.defaultForm.dict = null
 }
 moneyCrud2.value.Hook.afterDoQuery = () => {
     if (currentDict) moneyCrud.value.currentChange(currentDict)

@@ -11,7 +11,7 @@
  Target Server Version : 80026 (8.0.26)
  File Encoding         : 65001
 
- Date: 15/10/2023 22:48:32
+ Date: 18/05/2024 18:26:44
 */
 
 CREATE DATABASE IF NOT EXISTS `money_pos` CHARACTER SET 'utf8mb4';
@@ -25,17 +25,17 @@ SET FOREIGN_KEY_CHECKS = 0;
 -- ----------------------------
 DROP TABLE IF EXISTS `gms_brand`;
 CREATE TABLE `gms_brand`  (
-                              `id` bigint UNSIGNED NOT NULL,
-                              `logo` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '' COMMENT '品牌logo',
-                              `name` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '品牌名称',
-                              `description` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '' COMMENT '品牌描述',
-                              `goods_count` int UNSIGNED NOT NULL DEFAULT 0 COMMENT '商品数量',
-                              `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-                              `create_time` datetime NOT NULL,
-                              `update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-                              `update_time` datetime NOT NULL,
-                              `tenant_id` bigint UNSIGNED NOT NULL DEFAULT 0 COMMENT '租户id',
-                              PRIMARY KEY (`id`) USING BTREE
+  `id` bigint UNSIGNED NOT NULL,
+  `logo` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '' COMMENT '品牌logo',
+  `name` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '品牌名称',
+  `description` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '' COMMENT '品牌描述',
+  `goods_count` int UNSIGNED NOT NULL DEFAULT 0 COMMENT '商品数量',
+  `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `create_time` datetime NOT NULL,
+  `update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `update_time` datetime NOT NULL,
+  `tenant_id` bigint UNSIGNED NOT NULL DEFAULT 0 COMMENT '租户id',
+  PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '商品品牌表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
@@ -43,29 +43,29 @@ CREATE TABLE `gms_brand`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `gms_goods`;
 CREATE TABLE `gms_goods`  (
-                              `id` bigint NOT NULL,
-                              `brand_id` bigint UNSIGNED NULL DEFAULT NULL COMMENT '品牌id',
-                              `category_id` bigint UNSIGNED NULL DEFAULT NULL COMMENT '分类id',
-                              `barcode` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '条码',
-                              `name` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '商品名称',
-                              `pinyin` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '' COMMENT '商品拼音',
-                              `pic` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '' COMMENT '商品图片',
-                              `unit` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '' COMMENT '单位',
-                              `size` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '' COMMENT '规格',
-                              `description` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '' COMMENT '描述',
-                              `purchase_price` decimal(10, 2) NOT NULL COMMENT '进价',
-                              `sale_price` decimal(10, 2) NOT NULL COMMENT '售价',
-                              `vip_price` decimal(10, 2) NOT NULL COMMENT '会员价',
-                              `coupon` decimal(10, 2) NOT NULL DEFAULT 0.00 COMMENT '用券',
-                              `stock` bigint NOT NULL DEFAULT 0 COMMENT '库存',
-                              `sales` bigint UNSIGNED NOT NULL DEFAULT 0 COMMENT '销量',
-                              `status` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT 'SALE' COMMENT '状态',
-                              `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-                              `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-                              `update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-                              `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-                              `tenant_id` bigint UNSIGNED NOT NULL DEFAULT 0 COMMENT '租户id',
-                              PRIMARY KEY (`id`) USING BTREE
+  `id` bigint NOT NULL,
+  `brand_id` bigint UNSIGNED NULL DEFAULT NULL COMMENT '品牌id',
+  `category_id` bigint UNSIGNED NULL DEFAULT NULL COMMENT '分类id',
+  `barcode` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '条码',
+  `name` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '商品名称',
+  `pinyin` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '' COMMENT '商品拼音',
+  `pic` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '' COMMENT '商品图片',
+  `unit` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '' COMMENT '单位',
+  `size` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '' COMMENT '规格',
+  `description` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '' COMMENT '描述',
+  `purchase_price` decimal(10, 2) NOT NULL COMMENT '进价',
+  `sale_price` decimal(10, 2) NOT NULL COMMENT '售价',
+  `vip_price` decimal(10, 2) NOT NULL COMMENT '会员价',
+  `coupon` decimal(10, 2) NOT NULL DEFAULT 0.00 COMMENT '用券',
+  `stock` bigint NOT NULL DEFAULT 0 COMMENT '库存',
+  `sales` bigint UNSIGNED NOT NULL DEFAULT 0 COMMENT '销量',
+  `status` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT 'SALE' COMMENT '状态',
+  `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `tenant_id` bigint UNSIGNED NOT NULL DEFAULT 0 COMMENT '租户id',
+  PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '商品表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
@@ -84,7 +84,7 @@ INSERT INTO `gms_goods` VALUES (1488083019636981761, NULL, NULL, '6955470904010'
 INSERT INTO `gms_goods` VALUES (1488083512274763777, NULL, NULL, '6955470914651', '洁净控油洗发水', '', '', '', '', '', 18.00, 40.00, 20.00, 20.00, 1, 0, 'SALE', 'money', '2022-01-31 20:41:21', 'money', '2022-04-30 13:01:18', 0);
 INSERT INTO `gms_goods` VALUES (1488084268776210433, NULL, NULL, '6955470937087', '抑菌内衣洗衣液', '', '', '', '', '', 14.93, 35.00, 25.00, 10.00, 0, 2, 'SOLD_OUT', 'money', '2022-04-26 17:04:26', 'money', '2022-04-30 13:01:18', 0);
 INSERT INTO `gms_goods` VALUES (1488354540397793281, NULL, NULL, '6955470911841', '超凡洁净洁厕', '', '', '', '', '', 5.10, 12.00, 6.00, 6.00, 6, 13, 'SALE', 'money', '2022-04-28 14:53:36', 'money', '2022-04-30 13:01:18', 0);
-INSERT INTO `gms_goods` VALUES (1488355061607174146, NULL, NULL, '6955470912244', '重油污净', '', '', '', '', '', 7.20, 18.00, 9.00, 9.00, 2, 64, 'SALE', 'money', '2022-04-29 22:05:31', 'money', '2022-04-30 19:48:55', 0);
+INSERT INTO `gms_goods` VALUES (1488355061607174146, NULL, NULL, '6955470912244', '重油污净', '', '', '', '', '', 7.20, 18.00, 9.00, 9.00, 1, 65, 'SALE', 'money', '2022-04-29 22:05:31', 'money', '2022-04-30 19:48:55', 0);
 INSERT INTO `gms_goods` VALUES (1488355668917227522, NULL, NULL, '6955470903440', '天然海藻牙膏', '', '', '', '', '', 5.60, 10.00, 7.00, 3.00, 3, 34, 'SALE', 'money', '2022-04-19 13:15:19', 'money', '2022-04-30 13:01:19', 0);
 INSERT INTO `gms_goods` VALUES (1488356238075891714, NULL, NULL, '6955470914453', '绿茶牙膏', '', '', '', '', '', 6.90, 11.00, 8.00, 3.00, 10, 7, 'SALE', 'money', '2022-04-19 13:11:53', 'money', '2022-04-30 13:01:19', 0);
 INSERT INTO `gms_goods` VALUES (1488358086757322754, NULL, NULL, '6955470907349', '薄荷牙膏', '', '', '', '', '', 7.00, 11.00, 8.00, 3.00, 7, 2, 'SALE', 'money', '2022-03-19 13:53:52', 'money', '2022-04-30 13:01:19', 0);
@@ -98,9 +98,9 @@ INSERT INTO `gms_goods` VALUES (1488364342100365314, NULL, NULL, '6955470915146'
 INSERT INTO `gms_goods` VALUES (1488365342139879425, NULL, NULL, '111111', '喷头', '', '', '', '', '', 0.64, 2.00, 1.50, 0.50, 42, 6, 'SALE', 'money', '2022-04-28 18:26:21', 'money', '2022-04-30 13:01:20', 0);
 INSERT INTO `gms_goods` VALUES (1488376486145560578, NULL, NULL, '6955470930576', '亲轻棉日用', '', '', '', '', '', 7.00, 17.00, 10.00, 7.00, 27, 46, 'SALE', 'money', '2022-04-27 15:10:25', 'money', '2022-04-30 13:01:20', 0);
 INSERT INTO `gms_goods` VALUES (1488377381126148098, NULL, NULL, '6955470930569', '亲轻棉迷你巾', '', '', '', '', '', 6.62, 16.00, 9.00, 7.00, 14, 21, 'SALE', 'money', '2022-04-16 17:46:40', 'money', '2022-04-30 13:01:20', 0);
-INSERT INTO `gms_goods` VALUES (1488377708722262017, NULL, NULL, '6955470930583', '亲轻棉夜用', '', '', '', '', '', 7.00, 17.00, 10.00, 7.00, 28, 14, 'SALE', 'money', '2022-04-27 15:11:21', 'money', '2022-04-30 13:01:21', 0);
+INSERT INTO `gms_goods` VALUES (1488377708722262017, NULL, NULL, '6955470930583', '亲轻棉夜用', '', '', '', '', '', 7.00, 17.00, 10.00, 0.00, 28, 14, 'SALE', 'money', '2022-04-27 15:11:21', 'money', '2022-04-30 13:01:21', 0);
 INSERT INTO `gms_goods` VALUES (1488378311108202497, NULL, NULL, '6955470972958', 'yy夜用', '', '', '', '', '', 5.88, 14.00, 7.00, 7.00, 5, 15, 'SALE', 'money', '2022-03-25 18:10:38', 'money', '2022-04-30 13:01:21', 0);
-INSERT INTO `gms_goods` VALUES (1488378678369849345, NULL, NULL, '6955470972941', 'yy日用', '', '', '', '', '', 5.88, 14.00, 7.00, 7.00, 7, 26, 'SALE', 'money', '2022-03-25 18:10:38', 'money', '2022-04-30 13:01:21', 0);
+INSERT INTO `gms_goods` VALUES (1488378678369849345, NULL, NULL, '6955470972941', 'yy日用', '', '', '', '', '', 5.88, 14.00, 7.00, 0.00, 7, 26, 'SALE', 'money', '2022-03-25 18:10:38', 'money', '2022-04-30 13:01:21', 0);
 INSERT INTO `gms_goods` VALUES (1488379232663900162, NULL, NULL, '6955470972965', 'yy加长', '', '', '', '', '', 5.88, 14.00, 7.00, 7.00, 8, 36, 'SALE', 'money', '2022-04-26 17:04:26', 'money', '2022-04-30 13:01:21', 0);
 INSERT INTO `gms_goods` VALUES (1488379776753209345, NULL, NULL, '6955470928924', '爱生活安心裤', '', '', '', '', '', 5.40, 12.00, 7.00, 5.00, 12, 27, 'SALE', 'money', '2022-04-27 21:12:06', 'money', '2022-04-30 13:01:21', 0);
 
@@ -109,17 +109,17 @@ INSERT INTO `gms_goods` VALUES (1488379776753209345, NULL, NULL, '6955470928924'
 -- ----------------------------
 DROP TABLE IF EXISTS `gms_goods_category`;
 CREATE TABLE `gms_goods_category`  (
-                                       `id` bigint UNSIGNED NOT NULL,
-                                       `pid` bigint UNSIGNED NOT NULL COMMENT '父分类id',
-                                       `icon` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '' COMMENT '分类图标',
-                                       `name` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '分类名称',
-                                       `goods_count` int NOT NULL DEFAULT 0 COMMENT '商品数量',
-                                       `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-                                       `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-                                       `update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-                                       `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-                                       `tenant_id` bigint UNSIGNED NOT NULL DEFAULT 0 COMMENT '租户id',
-                                       PRIMARY KEY (`id`) USING BTREE
+  `id` bigint UNSIGNED NOT NULL,
+  `pid` bigint UNSIGNED NOT NULL COMMENT '父分类id',
+  `icon` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '' COMMENT '分类图标',
+  `name` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '分类名称',
+  `goods_count` int NOT NULL DEFAULT 0 COMMENT '商品数量',
+  `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `tenant_id` bigint UNSIGNED NOT NULL DEFAULT 0 COMMENT '租户id',
+  PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '商品分类表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
@@ -131,31 +131,31 @@ CREATE TABLE `gms_goods_category`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `oms_order`;
 CREATE TABLE `oms_order`  (
-                              `id` bigint UNSIGNED NOT NULL,
-                              `order_no` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '订单号',
-                              `member` varchar(24) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '零售' COMMENT '会员名',
-                              `member_id` bigint UNSIGNED NOT NULL DEFAULT 0 COMMENT '会员id',
-                              `vip` tinyint(1) NOT NULL COMMENT 'vip单',
-                              `status` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '状态',
-                              `contact` varchar(24) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '' COMMENT '联系方式',
-                              `province` varchar(24) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '' COMMENT '省份',
-                              `city` varchar(24) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '' COMMENT '城市',
-                              `district` varchar(24) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '' COMMENT '地区',
-                              `address` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '' COMMENT '详细地址',
-                              `cost_amount` decimal(10, 2) UNSIGNED NOT NULL COMMENT '总成本',
-                              `total_amount` decimal(10, 2) UNSIGNED NOT NULL COMMENT '总价',
-                              `pay_amount` decimal(10, 2) UNSIGNED NOT NULL COMMENT '实付款',
-                              `coupon_amount` decimal(10, 2) UNSIGNED NOT NULL COMMENT '抵用券',
-                              `final_sales_amount` decimal(10, 2) UNSIGNED NOT NULL COMMENT '最终销售金额',
-                              `remark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '' COMMENT '备注',
-                              `payment_time` datetime NOT NULL COMMENT '支付时间',
-                              `completion_time` datetime NULL DEFAULT NULL COMMENT '完成时间',
-                              `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-                              `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-                              `update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-                              `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-                              `tenant_id` bigint NOT NULL DEFAULT 0 COMMENT '租户id',
-                              PRIMARY KEY (`id`) USING BTREE
+  `id` bigint UNSIGNED NOT NULL,
+  `order_no` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '订单号',
+  `member` varchar(24) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '零售' COMMENT '会员名',
+  `member_id` bigint UNSIGNED NOT NULL DEFAULT 0 COMMENT '会员id',
+  `vip` tinyint(1) NOT NULL COMMENT 'vip单',
+  `status` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '状态',
+  `contact` varchar(24) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '' COMMENT '联系方式',
+  `province` varchar(24) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '' COMMENT '省份',
+  `city` varchar(24) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '' COMMENT '城市',
+  `district` varchar(24) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '' COMMENT '地区',
+  `address` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '' COMMENT '详细地址',
+  `cost_amount` decimal(10, 2) UNSIGNED NOT NULL COMMENT '总成本',
+  `total_amount` decimal(10, 2) UNSIGNED NOT NULL COMMENT '总价',
+  `pay_amount` decimal(10, 2) UNSIGNED NOT NULL COMMENT '实付款',
+  `coupon_amount` decimal(10, 2) UNSIGNED NOT NULL COMMENT '抵用券',
+  `final_sales_amount` decimal(10, 2) UNSIGNED NOT NULL COMMENT '最终销售金额',
+  `remark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '' COMMENT '备注',
+  `payment_time` datetime NOT NULL COMMENT '支付时间',
+  `completion_time` datetime NULL DEFAULT NULL COMMENT '完成时间',
+  `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `tenant_id` bigint NOT NULL DEFAULT 0 COMMENT '租户id',
+  PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '订单表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
@@ -167,25 +167,25 @@ CREATE TABLE `oms_order`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `oms_order_detail`;
 CREATE TABLE `oms_order_detail`  (
-                                     `id` bigint NOT NULL,
-                                     `order_no` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '订单号',
-                                     `status` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '状态',
-                                     `goods_id` bigint NOT NULL COMMENT '商品id',
-                                     `goods_barcode` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '商品条码',
-                                     `goods_name` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '商品名称',
-                                     `goods_price` decimal(10, 2) NOT NULL COMMENT '实际单价',
-                                     `quantity` int UNSIGNED NOT NULL COMMENT '数量',
-                                     `sale_price` decimal(10, 2) NOT NULL COMMENT '售价',
-                                     `purchase_price` decimal(10, 2) NOT NULL COMMENT '进价',
-                                     `vip_price` decimal(10, 2) NOT NULL COMMENT '会员价',
-                                     `coupon` decimal(10, 2) NOT NULL COMMENT '抵用券',
-                                     `return_quantity` int NOT NULL DEFAULT 0 COMMENT '退货数量',
-                                     `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-                                     `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-                                     `update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-                                     `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-                                     `tenant_id` bigint UNSIGNED NOT NULL DEFAULT 0 COMMENT '租户id',
-                                     PRIMARY KEY (`id`) USING BTREE
+  `id` bigint NOT NULL,
+  `order_no` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '订单号',
+  `status` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '状态',
+  `goods_id` bigint NOT NULL COMMENT '商品id',
+  `goods_barcode` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '商品条码',
+  `goods_name` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '商品名称',
+  `goods_price` decimal(10, 2) NOT NULL COMMENT '实际单价',
+  `quantity` int UNSIGNED NOT NULL COMMENT '数量',
+  `sale_price` decimal(10, 2) NOT NULL COMMENT '售价',
+  `purchase_price` decimal(10, 2) NOT NULL COMMENT '进价',
+  `vip_price` decimal(10, 2) NOT NULL COMMENT '会员价',
+  `coupon` decimal(10, 2) NOT NULL COMMENT '抵用券',
+  `return_quantity` int NOT NULL DEFAULT 0 COMMENT '退货数量',
+  `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `tenant_id` bigint UNSIGNED NOT NULL DEFAULT 0 COMMENT '租户id',
+  PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '订单明细表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
@@ -197,15 +197,15 @@ CREATE TABLE `oms_order_detail`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `oms_order_log`;
 CREATE TABLE `oms_order_log`  (
-                                  `id` bigint UNSIGNED NOT NULL,
-                                  `order_id` bigint NOT NULL COMMENT '订单id',
-                                  `description` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '描述',
-                                  `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-                                  `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-                                  `update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-                                  `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-                                  `tenant_id` bigint UNSIGNED NOT NULL DEFAULT 0 COMMENT '租户id',
-                                  PRIMARY KEY (`id`) USING BTREE
+  `id` bigint UNSIGNED NOT NULL,
+  `order_id` bigint NOT NULL COMMENT '订单id',
+  `description` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '描述',
+  `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `tenant_id` bigint UNSIGNED NOT NULL DEFAULT 0 COMMENT '租户id',
+  PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '订单操作日志' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
@@ -217,14 +217,14 @@ CREATE TABLE `oms_order_log`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `provinces`;
 CREATE TABLE `provinces`  (
-                              `district_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-                              `province` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-                              `city` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-                              `city_geocode` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-                              `district` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-                              `district_geocode` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-                              `lon` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-                              `lat` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL
+  `district_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `province` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `city` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `city_geocode` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `district` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `district_geocode` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `lon` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `lat` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
@@ -3636,14 +3636,15 @@ INSERT INTO `provinces` VALUES ('719014', '台湾省', '澎湖县', '719014', '�
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_dict`;
 CREATE TABLE `sys_dict`  (
-                             `id` bigint UNSIGNED NOT NULL,
-                             `name` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '字典名',
-                             `description` varchar(125) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '' COMMENT '字典描述',
-                             `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-                             `create_time` datetime NOT NULL,
-                             `update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-                             `update_time` datetime NOT NULL,
-                             PRIMARY KEY (`id`) USING BTREE
+  `id` bigint UNSIGNED NOT NULL,
+  `dict_name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '字典名称',
+  `dict_desc` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '' COMMENT '字典描述',
+  `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `create_time` datetime NOT NULL,
+  `update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `update_time` datetime NOT NULL,
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE INDEX `uk_dict_name`(`dict_name` ASC) USING BTREE COMMENT '字典名称唯一'
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
@@ -3659,59 +3660,60 @@ INSERT INTO `sys_dict` VALUES (1629751225758216194, 'orderStatus', '订单状态
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_dict_detail`;
 CREATE TABLE `sys_dict_detail`  (
-                                    `id` bigint UNSIGNED NOT NULL,
-                                    `dict` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '字典名',
-                                    `label` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '字典标签',
-                                    `value` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '字典值',
-                                    `sort` int NOT NULL DEFAULT 999 COMMENT '排序',
-                                    `hidden` tinyint(1) NOT NULL DEFAULT 0 COMMENT '隐藏',
-                                    `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-                                    `create_time` datetime NOT NULL,
-                                    `update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-                                    `update_time` datetime NOT NULL,
-                                    PRIMARY KEY (`id`) USING BTREE
+  `id` bigint UNSIGNED NOT NULL,
+  `dict` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '所属字典',
+  `value` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '字典值',
+  `cn_desc` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '中文描述',
+  `en_desc` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '' COMMENT '英文描述',
+  `sort` int NOT NULL DEFAULT 999 COMMENT '排序',
+  `hidden` tinyint(1) NOT NULL DEFAULT 0 COMMENT '隐藏',
+  `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `create_time` datetime NOT NULL,
+  `update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `update_time` datetime NOT NULL,
+  PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_dict_detail
 -- ----------------------------
-INSERT INTO `sys_dict_detail` VALUES (1, 'permissionType', '目录', 'DIR', 1, 0, '', '2022-03-30 22:13:11', '', '2022-03-30 22:13:17');
-INSERT INTO `sys_dict_detail` VALUES (2, 'permissionType', '菜单', 'MENU', 2, 0, '', '2022-03-30 22:13:11', '', '2022-03-30 22:13:17');
-INSERT INTO `sys_dict_detail` VALUES (3, 'permissionType', '按钮', 'BUTTON', 3, 0, '', '2022-03-30 22:13:11', '', '2022-03-30 22:13:17');
-INSERT INTO `sys_dict_detail` VALUES (1629418407601614850, 'memberType', '普通会员', 'MEMBER', 1, 0, 'money', '2023-02-25 17:49:56', 'money', '2023-02-25 17:49:56');
-INSERT INTO `sys_dict_detail` VALUES (1629418527323828226, 'memberType', '黄金会员', 'HJ_VIP', 2, 0, 'money', '2023-02-25 17:50:25', 'money', '2023-02-25 17:50:25');
-INSERT INTO `sys_dict_detail` VALUES (1629418584148258818, 'memberType', '铂金会员', 'BJ_VIP', 3, 0, 'money', '2023-02-25 17:50:38', 'money', '2023-02-25 17:50:38');
-INSERT INTO `sys_dict_detail` VALUES (1629745263274082306, 'goodsStatus', '在售', 'SALE', 1, 0, 'money', '2023-02-26 15:28:45', 'money', '2023-02-26 15:28:45');
-INSERT INTO `sys_dict_detail` VALUES (1629745293364019202, 'goodsStatus', '售罄', 'SOLD_OUT', 2, 0, 'money', '2023-02-26 15:28:52', 'money', '2023-02-26 15:28:52');
-INSERT INTO `sys_dict_detail` VALUES (1629745331712540673, 'goodsStatus', '下架', 'UN_SHELVE', 3, 0, 'money', '2023-02-26 15:29:01', 'money', '2023-02-26 15:29:01');
-INSERT INTO `sys_dict_detail` VALUES (1629751322239791106, 'OrderStatus', '已支付', 'PAID', 1, 0, 'money', '2023-02-26 15:52:49', 'money', '2023-02-26 15:52:49');
-INSERT INTO `sys_dict_detail` VALUES (1629751418805252098, 'OrderStatus', '已退单', 'RETURN', 2, 0, 'money', '2023-02-26 15:53:12', 'money', '2023-02-26 15:53:20');
-INSERT INTO `sys_dict_detail` VALUES (1630931426294759425, 'memberType', '内部会员', 'INNER', 4, 0, 'money', '2023-03-01 22:02:08', 'money', '2023-03-01 22:02:13');
+INSERT INTO `sys_dict_detail` VALUES (1, 'permissionType', 'DIR', '目录', '', 1, 0, '', '2022-03-30 22:13:11', '', '2022-03-30 22:13:17');
+INSERT INTO `sys_dict_detail` VALUES (2, 'permissionType', 'MENU', '菜单', '', 2, 0, '', '2022-03-30 22:13:11', '', '2022-03-30 22:13:17');
+INSERT INTO `sys_dict_detail` VALUES (3, 'permissionType', 'BUTTON', '按钮', '', 3, 0, '', '2022-03-30 22:13:11', '', '2022-03-30 22:13:17');
+INSERT INTO `sys_dict_detail` VALUES (1629418407601614850, 'memberType', 'MEMBER', '普通会员', '', 1, 0, 'money', '2023-02-25 17:49:56', 'money', '2023-02-25 17:49:56');
+INSERT INTO `sys_dict_detail` VALUES (1629418527323828226, 'memberType', 'HJ_VIP', '黄金会员', '', 2, 0, 'money', '2023-02-25 17:50:25', 'money', '2023-02-25 17:50:25');
+INSERT INTO `sys_dict_detail` VALUES (1629418584148258818, 'memberType', 'BJ_VIP', '铂金会员', '', 3, 0, 'money', '2023-02-25 17:50:38', 'money', '2023-02-25 17:50:38');
+INSERT INTO `sys_dict_detail` VALUES (1629745263274082306, 'goodsStatus', 'SALE', '在售', '', 1, 0, 'money', '2023-02-26 15:28:45', 'money', '2023-02-26 15:28:45');
+INSERT INTO `sys_dict_detail` VALUES (1629745293364019202, 'goodsStatus', 'SOLD_OUT', '售罄', '', 2, 0, 'money', '2023-02-26 15:28:52', 'money', '2023-02-26 15:28:52');
+INSERT INTO `sys_dict_detail` VALUES (1629745331712540673, 'goodsStatus', 'UN_SHELVE', '下架', '', 3, 0, 'money', '2023-02-26 15:29:01', 'money', '2023-02-26 15:29:01');
+INSERT INTO `sys_dict_detail` VALUES (1629751322239791106, 'OrderStatus', 'PAID', '已支付', '', 1, 0, 'money', '2023-02-26 15:52:49', 'money', '2023-02-26 15:52:49');
+INSERT INTO `sys_dict_detail` VALUES (1629751418805252098, 'OrderStatus', 'RETURN', '已退单', '', 2, 0, 'money', '2023-02-26 15:53:12', 'money', '2023-02-26 15:53:20');
+INSERT INTO `sys_dict_detail` VALUES (1630931426294759425, 'memberType', 'INNER', '内部会员', '', 4, 0, 'money', '2023-03-01 22:02:08', 'money', '2023-03-01 22:02:13');
 
 -- ----------------------------
 -- Table structure for sys_permission
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_permission`;
 CREATE TABLE `sys_permission`  (
-                                   `id` bigint UNSIGNED NOT NULL,
-                                   `permission_name` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '名称',
-                                   `permission_type` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '资源类型',
-                                   `parent_id` bigint UNSIGNED NOT NULL DEFAULT 0 COMMENT '父编码',
-                                   `icon` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '图标',
-                                   `permission` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '权限标识',
-                                   `router_path` varchar(125) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '路由地址',
-                                   `iframe` tinyint(1) NOT NULL DEFAULT 0 COMMENT '是否外链菜单',
-                                   `hidden` tinyint(1) NOT NULL DEFAULT 0 COMMENT '是否隐藏',
-                                   `component_name` varchar(125) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '组件名称',
-                                   `component_path` varchar(125) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '组件路径',
-                                   `sub_count` int NOT NULL DEFAULT 0 COMMENT '子节点数',
-                                   `sort` int NOT NULL DEFAULT 999 COMMENT '排序',
-                                   `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-                                   `create_time` datetime NOT NULL,
-                                   `update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-                                   `update_time` datetime NOT NULL,
-                                   `tenant_id` bigint UNSIGNED NOT NULL DEFAULT 0 COMMENT '租户id',
-                                   PRIMARY KEY (`id`) USING BTREE
+  `id` bigint UNSIGNED NOT NULL,
+  `permission_name` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '名称',
+  `permission_type` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '资源类型',
+  `parent_id` bigint UNSIGNED NOT NULL DEFAULT 0 COMMENT '父编码',
+  `icon` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '图标',
+  `permission` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '权限标识',
+  `router_path` varchar(125) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '路由地址',
+  `iframe` tinyint(1) NOT NULL DEFAULT 0 COMMENT '是否外链菜单',
+  `hidden` tinyint(1) NOT NULL DEFAULT 0 COMMENT '是否隐藏',
+  `component_name` varchar(125) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '组件名称',
+  `component_path` varchar(125) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '组件路径',
+  `sub_count` int NOT NULL DEFAULT 0 COMMENT '子节点数',
+  `sort` int NOT NULL DEFAULT 999 COMMENT '排序',
+  `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `create_time` datetime NOT NULL,
+  `update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `update_time` datetime NOT NULL,
+  `tenant_id` bigint UNSIGNED NOT NULL DEFAULT 0 COMMENT '租户id',
+  PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '资源权限表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
@@ -3764,19 +3766,19 @@ INSERT INTO `sys_permission` VALUES (1634214613527801857, '订单详情', 'MENU'
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_role`;
 CREATE TABLE `sys_role`  (
-                             `id` bigint UNSIGNED NOT NULL,
-                             `role_code` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '角色编码',
-                             `role_name` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '角色名称',
-                             `level` int NOT NULL COMMENT '角色级别',
-                             `description` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '角色描述',
-                             `count` bigint NOT NULL DEFAULT 0 COMMENT '角色人数',
-                             `enabled` tinyint(1) NOT NULL DEFAULT 1 COMMENT '可用状态：0-禁用；1-启用',
-                             `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-                             `create_time` datetime NOT NULL,
-                             `update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-                             `update_time` datetime NOT NULL,
-                             `tenant_id` bigint UNSIGNED NOT NULL DEFAULT 0 COMMENT '租户id',
-                             PRIMARY KEY (`id`) USING BTREE
+  `id` bigint UNSIGNED NOT NULL,
+  `role_code` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '角色编码',
+  `role_name` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '角色名称',
+  `level` int NOT NULL COMMENT '角色级别',
+  `description` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '角色描述',
+  `count` bigint NOT NULL DEFAULT 0 COMMENT '角色人数',
+  `enabled` tinyint(1) NOT NULL DEFAULT 1 COMMENT '可用状态：0-禁用；1-启用',
+  `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `create_time` datetime NOT NULL,
+  `update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `update_time` datetime NOT NULL,
+  `tenant_id` bigint UNSIGNED NOT NULL DEFAULT 0 COMMENT '租户id',
+  PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '角色表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
@@ -3791,11 +3793,11 @@ INSERT INTO `sys_role` VALUES (1502845786646409218, 'GUEST', '游客', 99, '只�
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_role_permission_relation`;
 CREATE TABLE `sys_role_permission_relation`  (
-                                                 `id` bigint UNSIGNED NOT NULL,
-                                                 `permission_id` bigint UNSIGNED NOT NULL COMMENT '资源权限id',
-                                                 `role_id` bigint UNSIGNED NOT NULL COMMENT '角色id',
-                                                 `tenant_id` bigint UNSIGNED NOT NULL DEFAULT 0 COMMENT '租户id',
-                                                 PRIMARY KEY (`id`) USING BTREE
+  `id` bigint UNSIGNED NOT NULL,
+  `permission_id` bigint UNSIGNED NOT NULL COMMENT '资源权限id',
+  `role_id` bigint UNSIGNED NOT NULL COMMENT '角色id',
+  `tenant_id` bigint UNSIGNED NOT NULL DEFAULT 0 COMMENT '租户id',
+  PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '角色资源权限关联表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
@@ -3829,50 +3831,50 @@ INSERT INTO `sys_role_permission_relation` VALUES (1507375871487504390, 15028630
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_tenant`;
 CREATE TABLE `sys_tenant`  (
-                               `id` bigint UNSIGNED NOT NULL,
-                               `tenant_code` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '租户code',
-                               `logo` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT 'https://i.postimg.cc/CKZZ6RD1/logo.png' COMMENT 'logo',
-                               `ico` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '' COMMENT 'ico',
-                               `domain` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '' COMMENT '域名',
-                               `tenant_name` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '租户名称',
-                               `tenant_desc` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '' COMMENT '租户描述',
-                               `deleted` tinyint(1) NOT NULL DEFAULT 0 COMMENT '逻辑删除',
-                               `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-                               `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-                               `update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-                               `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-                               `tenant_id` bigint UNSIGNED NOT NULL DEFAULT 0,
-                               PRIMARY KEY (`id`) USING BTREE
+  `id` bigint UNSIGNED NOT NULL,
+  `tenant_code` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '租户code',
+  `logo` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT 'https://7up.pics/images/2023/10/21/logo.png' COMMENT 'logo',
+  `ico` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '' COMMENT 'ico',
+  `domain` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '' COMMENT '域名',
+  `tenant_name` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '租户名称',
+  `tenant_desc` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '' COMMENT '租户描述',
+  `deleted` tinyint(1) NOT NULL DEFAULT 0 COMMENT '逻辑删除',
+  `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `tenant_id` bigint UNSIGNED NOT NULL DEFAULT 0,
+  PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_tenant
 -- ----------------------------
-INSERT INTO `sys_tenant` VALUES (0, 'M', 'https://i.postimg.cc/CKZZ6RD1/logo.png', '', 'www.money.com', '麦尼科技', '主租户', 0, '', '2023-10-02 11:40:52', '', '2022-03-26 14:06:28', 0);
+INSERT INTO `sys_tenant` VALUES (0, 'M', 'https://7up.pics/images/2023/10/21/logo.png', '', 'www.money.com', '麦尼科技', '主租户', 0, '', '2023-10-21 11:28:06', '', '2022-03-26 14:06:28', 0);
 
 -- ----------------------------
 -- Table structure for sys_user
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_user`;
 CREATE TABLE `sys_user`  (
-                             `id` bigint UNSIGNED NOT NULL,
-                             `username` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '用户名',
-                             `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '密码',
-                             `nickname` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '昵称',
-                             `avatar` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'https://i.postimg.cc/Hny7JfS2/superhero.png' COMMENT '头像',
-                             `phone` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '手机号码',
-                             `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '邮箱',
-                             `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '备注',
-                             `enabled` tinyint(1) NOT NULL DEFAULT 1 COMMENT '可用状态：0-禁用；1-启用',
-                             `init_login` tinyint(1) NOT NULL DEFAULT 1 COMMENT '初次登录：0-不是；1-是',
-                             `last_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '最后登录时间',
-                             `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-                             `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-                             `update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-                             `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-                             `tenant_id` bigint UNSIGNED NOT NULL DEFAULT 0 COMMENT '租户id',
-                             PRIMARY KEY (`id`) USING BTREE,
-                             UNIQUE INDEX `uniq_username`(`username` ASC, `tenant_id` ASC) USING BTREE
+  `id` bigint UNSIGNED NOT NULL,
+  `username` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '用户名',
+  `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '密码',
+  `nickname` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '昵称',
+  `avatar` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'https://7up.pics/images/2023/10/21/superhero.png' COMMENT '头像',
+  `phone` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '手机号码',
+  `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '邮箱',
+  `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '备注',
+  `enabled` tinyint(1) NOT NULL DEFAULT 1 COMMENT '可用状态：0-禁用；1-启用',
+  `init_login` tinyint(1) NOT NULL DEFAULT 1 COMMENT '初次登录：0-不是；1-是',
+  `last_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '最后登录时间',
+  `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `tenant_id` bigint UNSIGNED NOT NULL DEFAULT 0 COMMENT '租户id',
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE INDEX `uniq_username`(`username` ASC, `tenant_id` ASC) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
@@ -3887,11 +3889,11 @@ INSERT INTO `sys_user` VALUES (1504612500111388673, 'guest', '$2a$10$Nj/4Tn.cj2S
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_user_role_relation`;
 CREATE TABLE `sys_user_role_relation`  (
-                                           `id` bigint UNSIGNED NOT NULL,
-                                           `user_id` bigint UNSIGNED NOT NULL COMMENT '用户id',
-                                           `role_id` bigint UNSIGNED NOT NULL COMMENT '角色id',
-                                           `tenant_id` bigint UNSIGNED NOT NULL DEFAULT 0 COMMENT '租户id',
-                                           PRIMARY KEY (`id`) USING BTREE
+  `id` bigint UNSIGNED NOT NULL,
+  `user_id` bigint UNSIGNED NOT NULL COMMENT '用户id',
+  `role_id` bigint UNSIGNED NOT NULL COMMENT '角色id',
+  `tenant_id` bigint UNSIGNED NOT NULL DEFAULT 0 COMMENT '租户id',
+  PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户角色关联表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
@@ -3906,28 +3908,28 @@ INSERT INTO `sys_user_role_relation` VALUES (1507382155225899009, 1, 1, 0);
 -- ----------------------------
 DROP TABLE IF EXISTS `ums_member`;
 CREATE TABLE `ums_member`  (
-                               `id` bigint NOT NULL,
-                               `code` varchar(24) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '卡号',
-                               `name` varchar(24) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '会员名称',
-                               `type` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '会员类型',
-                               `phone` varchar(24) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '手机号',
-                               `province` varchar(24) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '' COMMENT '省份',
-                               `city` varchar(24) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '' COMMENT '城市',
-                               `district` varchar(24) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '' COMMENT '地区',
-                               `address` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '' COMMENT '详细地址',
-                               `coupon` decimal(15, 2) NOT NULL DEFAULT 0.00 COMMENT '抵用券',
-                               `consume_amount` decimal(12, 2) NOT NULL DEFAULT 0.00 COMMENT '总消费金额',
-                               `consume_coupon` decimal(12, 2) NOT NULL DEFAULT 0.00 COMMENT '消费抵用券',
-                               `consume_times` int NOT NULL DEFAULT 0 COMMENT '消费次数',
-                               `cancel_times` int NOT NULL DEFAULT 0 COMMENT '取消次数',
-                               `remark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '' COMMENT '备注',
-                               `deleted` tinyint(1) NOT NULL DEFAULT 0 COMMENT '逻辑删除',
-                               `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-                               `create_time` datetime NOT NULL,
-                               `update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-                               `update_time` datetime NOT NULL,
-                               `tenant_id` bigint UNSIGNED NOT NULL DEFAULT 0 COMMENT '租户id',
-                               PRIMARY KEY (`id`) USING BTREE
+  `id` bigint NOT NULL,
+  `code` varchar(24) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '卡号',
+  `name` varchar(24) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '会员名称',
+  `type` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '会员类型',
+  `phone` varchar(24) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '手机号',
+  `province` varchar(24) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '' COMMENT '省份',
+  `city` varchar(24) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '' COMMENT '城市',
+  `district` varchar(24) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '' COMMENT '地区',
+  `address` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '' COMMENT '详细地址',
+  `coupon` decimal(15, 2) NOT NULL DEFAULT 0.00 COMMENT '抵用券',
+  `consume_amount` decimal(12, 2) NOT NULL DEFAULT 0.00 COMMENT '总消费金额',
+  `consume_coupon` decimal(12, 2) NOT NULL DEFAULT 0.00 COMMENT '消费抵用券',
+  `consume_times` int NOT NULL DEFAULT 0 COMMENT '消费次数',
+  `cancel_times` int NOT NULL DEFAULT 0 COMMENT '取消次数',
+  `remark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '' COMMENT '备注',
+  `deleted` tinyint(1) NOT NULL DEFAULT 0 COMMENT '逻辑删除',
+  `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `create_time` datetime NOT NULL,
+  `update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `update_time` datetime NOT NULL,
+  `tenant_id` bigint UNSIGNED NOT NULL DEFAULT 0 COMMENT '租户id',
+  PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '会员表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------

@@ -10,7 +10,7 @@
                       @keyup.enter.native="moneyCrud.doQuery" />
             <el-select v-model="moneyCrud.query.type" clearable placeholder="会员类型" class="md:!w-48"
                        @change="moneyCrud.doQuery">
-                <el-option v-for="item in dict.memberType" :key="item.value" :label="item.label" :value="item.value" />
+                <el-option v-for="item in dict.memberType" :key="item.value" :label="item.desc" :value="item.value" />
             </el-select>
         </MoneyRR>
         <!-- 操作行 -->
@@ -34,7 +34,7 @@
             </el-form-item>
             <el-form-item label="会员类型" prop="type">
                 <el-select v-model="moneyCrud.form.type" placeholder="请选择会员类型" class="w-full">
-                    <el-option v-for="item in dict.memberType" :key="item.value" :label="item.label"
+                    <el-option v-for="item in dict.memberType" :key="item.value" :label="item.desc"
                                :value="item.value" />
                 </el-select>
             </el-form-item>

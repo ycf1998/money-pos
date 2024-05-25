@@ -18,14 +18,6 @@ import java.util.List;
 public interface SysDictDetailService extends IService<SysDictDetail> {
 
     /**
-     * 根据字典名获取详情
-     *
-     * @param dict 字典名
-     * @return {@link List}<{@link SysDictDetail}>
-     */
-    List<SysDictDetail> getByDict(String dict);
-
-    /**
      * 查询字典详情列表
      *
      * @param dict dict

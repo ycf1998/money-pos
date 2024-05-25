@@ -21,10 +21,10 @@ public interface SysDictService extends IService<SysDict> {
     /**
      * 根据字典名获取字典
      *
-     * @param name 字典名
+     * @param dictName 字典名称
      * @return {@link SysDict}
      */
-    SysDict getByName(String name);
+    SysDict getByDictName(String dictName);
 
     /**
      * 查询字典列表

@@ -29,10 +29,6 @@ public class WebLog {
      */
     private String ip;
     /**
-     * 描述
-     */
-    private String description;
-    /**
      * 请求方法
      */
     private String method;
@@ -47,7 +43,11 @@ public class WebLog {
     /**
      * 请求参数
      */
-    private Object parameter;
+    private String queryString;
+    /**
+     * 请求体
+     */
+    private String body;
     /**
      * 返回结果
      */

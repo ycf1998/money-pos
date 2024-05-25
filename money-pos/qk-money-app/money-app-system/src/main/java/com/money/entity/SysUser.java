@@ -21,8 +21,6 @@ import java.time.LocalDateTime;
 @TableName("sys_user")
 public class SysUser extends BaseEntity {
 
-    private static final long serialVersionUID = 1L;
-
     @Schema(description = "用户名")
     private String username;
 

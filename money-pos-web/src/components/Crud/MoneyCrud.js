@@ -13,7 +13,7 @@ class MoneyCrud {
         fixed: '',
         showOverflowTooltip: true,
         sortable: 'custom',
-        hidden: false,
+        show: true,
         isMoneyUD: false
     }]
     // 数据

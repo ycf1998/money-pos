@@ -20,8 +20,6 @@ import lombok.Setter;
 @TableName("sys_role_permission_relation")
 public class SysRolePermissionRelation  {
 
-    private static final long serialVersionUID = 1L;
-
     @TableId(type = IdType.ASSIGN_ID)
     private Long id;
 

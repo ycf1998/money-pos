@@ -19,8 +19,6 @@ import lombok.Setter;
 @TableName("sys_permission")
 public class SysPermission extends BaseEntity {
 
-    private static final long serialVersionUID = 1L;
-
     @Schema(description = "名称")
     private String permissionName;
 

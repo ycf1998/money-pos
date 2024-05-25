@@ -2,7 +2,6 @@ package com.money.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.util.StrUtil;
 import cn.hutool.extra.spring.SpringUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.money.common.exception.BaseException;
@@ -18,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -33,31 +31,15 @@ import java.util.stream.Collectors;
 public class SysDictDetailServiceImpl extends ServiceImpl<SysDictDetailMapper, SysDictDetail> implements SysDictDetailService {
 
     @Override
-    public List<SysDictDetail> getByDict(String dict) {
-        return listByDict(dict).stream().filter(e -> !e.getHidden()).collect(Collectors.toList());
-    }
-
-    @Override
     public List<SysDictDetail> listByDict(String dict) {
-        return this.lambdaQuery()
-                .eq(SysDictDetail::getDict, dict)
-                .orderByAsc(SysDictDetail::getSort)
-                .list();
+        return this.lambdaQuery().eq(SysDictDetail::getDict, dict).orderByAsc(SysDictDetail::getSort).list();
     }
 
     @Override
     public void add(SysDictDetailDTO sysDictDetailDTO) {
-        SysDict dict = SpringUtil.getBean(SysDictService.class).getByName(sysDictDetailDTO.getDict());
+        SysDict dict = SpringUtil.getBean(SysDictService.class).getByDictName(sysDictDetailDTO.getDict());
         if (dict == null) {
             throw new BaseException(SysErrorStatus.DATA_NOT_FOUND);
-        }
-        // 字典标签唯一
-        boolean exists = this.lambdaQuery()
-                .eq(SysDictDetail::getDict, sysDictDetailDTO.getDict())
-                .eq(SysDictDetail::getLabel, sysDictDetailDTO.getLabel())
-                .exists();
-        if (exists) {
-            throw new BaseException(SysErrorStatus.DATA_ALREADY_EXIST, "字典标签已存在");
         }
         SysDictDetail sysDictDetail = new SysDictDetail();
         BeanUtil.copyProperties(sysDictDetailDTO, sysDictDetail);
@@ -66,17 +48,6 @@ public class SysDictDetailServiceImpl extends ServiceImpl<SysDictDetailMapper, S
 
     @Override
     public void updateById(SysDictDetailDTO sysDictDetailDTO) {
-        if (StrUtil.isNotBlank(sysDictDetailDTO.getLabel())) {
-            SysDictDetail byId = this.getById(sysDictDetailDTO.getId());
-            // 字典标签唯一
-            boolean exists = this.lambdaQuery()
-                    .ne(SysDictDetail::getDict, byId.getDict())
-                    .eq(SysDictDetail::getLabel, sysDictDetailDTO.getLabel())
-                    .exists();
-            if (exists) {
-                throw new BaseException(SysErrorStatus.DATA_ALREADY_EXIST, "字典标签已存在");
-            }
-        }
         SysDictDetail sysDictDetail = new SysDictDetail();
         BeanUtil.copyProperties(sysDictDetailDTO, sysDictDetail);
         this.updateById(sysDictDetail);

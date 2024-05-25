@@ -50,13 +50,15 @@ export default {
             })
             if (data && data.length > 0) {
                 dictMap[dict] = data.map(dd => {
+                    // TODO 多语言 先默认中文
+                    dd.desc = dd.cnDesc
                     return {
-                        label: dd.label,
+                        desc: dd.desc,
                         value: dd.value,
                     }
                 })
                 dictMap[dict + 'Kv'] = {}
-                data.map(dd => dictMap[dict + 'Kv'][dd.value] = dd.label)
+                data.map(dd => dictMap[dict + 'Kv'][dd.value] = dd.desc)
             }
         }
         return dictMap

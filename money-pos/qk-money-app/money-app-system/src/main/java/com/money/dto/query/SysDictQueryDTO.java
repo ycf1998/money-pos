@@ -15,7 +15,7 @@ import lombok.EqualsAndHashCode;
 @Data
 public class SysDictQueryDTO extends QueryRequest {
 
-    @Schema(description = "字典名或者描述")
+    @Schema(description = "字典名称或者描述")
     private String nameOrDesc;
 
 }

@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 
 /**
  * <p>
- *  服务实现类
+ * 服务实现类
  * </p>
  *
  * @author money
@@ -38,16 +38,16 @@ public class SysDictServiceImpl extends ServiceImpl<SysDictMapper, SysDict> impl
     private final SysDictDetailService sysDictDetailService;
 
     @Override
-    public SysDict getByName(String name) {
-        return this.lambdaQuery().eq(SysDict::getName, name).last("LIMIT 1").one();
+    public SysDict getByDictName(String dictName) {
+        return this.lambdaQuery().eq(SysDict::getDictName, dictName).one();
     }
 
     @Override
     public PageVO<SysDict> list(SysDictQueryDTO queryDTO) {
         Page<SysDict> page = this.lambdaQuery()
-                .like(StrUtil.isNotBlank(queryDTO.getNameOrDesc()), SysDict::getName, queryDTO.getNameOrDesc())
-                .or(StrUtil.isNotBlank(queryDTO.getNameOrDesc()),
-                        wrapper -> wrapper.like(StrUtil.isNotBlank(queryDTO.getNameOrDesc()), SysDict::getDescription, queryDTO.getNameOrDesc()))
+                .like(StrUtil.isNotBlank(queryDTO.getNameOrDesc()), SysDict::getDictName, queryDTO.getNameOrDesc())
+                .or()
+                .like(StrUtil.isNotBlank(queryDTO.getNameOrDesc()), SysDict::getDictDesc, queryDTO.getNameOrDesc())
                 .orderByDesc(SysDict::getUpdateTime)
                 .page(PageUtil.toPage(queryDTO));
         return PageUtil.toPageVO(page);
@@ -56,7 +56,7 @@ public class SysDictServiceImpl extends ServiceImpl<SysDictMapper, SysDict> impl
     @Override
     public void add(SysDictDTO sysDictDTO) {
         // 字典唯一
-        boolean exists = this.lambdaQuery().eq(SysDict::getName, sysDictDTO.getName()).exists();
+        boolean exists = this.lambdaQuery().eq(SysDict::getDictName, sysDictDTO.getDictName()).exists();
         if (exists) {
             throw new BaseException(SysErrorStatus.DATA_ALREADY_EXIST, "字典已存在");
         }
@@ -70,14 +70,15 @@ public class SysDictServiceImpl extends ServiceImpl<SysDictMapper, SysDict> impl
         SysDict sysDict = new SysDict();
         BeanUtil.copyProperties(sysDictDTO, sysDict);
         // 字典名不允许修改
-        sysDict.setName(null);
+        sysDict.setDictName(null);
         this.updateById(sysDict);
     }
 
     @Override
     public void deleteById(Set<Long> ids) {
-        List<String> dictList = this.listByIds(ids).stream().map(SysDict::getName).collect(Collectors.toList());
+        List<String> dictList = this.listByIds(ids).stream().map(SysDict::getDictName).collect(Collectors.toList());
         this.removeBatchByIds(ids);
         sysDictDetailService.deleteByDict(dictList);
     }
+
 }

@@ -11,7 +11,14 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -47,14 +54,14 @@ public class GmsBrandController {
     @PostMapping
     @PreAuthorize("@rbac.hasPermission('gmsBrand:add')")
     public void add(@Validated(ValidGroup.Save.class) @RequestPart("brand") GmsBrandDTO brandDTO,
-                         @RequestPart(required = false) MultipartFile logo) {
+                    @RequestPart(required = false) MultipartFile logo) {
         gmsBrandService.add(brandDTO, logo);
     }
 
     @PutMapping
     @PreAuthorize("@rbac.hasPermission('gmsBrand:edit')")
     public void update(@Validated(ValidGroup.Update.class) @RequestPart("brand") GmsBrandDTO brandDTO,
-                            @RequestPart(required = false) MultipartFile logo) {
+                       @RequestPart(required = false) MultipartFile logo) {
         gmsBrandService.update(brandDTO, logo);
     }
 
@@ -63,4 +70,5 @@ public class GmsBrandController {
     public void delete(@RequestBody Set<Long> ids) {
         gmsBrandService.delete(ids);
     }
+
 }

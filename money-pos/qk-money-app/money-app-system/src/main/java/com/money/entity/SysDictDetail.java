@@ -5,38 +5,38 @@ import com.money.mb.base.BaseEntity;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.Accessors;
 
 /**
  * <p>
- *
+ * 字典详情表
  * </p>
  *
  * @author money
- * @since 2022-03-05
+ * @since 2024-05-18
  */
 @Getter
 @Setter
+@Accessors(chain = true)
 @TableName("sys_dict_detail")
-@Schema(description = "SysDictDetail对象")
 public class SysDictDetail extends BaseEntity {
 
-    private static final long serialVersionUID = 1L;
-
-    private Long id;
-
-    @Schema(description="字典名")
+    @Schema(description = "所属字典")
     private String dict;
-
-    @Schema(description = "字典标签")
-    private String label;
 
     @Schema(description = "字典值")
     private String value;
 
+    @Schema(description = "中文描述")
+    private String cnDesc;
+
+    @Schema(description = "英文描述")
+    private String enDesc;
+
     @Schema(description = "排序")
     private Integer sort;
 
-    @Schema(description = "是否隐藏")
+    @Schema(description = "隐藏")
     private Boolean hidden;
 
 }

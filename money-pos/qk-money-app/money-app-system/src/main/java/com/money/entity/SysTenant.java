@@ -19,8 +19,6 @@ import lombok.Setter;
 @TableName("sys_tenant")
 public class SysTenant extends BaseEntity {
 
-    private static final long serialVersionUID = 1L;
-
     @Schema(description = "租户code")
     private String tenantCode;
 
