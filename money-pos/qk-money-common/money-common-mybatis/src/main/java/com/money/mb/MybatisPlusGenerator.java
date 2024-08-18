@@ -6,7 +6,12 @@ import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.core.enums.SqlLike;
 import com.baomidou.mybatisplus.generator.AutoGenerator;
-import com.baomidou.mybatisplus.generator.config.*;
+import com.baomidou.mybatisplus.generator.config.DataSourceConfig;
+import com.baomidou.mybatisplus.generator.config.GlobalConfig;
+import com.baomidou.mybatisplus.generator.config.InjectionConfig;
+import com.baomidou.mybatisplus.generator.config.OutputFile;
+import com.baomidou.mybatisplus.generator.config.PackageConfig;
+import com.baomidou.mybatisplus.generator.config.StrategyConfig;
 import com.baomidou.mybatisplus.generator.config.builder.CustomFile;
 import com.baomidou.mybatisplus.generator.config.po.LikeTable;
 import com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine;
@@ -14,7 +19,10 @@ import com.money.mb.base.BaseEntity;
 import lombok.Getter;
 
 import java.io.File;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Scanner;
 import java.util.stream.Collectors;
 
 /**
@@ -38,14 +46,9 @@ public class MybatisPlusGenerator {
      */
     private static final String password = "root";
 
-    /**
-     * 数据源配置
-     */
-    private static final DataSourceConfig.Builder DATA_SOURCE_CONFIG = new DataSourceConfig.Builder(url, username, password);
-
     public static void main(String[] args) {
         Answer answer = askAndAnswer();
-        new AutoGenerator(DATA_SOURCE_CONFIG.build())
+        new AutoGenerator(new DataSourceConfig.Builder(url, username, password).build())
                 // 全局配置
                 .global(answer.globalConfig.build())
                 // 包配置
@@ -54,8 +57,6 @@ public class MybatisPlusGenerator {
                 .strategy(answer.strategyConfig.build())
                 // 注入配置
                 .injection(answer.injectionConfig.build())
-                // 模板配置
-                .template(answer.templateConfig.build())
                 // 执行
                 .execute(new FreemarkerTemplateEngine());
     }
@@ -64,36 +65,36 @@ public class MybatisPlusGenerator {
         List<String> yesOrNo = ListUtil.of("Y", "y", "N", "n");
         Answer answer = new Answer();
         Scanner scanner = new Scanner(System.in);
-        System.out.print("请输入作者？(money)：");
+        System.out.print("请输入作者？（money）：");
         String s = StrUtil.blankToDefault(scanner.nextLine(), "money");
         answer.author(s);
         do {
-            System.out.print("是覆盖已有文件[Y|N]？(N)：");
+            System.out.print("是覆盖已有文件 [Y|N]？（N）：");
             s = StrUtil.blankToDefault(scanner.nextLine(), "N");
             answer.fileOverride(s);
         } while (!yesOrNo.contains(s));
         do {
-            System.out.print("是否开启swagger[Y|N]？(N)：");
+            System.out.print("是否开启 Swagger [Y|N]？（N）：");
             s = StrUtil.blankToDefault(scanner.nextLine(), "N");
             answer.openSwagger(s);
         } while (!yesOrNo.contains(s));
         do {
-            System.out.print("是否生成xml文件[Y|N]？(N)：");
+            System.out.print("是否生成 XML 文件 [Y|N]？（N）：");
             s = StrUtil.blankToDefault(scanner.nextLine(), "N");
             answer.generateXml(s);
         } while (!yesOrNo.contains(s));
         do {
-            System.out.print("是否继承BaseEntity[Y|N]？(Y)：");
+            System.out.print("是否继承 BaseEntity [Y|N]？（Y）：");
             s = StrUtil.blankToDefault(scanner.nextLine(), "Y");
             answer.extendBaseEntity(s);
         } while (!yesOrNo.contains(s));
         do {
-            System.out.print("是否开启Controller @PreAuthorize权限控制注解[Y|N]？(Y)：");
+            System.out.print("是否开启 Controller @PreAuthorize 权限控制注解 [Y|N]？（Y）：");
             s = StrUtil.blankToDefault(scanner.nextLine(), "Y");
             answer.openAuth(s);
         } while (!yesOrNo.contains(s));
         do {
-            System.out.print("输入要生成的表，支持%模糊？(所有输入 %)：");
+            System.out.print("输入要生成的表（支持%模糊，所有输入 %）：");
             s = scanner.nextLine();
             answer.targetTable(s);
         } while (StrUtil.isBlank(s));
@@ -114,11 +115,6 @@ public class MybatisPlusGenerator {
          * 包配置
          */
         private final PackageConfig.Builder packageConfig = new PackageConfig.Builder();
-
-        /**
-         * 模板配置
-         */
-        private final TemplateConfig.Builder templateConfig = new TemplateConfig.Builder();
 
         /**
          * 注入配置
@@ -142,31 +138,46 @@ public class MybatisPlusGenerator {
 
 
         public Answer() {
-            globalConfig.disableOpenDir().outputDir(PROJECT_PATH + "/money-app-biz/src/main/java/");
-            packageConfig.parent("com.money").pathInfo(MapUtil.builder(new HashMap<OutputFile, String>())
-                    .put(OutputFile.entity, PROJECT_PATH + "/money-app-api/src/main/java/com/money/entity")
-                    .put(OutputFile.xml, PROJECT_PATH + "/money-app-biz/src/main/resources/mapper")
-                    .build());
-            injectionConfig.customMap(customMap);
-            strategyConfig.entityBuilder().disableSerialVersionUID()
-                    .enableLombok().enableChainModel()
+            globalConfig
+                    .disableOpenDir()
+                    .outputDir(PROJECT_PATH + "/money-app-biz/src/main/java/");
+            packageConfig
+                    .parent("com.money")
+                    .pathInfo(MapUtil.builder(new HashMap<OutputFile, String>())
+                            .put(OutputFile.entity, PROJECT_PATH + "/money-app-api/src/main/java/com/money/entity")
+                            .put(OutputFile.xml, PROJECT_PATH + "/money-app-biz/src/main/resources/mapper")
+                            .build());
+            customMap.put("packageOther", "com.money.dto");
+            injectionConfig
+                    .beforeOutputFile((tableInfo, objectMap) -> {
+                        // 可以在这里添加自定义逻辑，如修改 objectMap 中的配置
+                    })
+                    .customMap(customMap);
+            strategyConfig
+                    .entityBuilder()
+                    .enableLombok()
+                    .enableChainModel()
+                    .disableSerialVersionUID()
                     .idType(IdType.ASSIGN_ID);
-            strategyConfig.mapperBuilder().enableBaseColumnList().enableBaseResultMap();
-            strategyConfig.serviceBuilder().formatServiceFileName("%sService");
-            strategyConfig.controllerBuilder().enableRestStyle();
+            strategyConfig.mapperBuilder()
+                    .enableBaseColumnList()
+                    .enableBaseResultMap();
+            strategyConfig.serviceBuilder()
+                    .formatServiceFileName("%sService");
+            strategyConfig.controllerBuilder()
+                    .enableRestStyle();
         }
 
         private List<CustomFile.Builder> loadCustomFileBuilders() {
-            customMap.put("packageOther", "com.money.dto");
             String dtoFilePath = PROJECT_PATH + "/money-app-api/src/main/java/com/money/dto";
             CustomFile.Builder queryDTO = new CustomFile.Builder().fileName("").filePath(dtoFilePath)
                     .formatNameFunction((tableInfo -> tableInfo.getEntityName().toLowerCase() + File.separator + tableInfo.getEntityName() + "QueryDTO.java"))
                     .templatePath("/templates/queryDto.java.ftl");
             CustomFile.Builder DTO = new CustomFile.Builder().fileName("").filePath(dtoFilePath)
-                    .formatNameFunction((tableInfo -> tableInfo.getEntityName().toLowerCase() + File.separator +tableInfo.getEntityName() + "DTO.java"))
+                    .formatNameFunction((tableInfo -> tableInfo.getEntityName().toLowerCase() + File.separator + tableInfo.getEntityName() + "DTO.java"))
                     .templatePath("/templates/dto.java.ftl");
             CustomFile.Builder VO = new CustomFile.Builder().fileName("").filePath(dtoFilePath)
-                    .formatNameFunction((tableInfo -> tableInfo.getEntityName().toLowerCase() + File.separator +tableInfo.getEntityName() + "VO.java"))
+                    .formatNameFunction((tableInfo -> tableInfo.getEntityName().toLowerCase() + File.separator + tableInfo.getEntityName() + "VO.java"))
                     .templatePath("/templates/vo.java.ftl");
             return ListUtil.of(queryDTO, DTO, VO);
         }
@@ -214,7 +225,7 @@ public class MybatisPlusGenerator {
          */
         public void generateXml(String yesOrNo) {
             if ("N".equalsIgnoreCase(yesOrNo)) {
-                templateConfig.disable(TemplateType.XML);
+                strategyConfig.mapperBuilder().disableMapperXml();
             }
         }
 
@@ -258,8 +269,9 @@ public class MybatisPlusGenerator {
          */
         public void extendBaseEntity(String yesOrNo) {
             if ("Y".equalsIgnoreCase(yesOrNo)) {
-                strategyConfig.entityBuilder().superClass(BaseEntity.class)
-                        .addIgnoreColumns("create_time", "create_by", "update_by", "update_time", "id");
+                strategyConfig.entityBuilder()
+                        .superClass(BaseEntity.class)
+                        .addSuperEntityColumns("create_time", "create_by", "update_by", "update_time", "id");
             }
         }
     }
