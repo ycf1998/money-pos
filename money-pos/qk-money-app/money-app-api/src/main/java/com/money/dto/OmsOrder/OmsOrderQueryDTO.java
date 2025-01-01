@@ -1,6 +1,6 @@
 package com.money.dto.OmsOrder;
 
-import com.money.common.dto.QueryRequest;
+import com.money.web.dto.PageQueryRequest;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Schema(description = "订单表")
-public class OmsOrderQueryDTO extends QueryRequest {
+public class OmsOrderQueryDTO extends PageQueryRequest {
 
     @Schema(description="订单号")
     private String orderNo;

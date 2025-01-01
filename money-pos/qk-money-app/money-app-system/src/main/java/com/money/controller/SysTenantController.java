@@ -1,11 +1,11 @@
 package com.money.controller;
 
-import com.money.common.dto.ValidGroup;
+import com.money.dto.query.SysTenantPageQueryDTO;
+import com.money.web.dto.ValidGroup;
 import com.money.dto.SysTenantDTO;
-import com.money.dto.query.SysTenantQueryDTO;
 import com.money.entity.SysTenant;
 import com.money.service.SysTenantService;
-import com.money.common.vo.PageVO;
+import com.money.web.vo.PageVO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -33,7 +33,7 @@ public class SysTenantController {
     @Operation(summary = "分页查询租户")
     @GetMapping
     @PreAuthorize("@rbac.hasPermission('tenant:list')")
-    public PageVO<SysTenant> listSysTenant(SysTenantQueryDTO queryDTO) {
+    public PageVO<SysTenant> listSysTenant(SysTenantPageQueryDTO queryDTO) {
         return sysTenantService.list(queryDTO);
     }
 

@@ -1,6 +1,6 @@
 package com.money.controller;
 
-import com.money.common.dto.ValidGroup;
+import com.money.web.dto.ValidGroup;
 import com.money.dto.GmsGoodsCategory.GmsGoodsCategoryDTO;
 import com.money.dto.SelectVO;
 import com.money.dto.TreeNodeVO;

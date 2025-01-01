@@ -3,7 +3,7 @@ package com.money.dto.GmsBrand;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import com.money.common.dto.QueryRequest;
+import com.money.web.dto.PageQueryRequest;
 
 /**
 * <p>
@@ -16,7 +16,7 @@ import com.money.common.dto.QueryRequest;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Schema(description = "商品品牌表")
-public class GmsBrandQueryDTO extends QueryRequest {
+public class GmsBrandQueryDTO extends PageQueryRequest {
 
     @Schema(description="品牌名称")
     private String name;

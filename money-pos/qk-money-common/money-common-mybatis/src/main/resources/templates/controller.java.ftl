@@ -22,11 +22,11 @@ import org.springframework.validation.annotation.Validated;
 <#if preAuthorize>
 import org.springframework.security.access.prepost.PreAuthorize;
 </#if>
-import com.money.common.dto.ValidGroup;
-import com.money.common.vo.PageVO;
+import com.money.web.dto.ValidGroup;
+import com.money.web.vo.PageVO;
 import ${package.Service}.${table.serviceName};
 import ${packageOther}.${entityLower}.${table.entityName}DTO;
-import ${packageOther}.${entityLower}.${table.entityName}QueryDTO;
+import ${packageOther}.${entityLower}.${table.entityName}PageQueryDTO;
 import ${packageOther}.${entityLower}.${table.entityName}VO;
 
 import java.util.Set;
@@ -60,7 +60,7 @@ public class ${table.controllerName} {
     <#if preAuthorize>
     @PreAuthorize("@rbac.hasPermission('${entityUncap}:list')")
     </#if>
-    public PageVO<${table.entityName}VO> list(@Validated ${table.entityName}QueryDTO queryDTO) {
+    public PageVO<${table.entityName}VO> list(@Validated ${table.entityName}PageQueryDTO queryDTO) {
         return ${serviceVar}.list(queryDTO);
     }
 
@@ -71,8 +71,8 @@ public class ${table.controllerName} {
     <#if preAuthorize>
     @PreAuthorize("@rbac.hasPermission('${entityUncap}:add')")
     </#if>
-    public void add(@Validated(ValidGroup.Save.class) @RequestBody ${table.entityName}DTO addDTO) {
-        ${serviceVar}.add(addDTO);
+    public Long add(@Validated(ValidGroup.Save.class) @RequestBody ${table.entityName}DTO addDTO) {
+        return ${serviceVar}.add(addDTO);
     }
 
     <#if springdoc>

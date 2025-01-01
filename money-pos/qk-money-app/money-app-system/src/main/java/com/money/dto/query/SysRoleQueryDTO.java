@@ -1,6 +1,6 @@
 package com.money.dto.query;
 
-import com.money.common.dto.QueryRequest;
+import com.money.web.dto.PageQueryRequest;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -13,7 +13,7 @@ import lombok.EqualsAndHashCode;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class SysRoleQueryDTO extends QueryRequest {
+public class SysRoleQueryDTO extends PageQueryRequest {
 
     @Schema(description = "角色编码")
     private String roleCode;

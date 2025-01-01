@@ -11,9 +11,9 @@ import com.money.util.PageUtil;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.money.common.vo.PageVO;
+import com.money.web.vo.PageVO;
 import ${packageOther}.${entityLower}.${table.entityName}DTO;
-import ${packageOther}.${entityLower}.${table.entityName}QueryDTO;
+import ${packageOther}.${entityLower}.${table.entityName}PageQueryDTO;
 import ${packageOther}.${entityLower}.${table.entityName}VO;
 
 import java.util.Collection;
@@ -31,7 +31,7 @@ import java.util.Collection;
 public class ${table.serviceImplName} extends ${superServiceImplClass}<${table.mapperName}, ${entity}> implements ${table.serviceName} {
 
     @Override
-    public PageVO<${table.entityName}VO> list(${table.entityName}QueryDTO queryDTO) {
+    public PageVO<${table.entityName}VO> list(${table.entityName}PageQueryDTO queryDTO) {
         Page<${table.entityName}> page = this.lambdaQuery()
                 .last(StrUtil.isNotBlank(queryDTO.getOrderBy()), queryDTO.getOrderBySql())
                 .page(PageUtil.toPage(queryDTO));
@@ -39,10 +39,11 @@ public class ${table.serviceImplName} extends ${superServiceImplClass}<${table.m
     }
 
     @Override
-    public void add(${table.entityName}DTO addDTO) {
+    public Long add(${table.entityName}DTO addDTO) {
         ${table.entityName} ${table.entityName?uncap_first} = new ${table.entityName}();
         BeanUtil.copyProperties(addDTO, ${table.entityName?uncap_first});
         this.save(${table.entityName?uncap_first});
+        return ${table.entityName?uncap_first}.getId();
     }
 
     @Override

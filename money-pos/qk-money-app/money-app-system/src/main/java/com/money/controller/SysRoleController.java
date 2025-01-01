@@ -1,9 +1,9 @@
 package com.money.controller;
 
-import com.money.common.dto.ValidGroup;
-import com.money.common.vo.PageVO;
+import com.money.dto.query.SysRolePageQueryDTO;
+import com.money.web.dto.ValidGroup;
+import com.money.web.vo.PageVO;
 import com.money.dto.SysRoleDTO;
-import com.money.dto.query.SysRoleQueryDTO;
 import com.money.security.SecurityGuard;
 import com.money.service.SysAuthService;
 import com.money.service.SysRoleService;
@@ -45,7 +45,7 @@ public class SysRoleController {
     @Operation(summary = "分页查询角色信息")
     @GetMapping
     @PreAuthorize("@rbac.hasPermission('role:list')")
-    public PageVO<SysRoleVO> listSysRole(@Validated SysRoleQueryDTO queryDTO) {
+    public PageVO<SysRoleVO> listSysRole(@Validated SysRolePageQueryDTO queryDTO) {
         return sysRoleService.list(queryDTO);
     }
 

@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import javax.validation.constraints.NotNull;
-import com.money.common.dto.ValidGroup;
+import com.money.web.dto.ValidGroup;
 
 /**
 * <p>

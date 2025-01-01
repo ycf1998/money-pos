@@ -170,16 +170,16 @@ public class MybatisPlusGenerator {
 
         private List<CustomFile.Builder> loadCustomFileBuilders() {
             String dtoFilePath = PROJECT_PATH + "/money-app-api/src/main/java/com/money/dto";
-            CustomFile.Builder queryDTO = new CustomFile.Builder().fileName("").filePath(dtoFilePath)
-                    .formatNameFunction((tableInfo -> tableInfo.getEntityName().toLowerCase() + File.separator + tableInfo.getEntityName() + "QueryDTO.java"))
-                    .templatePath("/templates/queryDto.java.ftl");
+            CustomFile.Builder pageQueryDTO = new CustomFile.Builder().fileName("").filePath(dtoFilePath)
+                    .formatNameFunction((tableInfo -> tableInfo.getEntityName().toLowerCase() + File.separator + tableInfo.getEntityName() + "PageQueryDTO.java"))
+                    .templatePath("/templates/pageQueryDto.ftl");
             CustomFile.Builder DTO = new CustomFile.Builder().fileName("").filePath(dtoFilePath)
                     .formatNameFunction((tableInfo -> tableInfo.getEntityName().toLowerCase() + File.separator + tableInfo.getEntityName() + "DTO.java"))
                     .templatePath("/templates/dto.java.ftl");
             CustomFile.Builder VO = new CustomFile.Builder().fileName("").filePath(dtoFilePath)
                     .formatNameFunction((tableInfo -> tableInfo.getEntityName().toLowerCase() + File.separator + tableInfo.getEntityName() + "VO.java"))
                     .templatePath("/templates/vo.java.ftl");
-            return ListUtil.of(queryDTO, DTO, VO);
+            return ListUtil.of(pageQueryDTO, DTO, VO);
         }
 
         /**

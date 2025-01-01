@@ -1,9 +1,9 @@
 package com.money.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.money.common.vo.PageVO;
+import com.money.dto.query.SysDictPageQueryDTO;
+import com.money.web.vo.PageVO;
 import com.money.dto.SysDictDTO;
-import com.money.dto.query.SysDictQueryDTO;
 import com.money.entity.SysDict;
 
 import java.util.Set;
@@ -32,7 +32,7 @@ public interface SysDictService extends IService<SysDict> {
      * @param queryDTO 查询dto
      * @return {@link PageVO}<{@link SysDict}>
      */
-    PageVO<SysDict> list(SysDictQueryDTO queryDTO);
+    PageVO<SysDict> list(SysDictPageQueryDTO queryDTO);
 
     /**
      * 添加字典

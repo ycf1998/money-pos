@@ -1,6 +1,6 @@
 package com.money.dto.UmsMember;
 
-import com.money.common.dto.QueryRequest;
+import com.money.web.dto.PageQueryRequest;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -16,7 +16,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Schema(description = "会员表")
-public class UmsMemberQueryDTO extends QueryRequest {
+public class UmsMemberQueryDTO extends PageQueryRequest {
 
     @Schema(description="卡号")
     private String code;

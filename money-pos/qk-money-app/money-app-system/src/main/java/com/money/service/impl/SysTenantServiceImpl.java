@@ -7,12 +7,12 @@ import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.money.common.exception.BaseException;
-import com.money.common.response.RStatus;
-import com.money.common.vo.PageVO;
+import com.money.web.exception.BaseException;
+import com.money.web.response.RStatus;
+import com.money.web.vo.PageVO;
 import com.money.constant.SysErrorStatus;
 import com.money.dto.SysTenantDTO;
-import com.money.dto.query.SysTenantQueryDTO;
+import com.money.dto.query.SysTenantPageQueryDTO;
 import com.money.entity.SysPermission;
 import com.money.entity.SysRole;
 import com.money.entity.SysRolePermissionRelation;
@@ -70,7 +70,7 @@ public class SysTenantServiceImpl extends ServiceImpl<SysTenantMapper, SysTenant
     }
 
     @Override
-    public PageVO<SysTenant> list(SysTenantQueryDTO queryDTO) {
+    public PageVO<SysTenant> list(SysTenantPageQueryDTO queryDTO) {
         Page<SysTenant> page = this.lambdaQuery()
                 .like(StrUtil.isNotBlank(queryDTO.getTenantCode()), SysTenant::getTenantCode, queryDTO.getTenantCode())
                 .like(StrUtil.isNotBlank(queryDTO.getTenantName()), SysTenant::getTenantName, queryDTO.getTenantName())

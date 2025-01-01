@@ -65,7 +65,7 @@
         </encoder>
     </appender>
 
-    <logger name="com.money.common.log.DefaultWebLogAspect" level="info" additivity="false">
+    <logger name="com.money.web.log.DefaultWebLogAspect" level="info" additivity="false">
         <appender-ref ref="ACCESS_LOG" />
     </logger>
 

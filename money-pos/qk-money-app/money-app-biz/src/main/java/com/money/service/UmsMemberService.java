@@ -2,7 +2,7 @@ package com.money.service;
 
 import com.money.entity.UmsMember;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.money.common.vo.PageVO;
+import com.money.web.vo.PageVO;
 import com.money.dto.UmsMember.UmsMemberDTO;
 import com.money.dto.UmsMember.UmsMemberQueryDTO;
 import com.money.dto.UmsMember.UmsMemberVO;

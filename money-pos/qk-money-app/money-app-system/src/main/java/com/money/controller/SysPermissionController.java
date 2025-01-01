@@ -1,7 +1,7 @@
 package com.money.controller;
 
 
-import com.money.common.dto.ValidGroup;
+import com.money.web.dto.ValidGroup;
 import com.money.dto.SysPermissionDTO;
 import com.money.dto.query.SysPermissionQueryDTO;
 import com.money.service.SysPermissionService;

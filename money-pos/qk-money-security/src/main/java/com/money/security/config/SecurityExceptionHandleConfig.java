@@ -1,7 +1,7 @@
 package com.money.security.config;
 
-import com.money.common.response.R;
-import com.money.common.util.WebUtil;
+import com.money.web.response.R;
+import com.money.web.util.WebUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;

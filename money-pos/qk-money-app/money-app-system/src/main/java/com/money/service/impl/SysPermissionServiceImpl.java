@@ -5,7 +5,7 @@ import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.money.common.exception.BaseException;
+import com.money.web.exception.BaseException;
 import com.money.constant.PermissionType;
 import com.money.constant.SysErrorStatus;
 import com.money.dto.SysPermissionDTO;

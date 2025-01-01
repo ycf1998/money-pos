@@ -4,11 +4,11 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.money.common.exception.BaseException;
-import com.money.common.vo.PageVO;
+import com.money.web.exception.BaseException;
+import com.money.web.vo.PageVO;
 import com.money.constant.SysErrorStatus;
 import com.money.dto.SysDictDTO;
-import com.money.dto.query.SysDictQueryDTO;
+import com.money.dto.query.SysDictPageQueryDTO;
 import com.money.entity.SysDict;
 import com.money.mapper.SysDictMapper;
 import com.money.service.SysDictDetailService;
@@ -43,7 +43,7 @@ public class SysDictServiceImpl extends ServiceImpl<SysDictMapper, SysDict> impl
     }
 
     @Override
-    public PageVO<SysDict> list(SysDictQueryDTO queryDTO) {
+    public PageVO<SysDict> list(SysDictPageQueryDTO queryDTO) {
         Page<SysDict> page = this.lambdaQuery()
                 .like(StrUtil.isNotBlank(queryDTO.getNameOrDesc()), SysDict::getDictName, queryDTO.getNameOrDesc())
                 .or()

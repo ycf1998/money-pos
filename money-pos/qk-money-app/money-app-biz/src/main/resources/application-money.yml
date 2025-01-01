@@ -5,7 +5,9 @@ money:
     # 全局异常处理器
     exception-handler: true
     # 全局请求日志切面
-    web-log-aspect: true
+    web-log-aspect:
+      enabled: true
+      mode: ignore_get_result
     # 多语言
     i18n:
       enabled: true

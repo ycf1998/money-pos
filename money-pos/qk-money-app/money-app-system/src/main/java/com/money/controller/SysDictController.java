@@ -1,11 +1,11 @@
 package com.money.controller;
 
 
-import com.money.common.dto.ValidGroup;
-import com.money.common.vo.PageVO;
+import com.money.web.dto.ValidGroup;
+import com.money.web.vo.PageVO;
 import com.money.dto.SysDictDTO;
 import com.money.dto.SysDictDetailDTO;
-import com.money.dto.query.SysDictQueryDTO;
+import com.money.dto.query.SysDictPageQueryDTO;
 import com.money.entity.SysDict;
 import com.money.entity.SysDictDetail;
 import com.money.service.SysDictDetailService;
@@ -40,7 +40,7 @@ public class SysDictController {
     @Operation(summary = "分页查询字典")
     @GetMapping
     @PreAuthorize("@rbac.hasPermission('dict:list')")
-    public PageVO<SysDict> listSysDict(@Validated SysDictQueryDTO queryDTO) {
+    public PageVO<SysDict> listSysDict(@Validated SysDictPageQueryDTO queryDTO) {
         return sysDictService.list(queryDTO);
     }
 

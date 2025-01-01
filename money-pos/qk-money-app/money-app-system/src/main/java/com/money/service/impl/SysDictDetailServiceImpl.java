@@ -4,7 +4,7 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.extra.spring.SpringUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.money.common.exception.BaseException;
+import com.money.web.exception.BaseException;
 import com.money.constant.SysErrorStatus;
 import com.money.dto.SysDictDetailDTO;
 import com.money.entity.SysDict;

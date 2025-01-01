@@ -3,7 +3,7 @@ package com.money.dto.GmsGoodsCategory;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import com.money.common.dto.QueryRequest;
+import com.money.web.dto.PageQueryRequest;
 
 /**
 * <p>
@@ -16,7 +16,7 @@ import com.money.common.dto.QueryRequest;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Schema(description = "商品分类表")
-public class GmsGoodsCategoryQueryDTO extends QueryRequest {
+public class GmsGoodsCategoryQueryDTO extends PageQueryRequest {
 
     @Schema(description="父分类id")
     private Long pid;

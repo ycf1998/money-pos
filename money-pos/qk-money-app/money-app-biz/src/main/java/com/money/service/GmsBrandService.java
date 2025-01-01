@@ -3,7 +3,7 @@ package com.money.service;
 import com.money.dto.SelectVO;
 import com.money.entity.GmsBrand;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.money.common.vo.PageVO;
+import com.money.web.vo.PageVO;
 import com.money.dto.GmsBrand.GmsBrandDTO;
 import com.money.dto.GmsBrand.GmsBrandQueryDTO;
 import com.money.dto.GmsBrand.GmsBrandVO;

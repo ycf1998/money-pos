@@ -2,9 +2,9 @@ package com.money.service;
 
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.money.common.vo.PageVO;
+import com.money.dto.query.SysRolePageQueryDTO;
+import com.money.web.vo.PageVO;
 import com.money.dto.SysRoleDTO;
-import com.money.dto.query.SysRoleQueryDTO;
 import com.money.entity.SysRole;
 import com.money.entity.SysUserRoleRelation;
 import com.money.vo.SysRoleVO;
@@ -50,7 +50,7 @@ public interface SysRoleService extends IService<SysRole> {
      * @param queryDTO 查询dto
      * @return {@link PageVO}<{@link SysRoleVO}>
      */
-    PageVO<SysRoleVO> list(SysRoleQueryDTO queryDTO);
+    PageVO<SysRoleVO> list(SysRolePageQueryDTO queryDTO);
 
     /**
      * 添加角色

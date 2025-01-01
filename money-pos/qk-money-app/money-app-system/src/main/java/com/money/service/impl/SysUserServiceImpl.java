@@ -6,13 +6,13 @@ import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.money.common.exception.BaseException;
-import com.money.common.vo.PageVO;
+import com.money.web.exception.BaseException;
+import com.money.web.vo.PageVO;
 import com.money.constant.SysErrorStatus;
 import com.money.dto.ChangePasswordDTO;
 import com.money.dto.SysUserDTO;
 import com.money.dto.UpdateProfileDTO;
-import com.money.dto.query.SysUserQueryDTO;
+import com.money.dto.query.SysUserPageQueryDTO;
 import com.money.entity.SysUser;
 import com.money.entity.SysUserRoleRelation;
 import com.money.mapper.SysUserMapper;
@@ -87,7 +87,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     // ============================================================
 
     @Override
-    public PageVO<SysUserVO> list(SysUserQueryDTO queryDTO) {
+    public PageVO<SysUserVO> list(SysUserPageQueryDTO queryDTO) {
         IPage<SysUser> page = this.lambdaQuery()
                 .eq(ObjectUtil.isNotNull(queryDTO.getEnabled()), SysUser::getEnabled, queryDTO.getEnabled())
                 .like(StrUtil.isNotBlank(queryDTO.getPhone()), SysUser::getPhone, queryDTO.getPhone())

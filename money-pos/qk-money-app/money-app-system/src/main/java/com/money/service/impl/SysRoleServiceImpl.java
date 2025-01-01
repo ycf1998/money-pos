@@ -6,12 +6,12 @@ import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.money.common.exception.BaseException;
-import com.money.common.util.BeanMapUtil;
-import com.money.common.vo.PageVO;
+import com.money.web.exception.BaseException;
+import com.money.web.util.BeanMapUtil;
+import com.money.web.vo.PageVO;
 import com.money.constant.SysErrorStatus;
 import com.money.dto.SysRoleDTO;
-import com.money.dto.query.SysRoleQueryDTO;
+import com.money.dto.query.SysRolePageQueryDTO;
 import com.money.entity.SysPermission;
 import com.money.entity.SysRole;
 import com.money.entity.SysRolePermissionRelation;
@@ -72,7 +72,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     }
 
     @Override
-    public PageVO<SysRoleVO> list(SysRoleQueryDTO queryDTO) {
+    public PageVO<SysRoleVO> list(SysRolePageQueryDTO queryDTO) {
         IPage<SysRole> page = this.lambdaQuery()
                 .eq(ObjectUtil.isNotNull(queryDTO.getEnabled()), SysRole::getEnabled, queryDTO.getEnabled())
                 .like(StrUtil.isNotBlank(queryDTO.getRoleCode()), SysRole::getRoleCode, queryDTO.getRoleCode())

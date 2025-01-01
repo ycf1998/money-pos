@@ -2,9 +2,9 @@ package com.money.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.money.dto.SysTenantDTO;
-import com.money.dto.query.SysTenantQueryDTO;
+import com.money.dto.query.SysTenantPageQueryDTO;
 import com.money.entity.SysTenant;
-import com.money.common.vo.PageVO;
+import com.money.web.vo.PageVO;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Set;
@@ -33,7 +33,7 @@ public interface SysTenantService extends IService<SysTenant> {
      * @param queryDTO 查询dto
      * @return {@link PageVO}<{@link SysTenant}>
      */
-    PageVO<SysTenant> list(SysTenantQueryDTO queryDTO);
+    PageVO<SysTenant> list(SysTenantPageQueryDTO queryDTO);
 
     /**
      * 添加租户

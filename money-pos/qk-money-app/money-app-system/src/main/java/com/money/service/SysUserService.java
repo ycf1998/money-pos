@@ -2,11 +2,11 @@ package com.money.service;
 
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.money.common.vo.PageVO;
+import com.money.dto.query.SysUserPageQueryDTO;
+import com.money.web.vo.PageVO;
 import com.money.dto.ChangePasswordDTO;
 import com.money.dto.SysUserDTO;
 import com.money.dto.UpdateProfileDTO;
-import com.money.dto.query.SysUserQueryDTO;
 import com.money.entity.SysUser;
 import com.money.vo.SysUserVO;
 import org.springframework.web.multipart.MultipartFile;
@@ -64,7 +64,7 @@ public interface SysUserService extends IService<SysUser> {
      * @param queryDTO 查询dto
      * @return {@link PageVO}<{@link SysUserVO}>
      */
-    PageVO<SysUserVO> list(SysUserQueryDTO queryDTO);
+    PageVO<SysUserVO> list(SysUserPageQueryDTO queryDTO);
 
     /**
      * 添加用户

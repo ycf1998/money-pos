@@ -1,7 +1,7 @@
 package com.money.controller;
 
-import com.money.common.dto.ValidGroup;
-import com.money.common.vo.PageVO;
+import com.money.web.dto.ValidGroup;
+import com.money.web.vo.PageVO;
 import com.money.dto.GmsGoods.GmsGoodsDTO;
 import com.money.dto.GmsGoods.GmsGoodsQueryDTO;
 import com.money.dto.GmsGoods.GmsGoodsVO;

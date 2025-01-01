@@ -1,12 +1,12 @@
 package com.money.controller;
 
 
-import com.money.common.dto.ValidGroup;
-import com.money.common.vo.PageVO;
+import com.money.dto.query.SysUserPageQueryDTO;
+import com.money.web.dto.ValidGroup;
+import com.money.web.vo.PageVO;
 import com.money.dto.ChangePasswordDTO;
 import com.money.dto.SysUserDTO;
 import com.money.dto.UpdateProfileDTO;
-import com.money.dto.query.SysUserQueryDTO;
 import com.money.security.SecurityGuard;
 import com.money.security.annotation.CurrentUser;
 import com.money.service.SysAuthService;
@@ -53,7 +53,7 @@ public class SysUserController {
     @Operation(summary = "分页查询用户信息")
     @GetMapping
     @PreAuthorize("@rbac.hasPermission('user:list')")
-    public PageVO<SysUserVO> listSysUser(@Validated SysUserQueryDTO queryDTO) {
+    public PageVO<SysUserVO> listSysUser(@Validated SysUserPageQueryDTO queryDTO) {
         return sysUserService.list(queryDTO);
     }
 

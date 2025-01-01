@@ -1,7 +1,7 @@
 package com.money.controller;
 
-import com.money.common.dto.ValidGroup;
-import com.money.common.vo.PageVO;
+import com.money.web.dto.ValidGroup;
+import com.money.web.vo.PageVO;
 import com.money.dto.UmsMember.UmsMemberDTO;
 import com.money.dto.UmsMember.UmsMemberQueryDTO;
 import com.money.dto.UmsMember.UmsMemberVO;

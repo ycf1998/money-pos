@@ -17,7 +17,7 @@ import lombok.Data;
 import lombok.experimental.Accessors;
 </#if>
 import javax.validation.constraints.NotNull;
-import com.money.common.dto.ValidGroup;
+import com.money.web.dto.ValidGroup;
 
 /**
 * <p>

@@ -1,8 +1,8 @@
 package com.money.security.component;
 
 import cn.hutool.core.util.IdUtil;
-import com.money.common.util.JwtPayload;
-import com.money.common.util.JwtUtil;
+import com.money.web.util.JwtPayload;
+import com.money.web.util.JwtUtil;
 import com.money.security.config.TokenConfig;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.security.SignatureException;

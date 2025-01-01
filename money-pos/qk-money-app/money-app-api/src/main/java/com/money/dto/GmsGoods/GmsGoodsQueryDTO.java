@@ -1,6 +1,6 @@
 package com.money.dto.GmsGoods;
 
-import com.money.common.dto.QueryRequest;
+import com.money.web.dto.PageQueryRequest;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -16,7 +16,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Schema(description = "商品表")
-public class GmsGoodsQueryDTO extends QueryRequest {
+public class GmsGoodsQueryDTO extends PageQueryRequest {
 
     @Schema(description="品牌id")
     private Long brandId;

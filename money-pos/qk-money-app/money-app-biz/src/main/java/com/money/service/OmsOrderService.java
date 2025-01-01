@@ -1,7 +1,7 @@
 package com.money.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.money.common.vo.PageVO;
+import com.money.web.vo.PageVO;
 import com.money.dto.OmsOrder.*;
 import com.money.entity.OmsOrder;
 

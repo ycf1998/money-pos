@@ -1,6 +1,6 @@
 package com.money.controller;
 
-import com.money.common.vo.PageVO;
+import com.money.web.vo.PageVO;
 import com.money.dto.OmsOrder.OmsOrderQueryDTO;
 import com.money.dto.OmsOrder.OmsOrderVO;
 import com.money.dto.OmsOrder.OrderCountVO;

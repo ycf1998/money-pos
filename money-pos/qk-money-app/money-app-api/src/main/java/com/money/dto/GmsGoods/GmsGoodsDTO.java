@@ -1,6 +1,6 @@
 package com.money.dto.GmsGoods;
 
-import com.money.common.dto.ValidGroup;
+import com.money.web.dto.ValidGroup;
 import com.money.constant.GoodsStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
