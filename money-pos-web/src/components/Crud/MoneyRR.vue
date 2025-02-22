@@ -19,6 +19,6 @@ defineProps({
     moneyCrud: {
         required: true,
         type: MoneyCrud
-    }
-})
+    },
+});
 </script>

@@ -31,7 +31,7 @@
         <MoneyForm :money-crud="moneyCrud" :inline="true" :rules="rulesMap[type]" :dialog-class="'!w-11/12 md:!w-5/12'">
             <el-form-item label="资源类型" prop="permissionType" class="w-full">
                 <el-radio-group v-model="moneyCrud.form.permissionType" @change="changePermissionType">
-                    <el-radio-button v-for="(item, index) in dict.permissionType" :key="index" :label="item.value">
+                    <el-radio-button v-for="(item, index) in dict.permissionType" :key="index" :value="item.value">
                         {{ item.desc }}
                     </el-radio-button>
                 </el-radio-group>
@@ -91,7 +91,7 @@
             </el-form-item>
             <el-form-item v-if="type !== 'BUTTON'" label="隐藏" prop="hidden">
                 <el-radio-group v-model="moneyCrud.form.hidden">
-                    <el-radio-button v-for="(item, index) in [true, false]" :key="index" :label="item">
+                    <el-radio-button v-for="(item, index) in [true, false]" :key="index" :value="item">
                         {{ item ? '是' : '否' }}
                     </el-radio-button>
                 </el-radio-group>

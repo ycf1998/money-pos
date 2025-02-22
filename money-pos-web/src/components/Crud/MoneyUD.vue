@@ -32,6 +32,6 @@ defineProps({
     delConfirmMsg: {
         type: String,
         default: '确定删除本条数据吗？'
-    }
-})
+    },
+});
 </script>

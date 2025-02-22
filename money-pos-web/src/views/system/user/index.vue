@@ -40,7 +40,7 @@
             </el-form-item>
             <el-form-item label="状态">
                 <el-radio-group v-model="moneyCrud.form.enabled">
-                    <el-radio v-for="(item, index) in [true, false]" :key="index" :label="item">
+                    <el-radio v-for="(item, index) in [true, false]" :key="index" :value="item">
                         {{ item ? '启用' : '禁用' }}
                     </el-radio>
                 </el-radio-group>

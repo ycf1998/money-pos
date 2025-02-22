@@ -1,12 +1,20 @@
 <script setup>
-import {useGlobalProp} from "@/composables/globalProp.js";;
+import { useGlobalProp } from '@/composables/globalProp.js';
 
-const logo = useGlobalProp().$money.getOssUrl(window.tenant?.logo)
+const logo = useGlobalProp().$money.getOssUrl(window.tenant?.logo);
 </script>
+
 <template>
-    <img v-if="logo" :src="logo" alt="logo" />
-    <svg v-else t="1694617240729" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
-        p-id="22445" width="200" height="200">
+    <img v-if="logo" :src="logo" alt="logo" class="w-10 h-auto" />
+    <svg
+        v-else
+        t="1694617240729"
+        class="icon w-10 h-auto"
+        viewBox="0 0 1024 1024"
+        version="1.1"
+        xmlns="http://www.w3.org/2000/svg"
+        p-id="22445"
+    >
         <path
             d="M943.688 535.978c0 238.47-193.206 431.694-431.684 431.694-238.486 0-431.692-193.222-431.692-431.694 0-238.486 193.206-431.692 431.692-431.692 238.478 0.002 431.684 193.206 431.684 431.692z"
         fill="#FFCE54" opacity=".5" p-id="22446"></path>

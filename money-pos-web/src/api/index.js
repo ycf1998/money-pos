@@ -4,7 +4,7 @@ import mock from './mock.js'
 export function req(options) {
     const onlyUI = import.meta.env.VITE_ONLY_UI
     if (onlyUI) {
-        onlyUI === 'log' ? console.log(JSON.stringify(options)) :alert(JSON.stringify(options))
+        onlyUI === 'log' ? console.log(JSON.stringify(options)) : alert(JSON.stringify(options))
         const defaultKey = `${options['method']}_default`
         const key = `${options['method']}_${options['url']}`
         return new Promise((resolve) => resolve(mock[key] || mock[defaultKey]))
@@ -25,7 +25,7 @@ export function reqFormData(options) {
     return req(options)
 }
 
-export function reqMixed(options, {key, jsonData}, formData) {
+export function reqMixed(options, { key, jsonData }, formData) {
     const data = new FormData()
     if (key && jsonData) {
         data.append(key, new Blob([JSON.stringify(jsonData)], {

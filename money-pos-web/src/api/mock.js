@@ -82,8 +82,8 @@ export default {
     "GET_/auth/own": {
         code: 200,
         data: {
-            info: {avatar: 'https://7up.pics/images/2023/10/21/batman.png'},
-            roles: [{level: 0}],
+            info: { avatar: 'https://7up.pics/images/2023/10/21/batman.png' },
+            roles: [{ level: 0 }],
             permissions: []
         }
     }

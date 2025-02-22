@@ -1,23 +1,22 @@
 <script setup>
 import SidebarMenu from "@/layouts/sidebar/SidebarMenu.vue";
 import SidebarLink from "@/layouts/sidebar/SidebarLink.vue";
-import {useRouter} from 'vue-router'
-import {useAppStore} from "@/store/index.js";
+import { useRouter } from 'vue-router';
+import { useAppStore } from "@/store/index.js";
 
-const menus = filterHidden(useAppStore().menus)
+const router = useRouter();
+const menus = filterHidden(useAppStore().menus);
 
-const isCurrentRoute = (routeName) => {
-    return useRouter().currentRoute.value.name === routeName
-}
+const isCurrentRoute = (routeName) => router.currentRoute.value.name === routeName;
 
 function filterHidden(routes) {
-    if (routes) {
-        routes = routes.filter(e => !e.hidden)
-        routes.forEach(route => {
-            route.children = filterHidden(route.children)
-        })
-    }
+    if (!routes) return routes;
     return routes
+        .filter((e) => !e.hidden)
+        .map((route) => ({
+            ...route,
+            children: filterHidden(route.children),
+        }));
 }
 </script>
 
@@ -33,4 +32,3 @@ function filterHidden(routes) {
         </ul>
     </perfect-scrollbar>
 </template>
-

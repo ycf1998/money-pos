@@ -3,8 +3,9 @@ import MoneyConfig from "@/money.config.js";
 import 'virtual:svg-icons-register'
 import SvgIcon from '@/components/SvgIcon.vue'
 
-import 'vue3-perfect-scrollbar/dist/vue3-perfect-scrollbar.css'
-import PerfectScrollbar from 'vue3-perfect-scrollbar'
+import { PerfectScrollbarPlugin } from 'vue3-perfect-scrollbar';
+import 'vue3-perfect-scrollbar/style.css';
+
 
 import 'element-plus/dist/index.css'
 import 'element-plus/theme-chalk/dark/css-vars.css'
@@ -28,6 +29,6 @@ export default {
         }
         app.component('svg-icon', SvgIcon)
 
-        app.use(PerfectScrollbar)
+        app.use(PerfectScrollbarPlugin)
     }
 }

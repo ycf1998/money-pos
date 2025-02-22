@@ -131,13 +131,11 @@ const moneyCrud = ref(new MoneyCrud({
         district: '南安'
     }
 }))
-moneyCrud.value.init(moneyCrud)
 
 const dict = ref([])
-const init = async () => {
+moneyCrud.value.init(moneyCrud, async () => {
     dict.value = await dictApi.loadDict(["memberType"])
-}
-init()
+})
 
 function pcdChange(province, city, district) {
     moneyCrud.value.form.province = province

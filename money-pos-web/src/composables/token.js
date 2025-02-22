@@ -1,4 +1,4 @@
-import {useCookies} from '@vueuse/integrations/useCookies'
+import { useCookies } from '@vueuse/integrations/useCookies'
 
 const tokenKey = 'accessToken'
 export const setToken = (token) => useCookies().set(tokenKey, token)
