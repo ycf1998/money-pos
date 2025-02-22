@@ -6,7 +6,7 @@
 
 ## 介绍
 
-基于自制快速后台开发框架 [QK-MONEY](https://github.com/ycf1998/qk-money) 开发，自家用的收银系统。[前往体验](http://175.178.102.32/money-pos-demo?tenant=M)
+基于自制快速后台开发框架 [QK-MONEY](https://github.com/ycf1998/qk-money) 开发，自家用的收银系统。[前往体验](http://114.132.70.84/money-pos-demo?tenant=M)
 
 ## 功能特性
 
