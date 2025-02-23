@@ -2,7 +2,6 @@ package com.money.web.log;
 
 
 import cn.hutool.core.io.FileUtil;
-import cn.hutool.core.io.IoUtil;
 import cn.hutool.core.lang.Opt;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.ContentType;
@@ -16,6 +15,7 @@ import org.apache.catalina.core.ApplicationPart;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.springframework.web.util.ContentCachingRequestWrapper;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.Part;
@@ -118,8 +118,12 @@ public class DefaultWebLogAspect {
                 StringBuilder sb = new StringBuilder();
                 request.getParameterMap().forEach((k, v) -> sb.append(k).append("=").append(Arrays.toString(v)).append("&"));
                 return sb.deleteCharAt(sb.length() - 1).toString();
+            } else if (request instanceof ContentCachingRequestWrapper) {
+                ContentCachingRequestWrapper wrappedRequest = (ContentCachingRequestWrapper) request;
+                byte[] contentAsByteArray = wrappedRequest.getContentAsByteArray();
+                return new String(contentAsByteArray, StandardCharsets.UTF_8);
             } else {
-                return IoUtil.read(request.getInputStream(), StandardCharsets.UTF_8);
+                return StrUtil.EMPTY;
             }
         } catch (Exception e) {
             log.error("Request body resolve fail", e);

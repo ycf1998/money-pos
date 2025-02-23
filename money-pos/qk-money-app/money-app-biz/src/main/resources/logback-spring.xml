@@ -2,62 +2,60 @@
 <configuration>
     <!-- 引入Spring上下文配置属性 -->
     <springProperty scope="context" name="app_name" source="spring.application.name" defaultValue="app"/>
+
     <!-- 设置变量 -->
     <include resource="org/springframework/boot/logging/logback/defaults.xml" />
-    <property name="FILE_LOG_PATTERN" value="%X{requestId}|%X{userId}> %d{HH:mm:ss.SSS} %-5level --- [%thread] %logger{36} : %msg%n"/>
-    <property name="ACCESS_LOG_PATTERN" value="%X{requestId}|%X{userId}> %d{HH:mm:ss.SSS} %-5level- [%thread] %logger{0} : %msg%n"/>
+    <property name="FILE_LOG_PATTERN" value="%X{requestId}|%X{userId}> %d{yyyy-MM-dd HH:mm:ss.SSS} %-5level --- [%thread] %logger{36} : %msg%n"/>
+    <property name="ACCESS_LOG_PATTERN" value="%X{requestId}|%X{userId}> %d{yyyy-MM-dd HH:mm:ss.SSS} %-5level --- [%thread] : %msg%n"/>
     <property name="LOG_PATH" value="log"/>
-    
+
+    <!-- 控制台日志输出 -->
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <pattern>${CONSOLE_LOG_PATTERN}</pattern>
         </encoder>
     </appender>
+
     <!-- 访问日志 -->
     <appender name="ACCESS_LOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_PATH}/access.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <!-- 日志名格式 -->
             <fileNamePattern>${LOG_PATH}/%d{yyyy-MM-dd}/access.log</fileNamePattern>
-            <!-- 日志保留一周 -->
             <maxHistory>7</maxHistory>
-            <!-- 且所有日志大小总和不能超过5GB -->
             <totalSizeCap>5GB</totalSizeCap>
         </rollingPolicy>
         <encoder>
             <pattern>${ACCESS_LOG_PATTERN}</pattern>
         </encoder>
     </appender>
+
     <!-- INFO级别及以上日志 -->
     <appender name="FILE_INFO" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${LOG_PATH}/service.log</file>
         <filter class="ch.qos.logback.classic.filter.LevelFilter">
             <level>INFO</level>
             <onMatch>ACCEPT</onMatch>
-            <onMismatch>ACCEPT</onMismatch>
+            <onMismatch>DENY</onMismatch>
         </filter>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <!-- 日志名格式 -->
-            <fileNamePattern>${LOG_PATH}/%d{yyyy-MM-dd}/info.log</fileNamePattern>
-            <!-- 日志保留一个月 -->
+            <fileNamePattern>${LOG_PATH}/%d{yyyy-MM-dd}/service.log</fileNamePattern>
             <maxHistory>30</maxHistory>
-            <!-- 且所有日志大小总和不能超过9GB -->
             <totalSizeCap>9GB</totalSizeCap>
         </rollingPolicy>
         <encoder>
             <pattern>${FILE_LOG_PATTERN}</pattern>
         </encoder>
     </appender>
+
     <!-- ERROR级别日志 -->
     <appender name="FILE_ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_PATH}/error.log</file>
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
             <level>ERROR</level>
         </filter>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <!-- 日志名格式 -->
             <fileNamePattern>${LOG_PATH}/%d{yyyy-MM-dd}/error.log</fileNamePattern>
-            <!-- 日志保留一个月 -->
             <maxHistory>30</maxHistory>
-            <!-- 且所有日志大小总和不能超过9GB -->
             <totalSizeCap>9GB</totalSizeCap>
         </rollingPolicy>
         <encoder>
@@ -65,13 +63,22 @@
         </encoder>
     </appender>
 
+    <!-- 异步日志 -->
+    <appender name="ASYNC_FILE_INFO" class="ch.qos.logback.classic.AsyncAppender">
+        <queueSize>512</queueSize>
+        <discardingThreshold>0</discardingThreshold>
+        <appender-ref ref="FILE_INFO" />
+    </appender>
+
+    <!-- 特定日志记录器配置 -->
     <logger name="com.money.web.log.DefaultWebLogAspect" level="info" additivity="false">
         <appender-ref ref="ACCESS_LOG" />
     </logger>
 
-    <root level="info">
+    <!-- 根日志记录器配置 -->
+    <root level="INFO">
         <appender-ref ref="STDOUT" />
-        <appender-ref ref="FILE_INFO" />
+        <appender-ref ref="ASYNC_FILE_INFO" />
         <appender-ref ref="FILE_ERROR" />
     </root>
 </configuration>
