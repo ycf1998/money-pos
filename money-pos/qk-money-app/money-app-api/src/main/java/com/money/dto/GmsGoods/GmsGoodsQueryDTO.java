@@ -1,9 +1,12 @@
 package com.money.dto.GmsGoods;
 
 import com.money.web.dto.PageQueryRequest;
+import com.money.web.util.MoneyCommUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
+import java.util.Map;
 
 /**
 * <p>
@@ -32,4 +35,9 @@ public class GmsGoodsQueryDTO extends PageQueryRequest {
 
     @Schema(description="状态")
     private String status;
+
+    @Override
+    public Map<String, String> sortKeyMap() {
+        return MoneyCommUtil.sortFieldMap("sales", "createTime", "updateTime");
+    }
 }

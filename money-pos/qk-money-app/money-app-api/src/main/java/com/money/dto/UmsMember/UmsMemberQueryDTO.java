@@ -1,9 +1,12 @@
 package com.money.dto.UmsMember;
 
 import com.money.web.dto.PageQueryRequest;
+import com.money.web.util.MoneyCommUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
+import java.util.Map;
 
 /**
 * <p>
@@ -29,5 +32,10 @@ public class UmsMemberQueryDTO extends PageQueryRequest {
 
     @Schema(description="手机号")
     private String phone;
+
+    @Override
+    public Map<String, String> sortKeyMap() {
+        return MoneyCommUtil.sortFieldMap("consumeAmount", "consumeTimes", "cancelTimes");
+    }
     
 }

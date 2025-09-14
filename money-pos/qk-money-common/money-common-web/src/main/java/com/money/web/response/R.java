@@ -6,8 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.io.Serializable;
-
 /**
  * 统一响应返回
  *
@@ -17,9 +15,7 @@ import java.io.Serializable;
 @Getter
 @Setter
 @AllArgsConstructor
-public class R<T> implements Serializable {
-
-    private static final long serialVersionUID = -9068318251197180009L;
+public class R<T>  {
 
     @Schema(description = "返回码")
     private int code;

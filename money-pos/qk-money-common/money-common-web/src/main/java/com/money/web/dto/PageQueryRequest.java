@@ -4,6 +4,9 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.util.Collections;
+import java.util.Map;
+
 /**
  * 分页查询参数
  *
@@ -14,10 +17,11 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper=true)
 public class PageQueryRequest extends PageRequest implements ISortRequest {
 
-    /**
-     * 排序 createTime,desc;id,asc;
-     */
-    @Schema(description = "排序 createTime,desc;id,asc;")
+    @Schema(description = "排序 createTime,desc;id,asc")
     private String orderBy;
 
+    @Override
+    public Map<String, String> sortKeyMap() {
+        return Collections.emptyMap();
+    }
 }

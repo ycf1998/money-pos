@@ -1,11 +1,13 @@
 package com.money.dto.OmsOrder;
 
 import com.money.web.dto.PageQueryRequest;
+import com.money.web.util.MoneyCommUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.time.LocalDateTime;
+import java.util.Map;
 
 /**
 * <p>
@@ -34,4 +36,9 @@ public class OmsOrderQueryDTO extends PageQueryRequest {
 
     @Schema(description="结束时间")
     private LocalDateTime endTime;
+
+    @Override
+    public Map<String, String> sortKeyMap() {
+        return MoneyCommUtil.sortFieldMap("createTime", "paymentTime", "completionTime");
+    }
 }

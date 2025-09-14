@@ -4,7 +4,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -16,9 +15,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @Schema(description = "分页VO")
-public class PageVO<T> implements Serializable {
-
-    private static final long serialVersionUID = 1894806388550035718L;
+public class PageVO<T> {
 
     @Schema(description = "当前页")
     private long current;

@@ -1,9 +1,12 @@
 package com.money.dto.query;
 
 import com.money.web.dto.PageQueryRequest;
+import com.money.web.util.MoneyCommUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
+import java.util.Map;
 
 /**
  * @author : money
@@ -23,4 +26,9 @@ public class SysUserPageQueryDTO extends PageQueryRequest {
 
     @Schema(description = "可用状态")
     private Boolean enabled;
+
+    @Override
+    public Map<String, String> sortKeyMap() {
+        return MoneyCommUtil.sortFieldMap("createTime", "updateTime", "lastTime");
+    }
 }

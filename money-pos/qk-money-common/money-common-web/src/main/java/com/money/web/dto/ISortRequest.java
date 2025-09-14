@@ -1,50 +1,69 @@
 package com.money.web.dto;
 
-import cn.hutool.core.collection.CollectionUtil;
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.money.web.util.ValidationUtil;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 
-import java.util.Arrays;
+import javax.validation.ValidationException;
+import javax.validation.constraints.Pattern;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
+ * 排序请求接口
+ *
  * @author : money
- * @version : 1.0.0
- * @description : 排序请求接口
- * @createTime : 2022-10-01 11:19:58
+ * @since : 1.0.0
  */
 public interface ISortRequest {
 
     /**
-     * 获取排序值 例如：createTime,desc;id,asc;
+     * 获取排序值 例如：createTime,desc;id,asc
      *
      * @return {@link String}
      */
     String getOrderBy();
 
     /**
-     * 得到排序顺序
+     * 支持排序的字段映射
      *
-     * @return {@link List}<{@link PageQueryRequest.SortingOrder}>
+     * @return {@link Map }<{@link String 排序参数名}, {@link String 用于拼接 SQL 的字段名}>
      */
+    Map<String, String> sortKeyMap();
+
+    /**
+     * 获取排序选项
+     *
+     * @return {@link List}<{@link SortOption}>
+     */
+    @NonNull
     @JsonIgnore
-    default List<PageQueryRequest.SortingOrder> getSortingOrder() {
-        String sort = this.getOrderBy();
-        if (StrUtil.isNotBlank(sort)) {
-            return Arrays.stream(sort.split(";")).map(propWithOrderByStr -> {
-                String[] propWithOrderBy = propWithOrderByStr.split(",");
-                PageQueryRequest.SortingOrder sortingOrder = new PageQueryRequest.SortingOrder();
-                // 转下划线
-                sortingOrder.setProp(StrUtil.toUnderlineCase(propWithOrderBy[0]));
-                sortingOrder.setOrderBy(propWithOrderBy[1].toUpperCase());
-                sortingOrder.setAsc("asc".equals(propWithOrderBy[1]));
-                return sortingOrder;
-            }).collect(Collectors.toList());
+    default Set<SortOption> getSortOptions() {
+        String orderByStr = this.getOrderBy();
+        Map<String, String> sortKeyMap = this.sortKeyMap();
+        if (StrUtil.isBlank(orderByStr)) {
+            return Collections.emptySet();
         }
-        return null;
+        if (CollUtil.isEmpty(sortKeyMap)) {
+            throw new ValidationException("Invalid order by expression");
+        }
+        return StrUtil.split(orderByStr, ";", true, true)
+                .stream().map(keyWithOrderStr -> {
+                    String[] keyWithOrder = keyWithOrderStr.split(",");
+                    String key = sortKeyMap.getOrDefault(keyWithOrder[0], "#ERR");
+                    String order = keyWithOrder[1].toUpperCase();
+                    SortOption sortOption = new SortOption(key, order);
+                    ValidationUtil.validateThrow(sortOption);
+                    return sortOption;
+                }).collect(Collectors.toSet());
     }
 
     /**
@@ -55,34 +74,32 @@ public interface ISortRequest {
     @NonNull
     @JsonIgnore
     default String getOrderBySql() {
-        List<PageQueryRequest.SortingOrder> sortingOrderList = this.getSortingOrder();
-        if (CollectionUtil.isNotEmpty(sortingOrderList)) {
-            StringBuilder sb = new StringBuilder("ORDER BY");
-            sortingOrderList.forEach(sortingOrder -> {
-                sb.append(" ").append(sortingOrder.getProp()).append(" ").append(sortingOrder.getOrderBy()).append(",");
-            });
-            return sb.substring(0, sb.length() - 1);
-        }
-        return "";
+        return this.getSortOptions().stream().map(SortOption::toString)
+                .collect(Collectors.joining(", ", "ORDER BY ", ""));
     }
 
     @Data
-    class SortingOrder {
+    @RequiredArgsConstructor
+    @EqualsAndHashCode(onlyExplicitlyIncluded = true)
+    class SortOption {
 
         /**
-         * 排序参数
+         * 排序字段
          */
-        private String prop;
+        @EqualsAndHashCode.Include
+        @Pattern(regexp = "^(?!#ERR$).*$", message = "invalid sort key")
+        private final String sortKey;
 
         /**
-         * 排序
+         * 排序顺序
          */
-        private String orderBy;
+        @Pattern(regexp = "^(ASC|DESC)$", message = "invalid sort order")
+        private final String sortOrder;
 
-        /**
-         * 是asc
-         */
-        private boolean asc;
+        @Override
+        public String toString() {
+            return sortKey + " " + sortOrder;
+        }
 
     }
 }

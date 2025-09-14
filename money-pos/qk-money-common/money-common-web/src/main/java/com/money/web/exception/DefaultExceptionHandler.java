@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
+import javax.validation.ValidationException;
 import java.util.Iterator;
 
 /**
@@ -88,8 +89,8 @@ public class DefaultExceptionHandler {
      * @return {@link R}<{@link String}>
      */
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(value = ConstraintViolationException.class)
-    public R<String> handleValidException(ConstraintViolationException e) {
+    @ExceptionHandler(value = ValidationException.class)
+    public R<String> handleValidException(ValidationException e) {
         return R.validateFailed(getValidationMessage(e));
     }
 
@@ -117,6 +118,9 @@ public class DefaultExceptionHandler {
                 ConstraintViolation<?> violation = iterator.next();
                 message = "[" + violation.getPropertyPath() + "] " + violation.getMessage();
             }
+        } else if (e instanceof ValidationException) {
+            ValidationException validationException = (ValidationException) e;
+            message = validationException.getMessage();
         }
         log.warn("参数异常：{}", message);
         return message;
