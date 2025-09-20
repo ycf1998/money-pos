@@ -10,10 +10,10 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
 /**
+ * 当前用户参数解析器
+ *
  * @author : money
- * @version : 1.0.0
- * @description : 当前用户参数解析器
- * @createTime : 2022-01-07 21:44:44
+ * @since : 1.0.0
  */
 public class CurrentUserArgumentResolver implements HandlerMethodArgumentResolver {
 

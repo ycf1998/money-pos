@@ -4,22 +4,24 @@ import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
+ * 令牌配置
+ *
  * @author : money
- * @version : 1.0.0
- * @description : 令牌配置
- * @createTime : 2022-01-06 22:44:43
+ * @since : 1.0.0
  */
 @Data
 @ConfigurationProperties("money.security.token")
 public class TokenConfig {
 
     /**
-     * token请求头名称
+     * Token 请求头键名
      */
     private String header = "Authorization";
 
     /**
-     * 令牌类型：完整token："{tokenType} {accessToken}"
+     * 令牌类型
+     * <pre>
+     * 完整 Token："{tokenType} {accessToken}"
      */
     private String tokenType = "Bearer";
 
@@ -29,22 +31,25 @@ public class TokenConfig {
     private String secret = "money";
 
     /**
-     * access token过期时间 ms，默认3小时
+     * Access Token 过期时间（ms），默认8小时
      */
-    private long ttl = 14400000L;
+    private long ttl = 28800000L;
 
     /**
-     * refresh token过期时间 ms，默认30天
+     * Refresh Token 过期时间（ms），默认30天
      */
     private long refreshTtl = 18144000000L;
 
     /**
      * 策略
+     * <pre>
+     * jwt：JWT（默认）
+     * redis：Redis
      */
     private String strategy = "jwt";
 
     /**
-     * 缓存键名
+     * 缓存键名前缀
      */
     private String cacheKey = "security:token:";
 

@@ -7,14 +7,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * 忽略 URL 配置
+ *
  * @author : money
- * @version : 1.0.0
- * @description : 忽略url配置
- * @createTime : 2022-01-01 15:04:03
+ * @since : 1.0.0
  */
 @Data
 @ConfigurationProperties("money.security.ignore")
 public class IgnoreUrlConfig {
+
     /**
      * 需要忽略的 URL 格式，不考虑请求方法
      */

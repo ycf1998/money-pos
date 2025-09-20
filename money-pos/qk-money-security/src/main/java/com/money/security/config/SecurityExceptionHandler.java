@@ -10,10 +10,12 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 /**
+ * 安全例外处理器
+ * <p>
+ * 由于如 @PreAuthorize 注解抛出的 AccessDeniedException 已经在 Controller 层，无法被 AccessDeniedHandler 处理，因此需单独捕获处理
+ *
  * @author : money
- * @version : 1.0.0
- * @description : 安全异常处理器，注解抛出的AccessDeniedException不会被AccessDeniedHandler捕获，因为已经到了controller，所以单独捕获
- * @createTime : 2022-03-10 21:23:40
+ * @since : 1.0.0
  */
 @Slf4j
 @RestControllerAdvice
@@ -26,7 +28,7 @@ public class SecurityExceptionHandler {
     /**
      * 处理拒绝访问异常
      *
-     * @param accessDeniedException   拒绝访问异常
+     * @param accessDeniedException 拒绝访问异常
      */
     @ExceptionHandler(AccessDeniedException.class)
     public void handleAccessDeniedException(AccessDeniedException accessDeniedException) {

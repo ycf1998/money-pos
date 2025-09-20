@@ -41,15 +41,15 @@ public class DefaultWebLogAspect {
     public Object doAround(ProceedingJoinPoint joinPoint) throws Throwable {
         LocalDateTime now = LocalDateTime.now();
         long startTime = Instant.now().toEpochMilli();
-        log.info("=============================================");
+        log.info("====================");
 
         HttpServletRequest request = WebUtil.getRequest();
         String ip = IpUtil.getIp(request);
         String requestMethod = request.getMethod();
         String url = request.getRequestURI() + (StrUtil.isNotBlank(request.getQueryString()) ? "?" + request.getQueryString() : "");
-        log.info("> {}", ip);
         log.info("{} {}", requestMethod, url);
         log.info("{}", WebRequestContextHolder.getContext());
+        log.info("> {}", ip);
 
         WebLogAspectProperties.Mode mode = properties.getMode();
         boolean logBody = mode != WebLogAspectProperties.Mode.SIMPLE;

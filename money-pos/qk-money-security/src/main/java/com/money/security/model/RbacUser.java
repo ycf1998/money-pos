@@ -6,10 +6,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * RBAC 用户
+ *
  * @author : money
- * @version : 1.0.0
- * @description : 安全用户信息
- * @createTime : 2022-01-06 22:35:16
+ * @since : 1.0.0
  */
 @Data
 public class RbacUser {

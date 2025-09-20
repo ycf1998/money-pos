@@ -22,10 +22,10 @@ import java.io.IOException;
 
 
 /**
+ * JWT 身份验证过滤器
+ *
  * @author : money
- * @version : 1.0.0
- * @description : jwt身份验证过滤器
- * @createTime : 2022-01-01 14:24:19
+ * @since : 1.0.0
  */
 @Slf4j
 @Component
@@ -37,8 +37,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, @NonNull HttpServletResponse httpServletResponse, @NonNull FilterChain filterChain) throws ServletException, IOException {
-        log.info("=============================================");
-        log.info("请求认证 {} {}", httpServletRequest.getMethod(), httpServletRequest.getRequestURI());
         String token = httpServletRequest.getHeader(securityTokenSupport.getTokenConfig().getHeader());
         // 仅处理带token的请求
         if (StrUtil.isNotBlank(token)) {
@@ -48,12 +46,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpServletRequest));
                 SecurityContextHolder.getContext().setAuthentication(authentication);
-                log.info("认证成功：{}", username);
+                log.debug("令牌认证成功：{}", username);
                 // 提供用户日志追踪
                 MDC.put("userId", username);
             } catch (AuthenticationException | JwtException e) {
-                log.error("认证失败！", e);
+                log.error("令牌认证失败！", e);
             }
+        } else {
+            log.debug("请求未携带令牌");
         }
         filterChain.doFilter(httpServletRequest, httpServletResponse);
     }

@@ -6,10 +6,10 @@ import lombok.Data;
 import javax.validation.constraints.Min;
 
 /**
+ * 分页请求
+ *
  * @author : money
- * @version : 1.0.0
- * @description : 分页请求
- * @createTime : 2022-02-12 11:44:31
+ * @since : 1.0.0
  */
 @Data
 public class PageRequest {

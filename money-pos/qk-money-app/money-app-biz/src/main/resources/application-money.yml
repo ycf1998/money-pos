@@ -15,6 +15,7 @@ money:
         - en
     # 多时区
     timezone:
+      enabled: true
       default-time-zone: GMT+08:00
   # 多租户
   tenant:
@@ -52,23 +53,23 @@ money:
       ttl: 86400000
   # 安全
   security:
-    # token配置
+    # Token 配置
     token:
-      # token请求头名称
+      # Token 请求头键名
       header: Authorization
-      # 令牌类型：完整token："{tokenType} {accessToken}"
+      # 令牌类型：完整 Token："{tokenType} {accessToken}"
       token-type: Bearer
       # 密钥
       secret: money
-      # access token过期时间 ms，默认8小时
+      # Access Token 过期时间（ms），默认8小时
       ttl: 2592000000
-      # refresh token过期时间 ms，默认30天
+      # Refresh Token 过期时间（ms），默认30天
       refresh-ttl: 2592000000
       # 策略：jwt（自动过期，默认）、redis
       strategy: jwt
-      # 缓存键名
+      # 缓存键名前缀
       cache-key: "security:token:"
-    # 忽略的url
+    # 忽略的 URL
     ignore:
       get:
         - /tenants/byCode
@@ -83,7 +84,6 @@ money:
         - /webjars/**
         - /v3/**
         - /assets/**
-        - /test/**
   # 邮件服务
   mail:
     host: smtp.shahow.top # 邮箱服务器

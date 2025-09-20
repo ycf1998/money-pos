@@ -3,16 +3,15 @@ package com.money.security.component;
 import java.util.concurrent.TimeUnit;
 
 /**
+ * 令牌策略
+ *
  * @author : money
- * @version : 1.0.0
- * @description : 令牌牌战略
- * @createTime : 2022-01-01 15:03:27
+ * @since : 1.0.0
  */
 public interface TokenStrategy {
 
     /**
      * 保存令牌
-     * 因为token使用的jwt，所以超时时间不应大于jwt的过期时间
      *
      * @param key     键
      * @param token   令牌

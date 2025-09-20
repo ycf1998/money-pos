@@ -3,10 +3,10 @@ package com.money.security.custom;
 import com.money.security.model.RbacUser;
 
 /**
+ * RBAC 安全配置
+ *
  * @author : money
- * @version : 1.0.0
- * @description : RBAC Security配置
- * @createTime : 2022-01-03 14:33:47
+ * @since : 1.0.0
  */
 public interface RbacSecurityConfig {
 

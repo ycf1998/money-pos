@@ -10,10 +10,10 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 /**
+ * 安全用户服务
+ *
  * @author : money
- * @version : 1.0.0
- * @description : 安全用户服务
- * @createTime : 2022-01-01 15:03:20
+ * @since : 1.0.0
  */
 @Service
 @RequiredArgsConstructor

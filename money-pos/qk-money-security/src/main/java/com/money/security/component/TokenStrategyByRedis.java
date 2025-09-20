@@ -9,10 +9,10 @@ import org.springframework.stereotype.Component;
 import java.util.concurrent.TimeUnit;
 
 /**
+ * 基于 Redis 的令牌策略
+ *
  * @author : money
- * @version : 1.0.0
- * @description : 令牌策略通过redis
- * @createTime : 2022-01-01 15:03:39
+ * @since : 1.0.0
  */
 @Component
 @ConditionalOnProperty(prefix = "money.security.token", name = "strategy", havingValue = "redis")

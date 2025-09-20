@@ -15,10 +15,10 @@ import org.springframework.stereotype.Component;
 import java.util.concurrent.TimeUnit;
 
 /**
+ * 安全令牌支持
+ *
  * @author : money
- * @version : 1.0.0
- * @description : 安全令牌支持
- * @createTime : 2022-01-06 22:19:19
+ * @since : 1.0.0
  */
 @Component
 @Getter
@@ -36,26 +36,6 @@ public class SecurityTokenSupport {
         // 获取指定Token策略
         this.tokenStrategy = tokenStrategy;
         log.info("Token认证策略为 {}，TokenStrategy = {}", strategy, tokenStrategy);
-    }
-
-    /**
-     * 访问令牌的缓存键
-     *
-     * @param username 用户名
-     * @return {@link String}
-     */
-    private String accessTokenCacheKey(String username) {
-        return tokenConfig.getCacheKey() + username + ":string";
-    }
-
-    /**
-     * 刷新令牌缓存键
-     *
-     * @param username 用户名
-     * @return {@link String}
-     */
-    private String refreshTokenCacheKey(String username) {
-        return tokenConfig.getCacheKey() + ":refresh:" + username + ":string";
     }
 
     /**
@@ -98,7 +78,7 @@ public class SecurityTokenSupport {
         String username = claims.getAudience();
         if (tokenStrategy.isExpired(accessTokenCacheKey(username), tokenId)
                 && tokenStrategy.isExpired(refreshTokenCacheKey(username), tokenId)) {
-            throw new SignatureException("token已过期!");
+            throw new SignatureException("Token has expired");
         }
         return claims;
     }
@@ -128,4 +108,23 @@ public class SecurityTokenSupport {
         }
     }
 
+    /**
+     * 访问令牌的缓存键
+     *
+     * @param username 用户名
+     * @return {@link String}
+     */
+    private String accessTokenCacheKey(String username) {
+        return tokenConfig.getCacheKey() + username + ":string";
+    }
+
+    /**
+     * 刷新令牌缓存键
+     *
+     * @param username 用户名
+     * @return {@link String}
+     */
+    private String refreshTokenCacheKey(String username) {
+        return tokenConfig.getCacheKey() + ":refresh:" + username + ":string";
+    }
 }

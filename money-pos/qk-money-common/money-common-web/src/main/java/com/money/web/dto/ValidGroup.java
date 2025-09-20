@@ -1,10 +1,10 @@
 package com.money.web.dto;
 
 /**
+ * 校验组
+ *
  * @author : money
- * @version : 1.0.0
- * @description : 验证组
- * @createTime : 2022-01-01 15:26:15
+ * @since : 1.0.0
  */
 public class ValidGroup {
 

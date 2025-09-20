@@ -19,10 +19,10 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
+ * 安全配置
+ *
  * @author : money
- * @version : 1.0.0
- * @description : 安全配置
- * @createTime : 2022-01-01 14:08:50
+ * @since : 1.0.0
  */
 @Slf4j
 @Configuration(proxyBeanMethods = false)
@@ -32,7 +32,7 @@ import java.util.concurrent.TimeUnit;
 public class SecurityConfiguration {
 
     /**
-     * web mvc安全配置（解析@CurrentUser注解）
+     * Web MVC 安全配置（解析 @CurrentUser 注解）
      *
      * @return {@link WebMvcConfigurer}
      */
@@ -53,7 +53,7 @@ public class SecurityConfiguration {
     }
 
     /**
-     * token策略
+     * 令牌策略
      *
      * @return {@link TokenStrategy}
      */
@@ -75,7 +75,6 @@ public class SecurityConfiguration {
             }
         };
     }
-
 
     /**
      * 安全异常处理配置

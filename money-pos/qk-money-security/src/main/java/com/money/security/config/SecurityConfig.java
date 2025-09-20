@@ -13,10 +13,10 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 /**
+ *
+ *
  * @author : money
- * @version : 1.0.0
- * @description : 安全配置
- * @createTime : 2022-01-01 15:04:06
+ * @since : 1.0.0
  */
 @Slf4j
 @RequiredArgsConstructor
