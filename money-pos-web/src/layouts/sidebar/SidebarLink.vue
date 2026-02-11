@@ -20,20 +20,21 @@ const prop = defineProps({
         :href="href"
         :to="to"
         :class="[
-      'relative flex rounded-lg px-2 py-2.5 text-sm font-medium cursor-pointer',
+      'relative flex items-center rounded-lg px-3 py-2.5 text-sm font-medium cursor-pointer transition-all duration-300',
       {
         'text-blue-700 bg-blue-50 dark:bg-gray-800 dark:text-blue-400': active && !summary,
-        'text-gray-500 hover:text-blue-500 dark:hover:text-gray-300': !active
+        'text-gray-500 hover:text-blue-500 dark:hover:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800': !active
       },
     ]"
     >
-        <svg-icon dir="open" :name="icon" />
-        <span v-show="titleShow" class="ml-2 text-base font-medium">{{ title }}</span>
+        <div v-if="active && !summary" class="absolute left-0 top-1/2 transform -translate-y-1/2 w-1 h-6 bg-blue-500 rounded-r-full"></div>
+        <svg-icon dir="open" :name="icon" class="w-5 h-5" />
+        <span v-show="titleShow" class="ml-3 text-sm font-medium transition-opacity duration-300">{{ title }}</span>
         <span
             v-if="summary && titleShow"
-            class="shrink-0 transition duration-300 group-open:-rotate-180 absolute right-1"
+            class="shrink-0 transition-transform duration-300 group-open:-rotate-180 absolute right-3"
         >
-      <svg-icon name="down" />
+      <svg-icon name="down" class="w-4 h-4" />
     </span>
     </component>
 </template>

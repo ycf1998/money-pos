@@ -24,7 +24,7 @@ onUnmounted(() => {
     >
         <div
             v-show="sidebarState.isOpen"
-            @click="sidebarState.isOpen = false"
+            @click="sidebarState.isOpen = !sidebarState.isOpen"
             class="fixed inset-0 z-20 bg-black/50 lg:hidden"
         />
     </transition>

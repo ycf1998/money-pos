@@ -45,12 +45,13 @@
     <!-- 分页 -->
     <el-pagination
         v-if="moneyCrud.isPage && moneyCrud.isInit"
-        class="mt-4 flex justify-center"
+        class="flex justify-center w-full"
         :current-page="moneyCrud.page.currentPage"
         :page-size="moneyCrud.page.pageSize"
         :total="moneyCrud.page.total"
         :page-sizes="[10, 20, 50, 100]"
-        layout="prev, pager, next, sizes, ->, total"
+        :layout="isMobile ? 'prev, pager, next, ->, total' : 'prev, pager, next, sizes, ->, total'"
+        :pager-count="isMobile ? 5 : 7"
         @current-change="moneyCrud.currentPageChange"
         @size-change="moneyCrud.pageSizeChange"
     />
@@ -59,6 +60,7 @@
 <script setup>
 import MoneyCrud from "@/components/crud/MoneyCrud.js";
 import { computed, ref } from "vue";
+import { isMobile } from "@/utils/index.js";
 
 const { moneyCrud } = defineProps({
     moneyCrud: {

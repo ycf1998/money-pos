@@ -6,21 +6,17 @@ import Footer from './footer/Footer.vue';
 </script>
 
 <template>
-    <div class="min-h-screen bg-base-200">
+    <div class="min-h-screen bg-base-200 flex transition-colors duration-300">
         <Sidebar />
 
         <div
-            style="transition-property: margin; transition-duration: 150ms"
-            :class="[
-        'min-h-screen flex flex-col',
-        {
-          'lg:ml-60': sidebarState.isOpen,
-          'md:ml-16': !sidebarState.isOpen,
-        },
-      ]"
+            style="transition-property: margin-left; transition-duration: 150ms"
+            class="flex-1 flex flex-col ml-0 md:ml-16 lg:ml-60"
         >
             <Navbar />
-            <router-view />
+            <div class="flex-1 p-2">
+                <router-view />
+            </div>
             <Footer />
         </div>
     </div>

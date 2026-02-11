@@ -1,11 +1,12 @@
 <!-- 省市区联动 -->
 <script setup>
 import provincesApi from "@/api/ums/provinces.js";
+import {ref} from "vue";
 
 const {province, city, district} = defineProps(['province', 'city', 'district'])
 const emits = defineEmits(['change'])
 
-const pcd = [province, city, district]
+const pcd = ref([province, city, district])
 
 const props = {
     lazy: true,
