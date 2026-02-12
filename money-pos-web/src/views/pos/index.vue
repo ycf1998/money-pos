@@ -386,7 +386,10 @@ function brushVip() {
         memberSelect.value.name = innerMember.value.name
     }
     tool.value.vip = !tool.value.vip
-    order.value.forEach(o => o.goodsPrice = o.vipPrice)
+    // 根据会员状态设置商品价格
+    order.value.forEach(o => {
+        o.goodsPrice = tool.value.vip ? o.vipPrice : o.salePrice
+    })
 }
 
 /**
