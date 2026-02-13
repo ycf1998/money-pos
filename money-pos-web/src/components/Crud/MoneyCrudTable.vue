@@ -50,8 +50,8 @@
         :page-size="moneyCrud.page.pageSize"
         :total="moneyCrud.page.total"
         :page-sizes="[10, 20, 50, 100]"
-        :layout="isMobile ? 'prev, pager, next, ->, total' : 'prev, pager, next, sizes, ->, total'"
-        :pager-count="isMobile ? 5 : 7"
+        :layout="isMobile() ? 'prev, pager, next, ->, total' : 'prev, pager, next, sizes, ->, total'"
+        :pager-count="isMobile() ? 5 : 7"
         @current-change="moneyCrud.currentPageChange"
         @size-change="moneyCrud.pageSizeChange"
     />
