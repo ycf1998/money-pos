@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "build:demo": "vite build --mode demo",
     "preview": "vite preview",
     "tailwind": "npx tailwindcss -i ./src/style/tailwind.css --watch"
   },
