@@ -58,6 +58,7 @@ public class TimeZoneUtil {
             } else if (List.class.isAssignableFrom(targetClass)) {
                 ((List<?>) target).forEach(e -> convert(e, format, formZoneId, toZoneId));
             } else if (Map.class.isAssignableFrom(targetClass)) {
+                @SuppressWarnings("unchecked")
                 Map<String, Object> map = (Map<String, Object>) target;
                 target = convertMap(map, format, formZoneId, toZoneId);
             } else if (PageVO.class.isAssignableFrom(targetClass)) {
@@ -92,7 +93,7 @@ public class TimeZoneUtil {
                     String format = tzParam.format();
                     Class<? extends TimeZoneConverter> converter = tzParam.converter();
                     if (converter != DefaultTimeZoneConverter.class) {
-                        field.set(target, converter.newInstance().convert(field.get(target), format, formZoneId, toZoneId));
+                        field.set(target, ReflectUtil.newInstance(converter).convert(field.get(target), format, formZoneId, toZoneId));
                     }
                     Class<?> type = field.getType();
                     if (field.get(target) != null) {
@@ -107,7 +108,8 @@ public class TimeZoneUtil {
                             field.set(target, convertString(dateTimeStr, format, formZoneId, toZoneId));
                         } else if (List.class.isAssignableFrom(type)) {
                             ((List<?>) field.get(target)).forEach(e -> convert(e, format, formZoneId, toZoneId));
-                        } else if (Map.class.isAssignableFrom(targetClass)) {
+                        } else if (Map.class.isAssignableFrom(type)) {
+                            @SuppressWarnings("unchecked")
                             Map<String, Object> map = (Map<String, Object>) field.get(target);
                             field.set(target, convertMap(map, format, formZoneId, toZoneId));
                         } else {
@@ -116,7 +118,7 @@ public class TimeZoneUtil {
                     }
                 }
             }
-        } catch (IllegalAccessException | InstantiationException e) {
+        } catch (IllegalAccessException e) {
             log.error("时区转换异常", e);
             throw new RuntimeException("时区转换异常");
         }

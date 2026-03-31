@@ -96,8 +96,15 @@ public class I18nSupport {
      * @return {@link String }
      */
     public static String get(String key, Object... args) {
-        String lang = WebRequestContextHolder.getContext().getLang();
-        return SpringUtil.getBean(I18nSupport.class).get(lang, key, args);
+        // i18n 未启用时直接返回原始消息
+        try {
+            I18nSupport support = SpringUtil.getBean(I18nSupport.class);
+            String lang = WebRequestContextHolder.getContext().getLang();
+            return support.get(lang, key, args);
+        } catch (Exception e) {
+            // bean 不存在时直接返回原始消息
+            return StrUtil.indexedFormat(key, args);
+        }
     }
 
 }

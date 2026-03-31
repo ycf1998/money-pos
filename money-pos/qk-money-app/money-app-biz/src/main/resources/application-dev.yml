@@ -1,7 +1,4 @@
 spring:
-  config:
-    # 引入对象存储的配置
-    import: oss.properties
   # mysql
   datasource:
     # 如果存在多个数据源，监控的时候可以通过名字来区分开来

@@ -16,3 +16,13 @@ log/
 **/target/
 !**/src/main/**
 !**/src/test/**
+
+# 生产配置
+**/resources/*-demo.yml
+**/resources/*-prod.yml
+
+# Claude Code
+.claude
+CLAUDE.md
+.qwen
+QWEN.md

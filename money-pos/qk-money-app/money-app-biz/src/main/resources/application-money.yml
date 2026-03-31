@@ -8,6 +8,15 @@ money:
     web-log-aspect:
       enabled: true
       mode: ignore_get_result
+      # 脱敏字段列表
+      desensitize-fields:
+        - password
+        - oldPassword
+        - newPassword
+        - token
+        - secret
+        - accessToken
+        - refreshToken
     # 多语言
     i18n:
       enabled: true
@@ -43,7 +52,7 @@ money:
         strategy: LRU
         # 容量
         capacity: 102400
-        # 过期时间：ms，0代表永不过期
+        # 过期时间：ms，0 代表永不过期
         ttl: 86400000
     # redis 缓存
     redis:
@@ -100,3 +109,26 @@ money:
     protocol: smtps # 协议
     default-encoding: utf-8
     fromAlias: 麦尼 # 发件人别名
+  # 对象存储
+  oss:
+    local:
+      # 目标空间
+      bucket: F:/qk-money/
+      # 资源处理器
+      resource-handler: /assets/**
+    qiniu:
+      # 访问密钥
+      access-key:
+      # 秘密密钥
+      secret-key:
+      # 是否使用 https
+      use-https: false
+      # 访问域名
+      domain: r3xou9o36.hn-bkt.clouddn.com
+      # 目标空间
+      bucket: qk-money
+      # 令牌过期时间
+      token-expire: 3600
+      # 上传策略 https://developer.qiniu.com/kodo/1206/put-policy
+      policy:
+        return-body: '{"key":"$(key)","hash":"$(etag)","fname":"$(x:fname)","age":"$(x:age)"}'

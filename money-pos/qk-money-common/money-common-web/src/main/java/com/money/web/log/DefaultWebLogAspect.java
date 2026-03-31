@@ -23,6 +23,9 @@ import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * 默认 Web 日志切面
@@ -36,6 +39,28 @@ import java.util.Arrays;
 public class DefaultWebLogAspect {
 
     private final WebLogAspectProperties properties;
+
+    /**
+     * 脱敏处理
+     * @param json JSON 字符串
+     * @return 脱敏后的 JSON
+     */
+    private String desensitize(String json) {
+        List<String> fields = properties.getDesensitizeFields();
+        if (fields.isEmpty() || StrUtil.isBlank(json)) {
+            return json;
+        }
+
+        for (String field : fields) {
+            // 脱敏字符串值："field":"value" -> "field":"***"
+            json = json.replaceAll("\"" + field + "\"\\s*:\\s*\"[^\"]*\"",
+                    "\"" + field + "\":\"***\"");
+            // 脱敏数字/布尔值
+            json = json.replaceAll("\"" + field + "\"\\s*:\\s*[0-9.eE+-]+",
+                    "\"" + field + "\":***");
+        }
+        return json;
+    }
 
     @Around("execution(public * com.money..controller..*.*(..))")
     public Object doAround(ProceedingJoinPoint joinPoint) throws Throwable {
@@ -58,7 +83,7 @@ public class DefaultWebLogAspect {
         String body = "";
         if (logBody) {
             body = Opt.ofBlankAble(resolveBody(request)).orElse("-");
-            log.info("body: {}", body);
+            log.info("body: {}", desensitize(body));
         }
 
 
@@ -69,7 +94,7 @@ public class DefaultWebLogAspect {
             long endTime = Instant.now().toEpochMilli();
             long spendTime = endTime - startTime;
             if (logResult) {
-                log.info("result: {}", JacksonUtil.writeAsString(result));
+                log.info("result: {}", desensitize(JacksonUtil.writeAsString(result)));
             }
             log.info("spend time: {}ms", spendTime);
             // TODO 记录日志

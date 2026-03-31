@@ -1,7 +1,11 @@
 package com.money.web.log;
 
+import cn.hutool.core.collection.ListUtil;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 日志切面参数
@@ -22,6 +26,11 @@ public class WebLogAspectProperties {
      * 日志模式
      */
     private Mode mode = Mode.ALL;
+
+    /**
+     * 脱敏字段列表
+     */
+    private List<String> desensitizeFields = new ArrayList<>();
 
     public enum Mode {
 

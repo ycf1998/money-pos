@@ -6,10 +6,10 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 /**
  * @author : money
  * @version : 1.0.0
- * @description : 本地OSS配置
+ * @description : 本地 OSS 配置
  * @createTime : 2022-01-01 16:46:59
  */
-@ConfigurationProperties(prefix = "local")
+@ConfigurationProperties(prefix = "money.oss.local")
 @Data
 public class LocalOSSConfig {
 

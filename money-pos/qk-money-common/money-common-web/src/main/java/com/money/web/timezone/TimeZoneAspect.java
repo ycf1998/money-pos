@@ -6,6 +6,7 @@ import com.money.web.timezone.annotation.TZRep;
 import com.money.web.timezone.converter.TimeZoneConverter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import cn.hutool.core.util.ReflectUtil;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -62,7 +63,7 @@ public class TimeZoneAspect {
                     TZParam tzParam = (TZParam) annotation;
                     String format = tzParam.format();
                     Class<? extends TimeZoneConverter> converter = tzParam.converter();
-                    args[i] = converter.newInstance().convert(arg, format, customTimeZone, defaultZone);
+                    args[i] = ReflectUtil.newInstance(converter).convert(arg, format, customTimeZone, defaultZone);
                     break;
                 }
             }
@@ -81,7 +82,7 @@ public class TimeZoneAspect {
                 // 使用注解上的转换器
                 String format = tzRep.format();
                 Class<? extends TimeZoneConverter> converter = tzRep.converter();
-                result = converter.newInstance().convert(result, format, defaultZone, customTimeZone);
+                result = ReflectUtil.newInstance(converter).convert(result, format, defaultZone, customTimeZone);
             }
         }
         long outConsume = System.currentTimeMillis() - startTime;

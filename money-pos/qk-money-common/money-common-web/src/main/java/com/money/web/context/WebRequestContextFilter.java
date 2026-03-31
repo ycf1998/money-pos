@@ -29,12 +29,17 @@ public class WebRequestContextFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        // 链路追踪
-        String requestId = request.getHeader(WebRequestConstant.HEADER_REQUEST_ID);
-        MDC.put("requestId", requestId);
-        // 填充请求上下文信息
-        this.fillRequestContext(request);
-        filterChain.doFilter(request, response);
+        try {
+            // 链路追踪
+            String requestId = request.getHeader(WebRequestConstant.HEADER_REQUEST_ID);
+            MDC.put("requestId", requestId);
+            // 填充请求上下文信息
+            this.fillRequestContext(request);
+            filterChain.doFilter(request, response);
+        } finally {
+            WebRequestContextHolder.remove();
+            MDC.clear();
+        }
     }
 
     /**

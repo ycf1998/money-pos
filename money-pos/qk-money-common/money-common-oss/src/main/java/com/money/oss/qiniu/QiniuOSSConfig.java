@@ -9,10 +9,10 @@ import java.util.Map;
 /**
  * @author : money
  * @version : 1.0.0
- * @description : 七牛云OSS配置
+ * @description : 七牛云 OSS 配置
  * @createTime : 2022-01-01 16:47:24
  */
-@ConfigurationProperties(prefix = "qiniu")
+@ConfigurationProperties(prefix = "money.oss.qiniu")
 @Data
 public class QiniuOSSConfig {
     /**
@@ -24,7 +24,7 @@ public class QiniuOSSConfig {
      */
     private String secretKey = "";
     /**
-     * 使用https
+     * 使用 https
      */
     private boolean useHttps = false;
     /**
