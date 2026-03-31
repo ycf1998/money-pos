@@ -10,10 +10,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
+ * 本地缓存配置
+ *
  * @author : money
- * @version : 1.0.0
- * @description : 本地缓存配置
- * @createTime : 2021-10-23 18:26:43
+ * @since : 1.0.0
  */
 @Data
 @Configuration

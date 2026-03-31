@@ -19,9 +19,7 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * <p>
- * 服务实现类
- * </p>
+ * 字典详情表 服务实现类
  *
  * @author money
  * @since 2022-03-30

@@ -3,6 +3,7 @@ package com.money.web.vo;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
@@ -13,8 +14,9 @@ import java.util.List;
  * @since : 1.0.0
  */
 @Data
+@NoArgsConstructor
 @AllArgsConstructor
-@Schema(description = "分页VO")
+@Schema(description = "分页 VO")
 public class PageVO<T> {
 
     @Schema(description = "当前页")

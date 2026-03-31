@@ -26,10 +26,10 @@ import java.util.Scanner;
 import java.util.stream.Collectors;
 
 /**
+ * MyBatis-Plus 代码生成器
+ *
  * @author : money
- * @version : 1.0.0
- * @description : mybatis plus 代码生成器
- * @createTime : 2022-01-01 16:36:00
+ * @since : 1.0.0
  */
 public class MybatisPlusGenerator {
 

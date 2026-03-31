@@ -4,10 +4,10 @@ import java.util.Collection;
 import java.util.Map;
 
 /**
+ * 本地缓存服务
+ *
  * @author : money
- * @version : 1.0.0
- * @description : 本地缓存服务
- * @createTime : 2021-09-29 15:13:03
+ * @since : 1.0.0
  */
 public interface LocalCache {
 

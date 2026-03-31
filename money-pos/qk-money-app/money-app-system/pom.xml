@@ -12,16 +12,15 @@
 
     <artifactId>money-app-system</artifactId>
     <name>money-app-system</name>
-    <version>${revision}</version>
     <description>系统模块</description>
 
     <dependencies>
         <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
+            <groupId>com.mysql</groupId>
+            <artifactId>mysql-connector-j</artifactId>
             <scope>runtime</scope>
         </dependency>
-        <!-- api模块 -->
+        <!-- api 模块 -->
         <dependency>
             <groupId>com.money</groupId>
             <artifactId>money-app-api</artifactId>
@@ -31,7 +30,7 @@
             <groupId>com.money</groupId>
             <artifactId>qk-money-security</artifactId>
         </dependency>
-        <!-- 对象存储OSS模块-->
+        <!-- 对象存储 OSS 模块-->
         <dependency>
             <groupId>com.money</groupId>
             <artifactId>money-common-oss</artifactId>

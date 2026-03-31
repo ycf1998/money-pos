@@ -8,7 +8,9 @@ spring:
     name: money-pos
   profiles:
     active: dev # 默认开发环境
-    include: [ money ]
+    include:
+      - money
+      - money-${spring.profiles.active}
 
 #mybatis-plus:
 #  configuration:

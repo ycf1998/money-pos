@@ -9,10 +9,10 @@ import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.ZoneId;
 
@@ -29,12 +29,17 @@ public class WebRequestContextFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        // 链路追踪
-        String requestId = request.getHeader(WebRequestConstant.HEADER_REQUEST_ID);
-        MDC.put("requestId", requestId);
-        // 填充请求上下文信息
-        this.fillRequestContext(request);
-        filterChain.doFilter(request, response);
+        try {
+            // 链路追踪
+            String requestId = request.getHeader(WebRequestConstant.HEADER_REQUEST_ID);
+            MDC.put("requestId", requestId);
+            // 填充请求上下文信息
+            this.fillRequestContext(request);
+            filterChain.doFilter(request, response);
+        } finally {
+            WebRequestContextHolder.remove();
+            MDC.clear();
+        }
     }
 
     /**

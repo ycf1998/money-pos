@@ -3,10 +3,10 @@ package com.money.constant;
 import com.money.web.response.IStatus;
 
 /**
+ * 错误状态
+ *
  * @author : money
- * @version : 1.0.0
- * @description : 错误状态
- * @createTime : 2022-01-08 11:26:33
+ * @since : 1.0.0
  */
 public enum SysErrorStatus implements IStatus {
 

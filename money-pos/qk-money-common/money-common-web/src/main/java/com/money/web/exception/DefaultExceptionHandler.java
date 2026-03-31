@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import javax.validation.ConstraintViolation;
-import javax.validation.ConstraintViolationException;
-import javax.validation.ValidationException;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
+import jakarta.validation.ValidationException;
 import java.util.Iterator;
 
 /**
@@ -102,8 +102,7 @@ public class DefaultExceptionHandler {
      */
     private String getValidationMessage(Exception e) {
         String message = "";
-        if (e instanceof BindException) {
-            BindException bindException = (BindException) e;
+        if (e instanceof BindException bindException) {
             BindingResult bindingResult = bindException.getBindingResult();
             if (bindingResult.hasErrors()) {
                 FieldError fieldError = bindingResult.getFieldError();
@@ -111,15 +110,13 @@ public class DefaultExceptionHandler {
                     message = "[" + fieldError.getField() + "] " + I18nSupport.get(fieldError.getDefaultMessage());
                 }
             }
-        } else if (e instanceof ConstraintViolationException) {
-            ConstraintViolationException constraintViolationException = (ConstraintViolationException) e;
+        } else if (e instanceof ConstraintViolationException constraintViolationException) {
             Iterator<ConstraintViolation<?>> iterator = constraintViolationException.getConstraintViolations().iterator();
             if (iterator.hasNext()) {
                 ConstraintViolation<?> violation = iterator.next();
                 message = "[" + violation.getPropertyPath() + "] " + violation.getMessage();
             }
-        } else if (e instanceof ValidationException) {
-            ValidationException validationException = (ValidationException) e;
+        } else if (e instanceof ValidationException validationException) {
             message = validationException.getMessage();
         }
         log.warn("参数异常：{}", message);

@@ -15,10 +15,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
+ * Security 配置类
+ *
  * @author : money
- * @version : 1.0.0
- * @description : Security配置
- * @createTime : 2022-01-01 16:23:35
+ * @since : 1.0.0
  */
 @Configuration(proxyBeanMethods = false)
 @RequiredArgsConstructor
@@ -38,7 +38,7 @@ public class SecurityConfig {
                     .stream().map(SysRole::getRoleCode).collect(Collectors.toList());
             List<String> permissions = userInfo.getPermissions()
                     .stream().map(SysPermission::getPermission).collect(Collectors.toList());
-            // 返回装填的rbac user
+            // 返回装填的 rbac user
             RbacUser rbacUser = new RbacUser();
             rbacUser.setUserId(sysUser.getId());
             rbacUser.setUsername(sysUser.getUsername());

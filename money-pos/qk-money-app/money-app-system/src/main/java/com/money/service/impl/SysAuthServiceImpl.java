@@ -3,10 +3,8 @@ package com.money.service.impl;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.collection.ListUtil;
 import cn.hutool.core.util.StrUtil;
-import com.money.web.exception.BaseException;
-import com.money.web.response.RStatus;
-import com.money.constant.SysErrorStatus;
 import com.money.constant.PermissionType;
+import com.money.constant.SysErrorStatus;
 import com.money.dto.LoginDTO;
 import com.money.entity.SysPermission;
 import com.money.entity.SysRole;
@@ -19,6 +17,8 @@ import com.money.service.SysUserService;
 import com.money.vo.AuthTokenVO;
 import com.money.vo.UserInfoVO;
 import com.money.vo.VueRouterVO;
+import com.money.web.exception.BaseException;
+import com.money.web.response.RStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -30,10 +30,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
+ * 系统身份验证服务实现类
+ *
  * @author : money
- * @version : 1.0.0
- * @description : 系统身份验证服务impl
- * @createTime : 2023-05-23 22:59:18
+ * @since : 1.0.0
  */
 @Service
 @RequiredArgsConstructor

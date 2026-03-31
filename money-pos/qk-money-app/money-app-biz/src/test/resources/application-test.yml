@@ -1,0 +1,14 @@
+spring:
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/money_pos?useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT%2b8&allowPublicKeyRetrieval=true&useSSL=false
+    username: root
+    password: root
+
+money:
+  tenant:
+    enabled: false
+  oss:
+    local:
+      bucket: ${user.dir}/target/test-oss/
+      resource-handler: /assets/**
+

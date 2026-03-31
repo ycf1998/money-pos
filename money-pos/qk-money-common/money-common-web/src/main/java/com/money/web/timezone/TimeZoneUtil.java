@@ -1,6 +1,5 @@
 package com.money.web.timezone;
 
-import cn.hutool.core.collection.ListUtil;
 import cn.hutool.core.util.ReflectUtil;
 import com.money.web.constant.ProjectConstants;
 import com.money.web.timezone.annotation.TZParam;
@@ -18,7 +17,7 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
-
+import java.util.Set;
 
 /**
  * 时区工具
@@ -31,9 +30,9 @@ import java.util.Map;
 public class TimeZoneUtil {
 
     /**
-     * map key含有关键字则转换
+     * map key 含有关键字则转换
      */
-    private final List<String> MAP_KEY = ListUtil.toList("time", "date");
+    private static final Set<String> MAP_KEY = Set.of("time", "date");
 
     /**
      * 转换
@@ -58,6 +57,7 @@ public class TimeZoneUtil {
             } else if (List.class.isAssignableFrom(targetClass)) {
                 ((List<?>) target).forEach(e -> convert(e, format, formZoneId, toZoneId));
             } else if (Map.class.isAssignableFrom(targetClass)) {
+                @SuppressWarnings("unchecked")
                 Map<String, Object> map = (Map<String, Object>) target;
                 target = convertMap(map, format, formZoneId, toZoneId);
             } else if (PageVO.class.isAssignableFrom(targetClass)) {
@@ -71,7 +71,7 @@ public class TimeZoneUtil {
     }
 
     /**
-     * Bean转换
+     * Bean 转换
      *
      * @param target
      * @param formZoneId
@@ -80,7 +80,7 @@ public class TimeZoneUtil {
     public void convertBean(Object target, ZoneId formZoneId, ZoneId toZoneId) {
         try {
             Class<?> targetClass = target.getClass();
-            // 用户包的Bean才会做处理
+            // 用户包的 Bean 才会做处理
             if (!targetClass.getName().startsWith(ProjectConstants.PACKAGE)) {
                 return;
             }
@@ -92,7 +92,7 @@ public class TimeZoneUtil {
                     String format = tzParam.format();
                     Class<? extends TimeZoneConverter> converter = tzParam.converter();
                     if (converter != DefaultTimeZoneConverter.class) {
-                        field.set(target, converter.newInstance().convert(field.get(target), format, formZoneId, toZoneId));
+                        field.set(target, ReflectUtil.newInstance(converter).convert(field.get(target), format, formZoneId, toZoneId));
                     }
                     Class<?> type = field.getType();
                     if (field.get(target) != null) {
@@ -107,7 +107,8 @@ public class TimeZoneUtil {
                             field.set(target, convertString(dateTimeStr, format, formZoneId, toZoneId));
                         } else if (List.class.isAssignableFrom(type)) {
                             ((List<?>) field.get(target)).forEach(e -> convert(e, format, formZoneId, toZoneId));
-                        } else if (Map.class.isAssignableFrom(targetClass)) {
+                        } else if (Map.class.isAssignableFrom(type)) {
+                            @SuppressWarnings("unchecked")
                             Map<String, Object> map = (Map<String, Object>) field.get(target);
                             field.set(target, convertMap(map, format, formZoneId, toZoneId));
                         } else {
@@ -116,14 +117,14 @@ public class TimeZoneUtil {
                     }
                 }
             }
-        } catch (IllegalAccessException | InstantiationException e) {
+        } catch (IllegalAccessException e) {
             log.error("时区转换异常", e);
             throw new RuntimeException("时区转换异常");
         }
     }
 
     /**
-     * String转换
+     * String 转换
      *
      * @param dateTimeStr
      * @param format
@@ -143,7 +144,7 @@ public class TimeZoneUtil {
     }
 
     /**
-     * LocalDate转换
+     * LocalDate 转换
      *
      * @param localDate
      * @param formZoneId
@@ -155,7 +156,7 @@ public class TimeZoneUtil {
     }
 
     /**
-     * LocalDateTime转换
+     * LocalDateTime 转换
      *
      * @param localDateTime
      * @param formZoneId
@@ -167,7 +168,7 @@ public class TimeZoneUtil {
     }
 
     /**
-     * Map转换
+     * Map 转换
      *
      * @param map
      * @param format

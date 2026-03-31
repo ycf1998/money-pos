@@ -9,6 +9,7 @@ import com.qiniu.http.Response;
 import com.qiniu.storage.BucketManager;
 import com.qiniu.storage.Configuration;
 import com.qiniu.storage.DownloadUrl;
+import com.qiniu.storage.Region;
 import com.qiniu.storage.UploadManager;
 import com.qiniu.storage.model.DefaultPutRet;
 import com.qiniu.util.Auth;
@@ -21,10 +22,10 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 
 /**
+ * 七牛云对象存储服务
+ *
  * @author : money
- * @version : 1.0.0
- * @description : 七牛云对象存储服务
- * @createTime : 2022-01-01 16:47:20
+ * @since : 1.0.0
  */
 @Slf4j
 @RequiredArgsConstructor
@@ -46,7 +47,7 @@ public class QiniuOSS implements OSSInterface {
     public String upload(@NonNull MultipartFile file, @NonNull String uri) throws UploadFailedException {
         String originalFilename = file.getOriginalFilename();
         // 构造一个带指定 Region 对象的配置类
-        Configuration cfg = new Configuration(QiniuRegion.getRegion(config.getRegion()));
+        Configuration cfg = Configuration.create(Region.autoRegion());
         // 配置参数，参考类注释
         cfg.useHttpsDomains = false;
         // 构造上传管理者
@@ -72,7 +73,7 @@ public class QiniuOSS implements OSSInterface {
     public void delete(@NonNull String uri) throws DeleteFailedException {
         log.info("【七牛云OSS】删除文件 {}", uri);
         // 构造一个带指定 Region 对象的配置类
-        Configuration cfg = new Configuration(QiniuRegion.getRegion(config.getRegion()));
+        Configuration cfg = Configuration.create(Region.autoRegion());
         // 配置参数，参考类注释
         cfg.useHttpsDomains = false;
         // 构造空间管理者

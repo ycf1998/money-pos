@@ -4,6 +4,7 @@ package com.money.web.response;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
@@ -14,6 +15,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
+@NoArgsConstructor
 @AllArgsConstructor
 public class R<T>  {
 
@@ -28,61 +30,52 @@ public class R<T>  {
     
 
     /**
-     * 成功
-     *
-     * @return {@link R}<{@link String}>
+     * 返回成功响应
      */
     public static <T> R<T> success() {
         return new R<>(RStatus.SUCCESS.getCode(), RStatus.SUCCESS.getMessage(), null);
     }
 
     /**
-     * 成功
+     * 返回成功响应
      *
      * @param data 数据
-     * @return {@link R}<{@link T}>
      */
     public static <T> R<T> success(T data) {
         return new R<>(RStatus.SUCCESS.getCode(), RStatus.SUCCESS.getMessage(), data);
     }
 
     /**
-     * 成功
+     * 返回成功响应
      *
      * @param message 消息
      * @param data    数据
-     * @return {@link R}<{@link T}>
      */
     public static <T> R<T> success(String message, T data) {
         return new R<>(RStatus.SUCCESS.getCode(), message, data);
     }
 
     /**
-     * 失败
-     *
-     * @return {@link R}<{@link T}>
+     * 返回失败响应
      */
     public static <T> R<T> fail() {
         return new R<>(RStatus.FAILED.getCode(), RStatus.FAILED.getMessage(), null);
     }
 
     /**
-     * 失败
+     * 返回失败响应
      *
      * @param message 消息
-     * @return {@link R}<{@link T}>
      */
     public static <T> R<T> fail(String message) {
         return new R<>(RStatus.FAILED.getCode(), message, null);
     }
 
     /**
-     * 失败
-     * 失败
+     * 返回失败响应
      *
      * @param code    代码
      * @param message 消息
-     * @return {@link R}<{@link T}>
      */
     public static <T> R<T> fail(int code, String message) {
         return new R<>(code, message, null);
@@ -90,8 +83,6 @@ public class R<T>  {
 
     /**
      * 参数校验失败
-     *
-     * @return {@link R}<{@link T}>
      */
     public static <T> R<T> validateFailed() {
         return fail(RStatus.BAD_REQUEST.getCode(), RStatus.BAD_REQUEST.getMessage());
@@ -101,7 +92,6 @@ public class R<T>  {
      * 参数校验失败
      *
      * @param message 消息
-     * @return {@link R}<{@link T}>
      */
     public static <T> R<T> validateFailed(String message) {
         return new R<>(RStatus.BAD_REQUEST.getCode(), message, null);
@@ -109,8 +99,6 @@ public class R<T>  {
 
     /**
      * 未认证
-     *
-     * @return {@link R}<{@link T}>
      */
     public static <T> R<T> unauthorized() {
         return fail(RStatus.UNAUTHORIZED.getCode(), RStatus.UNAUTHORIZED.getMessage());
@@ -118,8 +106,6 @@ public class R<T>  {
 
     /**
      * 未授权
-     *
-     * @return {@link R}<{@link T}>
      */
     public static <T> R<T> forbidden() {
         return fail(RStatus.FORBIDDEN.getCode(), RStatus.FORBIDDEN.getMessage());

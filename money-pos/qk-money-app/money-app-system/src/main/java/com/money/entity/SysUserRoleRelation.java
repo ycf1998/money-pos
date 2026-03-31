@@ -8,9 +8,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * <p>
- * 用户角色关联表
- * </p>
+ * 用户角色关联表 实体类
  *
  * @author money
  * @since 2022-03-04

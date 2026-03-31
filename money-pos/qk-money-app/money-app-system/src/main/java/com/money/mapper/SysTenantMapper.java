@@ -4,9 +4,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.money.entity.SysTenant;
 
 /**
- * <p>
- *  Mapper 接口
- * </p>
+ * 租户表 表数据库访问层
  *
  * @author money
  * @since 2022-03-04

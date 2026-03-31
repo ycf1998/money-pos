@@ -6,10 +6,10 @@ import cn.hutool.core.util.RandomUtil;
 import java.time.Instant;
 
 /**
+ * 文件名称策略
+ *
  * @author : money
- * @version : 1.0.0
- * @description : 文件名称策略
- * @createTime : 2022-01-01 16:47:44
+ * @since : 1.0.0
  */
 public interface FileNameStrategy {
     /**

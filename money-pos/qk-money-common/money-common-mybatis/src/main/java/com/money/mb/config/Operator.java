@@ -1,14 +1,19 @@
 package com.money.mb.config;
 
 /**
+ * 操作者
+ *
  * @author : money
- * @version : 1.0.0
- * @description : 操作者
- * @createTime : 2022-01-01 20:35:14
+ * @since : 1.0.0
  */
 @FunctionalInterface
 public interface Operator {
 
+    /**
+     * 获取用户名
+     *
+     * @return {@link String }
+     */
     String getUsername();
 
 }

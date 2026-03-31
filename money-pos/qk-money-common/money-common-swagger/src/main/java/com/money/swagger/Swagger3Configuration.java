@@ -9,17 +9,17 @@ import io.swagger.v3.oas.models.info.License;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import lombok.extern.slf4j.Slf4j;
-import org.springdoc.core.GroupedOpenApi;
+import org.springdoc.core.models.GroupedOpenApi;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 
 /**
+ * Swagger3 配置类
+ *
  * @author : money
- * @version : 1.0.0
- * @description : swagger3配置类
- * @createTime : 2021-09-04 14:18:06
+ * @since : 1.0.0
  */
 @Slf4j
 @Configuration(proxyBeanMethods = false)
@@ -28,7 +28,7 @@ public class Swagger3Configuration {
 
     @Bean
     public GroupedOpenApi groupedOpenApi(SwaggerProperties swaggerProperties) {
-        log.info("开启Swagger3：{}", "http://{host}/{context-path}/swagger-ui.html");
+        log.info("开启 Swagger3: {}", "http://{host}/{context-path}/swagger-ui.html");
         return GroupedOpenApi.builder()
                 .group(swaggerProperties.getProjectName())
                 // 扫描的包

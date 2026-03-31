@@ -13,10 +13,11 @@
     <description>swagger模块</description>
 
     <dependencies>
-        <!-- Swagger3 -->
+        <!-- Swagger3 / OpenAPI 3 -->
         <dependency>
             <groupId>org.springdoc</groupId>
-            <artifactId>springdoc-openapi-ui</artifactId>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+            <version>${springdoc-openapi.version}</version>
         </dependency>
         <!-- 配置处理 -->
         <dependency>

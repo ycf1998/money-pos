@@ -8,9 +8,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 /**
- * <p>
- * 资源权限表
- * </p>
+ * 资源权限表 VO
  *
  * @author money
  * @since 2022-03-04

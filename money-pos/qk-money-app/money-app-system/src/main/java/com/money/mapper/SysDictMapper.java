@@ -4,9 +4,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.money.entity.SysDict;
 
 /**
- * <p>
- *  Mapper 接口
- * </p>
+ * 字典表 表数据库访问层
  *
  * @author money
  * @since 2022-03-05

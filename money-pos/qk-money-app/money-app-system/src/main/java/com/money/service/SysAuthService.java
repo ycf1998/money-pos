@@ -9,10 +9,10 @@ import java.util.Collection;
 import java.util.List;
 
 /**
+ * 系统身份验证服务
+ *
  * @author : money
- * @version : 1.0.0
- * @description : 系统身份验证服务
- * @createTime : 2023-05-23 22:58:34
+ * @since : 1.0.0
  */
 public interface SysAuthService {
 

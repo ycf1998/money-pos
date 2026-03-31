@@ -32,9 +32,7 @@ import ${packageOther}.${entityLower}.${table.entityName}VO;
 import java.util.Set;
 
 /**
- * <p>
- * ${table.comment!} 前端控制器
- * </p>
+ * ${table.comment!} 控制器
  *
  * @author ${author}
  * @since ${date}

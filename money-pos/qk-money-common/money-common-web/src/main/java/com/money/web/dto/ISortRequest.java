@@ -4,15 +4,12 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.money.web.util.ValidationUtil;
-import lombok.Data;
+import jakarta.validation.ValidationException;
+import jakarta.validation.constraints.Pattern;
 import lombok.EqualsAndHashCode;
 import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 
-import javax.validation.ValidationException;
-import javax.validation.constraints.Pattern;
 import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -42,7 +39,7 @@ public interface ISortRequest {
     /**
      * 获取排序选项
      *
-     * @return {@link List}<{@link SortOption}>
+     * @return {@link Set}<{@link SortOption}>
      */
     @NonNull
     @JsonIgnore
@@ -78,28 +75,19 @@ public interface ISortRequest {
                 .collect(Collectors.joining(", ", "ORDER BY ", ""));
     }
 
-    @Data
-    @RequiredArgsConstructor
-    @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-    class SortOption {
-
-        /**
-         * 排序字段
-         */
-        @EqualsAndHashCode.Include
-        @Pattern(regexp = "^(?!#ERR$).*$", message = "invalid sort key")
-        private final String sortKey;
-
-        /**
-         * 排序顺序
-         */
-        @Pattern(regexp = "^(ASC|DESC)$", message = "invalid sort order")
-        private final String sortOrder;
+    /**
+     * @param sortKey   排序字段
+     * @param sortOrder 排序顺序
+     */
+    record SortOption(
+            @EqualsAndHashCode.Include @Pattern(regexp = "^(?!#ERR$).*$", message = "invalid sort key") String sortKey,
+            @Pattern(regexp = "^(ASC|DESC)$", message = "invalid sort order") String sortOrder) {
 
         @Override
-        public String toString() {
+        public @NonNull String toString() {
             return sortKey + " " + sortOrder;
         }
 
     }
+
 }

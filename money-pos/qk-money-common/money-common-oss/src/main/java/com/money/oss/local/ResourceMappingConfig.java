@@ -5,10 +5,10 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
+ * 资源映射配置
+ *
  * @author : money
- * @version : 1.0.0
- * @description : 资源映射配置
- * @createTime : 2022-01-06 23:06:22
+ * @since : 1.0.0
  */
 @RequiredArgsConstructor
 public class ResourceMappingConfig implements WebMvcConfigurer {

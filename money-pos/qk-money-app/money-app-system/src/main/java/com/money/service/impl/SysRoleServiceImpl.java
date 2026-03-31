@@ -61,6 +61,10 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     public List<SysRole> getByUser(Long userId) {
         List<Long> relationRoleIdList = sysUserRoleRelationService.getRelationByUser(userId)
                 .stream().map(SysUserRoleRelation::getRoleId).collect(Collectors.toList());
+        // 处理角色关联存在但角色已被删除的情况（如测试数据不一致）
+        if (relationRoleIdList.isEmpty()) {
+            return Collections.emptyList();
+        }
         return this.listByIds(relationRoleIdList)
                 .stream().sorted(Comparator.comparing(SysRole::getLevel))
                 .collect(Collectors.toList());

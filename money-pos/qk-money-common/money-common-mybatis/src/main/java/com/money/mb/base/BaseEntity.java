@@ -10,10 +10,10 @@ import lombok.Setter;
 import java.time.LocalDateTime;
 
 /**
+ * 基础实体类
+ *
  * @author : money
- * @version : 1.0.0
- * @description : 基础的实体
- * @createTime : 2021-10-03 17:13:50
+ * @since : 1.0.0
  */
 @Getter
 @Setter

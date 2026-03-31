@@ -1,21 +1,35 @@
 package com.money.context;
 
 /**
- * @author : money
- * @version : 1.0.0
- * @description : 租户上下文
- * @createTime : 2022-01-01 17:44:11
+ * 租户上下文持有者
+ * <p>基于 {@link ThreadLocal} 实现租户 ID 的线程隔离存储。</p>
+ *
+ * @author money
+ * @since 1.0.0
  */
 public class TenantContextHolder {
 
-   private static final ThreadLocal<Long> tenantContext = new ThreadLocal<>();
+    /**
+     * 租户上下文线程本地变量
+     */
+    private static final ThreadLocal<Long> tenantContext = new ThreadLocal<>();
 
-   public static void setTenant(Long tenantId) {
-       tenantContext.set(tenantId);
-   }
+    /**
+     * 设置当前线程的租户 ID
+     *
+     * @param tenantId 租户标识
+     */
+    public static void setTenant(Long tenantId) {
+        tenantContext.set(tenantId);
+    }
 
-   public static Long getTenant() {
-       return tenantContext.get();
-   }
+    /**
+     * 获取当前线程的租户 ID
+     *
+     * @return 租户标识，未设置返回 {@code null}
+     */
+    public static Long getTenant() {
+        return tenantContext.get();
+    }
 
 }

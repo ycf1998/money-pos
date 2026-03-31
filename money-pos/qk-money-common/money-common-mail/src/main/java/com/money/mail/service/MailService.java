@@ -3,10 +3,10 @@ package com.money.mail.service;
 import com.money.mail.domian.MailRequest;
 
 /**
+ * 邮件服务
+ *
  * @author : money
- * @version : 1.0.0
- * @description : 邮件服务
- * @createTime : 2022-02-21 11:26:12
+ * @since : 1.0.0
  */
 public interface MailService {
 

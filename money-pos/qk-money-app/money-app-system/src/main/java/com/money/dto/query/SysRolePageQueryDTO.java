@@ -6,10 +6,10 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
+ * 系统角色查询 DTO
+ *
  * @author : money
- * @version : 1.0.0
- * @description : 系统角色查询dto
- * @createTime : 2022-03-05 23:25:21
+ * @since : 1.0.0
  */
 @EqualsAndHashCode(callSuper = true)
 @Data

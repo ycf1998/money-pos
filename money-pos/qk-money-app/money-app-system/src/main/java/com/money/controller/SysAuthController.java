@@ -50,7 +50,7 @@ public class SysAuthController {
 
     @Operation(summary = "刷新令牌")
     @GetMapping("/refreshToken")
-    public AuthTokenVO refreshToken(@Parameter(hidden = true) @CurrentUser String username, String refreshToken) {
+    public AuthTokenVO refreshToken(@Parameter(hidden = true) @CurrentUser String username, @RequestParam("refreshToken") String refreshToken) {
         return sysAuthService.refreshToken(username, refreshToken);
     }
 

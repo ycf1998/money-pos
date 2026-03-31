@@ -2,8 +2,10 @@
 package ${packageOther}.${entityLower};
 
 <#list table.importPackages as pkg>
-<#if pkg!="com.baomidou.mybatisplus.annotation.TableName" && pkg!="com.money.mb.base.BaseEntity"
-&& pkg!="com.baomidou.mybatisplus.annotation.IdType" && pkg!="com.baomidou.mybatisplus.annotation.TableId">
+<#if pkg!="com.baomidou.mybatisplus.annotation.TableName"
+    && pkg!="com.money.mb.base.BaseEntity"
+    && pkg!="com.baomidou.mybatisplus.annotation.IdType"
+    && pkg!="com.baomidou.mybatisplus.annotation.TableId">
 import ${pkg};
 </#if>
 </#list>
@@ -18,13 +20,11 @@ import lombok.experimental.Accessors;
 </#if>
 
 /**
-* <p>
-* ${table.comment!}
-* </p>
-*
-* @author ${author}
-* @since ${date}
-*/
+ * ${table.comment!} VO
+ *
+ * @author ${author}
+ * @since ${date}
+ */
 <#if entityLombokModel>
 @Data
 <#if chainModel>
@@ -50,8 +50,8 @@ public class ${entity}VO {
     @Schema(description = "${field.comment}")
     <#else>
     /**
-    * ${field.comment}
-    */
+     * ${field.comment}
+     */
     </#if>
     </#if>
     private ${field.propertyType} ${field.propertyName};

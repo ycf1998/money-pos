@@ -9,9 +9,7 @@ import com.money.entity.SysDict;
 import java.util.Set;
 
 /**
- * <p>
- * 服务类
- * </p>
+ * 字典表 服务接口
  *
  * @author money
  * @since 2022-03-05

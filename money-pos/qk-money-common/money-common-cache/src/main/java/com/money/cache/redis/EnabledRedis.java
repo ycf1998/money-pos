@@ -7,10 +7,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
 /**
+ * 启用 Redis
+ *
  * @author : money
- * @version : 1.0.0
- * @description : 启用redis
- * @createTime : 2021-10-23 18:35:12
+ * @since : 1.0.0
  */
 @ConditionalOnProperty(prefix = "money.cache.redis", name = "enabled")
 @Configuration(proxyBeanMethods = false)

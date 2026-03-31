@@ -11,7 +11,6 @@ import com.money.mb.config.Operator;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.lang.Nullable;
 
 import java.util.List;
 
@@ -43,7 +42,7 @@ public class MybatisPlusConfiguration {
      * 分页插件配置
      */
     @Bean
-    public MybatisPlusInterceptor mybatisPlusInterceptor(@Nullable List<InnerInterceptor> interceptors) {
+    public MybatisPlusInterceptor mybatisPlusInterceptor(List<InnerInterceptor> interceptors) {
         MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
         if (CollUtil.isNotEmpty(interceptors)) {
             interceptors.forEach(interceptor::addInnerInterceptor);

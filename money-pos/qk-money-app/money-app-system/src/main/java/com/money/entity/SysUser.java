@@ -9,9 +9,7 @@ import lombok.Setter;
 import java.time.LocalDateTime;
 
 /**
- * <p>
- * 用户表
- * </p>
+ * 用户表 实体类
  *
  * @author money
  * @since 2022-03-04

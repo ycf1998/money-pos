@@ -6,10 +6,10 @@ import lombok.NonNull;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
+ * 对象存储服务接口
+ *
  * @author : money
- * @version : 1.0.0
- * @description : 对象存储服务接口
- * @createTime : 2021-12-28 21:48:49
+ * @since : 1.0.0
  */
 public interface OSSInterface {
 

@@ -8,9 +8,7 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 
 /**
- * <p>
- * 字典详情表
- * </p>
+ * 字典详情表 实体类
  *
  * @author money
  * @since 2024-05-18

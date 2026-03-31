@@ -14,18 +14,19 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 
 /**
  * JWT 身份验证过滤器
+ * <p>从请求头提取 JWT 令牌，验证通过后设置 Spring Security 上下文。</p>
  *
- * @author : money
- * @since : 1.0.0
+ * @author money
+ * @since 1.0.0
  */
 @Slf4j
 @Component
@@ -36,14 +37,17 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final SecurityUserService securityUserService;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest httpServletRequest, @NonNull HttpServletResponse httpServletResponse, @NonNull FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest httpServletRequest,
+                                    @NonNull HttpServletResponse httpServletResponse,
+                                    @NonNull FilterChain filterChain) throws ServletException, IOException {
         String token = httpServletRequest.getHeader(securityTokenSupport.getTokenConfig().getHeader());
-        // 仅处理带token的请求
+        // 仅处理带 token 的请求
         if (StrUtil.isNotBlank(token)) {
             try {
                 String username = securityTokenSupport.getUsername(token);
                 UserDetails userDetails = securityUserService.loadUserByUsername(username);
-                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+                        userDetails, null, userDetails.getAuthorities());
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpServletRequest));
                 SecurityContextHolder.getContext().setAuthentication(authentication);
                 log.debug("令牌认证成功：{}", username);

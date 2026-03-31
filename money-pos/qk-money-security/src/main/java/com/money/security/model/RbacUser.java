@@ -6,16 +6,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * RBAC 用户
+ * RBAC 用户模型
+ * <p>包含用户的基本信息、角色列表和权限列表，用于 Spring Security 认证和授权。</p>
  *
- * @author : money
- * @since : 1.0.0
+ * @author money
+ * @since 1.0.0
+ * @see com.money.security.component.SecurityUserDetail
  */
 @Data
 public class RbacUser {
 
     /**
-     * 用户id
+     * 用户唯一标识
      */
     private Long userId;
 
@@ -25,12 +27,12 @@ public class RbacUser {
     private String username;
 
     /**
-     * 密码
+     * 密码（加密后）
      */
     private String password;
 
     /**
-     * 启用
+     * 账户是否启用
      */
     private Boolean enabled = Boolean.TRUE;
 

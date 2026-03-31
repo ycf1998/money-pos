@@ -6,16 +6,16 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
+ * 系统租户查询 DTO
+ *
  * @author : money
- * @version : 1.0.0
- * @description : 系统租户查询dto
- * @createTime : 2022-03-26 10:31:29
+ * @since : 1.0.0
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class SysTenantPageQueryDTO extends PageQueryRequest {
 
-    @Schema(description = "租户code")
+    @Schema(description = "租户 code")
     private String tenantCode;
 
     @Schema(description = "租户名称")

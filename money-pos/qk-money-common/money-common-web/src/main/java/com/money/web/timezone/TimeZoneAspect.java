@@ -1,5 +1,6 @@
 package com.money.web.timezone;
 
+import cn.hutool.core.util.ReflectUtil;
 import com.money.web.context.WebRequestContextHolder;
 import com.money.web.timezone.annotation.TZParam;
 import com.money.web.timezone.annotation.TZRep;
@@ -62,7 +63,7 @@ public class TimeZoneAspect {
                     TZParam tzParam = (TZParam) annotation;
                     String format = tzParam.format();
                     Class<? extends TimeZoneConverter> converter = tzParam.converter();
-                    args[i] = converter.newInstance().convert(arg, format, customTimeZone, defaultZone);
+                    args[i] = ReflectUtil.newInstance(converter).convert(arg, format, customTimeZone, defaultZone);
                     break;
                 }
             }
@@ -81,7 +82,7 @@ public class TimeZoneAspect {
                 // 使用注解上的转换器
                 String format = tzRep.format();
                 Class<? extends TimeZoneConverter> converter = tzRep.converter();
-                result = converter.newInstance().convert(result, format, defaultZone, customTimeZone);
+                result = ReflectUtil.newInstance(converter).convert(result, format, defaultZone, customTimeZone);
             }
         }
         long outConsume = System.currentTimeMillis() - startTime;

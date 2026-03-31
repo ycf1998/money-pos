@@ -21,4 +21,11 @@ public class WebRequestContextHolder {
         return CONTEXT.get();
     }
 
+    /**
+     * 清理上下文
+     */
+    public void remove() {
+        CONTEXT.remove();
+    }
+
 }

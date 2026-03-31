@@ -8,13 +8,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 
-import java.util.Properties;
-
 /**
+ * 邮件配置类
+ *
  * @author : money
- * @version : 1.0.0
- * @description : 邮件配置
- * @createTime : 2022-02-21 11:49:52
+ * @since : 1.0.0
  */
 @Configuration(proxyBeanMethods = false)
 @EnableConfigurationProperties(ExtMailProperties.class)
@@ -32,12 +30,10 @@ public class EmailConfiguration {
         javaMailSender.setHost(properties.getHost());
         javaMailSender.setPort(properties.getPort());
         javaMailSender.setProtocol(properties.getProtocol());
-        javaMailSender.setDefaultEncoding(properties.getDefaultEncoding().displayName());
+        javaMailSender.setDefaultEncoding(properties.getDefaultEncoding().name());
         javaMailSender.setUsername(properties.getUsername());
         javaMailSender.setPassword(properties.getPassword());
-        Properties p = new Properties();
-        properties.getProperties().forEach(p::setProperty);
-        javaMailSender.setJavaMailProperties(p);
+        javaMailSender.setJavaMailProperties(properties.getProperties());
         return new MailServiceImpl(properties, javaMailSender);
     }
 }

@@ -2,8 +2,10 @@
 package ${packageOther}.${entityLower};
 
 <#list table.importPackages as pkg>
-<#if pkg!="com.baomidou.mybatisplus.annotation.TableName" && pkg!="com.money.mb.base.BaseEntity"
-&& pkg!="com.baomidou.mybatisplus.annotation.IdType" && pkg!="com.baomidou.mybatisplus.annotation.TableId">
+<#if pkg!="com.baomidou.mybatisplus.annotation.TableName"
+    && pkg!="com.money.mb.base.BaseEntity"
+    && pkg!="com.baomidou.mybatisplus.annotation.IdType"
+    && pkg!="com.baomidou.mybatisplus.annotation.TableId">
 import ${pkg};
 </#if>
 </#list>
@@ -20,13 +22,11 @@ import lombok.experimental.Accessors;
 import com.money.web.dto.PageQueryRequest;
 
 /**
-* <p>
-* ${table.comment!}
-* </p>
-*
-* @author ${author}
-* @since ${date}
-*/
+ * ${table.comment!} 分页查询 DTO
+ *
+ * @author ${author}
+ * @since ${date}
+ */
 <#if entityLombokModel>
 @Data
 @EqualsAndHashCode(callSuper = true)
@@ -47,8 +47,8 @@ public class ${entity}PageQueryDTO extends PageQueryRequest {
     @Schema(description = "${field.comment}")
     <#else>
     /**
-    * ${field.comment}
-    */
+     * ${field.comment}
+     */
     </#if>
     </#if>
     private ${field.propertyType} ${field.propertyName};

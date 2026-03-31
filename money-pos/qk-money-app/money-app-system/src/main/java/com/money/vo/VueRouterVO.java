@@ -8,10 +8,10 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
+ * Vue 路由器 VO
+ *
  * @author : money
- * @version : 1.0.0
- * @description : vue路由器VO
- * @createTime : 2022-03-19 09:48:38
+ * @since : 1.0.0
  */
 @Data
 public class VueRouterVO implements Serializable {

@@ -7,12 +7,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * 七牛云 OSS 配置
+ *
  * @author : money
- * @version : 1.0.0
- * @description : 七牛云OSS配置
- * @createTime : 2022-01-01 16:47:24
+ * @since : 1.0.0
  */
-@ConfigurationProperties(prefix = "qiniu")
+@ConfigurationProperties(prefix = "money.oss.qiniu")
 @Data
 public class QiniuOSSConfig {
     /**
@@ -24,7 +24,7 @@ public class QiniuOSSConfig {
      */
     private String secretKey = "";
     /**
-     * 使用https
+     * 使用 https
      */
     private boolean useHttps = false;
     /**
@@ -35,10 +35,6 @@ public class QiniuOSSConfig {
      * 目标空间
      */
     private String bucket = "";
-    /**
-     * 地区
-     */
-    private String region = "";
     /**
      * 令牌到期时间
      */

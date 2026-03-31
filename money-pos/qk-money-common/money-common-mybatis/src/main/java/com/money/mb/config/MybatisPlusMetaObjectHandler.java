@@ -7,10 +7,10 @@ import org.apache.ibatis.reflection.MetaObject;
 import java.time.LocalDateTime;
 
 /**
+ * 元对象处理器
+ *
  * @author : money
- * @version : 1.0.0
- * @description : 元对象处理器
- * @createTime : 2022-01-01 17:10:51
+ * @since : 1.0.0
  */
 @RequiredArgsConstructor
 public class MybatisPlusMetaObjectHandler implements MetaObjectHandler {

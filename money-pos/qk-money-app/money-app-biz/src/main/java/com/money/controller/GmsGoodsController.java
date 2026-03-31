@@ -42,7 +42,7 @@ public class GmsGoodsController {
     @PostMapping
     @PreAuthorize("@rbac.hasPermission('gmsGoods:add')")
     public void add(@Validated(ValidGroup.Save.class) @RequestPart("goods") GmsGoodsDTO addDTO,
-                    @RequestPart(required = false) MultipartFile pic) {
+                    @RequestPart(value = "pic", required = false) MultipartFile pic) {
         gmsGoodsService.add(addDTO, pic);
     }
 
@@ -50,7 +50,7 @@ public class GmsGoodsController {
     @PutMapping
     @PreAuthorize("@rbac.hasPermission('gmsGoods:edit')")
     public void update(@Validated(ValidGroup.Update.class) @RequestPart("goods") GmsGoodsDTO updateDTO,
-                       @RequestPart(required = false) MultipartFile pic) {
+                       @RequestPart(value = "pic", required = false) MultipartFile pic) {
         gmsGoodsService.update(updateDTO, pic);
     }
 

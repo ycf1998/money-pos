@@ -17,10 +17,10 @@ import java.nio.file.InvalidPathException;
 import java.nio.file.Paths;
 
 /**
+ * 本地对象存储服务
+ *
  * @author : money
- * @version : 1.0.0
- * @description : 本地对象存储服务
- * @createTime : 2022-01-01 16:46:50
+ * @since : 1.0.0
  */
 @Slf4j
 @RequiredArgsConstructor
@@ -32,14 +32,14 @@ public class LocalOSS implements OSSInterface {
     public String upload(@NonNull MultipartFile file, @NonNull String uri) throws UploadFailedException {
         String originalFilename = file.getOriginalFilename();
         String finalPath = StrUtil.appendIfMissing(config.getBucket(), "/") + uri;
-        log.info("【本地OSS】文件 {} 上传就绪，准备上传至 {}。", originalFilename, finalPath);
+        log.info("【本地 OSS】文件 {} 上传就绪，准备上传至 {}。", originalFilename, finalPath);
         File dest = new File(finalPath);
         FileUtil.mkdir(dest.getParentFile());
         try {
             file.transferTo(dest);
-            log.info("【本地OSS】文件 {} 上传成功！[{}]", originalFilename, uri);
+            log.info("【本地 OSS】文件 {} 上传成功！[{}]", originalFilename, uri);
         } catch (IOException e) {
-            log.error("【本地OSS】文件 {} 上传失败！", originalFilename, e);
+            log.error("【本地 OSS】文件 {} 上传失败！", originalFilename, e);
             throw new UploadFailedException(e);
         }
         return uri;
@@ -47,12 +47,17 @@ public class LocalOSS implements OSSInterface {
 
     @Override
     public void delete(@NonNull String uri) throws DeleteFailedException {
-        log.info("【本地OSS】删除文件 {}", uri);
+        // 外部链接不需要本地删除（判断是否包含 ://）
+        if (uri.contains("://")) {
+            log.info("【本地 OSS】跳过外部链接删除：{}", uri);
+            return;
+        }
+        log.info("【本地 OSS】删除文件 {}", uri);
         try {
             String finalPath = StrUtil.appendIfMissing(config.getBucket(), "/") + uri;
             Files.deleteIfExists(Paths.get(finalPath));
         } catch (IOException | InvalidPathException e) {
-            log.error("【本地OSS】文件 {} 删除失败", uri, e);
+            log.error("【本地 OSS】文件 {} 删除失败", uri, e);
             throw new DeleteFailedException(e);
         }
     }

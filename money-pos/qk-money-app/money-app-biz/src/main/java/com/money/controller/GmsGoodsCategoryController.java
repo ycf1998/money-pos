@@ -45,14 +45,14 @@ public class GmsGoodsCategoryController {
     @PostMapping
     @PreAuthorize("@rbac.hasPermission('gmsGoods:add')")
     public void addGoodsCategories(@Validated(ValidGroup.Save.class) @RequestPart("goodsCategory") GmsGoodsCategoryDTO goodsCategoryDTO,
-                                   @RequestPart(required = false) MultipartFile icon) {
+                                   @RequestPart(value = "icon", required = false) MultipartFile icon) {
         gmsGoodsCategoryService.add(goodsCategoryDTO, icon);
     }
 
     @PutMapping
     @PreAuthorize("@rbac.hasPermission('gmsGoods:edit')")
     public void updateGoodsCategories(@Validated(ValidGroup.Update.class) @RequestPart("goodsCategory") GmsGoodsCategoryDTO goodsCategoryDTO,
-                                      @RequestPart(required = false) MultipartFile icon) {
+                                      @RequestPart(value = "icon", required = false) MultipartFile icon) {
         gmsGoodsCategoryService.update(goodsCategoryDTO, icon);
     }
 

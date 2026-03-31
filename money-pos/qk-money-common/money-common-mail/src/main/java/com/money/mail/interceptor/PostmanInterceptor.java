@@ -3,10 +3,10 @@ package com.money.mail.interceptor;
 import com.money.mail.domian.MailRequest;
 
 /**
+ * 邮差拦截器
+ *
  * @author : money
- * @version : 1.0.0
- * @description : 邮差拦截器
- * @createTime : 2022-05-14 11:12:36
+ * @since : 1.0.0
  */
 public interface PostmanInterceptor {
 

@@ -8,9 +8,9 @@ import ${superServiceImplClassPackage};
 import org.springframework.stereotype.Service;
 import lombok.RequiredArgsConstructor;
 import com.money.util.PageUtil;
-import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.money.web.util.BeanMapUtil;
 import com.money.web.vo.PageVO;
 import ${packageOther}.${entityLower}.${table.entityName}DTO;
 import ${packageOther}.${entityLower}.${table.entityName}PageQueryDTO;
@@ -19,9 +19,7 @@ import ${packageOther}.${entityLower}.${table.entityName}VO;
 import java.util.Collection;
 
 /**
- * <p>
  * ${table.comment!} 服务实现类
- * </p>
  *
  * @author ${author}
  * @since ${date}
@@ -40,16 +38,14 @@ public class ${table.serviceImplName} extends ${superServiceImplClass}<${table.m
 
     @Override
     public Long add(${table.entityName}DTO addDTO) {
-        ${table.entityName} ${table.entityName?uncap_first} = new ${table.entityName}();
-        BeanUtil.copyProperties(addDTO, ${table.entityName?uncap_first});
+        ${table.entityName} ${table.entityName?uncap_first} = BeanMapUtil.to(addDTO, ${table.entityName}::new);
         this.save(${table.entityName?uncap_first});
         return ${table.entityName?uncap_first}.getId();
     }
 
     @Override
     public void update(${table.entityName}DTO updateDTO) {
-        ${table.entityName} ${table.entityName?uncap_first} = new ${table.entityName}();
-        BeanUtil.copyProperties(updateDTO, ${table.entityName?uncap_first});
+        ${table.entityName} ${table.entityName?uncap_first} = BeanMapUtil.to(updateDTO, ${table.entityName}::new);
         this.updateById(${table.entityName?uncap_first});
     }
 

@@ -4,7 +4,6 @@ import com.money.web.constant.ProjectConstants;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.InvalidKeyException;
 import io.jsonwebtoken.security.Keys;
@@ -24,14 +23,7 @@ public class JwtUtil {
     /**
      * 私钥
      */
-    private final SecretKey privateKey;
-
-    /**
-     * 随机密钥
-     */
-    public JwtUtil() {
-        this.privateKey = Keys.secretKeyFor(SignatureAlgorithm.HS256);
-    }
+    private final SecretKey secretKey;
 
     /**
      * 指定密钥
@@ -40,47 +32,50 @@ public class JwtUtil {
      */
     public JwtUtil(String secret) {
         if (secret.length() < 4) {
-            throw new InvalidKeyException("密钥长度不能少于4位");
+            throw new InvalidKeyException("密钥长度不能少于 4 位");
         }
-        // 0.11.2 的 jjwt 为了安全性，密码必须大于 32 位，为了补充自定义密码没那么长添加固定尾缀
-        this.privateKey = Keys.hmacShaKeyFor(Decoders.BASE64.decode(secret + "bW9uZXktMTk5ODA3MDktMjAyMTA5MTExMDU4NDA="));
+        // 为了安全性，密钥必须大于 32 字节，为自定义密码补充固定尾缀
+        this.secretKey = Keys.hmacShaKeyFor(Decoders.BASE64.decode(secret + "bW9uZXktMTk5ODA3MDktMjAyMTA5MTExMDU4NDA="));
     }
 
     /**
-     * 生成jwt
+     * 生成 jwt
      *
-     * @param jwtPayload jwt载荷
+     * @param jwtPayload jwt 载荷
      * @return {@link String}
      */
     public String generateJwt(JwtPayload jwtPayload) {
         return Jwts.builder()
                 // 主题
-                .setSubject(ProjectConstants.PROJECT_NAME)
+                .subject(ProjectConstants.PROJECT_NAME)
                 // 发行人
-                .setIssuer(ProjectConstants.AUTHOR)
+                .issuer(ProjectConstants.AUTHOR)
                 // 颁发时间
-                .setIssuedAt(new Date())
-                // 密码
-                .signWith(privateKey, SignatureAlgorithm.HS256)
+                .issuedAt(new Date())
                 // 载体
-                .setClaims(jwtPayload.getClaims())
+                .claims(jwtPayload.getClaims())
                 // 过期时间
-                .setExpiration(new Date(System.currentTimeMillis() + jwtPayload.getExpire()))
+                .expiration(new Date(System.currentTimeMillis() + jwtPayload.getExpire()))
+                // 签名密钥和算法
+                .signWith(secretKey, Jwts.SIG.HS256)
                 .compact();
     }
 
     /**
-     * 解析jwt
+     * 解析 jwt
      *
      * @param jwt jwt
      * @return {@link Claims}
      */
     public Claims resolveJwt(String jwt) {
         try {
-            Jws<Claims> claimsJws = Jwts.parserBuilder().setSigningKey(privateKey).build().parseClaimsJws(jwt);
-            return claimsJws.getBody();
+            Jws<Claims> claimsJws = Jwts.parser()
+                    .verifyWith(secretKey)
+                    .build()
+                    .parseSignedClaims(jwt);
+            return claimsJws.getPayload();
         } catch (Exception e) {
-            throw new SignatureException("token解析失败或者已过期");
+            throw new SignatureException("token 解析失败或者已过期");
         }
     }
 

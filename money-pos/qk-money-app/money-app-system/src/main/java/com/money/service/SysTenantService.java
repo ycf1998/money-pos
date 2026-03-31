@@ -10,9 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.Set;
 
 /**
- * <p>
- *  服务类
- * </p>
+ * 租户表 服务接口
  *
  * @author money
  * @since 2022-03-04

@@ -16,20 +16,18 @@
     <description>BOM 依赖清单</description>
 
     <properties>
-        <spring-boot.version>2.7.18</spring-boot.version>
-        <mysql.version>8.0.33</mysql.version>
-        <mybatis-plus.version>3.5.7</mybatis-plus.version>
-        <mybatis-plus-generator.version>3.5.7</mybatis-plus-generator.version>
-        <xxl-job.version>2.3.1</xxl-job.version>
-        <qiniu.version>7.13.1</qiniu.version>
-        <caffeine.version>3.1.6</caffeine.version>
-        <jjwt.version>0.11.5</jjwt.version>
-        <spring-boot-admin.version>2.7.16</spring-boot-admin.version>
-        <springdoc-openapi.version>1.8.0</springdoc-openapi.version>
-        <hutool.version>5.8.34</hutool.version>
-        <jackson.version>2.13.5</jackson.version>
-        <fastjson.version>2.0.52</fastjson.version>
-        <log4j.version>2.20.0</log4j.version>
+        <spring-boot.version>3.5.12</spring-boot.version>
+        <mysql.version>9.6.0</mysql.version>
+        <mybatis-plus.version>3.5.15</mybatis-plus.version>
+        <mybatis-plus-generator.version>3.5.15</mybatis-plus-generator.version>
+        <xxl-job.version>3.3.2</xxl-job.version>
+        <qiniu.version>7.19.0</qiniu.version>
+        <caffeine.version>3.2.3</caffeine.version>
+        <jjwt.version>0.13.0</jjwt.version>
+        <springdoc-openapi.version>2.8.8</springdoc-openapi.version>
+        <hutool.version>5.8.43</hutool.version>
+        <fastjson.version>2.0.61</fastjson.version>
+        <maven-surefire-plugin.version>3.2.5</maven-surefire-plugin.version>
     </properties>
 
     <dependencies>
@@ -54,23 +52,20 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-            <!-- spring boot admin -->
-            <dependency>
-                <groupId>de.codecentric</groupId>
-                <artifactId>spring-boot-admin-dependencies</artifactId>
-                <version>${spring-boot-admin.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
             <!-- 数据库相关 -->
             <dependency>
-                <groupId>mysql</groupId>
-                <artifactId>mysql-connector-java</artifactId>
+                <groupId>com.mysql</groupId>
+                <artifactId>mysql-connector-j</artifactId>
                 <version>${mysql.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.baomidou</groupId>
-                <artifactId>mybatis-plus-boot-starter</artifactId>
+                <artifactId>mybatis-plus-spring-boot3-starter</artifactId>
+                <version>${mybatis-plus.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-jsqlparser</artifactId>
                 <version>${mybatis-plus.version}</version>
             </dependency>
             <dependency>
@@ -102,27 +97,6 @@
                 <artifactId>fastjson</artifactId>
                 <version>${fastjson.version}</version>
             </dependency>
-            <!-- jackson -->
-            <dependency>
-                <groupId>com.fasterxml.jackson.core</groupId>
-                <artifactId>jackson-databind</artifactId>
-                <version>${jackson.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.fasterxml.jackson.datatype</groupId>
-                <artifactId>jackson-datatype-jdk8</artifactId>
-                <version>${jackson.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.fasterxml.jackson.datatype</groupId>
-                <artifactId>jackson-datatype-jsr310</artifactId>
-                <version>${jackson.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.fasterxml.jackson.module</groupId>
-                <artifactId>jackson-module-parameter-names</artifactId>
-                <version>${jackson.version}</version>
-            </dependency>
             <!-- jjwt -->
             <dependency>
                 <groupId>io.jsonwebtoken</groupId>
@@ -144,7 +118,7 @@
             <!-- Swagger3 -->
             <dependency>
                 <groupId>org.springdoc</groupId>
-                <artifactId>springdoc-openapi-ui</artifactId>
+                <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
                 <version>${springdoc-openapi.version}</version>
             </dependency>
             <!-- 工具 -->
@@ -170,6 +144,11 @@
                             </goals>
                         </execution>
                     </executions>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>${maven-surefire-plugin.version}</version>
                 </plugin>
             </plugins>
         </pluginManagement>

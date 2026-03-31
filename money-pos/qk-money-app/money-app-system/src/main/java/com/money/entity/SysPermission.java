@@ -7,9 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * <p>
- * 资源权限表
- * </p>
+ * 资源权限表 实体类
  *
  * @author money
  * @since 2022-03-04

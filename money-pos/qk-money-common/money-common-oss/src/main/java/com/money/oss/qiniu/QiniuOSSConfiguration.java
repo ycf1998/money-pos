@@ -8,10 +8,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
+ * 对象存储服务配置
+ *
  * @author : money
- * @version : 1.0.0
- * @description : 对象存储服务配置
- * @createTime : 2022-01-01 16:53:08
+ * @since : 1.0.0
  */
 
 @ConditionalOnClass(QiniuException.class)

@@ -10,9 +10,13 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * 基于 Redis 的令牌策略
+ * <p>实现 {@link TokenStrategy} 接口，使用 Redis 存储 Token ID，支持令牌手动失效。</p>
+ * <p>配置：{@code money.security.token.strategy=redis}</p>
+ * <p>仅在配置 Redis 策略时生效（通过 {@link ConditionalOnProperty} 控制）。</p>
  *
- * @author : money
- * @since : 1.0.0
+ * @author money
+ * @since 1.0.0
+ * @see TokenStrategy
  */
 @Component
 @ConditionalOnProperty(prefix = "money.security.token", name = "strategy", havingValue = "redis")

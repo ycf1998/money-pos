@@ -7,9 +7,6 @@ import ${pkg};
 </#list>
 <#if springdoc>
 import io.swagger.v3.oas.annotations.media.Schema;
-<#elseif swagger>
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 </#if>
 <#if entityLombokModel>
 import lombok.Getter;
@@ -20,9 +17,7 @@ import lombok.experimental.Accessors;
 </#if>
 
 /**
- * <p>
- * ${table.comment!}
- * </p>
+ * ${table.comment!} 实体类
  *
  * @author ${author}
  * @since ${date}

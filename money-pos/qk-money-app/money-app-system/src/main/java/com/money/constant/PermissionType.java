@@ -1,10 +1,10 @@
 package com.money.constant;
 
 /**
+ * 许可类型
+ *
  * @author : money
- * @version : 1.0.0
- * @description : 许可类型
- * @createTime : 2022-03-07 21:06:24
+ * @since : 1.0.0
  */
 public enum PermissionType {
 

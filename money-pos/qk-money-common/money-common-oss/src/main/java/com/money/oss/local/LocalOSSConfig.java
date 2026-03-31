@@ -4,12 +4,12 @@ import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
+ * 本地 OSS 配置
+ *
  * @author : money
- * @version : 1.0.0
- * @description : 本地OSS配置
- * @createTime : 2022-01-01 16:46:59
+ * @since : 1.0.0
  */
-@ConfigurationProperties(prefix = "local")
+@ConfigurationProperties(prefix = "money.oss.local")
 @Data
 public class LocalOSSConfig {
 

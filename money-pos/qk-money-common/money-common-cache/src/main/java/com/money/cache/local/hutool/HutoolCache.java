@@ -13,10 +13,10 @@ import java.util.Locale;
 import java.util.Map;
 
 /**
+ * Hutool 缓存
+ *
  * @author : money
- * @version : 1.0.0
- * @description : hutool缓存
- * @createTime : 2021-09-21 12:25:40
+ * @since : 1.0.0
  */
 @Data
 public class HutoolCache implements LocalCache {
@@ -39,19 +39,14 @@ public class HutoolCache implements LocalCache {
         String strategy = properties.getStrategy().toUpperCase(Locale.ROOT);
         int capacity = properties.getCapacity();
         long ttl = properties.getTtl();
-        switch (strategy) {
-            case "FIFO":
-                return CacheUtil.newFIFOCache(capacity, ttl);
-            case "LFU":
-                return CacheUtil.newLFUCache(capacity, ttl);
-            case "TIMED":
-                return CacheUtil.newTimedCache(ttl);
-            case "WEAK":
-                return CacheUtil.newWeakCache(ttl);
-            case "LRU":
-            default:
-                return CacheUtil.newLRUCache(capacity, ttl);
-        }
+        return switch (strategy) {
+            case "FIFO" -> CacheUtil.newFIFOCache(capacity, ttl);
+            case "LFU" -> CacheUtil.newLFUCache(capacity, ttl);
+            case "TIMED" -> CacheUtil.newTimedCache(ttl);
+            case "WEAK" -> CacheUtil.newWeakCache(ttl);
+            // 默认使用 LRU
+            default -> CacheUtil.newLRUCache(capacity, ttl);
+        };
     }
 
 

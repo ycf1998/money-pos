@@ -5,17 +5,15 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 /**
-* <p>
-* 字典详情表
-* </p>
-*
-* @author money
-* @since 2024-05-18
-*/
+ * 字典详情表 DTO
+ *
+ * @author money
+ * @since 2024-05-18
+ */
 @Data
 @Accessors(chain = true)
 public class SysDictDetailDTO {

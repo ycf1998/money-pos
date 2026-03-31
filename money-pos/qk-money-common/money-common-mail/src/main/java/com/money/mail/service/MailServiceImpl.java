@@ -12,18 +12,18 @@ import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 
-import javax.mail.MessagingException;
-import javax.mail.internet.MimeMessage;
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
 import java.io.File;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
 
 /**
+ * 邮件服务实现类
+ *
  * @author : money
- * @version : 1.0.0
- * @description : 邮件服务impl
- * @createTime : 2022-02-21 11:26:16
+ * @since : 1.0.0
  */
 @Slf4j
 @RequiredArgsConstructor

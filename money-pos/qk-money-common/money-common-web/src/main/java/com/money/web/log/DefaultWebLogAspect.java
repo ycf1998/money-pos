@@ -9,6 +9,8 @@ import com.money.web.context.WebRequestContextHolder;
 import com.money.web.util.IpUtil;
 import com.money.web.util.JacksonUtil;
 import com.money.web.util.WebUtil;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.Part;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.catalina.core.ApplicationPart;
@@ -17,12 +19,11 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.web.util.ContentCachingRequestWrapper;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.Part;
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * 默认 Web 日志切面
@@ -58,7 +59,7 @@ public class DefaultWebLogAspect {
         String body = "";
         if (logBody) {
             body = Opt.ofBlankAble(resolveBody(request)).orElse("-");
-            log.info("body: {}", body);
+            log.info("body: {}", desensitize(body));
         }
 
 
@@ -69,7 +70,7 @@ public class DefaultWebLogAspect {
             long endTime = Instant.now().toEpochMilli();
             long spendTime = endTime - startTime;
             if (logResult) {
-                log.info("result: {}", JacksonUtil.writeAsString(result));
+                log.info("result: {}", desensitize(JacksonUtil.writeAsString(result)));
             }
             log.info("spend time: {}ms", spendTime);
             // TODO 记录日志
@@ -87,6 +88,28 @@ public class DefaultWebLogAspect {
                     .build();
         }
         return result;
+    }
+
+    /**
+     * 脱敏处理
+     * <p>当脱敏字段列表为空时，不进行脱敏</p>
+     */
+    private String desensitize(String json) {
+        List<String> fields = properties.getDesensitizeFields();
+        if (fields.isEmpty() || StrUtil.isBlank(json)) {
+            return json;
+        }
+        for (String field : fields) {
+            // 脱敏字符串值："field":"value" -> "field":"***"
+            json = json.replaceAll("\"" + field + "\"\\s*:\\s*\"[^\"]*\"",
+                    "\"" + field + "\":\"***\"");
+            // 脱敏数字/布尔值："field":123 -> "field":***
+            json = json.replaceAll("\"" + field + "\"\\s*:\\s*[0-9.eE+-]+",
+                    "\"" + field + "\":***");
+            json = json.replaceAll("\"" + field + "\"\\s*:\\s*(true|false)",
+                    "\"" + field + "\":***");
+        }
+        return json;
     }
 
     /**
@@ -113,13 +136,18 @@ public class DefaultWebLogAspect {
                                 .append("&");
                     }
                 }
-                return sb.deleteCharAt(sb.length() - 1).toString();
+                if (!sb.isEmpty()) {
+                    sb.deleteCharAt(sb.length() - 1);
+                }
+                return sb.toString();
             } else if (StrUtil.startWithIgnoreCase(contentType, ContentType.FORM_URLENCODED.getValue())) {
                 StringBuilder sb = new StringBuilder();
                 request.getParameterMap().forEach((k, v) -> sb.append(k).append("=").append(Arrays.toString(v)).append("&"));
-                return sb.deleteCharAt(sb.length() - 1).toString();
-            } else if (request instanceof ContentCachingRequestWrapper) {
-                ContentCachingRequestWrapper wrappedRequest = (ContentCachingRequestWrapper) request;
+                if (!sb.isEmpty()) {
+                    sb.deleteCharAt(sb.length() - 1);
+                }
+                return sb.toString();
+            } else if (request instanceof ContentCachingRequestWrapper wrappedRequest) {
                 byte[] contentAsByteArray = wrappedRequest.getContentAsByteArray();
                 return new String(contentAsByteArray, StandardCharsets.UTF_8);
             } else {

@@ -13,10 +13,10 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * 邮件请求
+ *
  * @author : money
- * @version : 1.0.0
- * @description : 邮件请求
- * @createTime : 2022-05-14 11:24:23
+ * @since : 1.0.0
  */
 @Data
 @Accessors(chain = true)

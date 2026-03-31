@@ -34,7 +34,7 @@ public class SysUserController {
 
     @Operation(summary = "上传头像")
     @PostMapping("/uploadAvatar")
-    public String uploadAvatar(@CurrentUser String username, MultipartFile file) {
+    public String uploadAvatar(@CurrentUser String username, @RequestParam("file") MultipartFile file) {
         return sysUserService.uploadAvatar(username, file);
     }
 
@@ -60,25 +60,25 @@ public class SysUserController {
     @Operation(summary = "添加用户")
     @PostMapping
     @PreAuthorize("@rbac.hasPermission('user:add')")
-    public void addSysUser(@Validated(ValidGroup.Save.class) @RequestBody SysUserDTO sysUserDTO) {
-        sysAuthService.checkLevelForRole(SecurityGuard.getRbacUser().getUserId(), sysUserDTO.getRoles());
+    public void addSysUser(@CurrentUser Long userId, @Validated(ValidGroup.Save.class) @RequestBody SysUserDTO sysUserDTO) {
+        sysAuthService.checkLevelForRole(userId, sysUserDTO.getRoles());
         sysUserService.add(sysUserDTO);
     }
 
     @Operation(summary = "修改用户")
     @PutMapping
     @PreAuthorize("@rbac.hasPermission('user:edit')")
-    public void updateSysUser(@Validated(ValidGroup.Update.class) @RequestBody SysUserDTO sysUserDTO) {
-        sysAuthService.checkLevelForUser(SecurityGuard.getRbacUser().getUserId(), Collections.singleton(sysUserDTO.getId()));
-        sysAuthService.checkLevelForRole(SecurityGuard.getRbacUser().getUserId(), sysUserDTO.getRoles());
+    public void updateSysUser(@CurrentUser Long userId, @Validated(ValidGroup.Update.class) @RequestBody SysUserDTO sysUserDTO) {
+        sysAuthService.checkLevelForUser(userId, Collections.singleton(sysUserDTO.getId()));
+        sysAuthService.checkLevelForRole(userId, sysUserDTO.getRoles());
         sysUserService.updateById(sysUserDTO);
     }
 
     @Operation(summary = "删除用户")
     @DeleteMapping
     @PreAuthorize("@rbac.hasPermission('user:del')")
-    public void deleteSysUser(@RequestBody Set<Long> ids) {
-        sysAuthService.checkLevelForUser(SecurityGuard.getRbacUser().getUserId(), ids);
+    public void deleteSysUser(@CurrentUser Long userId, @RequestBody Set<Long> ids) {
+        sysAuthService.checkLevelForUser(userId, ids);
         sysUserService.deleteById(ids);
     }
 

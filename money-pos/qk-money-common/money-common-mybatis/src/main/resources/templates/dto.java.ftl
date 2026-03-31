@@ -2,8 +2,10 @@
 package ${packageOther}.${entityLower};
 
 <#list table.importPackages as pkg>
-<#if pkg!="com.baomidou.mybatisplus.annotation.TableName" && pkg!="com.money.mb.base.BaseEntity"
- && pkg!="com.baomidou.mybatisplus.annotation.IdType" && pkg!="com.baomidou.mybatisplus.annotation.TableId">
+<#if pkg!="com.baomidou.mybatisplus.annotation.TableName"
+    && pkg!="com.money.mb.base.BaseEntity"
+    && pkg!="com.baomidou.mybatisplus.annotation.IdType"
+    && pkg!="com.baomidou.mybatisplus.annotation.TableId">
 import ${pkg};
 </#if>
 </#list>
@@ -16,17 +18,15 @@ import lombok.Data;
 <#if chainModel>
 import lombok.experimental.Accessors;
 </#if>
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 import com.money.web.dto.ValidGroup;
 
 /**
-* <p>
-* ${table.comment!}
-* </p>
-*
-* @author ${author}
-* @since ${date}
-*/
+ * ${table.comment!} DTO
+ *
+ * @author ${author}
+ * @since ${date}
+ */
 <#if entityLombokModel>
 @Data
 </#if>
@@ -49,8 +49,8 @@ public class ${entity}DTO {
     @Schema(description = "${field.comment}")
     <#else>
     /**
-    * ${field.comment}
-    */
+     * ${field.comment}
+     */
     </#if>
     </#if>
     private ${field.propertyType} ${field.propertyName};

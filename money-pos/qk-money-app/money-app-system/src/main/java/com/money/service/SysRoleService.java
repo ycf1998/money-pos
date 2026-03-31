@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * 角色表(SysRole)表服务接口
+ * 角色表 (SysRole) 表服务接口
  *
  * @author money
  * @since 2021-11-28 22:50:29
@@ -24,7 +24,7 @@ public interface SysRoleService extends IService<SysRole> {
     /**
      * 获取用户最高角色的级别
      *
-     * @param userId 用户id
+     * @param userId 用户 id
      * @return {@link Integer}
      */
     Integer getHighestLevel(Long userId);
@@ -32,7 +32,7 @@ public interface SysRoleService extends IService<SysRole> {
     /**
      * 获取用户所有角色
      *
-     * @param userId 用户id
+     * @param userId 用户 id
      * @return {@link List}<{@link SysRole}>
      */
     List<SysRole> getByUser(Long userId);
@@ -47,7 +47,7 @@ public interface SysRoleService extends IService<SysRole> {
     /**
      * 查询角色列表
      *
-     * @param queryDTO 查询dto
+     * @param queryDTO 查询 dto
      * @return {@link PageVO}<{@link SysRoleVO}>
      */
     PageVO<SysRoleVO> list(SysRolePageQueryDTO queryDTO);
@@ -55,14 +55,14 @@ public interface SysRoleService extends IService<SysRole> {
     /**
      * 添加角色
      *
-     * @param sysRoleDTO 系统角色dto
+     * @param sysRoleDTO 系统角色 dto
      */
     void add(SysRoleDTO sysRoleDTO);
 
     /**
      * 修改角色
      *
-     * @param sysRoleDTO 系统角色dto
+     * @param sysRoleDTO 系统角色 dto
      */
     void updateById(SysRoleDTO sysRoleDTO);
 
@@ -91,7 +91,7 @@ public interface SysRoleService extends IService<SysRole> {
     /**
      * 解除用户所有角色
      *
-     * @param userId 用户id
+     * @param userId 用户 id
      */
     void relevanceByUser(Long userId);
 

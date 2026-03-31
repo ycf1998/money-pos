@@ -7,17 +7,30 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 忽略 URL 配置
+ * 忽略 URL 配置属性
+ * <p>配置前缀为 {@code money.security.ignore}。</p>
+ * <p>配置示例：
+ * <pre>{@code
+ * money:
+ *   security:
+ *     ignore:
+ *       pattern:
+ *         - /auth/**
+ *         - /swagger/**
+ *       get:
+ *         - /public/**
+ * }</pre>
+ * </p>
  *
- * @author : money
- * @since : 1.0.0
+ * @author money
+ * @since 1.0.0
  */
 @Data
 @ConfigurationProperties("money.security.ignore")
 public class IgnoreUrlConfig {
 
     /**
-     * 需要忽略的 URL 格式，不考虑请求方法
+     * 需要忽略的 URL 格式（不考虑请求方法）
      */
     private List<String> pattern = new ArrayList<>();
 

@@ -2,36 +2,41 @@ package com.money.cache.redis;
 
 import cn.hutool.core.date.DatePattern;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.databind.jsontype.impl.LaissezFaireSubTypeValidator;
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
-import org.springframework.boot.autoconfigure.cache.RedisCacheManagerBuilderCustomizer;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
+import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
-import org.springframework.data.redis.core.*;
-import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
+import org.springframework.data.redis.core.HashOperations;
+import org.springframework.data.redis.core.ListOperations;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.SetOperations;
+import org.springframework.data.redis.core.ValueOperations;
+import org.springframework.data.redis.core.ZSetOperations;
+import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.JdkSerializationRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
-import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 
 import java.text.SimpleDateFormat;
 import java.time.Duration;
-import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 import java.util.TimeZone;
 
 /**
- * @author : money
- * @version : 1.0.0
- * @description : redis配置
- * @createTime : 2021-10-23 17:27:17
+ * Redis 配置类
+ *
+ * @author money
+ * @since 1.0.0
  */
+@Configuration
+@ConditionalOnClass(RedisConnectionFactory.class)
 public class RedisConfiguration {
 
     @Bean
@@ -46,28 +51,30 @@ public class RedisConfiguration {
     }
 
     /**
-     * json redis序列化器
+     * json redis 序列化器
      *
      * @return {@link RedisSerializer}<{@link Object}>
      */
     private RedisSerializer<Object> jsonRedisSerializer() {
-        Jackson2JsonRedisSerializer<Object> serializer = new Jackson2JsonRedisSerializer<>(Object.class);
-        final ObjectMapper objectMapper = new Jackson2ObjectMapperBuilder()
-                // 不序列化null值，字段为null时返回json不返回该字段
-                .serializationInclusion(JsonInclude.Include.NON_NULL)
-                //必须设置，否则无法将JSON转化为对象，会转化成Map类型
-                .defaultTyping(new ObjectMapper.DefaultTypeResolverBuilder(ObjectMapper.DefaultTyping.NON_FINAL, LaissezFaireSubTypeValidator.instance))
-                .locale(Locale.CHINA)
-                .timeZone(TimeZone.getTimeZone(ZoneId.systemDefault()))
-                .dateFormat(new SimpleDateFormat(DatePattern.NORM_DATETIME_PATTERN))
-                .serializerByType(LocalDateTime.class,
-                        new LocalDateTimeSerializer(DateTimeFormatter.ofPattern(DatePattern.NORM_DATETIME_PATTERN)))
-                .deserializerByType(LocalDateTime.class,
-                        new LocalDateTimeDeserializer(DateTimeFormatter.ofPattern(DatePattern.NORM_DATETIME_PATTERN)))
-                .featuresToDisable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
-                .build();
-        serializer.setObjectMapper(objectMapper);
-        return serializer;
+        ObjectMapper objectMapper = new ObjectMapper();
+        // 注册 JavaTimeModule 支持 LocalDateTime 等
+        objectMapper.registerModule(new JavaTimeModule());
+        // 不序列化 null 值，字段为 null 时返回 json 不返回该字段
+        objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+        // 设置 Locale 和时区
+        objectMapper.setLocale(Locale.CHINA);
+        objectMapper.setTimeZone(TimeZone.getTimeZone(ZoneId.systemDefault()));
+        // 设置日期格式
+        objectMapper.setDateFormat(new SimpleDateFormat(DatePattern.NORM_DATETIME_PATTERN));
+        // 禁用时间戳格式
+        objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+        // 激活默认类型信息，用于反序列化时识别具体类型
+        objectMapper.activateDefaultTyping(
+                objectMapper.getPolymorphicTypeValidator(),
+                ObjectMapper.DefaultTyping.NON_FINAL,
+                JsonTypeInfo.As.PROPERTY
+        );
+        return new GenericJackson2JsonRedisSerializer(objectMapper);
     }
 
     @Bean
@@ -95,12 +102,19 @@ public class RedisConfiguration {
         return redisTemplate.opsForZSet();
     }
 
+    /**
+     * 配置 Redis Cache Manager
+     *
+     * @param redisConnectionFactory Redis 连接工厂
+     * @param redisConfig Redis 配置属性
+     * @return {@link RedisCacheManager}
+     */
     @Bean
-    public RedisCacheManagerBuilderCustomizer myRedisCacheManagerBuilderCustomizer(RedisConfig redisConfig) {
-        return builder -> builder
-                .cacheDefaults(RedisCacheConfiguration
-                        .defaultCacheConfig(Thread.currentThread().getContextClassLoader())
-                        .entryTtl(Duration.ofMillis(redisConfig.getTtl())));
-
+    public RedisCacheManager cacheManager(RedisConnectionFactory redisConnectionFactory, RedisConfig redisConfig) {
+        RedisCacheConfiguration cacheConfig = RedisCacheConfiguration.defaultCacheConfig()
+                .entryTtl(Duration.ofMillis(redisConfig.getTtl()));
+        return RedisCacheManager.builder(redisConnectionFactory)
+                .cacheDefaults(cacheConfig)
+                .build();
     }
 }

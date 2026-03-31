@@ -24,9 +24,9 @@ public class SysTenantController {
 
     private final SysTenantService sysTenantService;
 
-    @Operation(summary = "通过code获取租户")
+    @Operation(summary = "通过 code 获取租户")
     @GetMapping("/byCode")
-    public SysTenant getTenant(@RequestParam String code) {
+    public SysTenant getTenant(@RequestParam("code") String code) {
         return sysTenantService.getTenantIdByCode(code);
     }
 
@@ -41,7 +41,7 @@ public class SysTenantController {
     @PostMapping
     @PreAuthorize("@rbac.hasPermission('tenant:add')")
     public void addSysTenant(@Validated(ValidGroup.Save.class) @RequestPart("tenant") SysTenantDTO sysTenantDTO,
-                             @RequestPart(required = false) MultipartFile logo) {
+                             @RequestPart(value = "logo", required = false) MultipartFile logo) {
         sysTenantService.add(sysTenantDTO, logo);
     }
 
@@ -49,7 +49,7 @@ public class SysTenantController {
     @PutMapping
     @PreAuthorize("@rbac.hasPermission('tenant:edit')")
     public void updateSysTenant(@Validated(ValidGroup.Update.class) @RequestPart("tenant") SysTenantDTO sysTenantDTO,
-                                @RequestPart(required = false) MultipartFile logo) {
+                                @RequestPart(value = "logo", required = false) MultipartFile logo) {
         sysTenantService.updateById(sysTenantDTO, logo);
     }
 

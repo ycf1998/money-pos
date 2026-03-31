@@ -77,7 +77,7 @@ public class SysRoleController {
     @Operation(summary = "配置权限")
     @PostMapping("/{id}/permission")
     @PreAuthorize("@rbac.hasPermission('role:edit')")
-    public void configurePermissions(@PathVariable Long id, @RequestBody Set<Long> permissions) {
+    public void configurePermissions(@PathVariable("id") Long id, @RequestBody Set<Long> permissions) {
         sysAuthService.checkLevelForRole(SecurityGuard.getRbacUser().getUserId(), Collections.singleton(id));
         sysRoleService.configurePermissions(id, permissions);
     }

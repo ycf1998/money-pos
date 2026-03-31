@@ -9,10 +9,10 @@ import lombok.EqualsAndHashCode;
 import java.util.Map;
 
 /**
+ * 系统用户查询 DTO
+ *
  * @author : money
- * @version : 1.0.0
- * @description : 系统用户查询dto
- * @createTime : 2022-03-05 12:21:04
+ * @since : 1.0.0
  */
 @EqualsAndHashCode(callSuper = true)
 @Data

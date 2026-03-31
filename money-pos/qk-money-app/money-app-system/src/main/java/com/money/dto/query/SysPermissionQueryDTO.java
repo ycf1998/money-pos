@@ -4,10 +4,10 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 /**
+ * 系统权限查询 DTO
+ *
  * @author : money
- * @version : 1.0.0
- * @description : 系统角色查询dto
- * @createTime : 2022-03-05 23:25:21
+ * @since : 1.0.0
  */
 @Data
 public class SysPermissionQueryDTO {

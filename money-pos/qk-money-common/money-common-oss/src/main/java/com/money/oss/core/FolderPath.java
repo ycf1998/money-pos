@@ -7,10 +7,10 @@ import lombok.Getter;
 import java.util.StringJoiner;
 
 /**
+ * 文件夹路径
+ *
  * @author : money
- * @version : 1.0.0
- * @description : 文件夹路径
- * @createTime : 2022-01-01 16:47:50
+ * @since : 1.0.0
  */
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
@@ -41,11 +41,5 @@ public class FolderPath {
             return new FolderPath(path.toString());
         }
 
-    }
-
-    public static void main(String[] args) {
-        FolderPath image = FolderPath.builder().cd("image").cd("user01").build();
-        String folderPath = image.getFolderPath();
-        System.out.println(folderPath);
     }
 }

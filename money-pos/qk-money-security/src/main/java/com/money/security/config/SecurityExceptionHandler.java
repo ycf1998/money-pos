@@ -10,12 +10,11 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 /**
- * 安全例外处理器
- * <p>
- * 由于如 @PreAuthorize 注解抛出的 AccessDeniedException 已经在 Controller 层，无法被 AccessDeniedHandler 处理，因此需单独捕获处理
+ * 安全异常处理器
+ * <p>处理 Spring Security 相关的认证和授权异常。</p>
  *
- * @author : money
- * @since : 1.0.0
+ * @author money
+ * @since 1.0.0
  */
 @Slf4j
 @RestControllerAdvice
