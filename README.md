@@ -1,7 +1,7 @@
 <h1 align="center">💰 麦尼收银系统</h1>
 
 <p align="center">
-  <strong>Money POS - 基于 Spring Boot 2.7 & VueJS 3 的多店铺收银系统</strong>
+  <strong>Money POS - 基于 Spring Boot 3.5 & VueJS 3 的多店铺收银系统</strong>
 </p>
 
 <p align="center">
