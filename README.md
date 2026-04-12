@@ -12,7 +12,7 @@
     <img src="https://img.shields.io/badge/Vue-3.x-4FC08D?style=flat-square&logo=vue.js" alt="Vue">
   </a>
   <a href="https://element-plus.org/" target="_blank">
-    <img src="https://img.shields.io/badge/Element%20Plus-latest-409EFF?style=flat-square" alt="Element Plus">
+    <img src="https://img.shields.io/badge/Element%20Plus-2.13.2-409EFF?style=flat-square" alt="Element Plus">
   </a>
   <a href="https://baomidou.com/" target="_blank">
     <img src="https://img.shields.io/badge/MyBatis--Plus-3.5.15-0078D4?style=flat-square" alt="MyBatis-Plus">
@@ -213,7 +213,7 @@ npm run dev
 
 ### 6️⃣ 成功启动
 
-访问：`http://localhost:9101/money-pos`
+访问：`http://localhost:1520/money-pos`
 
 ## 🖼️ 系统截图
 
