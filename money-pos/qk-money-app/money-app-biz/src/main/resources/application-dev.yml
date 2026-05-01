@@ -50,4 +50,4 @@ management:
     health:
       show-details: ALWAYS
     logfile:
-      external-file: log/service.log
+      external-file: logs/service.log

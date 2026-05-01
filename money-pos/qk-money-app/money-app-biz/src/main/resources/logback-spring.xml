@@ -4,7 +4,7 @@
     <springProperty scope="context" name="app_name" source="spring.application.name" defaultValue="app"/>
 
     <!-- 设置变量 -->
-    <property name="LOG_PATH" value="log"/>
+    <property name="LOG_PATH" value="logs"/>
     <property name="CONSOLE_LOG_PATTERN"
               value="%d %highlight(%-5level) [%15.15t] %cyan(%c{15}) %magenta([%X{requestId:--}]) %X{userId} : %msg%n"/>
     <property name="FILE_LOG_PATTERN"
