@@ -30,6 +30,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
@@ -63,21 +65,20 @@ public class PosServiceImpl implements PosService {
         order.setOrderNo(orderNo);
         // 核算订单
         List<OmsOrderDetailDTO> orderDetailDTOS = settleAccountsDTO.getOrderDetail();
+        List<Long> goodsIds = orderDetailDTOS.stream().map(OmsOrderDetailDTO::getGoodsId).collect(Collectors.toList());
+        Map<Long, GmsGoods> goodsMap = gmsGoodsService.listByIds(goodsIds).stream()
+                .collect(Collectors.toMap(GmsGoods::getId, Function.identity()));
         List<OmsOrderDetail> orderDetails = orderDetailDTOS.stream().map(dto -> {
-            GmsGoods goods = gmsGoodsService.getById(dto.getGoodsId());
-            OmsOrderDetail detail = new OmsOrderDetail();
+            GmsGoods goods = goodsMap.get(dto.getGoodsId());
+            OmsOrderDetail detail = BeanMapUtil.to(dto, OmsOrderDetail::new);
             detail.setOrderNo(orderNo);
             detail.setStatus(OrderStatusEnum.PAID.name());
-            detail.setGoodsId(goods.getId());
             detail.setGoodsBarcode(goods.getBarcode());
             detail.setGoodsName(goods.getName());
             detail.setSalePrice(goods.getSalePrice());
             detail.setPurchasePrice(goods.getPurchasePrice());
             detail.setVipPrice(goods.getVipPrice());
             detail.setCoupon(goods.getCoupon());
-
-            detail.setGoodsPrice(dto.getGoodsPrice());
-            detail.setQuantity(dto.getQuantity());
             return detail;
         }).collect(Collectors.toList());
         this.aggOrder(order, orderDetails);
