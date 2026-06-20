@@ -1,0 +1,27 @@
+### IDE ###
+.idea/
+*.iml
+*.iws
+*.ipr
+.vscode/
+
+### OS generated files ###
+.DS_Store
+Thumbs.db
+
+### Logs ###
+logs/
+*.log
+
+### Agent / AI ###
+.claude/*
+!.claude/skills/
+.claude/skills/*
+!.claude/skills/qk-dev/
+
+### LSP ###
+.settings
+.project
+
+### 个人目录
+.personal
