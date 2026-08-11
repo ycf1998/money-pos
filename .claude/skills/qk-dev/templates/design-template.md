@@ -35,6 +35,20 @@ ALTER TABLE `existing_table` ADD COLUMN `new_field` VARCHAR(50) NULL COMMENT '[�
 -- INSERT INTO `xxx` (name, ...) VALUES ('默认值', ...);
 ```
 
+### 权限配置 SQL
+
+新模块需要添加菜单和按钮权限数据，否则前端动态路由无法生成菜单。
+
+```sql
+-- 菜单（挂在对应父目录下）
+INSERT INTO `sys_permission` VALUES (..., '[模块名称]', 'MENU', [父ID], '[route-path]', '[permission:list]', '[icon]', ...);
+
+-- 按钮权限
+INSERT INTO `sys_permission` VALUES (..., '新增', 'BUTTON', [菜单ID], '', '[permission:add]', ...);
+INSERT INTO `sys_permission` VALUES (..., '修改', 'BUTTON', [菜单ID], '', '[permission:edit]', ...);
+INSERT INTO `sys_permission` VALUES (..., '删除', 'BUTTON', [菜单ID], '', '[permission:del]', ...);
+```
+
 ---
 
 ## 2. 接口设计

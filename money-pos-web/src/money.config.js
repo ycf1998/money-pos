@@ -28,12 +28,8 @@ export default {
      * @returns {string}
      */
     getOssUrl(path, cloud = false) {
-        if (path && !path.includes('http')) {
-            if (cloud) {
-               path = config.cloudOSSPath + path
-            } else {
-                path = import.meta.env.VITE_BASE_URL + this.localOSSPath + path
-            }
+        if (path && !/^https?:\/\//i.test(path)) {
+            path = (cloud ? this.cloudOSSPath : import.meta.env.VITE_BASE_URL + this.localOSSPath) + path
         }
         return path
     }

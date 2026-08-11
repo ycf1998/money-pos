@@ -22,12 +22,12 @@ const prop = defineProps({
         :class="[
       'relative flex items-center rounded-lg px-3 py-2.5 text-sm font-medium cursor-pointer transition-all duration-300',
       {
-        'text-blue-700 bg-blue-50 dark:bg-gray-800 dark:text-blue-400': active && !summary,
-        'text-gray-500 hover:text-blue-500 dark:hover:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800': !active
+        'text-[var(--el-color-primary)] bg-[var(--el-color-primary-light-9)] dark:bg-gray-800 dark:text-[var(--el-color-primary-light-3)]': active && !summary,
+        'text-gray-500 hover:text-[var(--el-color-primary)] dark:hover:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800': !active
       },
     ]"
     >
-        <div v-if="active && !summary" class="absolute left-0 top-1/2 transform -translate-y-1/2 w-1 h-6 bg-blue-500 rounded-r-full"></div>
+        <div v-if="active && !summary" class="absolute left-0 top-1/2 transform -translate-y-1/2 w-1 h-6 bg-[var(--el-color-primary)] rounded-r-full"></div>
         <svg-icon dir="open" :name="icon" class="w-5 h-5" />
         <span v-show="titleShow" class="ml-3 text-sm font-medium transition-opacity duration-300">{{ title }}</span>
         <span

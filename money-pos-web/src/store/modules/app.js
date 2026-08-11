@@ -17,15 +17,16 @@ export const useAppStore = defineStore('app', {
         _loadMenus(menus, first) {
             if (!menus) return []
             return menus.map(e => {
-                const menu = {
+                const menu = Object.fromEntries(
+                Object.entries({
                     name: e.name,
                     path: (first ? '/' : '') + e.path,
                     component: first ? Layout : views[`/src/views/${e.component}.vue`],
                     meta: e.meta,
                     iframe: e.iframe,
                     hidden: e.hidden,
-                }
-                Object.entries(menu).forEach(kv => {if (!kv[1]) delete menu[kv[0]]})
+                }).filter(([_, v]) => v)
+            )
                 if (e.children) {
                     menu.children = this._loadMenus(e.children, false)
                     menu.redirect = {name: e.children[0].name}

@@ -2,8 +2,8 @@
     <PageWrapper>
         <!-- 搜索栏 -->
         <MoneyRR :money-crud="moneyCrud">
-            <el-input v-model="moneyCrud.query.nameOrDesc" placeholder="字典名称/描述" class="md:!w-48"
-                      @keyup.enter.native="moneyCrud.doQuery" />
+            <el-input v-model="moneyCrud.query.nameOrDesc" placeholder="字典名称/描述" class="md:w-48!"
+                      @keyup.enter="moneyCrud.doQuery" />
         </MoneyRR>
         <!-- 数据表格 -->
         <div class="inline-grid md:grid-cols-2 md:gap-2">
@@ -91,7 +91,7 @@ const columns = [
     {
         prop: 'opt',
         label: '操作',
-        width: 120,
+        width: 150,
         align: 'center',
         fixed: 'right',
         showOverflowTooltip: false,
@@ -124,7 +124,7 @@ const columns2 = [
     {
         prop: 'opt',
         label: '操作',
-        width: 120,
+        width: 150,
         align: 'center',
         fixed: 'right',
         showOverflowTooltip: false,

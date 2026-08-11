@@ -246,7 +246,7 @@ moneyCrud.value.Hook.afterDoQuery = (data) => {
 | 属性 | 类型 | 必填 | 默认值 | 说明 |
 |------|------|------|--------|------|
 | `moneyCrud` | `MoneyCrud` | 是 | - | CRUD 实例 |
-| `dialogClass` | `String` | 否 | `'!w-11/12 md:!w-1/2 lg:!w-1/3'` | 弹窗样式类 |
+| `dialogClass` | `String` | 否 | `'w-11/12! md:w-1/2! lg:w-1/3!'` | 弹窗样式类 |
 | `rules` | `Object` | 否 | - | 表单验证规则 |
 
 ### 插槽

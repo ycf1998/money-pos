@@ -2,8 +2,8 @@
     <PageWrapper>
         <!-- 搜索栏 -->
         <MoneyRR :money-crud="moneyCrud">
-            <el-input v-model="moneyCrud.query.name" placeholder="品牌名称" class="md:!w-48"
-                      @keyup.enter.native="moneyCrud.doQuery" />
+            <el-input v-model="moneyCrud.query.name" placeholder="品牌名称" class="md:w-48!"
+                      @keyup.enter="moneyCrud.doQuery" />
         </MoneyRR>
         <!-- 操作行 -->
         <MoneyCUD :money-crud="moneyCrud" />
@@ -65,7 +65,7 @@ const columns = [
     {
         prop: 'opt',
         label: '操作',
-        width: 120,
+        width: 150,
         align: 'center',
         fixed: 'right',
         showOverflowTooltip: false,

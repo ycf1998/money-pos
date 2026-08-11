@@ -549,9 +549,6 @@ refresh()
     gap: 1rem;
 }
 
-.member-input-wrapper {
-    position: relative;
-}
 
 
 .checkout-wrapper {
@@ -564,7 +561,7 @@ refresh()
 }
 
 .checkout-btn {
-    width: 140px;
+    min-width: 140px;
     height: 100%;
 
     :deep(.el-button__text) {

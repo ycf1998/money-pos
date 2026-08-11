@@ -2,11 +2,11 @@
     <PageWrapper>
         <!-- 搜索栏 -->
         <MoneyRR :money-crud="moneyCrud">
-            <el-input v-model="moneyCrud.query.roleCode" placeholder="角色编码" class="md:!w-48"
-                      @keyup.enter.native="moneyCrud.doQuery" />
-            <el-input v-model.number="moneyCrud.query.name" placeholder="角色名称/描述" class="md:!w-48"
-                      @keyup.enter.native="moneyCrud.doQuery" />
-            <el-select v-model="moneyCrud.query.enabled" clearable placeholder="状态" class="md:!w-48">
+            <el-input v-model="moneyCrud.query.roleCode" placeholder="角色编码" class="md:w-48!"
+                      @keyup.enter="moneyCrud.doQuery" />
+            <el-input v-model="moneyCrud.query.name" placeholder="角色名称/描述" class="md:w-48!"
+                      @keyup.enter="moneyCrud.doQuery" />
+            <el-select v-model="moneyCrud.query.enabled" clearable placeholder="状态" class="md:w-48!">
                 <el-option v-for="item in [true, false]" :key="item" :label="item ? '启用':'禁用'" :value="item" />
             </el-select>
         </MoneyRR>
@@ -52,7 +52,7 @@
         </MoneyForm>
     </PageWrapper>
     <!-- 权限配置对话框 -->
-    <el-dialog v-model="configDialogVisible" title="配置权限" draggable class="!w-11/12 md:!w-1/2 lg:!w-1/3"
+    <el-dialog v-model="configDialogVisible" title="配置权限" draggable class="w-11/12! md:w-1/2! lg:w-1/3!"
                @open="openDialog" destroy-on-close>
         <el-tree ref="permissionTree" :props="{ label: 'permissionName' }" :data="permissions"
                  node-key="id" show-checkbox :render-after-expand="false" />
@@ -74,7 +74,7 @@ import MoneyCUD from "@/components/crud/MoneyCUD.vue";
 import MoneyUD from "@/components/crud/MoneyUD.vue";
 import MoneyForm from "@/components/crud/MoneyForm.vue";
 
-import {ref} from "vue";
+import {ref, nextTick} from "vue";
 import {useUserStore} from "@/store/index.js";
 import roleApi from "@/api/system/role.js";
 import permissionApi from "@/api/system/permission.js";
@@ -171,7 +171,9 @@ function toConfigPermission(row) {
  * 打开对话框前
  */
 function openDialog() {
-    selectedRole.value.permissions.forEach(e => permissionTree.value.setChecked(e.id, true, false))
+    nextTick(() => {
+        selectedRole.value.permissions.forEach(e => permissionTree.value.setChecked(e.id, true, false))
+    })
 }
 
 /**

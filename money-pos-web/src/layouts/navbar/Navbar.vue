@@ -50,7 +50,7 @@ function logout() {
                 <svg-icon :name="sidebarState.isOpen ? 'menu-open' : 'menu-close'" class="w-5 h-5 hidden lg:block" />
             </a>
             <el-breadcrumb separator="/">
-                <el-breadcrumb-item v-for="item in breadcrumb" :to="{ path: item.path }" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                <el-breadcrumb-item v-for="item in breadcrumb" :to="{ path: item.path }" class="hover:text-[var(--el-color-primary)] dark:hover:text-[var(--el-color-primary-light-5)] transition-colors">
                     {{ item.meta.title }}
                 </el-breadcrumb-item>
             </el-breadcrumb>

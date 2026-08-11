@@ -2,11 +2,11 @@
     <PageWrapper>
         <!-- 搜索栏 -->
         <MoneyRR :money-crud="moneyCrud">
-            <el-input v-model.number="moneyCrud.query.condition" placeholder="名称/编码" class="md:!w-48"
-                      @keyup.enter.native="moneyCrud.doQuery" />
-            <el-select v-model="moneyCrud.query.permissionType" clearable placeholder="资源类型" class="md:!w-48">
+            <el-input v-model="moneyCrud.query.condition" placeholder="名称/编码" class="md:w-48!"
+                      @keyup.enter="moneyCrud.doQuery" />
+            <el-select v-model="moneyCrud.query.permissionType" clearable placeholder="资源类型" class="md:w-48!">
                 <el-option v-for="item in dict.permissionType" :key="item.value" :label="item.desc"
-                           :value="item.value" @keyup.enter.native="moneyCrud.doQuery" />
+                           :value="item.value" />
             </el-select>
         </MoneyRR>
         <!-- 操作行 -->
@@ -28,7 +28,7 @@
             </template>
         </MoneyCrudTable>
         <!-- 表单 -->
-        <MoneyForm :money-crud="moneyCrud" :inline="true" :rules="rulesMap[type]" :dialog-class="'!w-11/12 md:!w-5/12'">
+        <MoneyForm :money-crud="moneyCrud" :rules="rulesMap[type]" :dialog-class="'w-11/12! md:w-5/12!'">
             <el-form-item label="资源类型" prop="permissionType" class="w-full">
                 <el-radio-group v-model="moneyCrud.form.permissionType" @change="changePermissionType">
                     <el-radio-button v-for="(item, index) in dict.permissionType" :key="index" :value="item.value">
@@ -37,7 +37,7 @@
                 </el-radio-group>
             </el-form-item>
             <el-form-item v-if="type !== 'BUTTON'" label="图标" prop="icon" class="w-full">
-                <IconSelect class="!w-full" @selected="icon => moneyCrud.form.icon = icon"
+                <IconSelect class="w-full!" @selected="icon => moneyCrud.form.icon = icon"
                             :default-icon="moneyCrud.form.icon" />
             </el-form-item>
             <el-form-item :label="type === 'BUTTON' ? '权限名称' : '标题'" prop="permissionName" class="w-full">
@@ -58,7 +58,7 @@
                 </el-input>
             </el-form-item>
             <div v-if="type === 'MENU'" class="flex justify-between flex-wrap md:flex-nowrap">
-                <el-form-item label="组件名称" prop="componentName" class="w-full !mr-0 md:w-1/2 md:!mr-2.5">
+                <el-form-item label="组件名称" prop="componentName" class="w-full mr-0! md:w-1/2 md:mr-2.5!">
                     <el-input v-model="moneyCrud.form.componentName" placeholder="如：User">
                         <template #suffix>
                             <el-tooltip placement="top" content="首字母大写，如：User">
@@ -69,7 +69,7 @@
                         </template>
                     </el-input>
                 </el-form-item>
-                <el-form-item label="组件路径" prop="componentPath" class="w-full !mr-0 md:w-1/2">
+                <el-form-item label="组件路径" prop="componentPath" class="w-full mr-0! md:w-1/2">
                     <el-input v-model="moneyCrud.form.componentPath" placeholder="如：system/user/index">
                         <template #suffix>
                             <el-tooltip placement="top" content="等于 @/views/ + 填写的路径 + .vue">
@@ -82,7 +82,7 @@
                 </el-form-item>
             </div>
             <el-form-item label="上级类目" prop="parentId" class="w-full">
-                <el-tree-select v-model="moneyCrud.form.parentId" :data="permissionsTree" class="!w-full"
+                <el-tree-select v-model="moneyCrud.form.parentId" :data="permissionsTree" class="w-full!"
                                 value-key="id" :props="{ label: 'permissionName' }" check-strictly
                                 :render-after-expand="false" :expand-on-click-node="false" />
             </el-form-item>
@@ -117,8 +117,8 @@ import IconSelect from "@/components/IconSelect.vue";
 
 const userStore = useUserStore()
 const columns = [
-    {prop: 'permissionName', label: '权限名称', width: 150},
-    {prop: 'icon', label: '图标', width: 80},
+    {prop: 'permissionName', label: '权限名称'},
+    {prop: 'icon', label: '图标'},
     {prop: 'permission', label: '权限标识'},
     {prop: 'permissionType', label: '资源类型',},
     {prop: 'componentPath', label: '组件路径', align: "center"},
@@ -127,7 +127,7 @@ const columns = [
     {
         prop: 'opt',
         label: '操作',
-        width: 120,
+        width: 150,
         align: 'center',
         fixed: 'right',
         showOverflowTooltip: false,
@@ -214,11 +214,11 @@ function changePermissionType(value) {
 }
 
 function flagDisabled(data, disableType) {
-    if (!data || data.length < 1) return
-    data.forEach(e => {
-        e.disabled = disableType.includes(e.permissionType)
-        flagDisabled(e.children, disableType)
-    })
-    return data
+    if (!data || data.length < 1) return data
+    return data.map(e => ({
+        ...e,
+        disabled: disableType.includes(e.permissionType),
+        children: flagDisabled(e.children, disableType)
+    }))
 }
 </script>

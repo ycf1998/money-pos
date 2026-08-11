@@ -4,8 +4,8 @@
         v-else
         :="$attrs"
         class="max-h-full"
+        max-height="calc(100vh - 360px)"
         show-overflow-tooltip
-        flexible
         ref="moneyTable"
         :data="moneyCrud.data"
         :default-sort="moneyCrud.defaultSort"

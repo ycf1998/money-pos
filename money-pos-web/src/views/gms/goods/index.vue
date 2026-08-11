@@ -7,21 +7,21 @@
             <div class="grid gap-6 flex-1">
                 <!-- 搜索栏 -->
                 <MoneyRR :money-crud="moneyCrud">
-                    <el-input v-model="moneyCrud.query.barcode" placeholder="条码" class="md:!w-48"
-                              @keyup.enter.native="moneyCrud.doQuery" />
-                    <el-input v-model="moneyCrud.query.name" placeholder="名称" class="md:!w-48"
-                              @keyup.enter.native="moneyCrud.doQuery" />
-                    <el-select v-model="moneyCrud.query.brandId" clearable class="w-full md:!w-48" placeholder="品牌"
+                    <el-input v-model="moneyCrud.query.barcode" placeholder="条码" class="md:w-48!"
+                              @keyup.enter="moneyCrud.doQuery" />
+                    <el-input v-model="moneyCrud.query.name" placeholder="名称" class="md:w-48!"
+                              @keyup.enter="moneyCrud.doQuery" />
+                    <el-select v-model="moneyCrud.query.brandId" clearable class="w-full md:w-48!" placeholder="品牌"
                                @change="moneyCrud.doQuery">
                         <el-option v-for="item in brands" :key="item.value" :label="item.label" :value="item.value" />
                     </el-select>
-                    <el-select v-model="moneyCrud.query.categoryId" clearable class="w-full md:!w-48 md:!hidden"
+                    <el-select v-model="moneyCrud.query.categoryId" clearable class="w-full md:w-48! md:!hidden"
                                placeholder="分类"
                                @change="moneyCrud.doQuery">
                         <el-option v-for="item in categories" :key="item.value" :label="item.label"
                                    :value="item.value" />
                     </el-select>
-                    <el-select v-model="moneyCrud.query.status" clearable placeholder="状态" class="md:!w-48"
+                    <el-select v-model="moneyCrud.query.status" clearable placeholder="状态" class="md:w-48!"
                                @change="moneyCrud.doQuery">
                         <el-option v-for="item in dict.goodsStatus" :key="item.value" :label="item.desc"
                                    :value="item.value" />
@@ -179,7 +179,7 @@ const columns = [
     {
         prop: 'opt',
         label: '操作',
-        width: 120,
+        width: 150,
         align: 'center',
         fixed: 'right',
         showOverflowTooltip: false,

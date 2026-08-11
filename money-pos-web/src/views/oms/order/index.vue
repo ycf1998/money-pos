@@ -7,11 +7,11 @@
                             value-format="YYYY-MM-DD HH:mm:ss"
                             range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期"
                             @change="handleDatePick" />
-            <el-input v-model="moneyCrud.query.orderNo" placeholder="订单号" class="md:!w-48"
-                      @keyup.enter.native="moneyCrud.doQuery" />
-            <el-input v-model="moneyCrud.query.member" placeholder="会员" class="md:!w-48"
-                      @keyup.enter.native="moneyCrud.doQuery" />
-            <el-select v-model="moneyCrud.query.status" clearable placeholder="状态" class="md:!w-48"
+            <el-input v-model="moneyCrud.query.orderNo" placeholder="订单号" class="md:w-48!"
+                      @keyup.enter="moneyCrud.doQuery" />
+            <el-input v-model="moneyCrud.query.member" placeholder="会员" class="md:w-48!"
+                      @keyup.enter="moneyCrud.doQuery" />
+            <el-select v-model="moneyCrud.query.status" clearable placeholder="状态" class="md:w-48!"
                        @change="moneyCrud.doQuery">
                 <el-option v-for="item in dict.orderStatus" :key="item.value" :label="item.desc" :value="item.value" />
             </el-select>

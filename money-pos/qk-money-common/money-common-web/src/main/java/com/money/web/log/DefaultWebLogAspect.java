@@ -21,7 +21,6 @@ import org.springframework.web.util.ContentCachingRequestWrapper;
 
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
@@ -40,7 +39,6 @@ public class DefaultWebLogAspect {
 
     @Around("execution(public * com.money..controller..*.*(..))")
     public Object doAround(ProceedingJoinPoint joinPoint) throws Throwable {
-        LocalDateTime now = LocalDateTime.now();
         long startTime = Instant.now().toEpochMilli();
         log.info("====================");
 
@@ -74,18 +72,6 @@ public class DefaultWebLogAspect {
             }
             log.info("spend time: {}ms", spendTime);
             // TODO 记录日志
-            WebLog.builder()
-                    .requestId(WebRequestContextHolder.getContext().getRequestId())
-                    .requestTime(now)
-                    .ip(ip)
-                    .method(requestMethod)
-                    .url(url)
-                    .queryString(request.getQueryString())
-                    .uri(request.getRequestURI())
-                    .body(body)
-                    .result(result)
-                    .spendTime(spendTime)
-                    .build();
         }
         return result;
     }

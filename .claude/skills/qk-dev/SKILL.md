@@ -92,7 +92,7 @@ description: QK-Money 框架的全流程开发助手。当用户在 QK-Money 项
 
 严格按照 `templates/design-template.md` 的格式输出。模板结构：
 
-1. **数据库变更** — 表关系 ASCII 图（只画关联字段 PK/FK）+ SQL（带 `--` 注释说明设计意图）+ BaseEntity 字段提示
+1. **数据库变更** — 表关系 ASCII 图（只画关联字段 PK/FK）+ SQL（带 `--` 注释说明设计意图）+ 权限配置 SQL（菜单 + 按钮权限）
 2. **接口设计** — 汇总表 + 每个接口的详细说明（入参表格/响应表格/业务逻辑）
 3. **页面** — 布局、搜索区、表格列、表单、行级控制、按钮
 
@@ -147,7 +147,7 @@ echo -e "money\nN\nN\nN\nY\nY\n{table_name}\n" | \
 |------|----------|------|
 | `money` | 请输入作者 | 默认值 |
 | `N` | 覆盖已有文件 | 新表不冲突 |
-| `N` | 是否开启 Swagger | 默认关闭 |
+| `N` | 是否开启 Swagger | 默认关闭。检查 `money-app-api` 中已有实体风格——用 `@Schema` 则开启（Y），用 Javadoc `/** */` 则关闭（N） |
 | `N` | 是否生成 XML | CRUD 用不到 |
 | `Y` | 是否继承 BaseEntity | 必须继承 |
 | `Y` | 是否开启 @PreAuthorize | 开启权限控制 |

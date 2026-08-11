@@ -1,24 +1,8 @@
-import req from './index.js'
+import req from '../index.js'
 
 export default {
-    list: (query) => req({
-        url: '/template',
-        method: 'GET',
-        params: query,
-    }),
-    add: (data) => req({
-        url: '/template',
-        method: 'POST',
-        data,
-    }),
-    edit: (data) => req({
-        url: '/template',
-        method: 'PUT',
-        data,
-    }),
-    del: (ids) => req({
-        url: '/template',
-        method: 'DELETE',
-        data: ids,
-    })
+    list: (params) => req({method: 'GET', url: '/template', params}),
+    add: (data) => req({method: 'POST', url: '/template', data}),
+    edit: (data) => req({method: 'PUT', url: '/template', data}),
+    del: (ids) => req({method: 'DELETE', url: '/template', data: ids}),
 }

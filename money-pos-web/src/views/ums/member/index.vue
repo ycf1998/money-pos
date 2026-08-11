@@ -2,13 +2,13 @@
     <PageWrapper>
         <!-- 搜索栏 -->
         <MoneyRR :money-crud="moneyCrud">
-            <el-input v-model="moneyCrud.query.code" placeholder="会员号" class="md:!w-48"
-                      @keyup.enter.native="moneyCrud.doQuery" />
-            <el-input v-model="moneyCrud.query.name" placeholder="会员名称" class="md:!w-48"
-                      @keyup.enter.native="moneyCrud.doQuery" />
-            <el-input v-model="moneyCrud.query.phone" placeholder="手机号码" class="md:!w-48"
-                      @keyup.enter.native="moneyCrud.doQuery" />
-            <el-select v-model="moneyCrud.query.type" clearable placeholder="会员类型" class="md:!w-48"
+            <el-input v-model="moneyCrud.query.code" placeholder="会员号" class="md:w-48!"
+                      @keyup.enter="moneyCrud.doQuery" />
+            <el-input v-model="moneyCrud.query.name" placeholder="会员名称" class="md:w-48!"
+                      @keyup.enter="moneyCrud.doQuery" />
+            <el-input v-model="moneyCrud.query.phone" placeholder="手机号码" class="md:w-48!"
+                      @keyup.enter="moneyCrud.doQuery" />
+            <el-select v-model="moneyCrud.query.type" clearable placeholder="会员类型" class="md:w-48!"
                        @change="moneyCrud.doQuery">
                 <el-option v-for="item in dict.memberType" :key="item.value" :label="item.desc" :value="item.value" />
             </el-select>
@@ -90,7 +90,7 @@ const columns = [
     {
         prop: 'opt',
         label: '操作',
-        width: 120,
+        width: 150,
         align: 'center',
         fixed: 'right',
         showOverflowTooltip: false,

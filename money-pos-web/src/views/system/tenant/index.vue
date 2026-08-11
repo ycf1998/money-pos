@@ -2,10 +2,10 @@
     <PageWrapper>
         <!-- 搜索栏 -->
         <MoneyRR :money-crud="moneyCrud">
-            <el-input v-model="moneyCrud.query.tenantCode" placeholder="编码" class="md:!w-48"
-                      @keyup.enter.native="moneyCrud.doQuery" />
-            <el-input v-model="moneyCrud.query.tenantName" placeholder="名称" class="md:!w-48"
-                      @keyup.enter.native="moneyCrud.doQuery" />
+            <el-input v-model="moneyCrud.query.tenantCode" placeholder="编码" class="md:w-48!"
+                      @keyup.enter="moneyCrud.doQuery" />
+            <el-input v-model="moneyCrud.query.tenantName" placeholder="名称" class="md:w-48!"
+                      @keyup.enter="moneyCrud.doQuery" />
         </MoneyRR>
         <!-- 操作行 -->
         <MoneyCUD :money-crud="moneyCrud" />
@@ -34,7 +34,7 @@
                 <el-upload class="avatar-uploader" :auto-upload="false" :show-file-list="false" accept="image/*"
                            :on-change="handleLogoSuccess">
                     <img v-if="moneyCrud.form.logo" :src="$money.getOssUrl(moneyCrud.form.logo)" class="w-32" alt="">
-                    <el-icon v-else class="avatar-uploader-icon !w-32 !h-32">
+                    <el-icon v-else class="avatar-uploader-icon w-32! h-32!">
                         <Plus />
                     </el-icon>
                 </el-upload>
@@ -75,7 +75,7 @@ const columns = [
     {
         prop: 'opt',
         label: '操作',
-        width: 120,
+        width: 150,
         align: 'center',
         fixed: 'right',
         showOverflowTooltip: false,

@@ -20,7 +20,7 @@ instance.interceptors.request.use(
         }
 
         // 处理租户信息
-        const tenantCode = window.location.search.match(/(^|&|\?)tenant=([^&]*)(&|$)/i)?.[2];
+        const tenantCode = new URLSearchParams(window.location.search).get('tenant');
         if (tenantCode && (window.tenant == null || window.tenant.tenantCode !== tenantCode)) {
             try {
                 const { data } = await axios.get(`${config.baseURL}/tenants/byCode?code=${tenantCode}`);

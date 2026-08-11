@@ -33,33 +33,21 @@ export const useUserStore = defineStore('user', {
          * @param data
          * @returns {Promise<unknown>}
          */
-        login(data) {
-            return new Promise((resolve, reject) => {
-                authApi.login(data)
-                    .then(res => {
-                        const {data} = res
-                        setToken(data.accessToken)
-                        resolve()
-                    })
-                    .catch(err => reject(err))
-            })
+        async login(data) {
+            const res = await authApi.login(data)
+            setToken(res.data.accessToken)
         },
         /**
          * 加载用户信息
          * @returns {Promise<unknown>}
          */
-        loadInfo() {
-            return new Promise((resolve, reject) => {
-                authApi.getInfo()
-                    .then(res => {
-                        const {data} = res
-                        this.info = data.info
-                        this.roles = data.roles
-                        this.permissions = data.permissions
-                        resolve(data)
-                    })
-                    .catch(err => reject(err))
-            })
+        async loadInfo() {
+            const res = await authApi.getInfo()
+            const {data} = res
+            this.info = data.info
+            this.roles = data.roles
+            this.permissions = data.permissions
+            return data
         },
         /**
          * 登出
@@ -78,24 +66,17 @@ export const useUserStore = defineStore('user', {
          * @param data
          * @returns {Promise<unknown>}
          */
-        updateInfo(data) {
-            return new Promise((resolve, reject) => {
-                userApi.updateInfo(data)
-                    .then(() => resolve())
-                    .catch(err => reject(err))
-            })
+        async updateInfo(data) {
+            await userApi.updateInfo(data)
         },
         /**
          * 修改密码
          * @param data
          * @returns {Promise<unknown>}
          */
-        changePassword(data) {
-            return new Promise((resolve, reject) => {
-                userApi.changePassword(data)
-                    .then(() => this.logout())
-                    .catch(err => reject(err))
-            })
+        async changePassword(data) {
+            await userApi.changePassword(data)
+            this.logout()
         }
     }
 })

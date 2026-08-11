@@ -2,11 +2,11 @@
     <PageWrapper>
         <!-- 搜索栏 -->
         <MoneyRR :money-crud="moneyCrud">
-            <el-input v-model="moneyCrud.query.name" placeholder="用户名/昵称" class="md:!w-48"
-                      @keyup.enter.native="moneyCrud.doQuery" />
-            <el-input v-model.number="moneyCrud.query.phone" placeholder="手机号" class="md:!w-48"
-                      @keyup.enter.native="moneyCrud.doQuery" />
-            <el-select v-model="moneyCrud.query.enabled" clearable placeholder="状态" class="md:!w-48">
+            <el-input v-model="moneyCrud.query.name" placeholder="用户名/昵称" class="md:w-48!"
+                      @keyup.enter="moneyCrud.doQuery" />
+            <el-input v-model.number="moneyCrud.query.phone" placeholder="手机号" class="md:w-48!"
+                      @keyup.enter="moneyCrud.doQuery" />
+            <el-select v-model="moneyCrud.query.enabled" clearable placeholder="状态" class="md:w-48!">
                 <el-option v-for="item in [true, false]" :key="item" :label="item ? '启用':'禁用'" :value="item" />
             </el-select>
         </MoneyRR>
@@ -78,7 +78,7 @@ const columns = [
     {prop: 'username', label: '用户名'},
     {prop: 'nickname', label: '昵称'},
     {prop: 'phone', label: '手机号'},
-    {prop: 'email', label: '邮箱', width: 150},
+    {prop: 'email', label: '邮箱', width: 180},
     {prop: 'roles', label: '最高角色', align: 'center'},
     {prop: 'enabled', label: '状态', align: 'center'},
     {prop: 'createTime', label: '创建时间', width: 180, show: false},
@@ -88,7 +88,7 @@ const columns = [
     {
         prop: 'opt',
         label: '操作',
-        width: 120,
+        width: 150,
         align: 'center',
         fixed: 'right',
         showOverflowTooltip: false,

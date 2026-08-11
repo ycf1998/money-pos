@@ -8,7 +8,7 @@ const tenantTitle = window.tenant?.tenantName || import.meta.env.VITE_TITLE;
 <template>
     <div
         :class="[
-      'flex items-center flex-shrink-0 px-3 py-2',
+      'flex items-center shrink-0 px-3 py-2',
       {
         'justify-between': sidebarState.isOpen || sidebarState.isHovered,
         'justify-center': !sidebarState.isOpen && !sidebarState.isHovered,

@@ -1,58 +1,60 @@
-<!-- 计算输入框：支持在输入框进行加减乘除 -->
-<script setup>
-import NP from 'number-precision';
-import { ref } from 'vue';
-
-const props = defineProps(['modelValue']);
-const emits = defineEmits(['update:modelValue']);
-const inputRef = ref(null);
-
-function compute() {
-    const reg = /(.*)([+\-*/])(.*)/;
-    const match = props.modelValue.match(reg);
-
-    if (match) {
-        const [_, x, operate, y] = match;
-
-        // 校验输入值是否为有效数字
-        if (isNaN(x) || isNaN(y)) {
-            emits('update:modelValue', 'Invalid input');
-            return;
-        }
-
-        let result;
-        switch (operate) {
-            case '+':
-                result = NP.plus(Number(x), Number(y));
-                break;
-            case '-':
-                result = NP.minus(Number(x), Number(y));
-                break;
-            case '*':
-                result = NP.times(Number(x), Number(y));
-                break;
-            case '/':
-                result = NP.divide(Number(x), Number(y));
-                break;
-            default:
-                result = props.modelValue;
-        }
-
-        emits('update:modelValue', result.toString());
-        inputRef.value?.focus(); // 计算完成后自动聚焦输入框
-    }
-}
-</script>
-
+<!--
+====================================================================
+=                计算用的输入框，支持金额计算，比如 100*2
+====================================================================
+-->
 <template>
-    <el-input
-        ref="inputRef"
-        :model-value="modelValue"
-        @input="(value) => $emit('update:modelValue', value)"
-        @keydown.enter="compute"
-    >
+    <el-input v-model="inputValue" @input="handleInput" @keydown="handleKeydown" @blur="handleBlur"
+              :placeholder="placeholder" :disabled="disabled" :clearable="clearable" v-bind="$attrs">
         <template #prefix>
-            <svg-icon name="calculator" class="w-4 h-4" />
+            <slot name="prefix"/>
         </template>
     </el-input>
 </template>
+
+<script setup>
+import { ref, watch } from 'vue';
+import NP from 'number-precision';
+
+const props = defineProps({
+    modelValue: { type: [String, Number], default: '' },
+    placeholder: { type: String },
+    disabled: { type: Boolean, default: false },
+    clearable: { type: Boolean, default: true },
+    precision: { type: Number, default: 2 },
+})
+
+const emit = defineEmits(['update:modelValue'])
+
+const inputValue = ref(props.modelValue)
+
+watch(() => props.modelValue, (val) => {
+    inputValue.value = val
+})
+
+function handleInput(val) {
+    const lastChar = val.slice(-1)
+    if (['+', '-', '*', '/'].includes(lastChar)) {
+        return
+    }
+    emit('update:modelValue', val)
+}
+
+function handleKeydown(event) {
+    const key = event.key
+    if (['+', '-', '*', '/'].includes(key)) {
+        event.preventDefault()
+        inputValue.value += key
+    }
+}
+
+function handleBlur() {
+    try {
+        const result = NP.round(eval(inputValue.value), props.precision)
+        inputValue.value = result
+        emit('update:modelValue', result)
+    } catch (e) {
+        // 如果计算失败，保留原值
+    }
+}
+</script>
