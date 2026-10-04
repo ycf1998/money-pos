@@ -1,0 +1,14 @@
+### Java / Maven ###
+target/
+out/
+build/
+*.class
+
+### Maven Wrapper ###
+/mvnw
+/mvnw.cmd
+.mvn/
+
+### 生产/演示配置（含密码，不入库）###
+**/resources/*-prod.yml
+**/resources/*-demo.yml

@@ -16,7 +16,7 @@
 
 ## 基础字段
 
-每张表必须包含，由 BaseEntity 自动填充：
+每张表必须包含下列字段。字段由 `BaseEntity` 自动填充，填充时机与值来源见 `doc/backend/money-common-mybatis.md`：
 
 ```sql
 `id`            BIGINT    NOT NULL  COMMENT '主键ID',
@@ -60,6 +60,15 @@ PRIMARY KEY (`id`)
 ```
 
 值由框架 `TenantContextHolder` 自动注入，查询条件由 MP 多租户插件自动过滤。
+
+**自定义 SQL 必须使用表别名才能自动拼接租户条件**（XML、`@Select` 均同）；多表查询时每个表都要加别名：
+
+```sql
+-- 正确
+SELECT u.* FROM sys_user u LEFT JOIN sys_user_role ur ON u.id = ur.user_id
+-- 错误
+SELECT * FROM sys_user WHERE status = 1
+```
 
 ## 注释
 

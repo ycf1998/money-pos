@@ -137,8 +137,7 @@ Plan 经用户确认后执行。
 echo -e "money\nN\nN\nN\nY\nY\n{table_name}\n" | \
   mvn org.codehaus.mojo:exec-maven-plugin:3.3.0:java \
     -Dexec.mainClass="com.money.mb.MybatisPlusGenerator" \
-    -pl qk-money-common/money-common-mybatis \
-    -Drevision=1.0.0
+    -pl qk-money-common/money-common-mybatis
 ```
 
 管道参数（按顺序对应生成器的交互提示）：
@@ -166,7 +165,7 @@ echo -e "money\nN\nN\nN\nY\nY\n{table_name}\n" | \
 ### 3.5 编译验证
 
 ```bash
-cd qk-money && mvn clean install -Drevision=1.0.0 -DskipTests
+mvn clean install -DskipTests   # 在后端目录执行
 ```
 
 编译通过即交付。

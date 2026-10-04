@@ -18,6 +18,7 @@ logs/
 !.claude/skills/
 .claude/skills/*
 !.claude/skills/qk-dev/
+CLAUDE.local.md
 
 ### LSP ###
 .settings

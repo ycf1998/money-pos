@@ -201,12 +201,12 @@ spring:
 ### 4️⃣ 启动后端服务
 
 运行 [
-`QkMoneyApplication`](money-pos/qk-money-app/money-app-biz/src/main/java/com/money/QkMoneyApplication.java) 启动项目。
+`QkMoneyApplication`](qk-money/qk-money-app/money-app-biz/src/main/java/com/money/QkMoneyApplication.java) 启动项目。
 
 ### 5️⃣ 启动前端服务
 
 ```bash
-cd money-pos-web
+cd qk-money-ui
 npm install
 npm run dev
 ```

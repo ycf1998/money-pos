@@ -1,0 +1,32 @@
+# 统一行尾为 LF（仓库与工作区一致）
+* text=auto eol=lf
+
+# 二进制文件显式声明，避免被当作文本做行尾转换而损坏
+*.png    binary
+*.jpg    binary
+*.jpeg   binary
+*.gif    binary
+*.ico    binary
+*.webp   binary
+*.bmp    binary
+*.woff   binary
+*.woff2  binary
+*.ttf    binary
+*.eot    binary
+*.otf    binary
+*.jar    binary
+*.war    binary
+*.zip    binary
+*.gz     binary
+*.7z     binary
+*.rar    binary
+*.pdf    binary
+*.xls    binary
+*.xlsx   binary
+*.doc    binary
+*.docx   binary
+*.mp3    binary
+*.mp4    binary
+*.class  binary
+*.so     binary
+*.dll    binary
