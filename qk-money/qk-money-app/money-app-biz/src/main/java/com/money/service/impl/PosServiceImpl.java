@@ -71,7 +71,6 @@ public class PosServiceImpl implements PosService {
         List<OmsOrderDetail> orderDetails = orderDetailDTOS.stream().map(dto -> {
             GmsGoods goods = goodsMap.get(dto.getGoodsId());
             OmsOrderDetail detail = BeanMapUtil.to(dto, OmsOrderDetail::new);
-            detail.setOrderNo(orderNo);
             detail.setStatus(OrderStatusEnum.PAID.name());
             detail.setGoodsBarcode(goods.getBarcode());
             detail.setGoodsName(goods.getName());
@@ -109,6 +108,8 @@ public class PosServiceImpl implements PosService {
 
         // 保存订单
         omsOrderService.save(order);
+        // 明细挂到订单ID
+        orderDetails.forEach(orderDetail -> orderDetail.setOrderId(order.getId()));
         omsOrderDetailService.saveBatch(orderDetails);
         // 扣库存
         orderDetails.forEach(omsOrderDetail -> gmsGoodsService.sell(omsOrderDetail.getGoodsId(), omsOrderDetail.getQuantity()));

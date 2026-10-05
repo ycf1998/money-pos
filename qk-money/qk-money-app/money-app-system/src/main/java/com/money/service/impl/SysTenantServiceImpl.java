@@ -159,7 +159,6 @@ public class SysTenantServiceImpl extends ServiceImpl<SysTenantMapper, SysTenant
         sysRole.setRoleCode("ADMIN");
         sysRole.setRoleName("管理员");
         sysRole.setLevel(1);
-        sysRole.setCount(1L);
         sysRole.setTenantId(id);
         sysRoleService.save(sysRole);
         // 关联用户角色
@@ -170,9 +169,9 @@ public class SysTenantServiceImpl extends ServiceImpl<SysTenantMapper, SysTenant
         sysUserRoleRelationService.save(sysUserRoleRelation);
         // 新增权限
         List<SysPermission> sysPermissions = sysPermissionService.lambdaQuery()
-                .notLike(SysPermission::getPermission, "tenant")
-                .notLike(SysPermission::getPermission, "permission")
-                .notLike(SysPermission::getPermission, "dict")
+                .notLike(SysPermission::getPermissionCode, "tenant")
+                .notLike(SysPermission::getPermissionCode, "permission")
+                .notLike(SysPermission::getPermissionCode, "dict")
                 .list();
         // id映射保证父子节点关系
         Map<Long, Long> permissionId = new HashMap<>(sysPermissions.size());

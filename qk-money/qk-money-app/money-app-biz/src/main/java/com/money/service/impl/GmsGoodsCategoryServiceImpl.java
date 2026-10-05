@@ -135,9 +135,4 @@ public class GmsGoodsCategoryServiceImpl extends ServiceImpl<GmsGoodsCategoryMap
         });
     }
 
-    @Override
-    public void updateGoodsCount(Long categoryId, int step) {
-        this.lambdaUpdate().setSql("goods_count = goods_count + " + step).eq(GmsGoodsCategory::getId, categoryId).update();
-    }
-
 }

@@ -35,7 +35,7 @@ public class SysPermissionVO implements Serializable {
     private String icon;
 
     @Schema(description = "权限表达式")
-    private String permission;
+    private String permissionCode;
 
     @Schema(description = "路由地址")
     private String routerPath;
@@ -51,9 +51,6 @@ public class SysPermissionVO implements Serializable {
 
     @Schema(description = "组件路径")
     private String componentPath;
-
-    @Schema(description = "子节点数")
-    private Integer subCount;
 
     @Schema(description = "排序")
     private Integer sort;

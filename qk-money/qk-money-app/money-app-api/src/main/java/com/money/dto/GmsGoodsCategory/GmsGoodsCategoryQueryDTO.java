@@ -26,7 +26,4 @@ public class GmsGoodsCategoryQueryDTO extends PageQueryRequest {
 
     @Schema(description="分类名称")
     private String name;
-
-    @Schema(description="商品数量")
-    private Integer goodsCount;
 }

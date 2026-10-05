@@ -47,7 +47,6 @@ import java.util.stream.Collectors;
 public class GmsGoodsServiceImpl extends ServiceImpl<GmsGoodsMapper, GmsGoods> implements GmsGoodsService {
 
     private final OSSDelegate<LocalOSS> localOSS;
-    private final GmsBrandService gmsBrandService;
     private final GmsGoodsCategoryService gmsGoodsCategoryService;
 
     @Override
@@ -81,9 +80,6 @@ public class GmsGoodsServiceImpl extends ServiceImpl<GmsGoodsMapper, GmsGoods> i
             String picUrl = localOSS.upload(pic, FolderPath.builder().cd("goods").build(), FileNameStrategy.TIMESTAMP);
             gmsGoods.setPic(picUrl);
         }
-        // 更新商品数量
-        gmsBrandService.updateGoodsCount(gmsGoods.getBrandId(), 1);
-        gmsGoodsCategoryService.updateGoodsCount(gmsGoods.getCategoryId(), 1);
         this.save(gmsGoods);
     }
 
@@ -94,15 +90,6 @@ public class GmsGoodsServiceImpl extends ServiceImpl<GmsGoodsMapper, GmsGoods> i
             throw new BaseException("条码已存在");
         }
         GmsGoods gmsGoods = this.getById(updateDTO.getId());
-        // 更新商品数量
-        if (!Objects.equals(gmsGoods.getBrandId(), updateDTO.getBrandId())) {
-            gmsBrandService.updateGoodsCount(updateDTO.getBrandId(), 1);
-            gmsBrandService.updateGoodsCount(gmsGoods.getBrandId(), -1);
-        }
-        if (!Objects.equals(gmsGoods.getCategoryId(), updateDTO.getCategoryId())) {
-            gmsGoodsCategoryService.updateGoodsCount(updateDTO.getCategoryId(), 1);
-            gmsGoodsCategoryService.updateGoodsCount(gmsGoods.getCategoryId(), -1);
-        }
         BeanUtil.copyProperties(updateDTO, gmsGoods);
         // 调整状态
         if (GoodsStatus.SOLD_OUT.name().equals(gmsGoods.getStatus()) && updateDTO.getStock() > 0) {

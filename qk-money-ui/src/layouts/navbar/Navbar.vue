@@ -8,7 +8,10 @@ import { useGlobalProp } from '@/composables/globalProp.js';
 import Logo from '@/layouts/Logo.vue';
 
 const { isFullscreen, toggle: toggleFullScreen } = useFullscreen();
-const avatar = useGlobalProp().$money.getOssUrl(useUserStore().info.avatar);
+const userStore = useUserStore();
+const avatar = useGlobalProp().$money.getOssUrl(userStore.info.avatar);
+// 没有头像时用昵称首字母兜底，避免出现裂图
+const avatarText = (userStore.info.nickname || userStore.info.username || '?').charAt(0).toUpperCase();
 const route = useRoute();
 const breadcrumb = ref([]);
 
@@ -67,7 +70,11 @@ function logout() {
 
             <el-dropdown>
                 <div class="w-8 h-8 rounded overflow-hidden cursor-pointer">
-                    <img :src="avatar" alt="avatar" class="w-full h-full object-cover" />
+                    <img v-if="avatar" :src="avatar" alt="avatar" class="w-full h-full object-cover" />
+                    <div v-else
+                         class="w-full h-full bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-300 flex items-center justify-center text-sm select-none">
+                        {{ avatarText }}
+                    </div>
                 </div>
                 <template #dropdown>
                     <el-dropdown-menu>

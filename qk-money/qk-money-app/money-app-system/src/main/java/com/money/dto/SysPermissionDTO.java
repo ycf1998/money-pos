@@ -30,7 +30,7 @@ public class SysPermissionDTO {
     private Long parentId;
 
     @Schema(description = "权限标识")
-    private String permission;
+    private String permissionCode;
 
     @Schema(description = "路由地址")
     private String routerPath;

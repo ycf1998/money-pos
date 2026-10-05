@@ -47,7 +47,7 @@ public class SysUser extends BaseEntity {
     private Boolean initLogin;
 
     @Schema(description = "最后登录时间")
-    private LocalDateTime lastTime;
+    private LocalDateTime lastLoginTime;
 
     @Schema(description = "租户id")
     private Long tenantId;

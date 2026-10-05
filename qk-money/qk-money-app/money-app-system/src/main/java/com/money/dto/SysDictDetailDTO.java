@@ -31,10 +31,10 @@ public class SysDictDetailDTO {
 
     @Schema(description = "中文描述")
     @NotBlank(message = "中文描述不允许为空", groups = {ValidGroup.Save.class})
-    private String cnDesc;
+    private String nameCn;
 
     @Schema(description = "英文描述")
-    private String enDesc;
+    private String nameEn;
 
     @Schema(description = "是否隐藏")
     private Boolean hidden;

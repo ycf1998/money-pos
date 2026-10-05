@@ -83,7 +83,7 @@ const columns = [
     {prop: 'enabled', label: '状态', align: 'center'},
     {prop: 'createTime', label: '创建时间', width: 180, show: false},
     {prop: 'updateTime', label: '修改时间', width: 180, show: false},
-    {prop: 'lastTime', label: '最近登录时间', width: 180, sortable: 'custom'},
+    {prop: 'lastLoginTime', label: '最近登录时间', width: 180, sortable: 'custom'},
     {prop: 'remark', label: '备注', show: false},
     {
         prop: 'opt',

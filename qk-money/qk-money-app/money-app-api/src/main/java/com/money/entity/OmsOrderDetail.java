@@ -21,8 +21,8 @@ import lombok.Setter;
 @Schema(description = "订单明细表")
 public class OmsOrderDetail extends BaseEntity {
 
-    @Schema(description="订单号")
-    private String orderNo;
+    @Schema(description="订单ID")
+    private Long orderId;
 
     @Schema(description="状态")
     private String status;

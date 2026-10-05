@@ -26,10 +26,10 @@ public class SysDictDetail extends BaseEntity {
     private String value;
 
     @Schema(description = "中文描述")
-    private String cnDesc;
+    private String nameCn;
 
     @Schema(description = "英文描述")
-    private String enDesc;
+    private String nameEn;
 
     @Schema(description = "排序")
     private Integer sort;

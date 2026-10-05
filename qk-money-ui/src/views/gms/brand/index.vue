@@ -11,12 +11,18 @@
         <MoneyCrudTable :money-crud="moneyCrud">
             <template #logo="{scope}">
                 <el-image
+                    v-if="scope.row.logo"
                     class="w-8 h-8"
                     preview-teleported
                     :src="$money.getOssUrl(scope.row.logo)"
                     :preview-src-list="[$money.getOssUrl(scope.row.logo)]"
                     fit="cover"
-                />
+                >
+                    <template #error>
+                        <div class="w-full h-full bg-gray-100 dark:bg-gray-700 rounded"/>
+                    </template>
+                </el-image>
+                <div v-else class="w-8 h-8 bg-gray-100 dark:bg-gray-700 rounded"/>
             </template>
             <template #opt="{scope}">
                 <MoneyUD :money-crud="moneyCrud" :scope="scope" />

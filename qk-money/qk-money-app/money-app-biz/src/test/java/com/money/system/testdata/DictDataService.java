@@ -44,12 +44,12 @@ public class DictDataService {
     /**
      * 创建测试字典详情
      */
-    public SysDictDetail createDictDetail(String dict, String value, String cnDesc) {
+    public SysDictDetail createDictDetail(String dict, String value, String nameCn) {
         SysDictDetail detail = new SysDictDetail();
         detail.setDict(dict);
         detail.setValue(value);
-        detail.setCnDesc(cnDesc);
-        detail.setEnDesc("English: " + cnDesc);
+        detail.setNameCn(nameCn);
+        detail.setNameEn("English: " + nameCn);
         detail.setHidden(false);
         dictDetailMapper.insert(detail);
         createdDetailIds.add(detail.getId());

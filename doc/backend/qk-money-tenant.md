@@ -24,16 +24,18 @@
 
 ### 1. 数据库表设计
 
-为需要租户隔离的表添加 `tenant_id` 字段（建议添加索引）：
+为需要租户隔离的表添加 `tenant_id` 字段。租户条件出现在该表的每次查询里，因此**每个索引都以 `tenant_id` 为最左列**，不必再单独建 `idx_tenant_id`：
 
 ```sql
 CREATE TABLE `sys_user` (
-  `id` bigint UNSIGNED NOT NULL,
-  `tenant_id` bigint UNSIGNED NOT NULL DEFAULT 0 COMMENT '租户 ID',
+  `id` bigint NOT NULL,
+  `tenant_id` bigint NOT NULL DEFAULT 0 COMMENT '租户ID',
   -- 其他字段...
-  KEY `idx_tenant_id` (`tenant_id`)
+  UNIQUE KEY `uk_tenant_username` (`tenant_id`, `username`)
 );
 ```
+
+全局共享的表不要加 `tenant_id`，并把表名加进下面的 `ignore-table`。
 
 ### 2. 配置多租户
 

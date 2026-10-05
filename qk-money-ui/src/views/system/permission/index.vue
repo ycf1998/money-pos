@@ -43,8 +43,8 @@
             <el-form-item :label="type === 'BUTTON' ? '权限名称' : '标题'" prop="permissionName" class="w-full">
                 <el-input v-model="moneyCrud.form.permissionName" />
             </el-form-item>
-            <el-form-item v-if="type === 'BUTTON'" label="权限标识" prop="permission" class="w-full">
-                <el-input v-model="moneyCrud.form.permission" placeholder="如：user:list" />
+            <el-form-item v-if="type === 'BUTTON'" label="权限标识" prop="permissionCode" class="w-full">
+                <el-input v-model="moneyCrud.form.permissionCode" placeholder="如：user:list" />
             </el-form-item>
             <el-form-item v-if="type !== 'BUTTON'" label="路由地址" prop="routerPath" class="w-full">
                 <el-input v-model="moneyCrud.form.routerPath" placeholder="开头不带 /">
@@ -119,7 +119,7 @@ const userStore = useUserStore()
 const columns = [
     {prop: 'permissionName', label: '权限名称'},
     {prop: 'icon', label: '图标'},
-    {prop: 'permission', label: '权限标识'},
+    {prop: 'permissionCode', label: '权限标识'},
     {prop: 'permissionType', label: '资源类型',},
     {prop: 'componentPath', label: '组件路径', align: "center"},
     {prop: 'hidden', label: '隐藏', align: "center"},
@@ -150,7 +150,7 @@ const rulesMap = {
             {required: true, message: '请输入标题'},
             {min: 2, max: 20, message: '长度在 2 到 20 个字符'}
         ],
-        permission: [{required: true, message: '请填写权限标识'}],
+        permissionCode: [{required: true, message: '请填写权限标识'}],
         routerPath: [{required: true, message: '请填写路由地址'}],
         componentName: [{required: true, message: '请填写组件名称'}],
         componentPath: [{required: true, message: '请填写组件路径'}],
@@ -161,7 +161,7 @@ const rulesMap = {
             {required: true, message: '请输入权限名称'},
             {min: 2, max: 20, message: '长度在 2 到 20 个字符'}
         ],
-        permission: [{required: true, message: '请填写权限标识'}],
+        permissionCode: [{required: true, message: '请填写权限标识'}],
         parentId: [{required: true, message: '请选择所属菜单'}]
     }
 }

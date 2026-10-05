@@ -15,7 +15,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-@TableName("sys_role_permission_relation")
+@TableName("sys_role_permission")
 public class SysRolePermissionRelation  {
 
     @TableId(type = IdType.ASSIGN_ID)

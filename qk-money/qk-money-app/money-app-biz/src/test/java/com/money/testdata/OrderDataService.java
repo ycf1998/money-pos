@@ -121,7 +121,7 @@ public class OrderDataService {
 
         // 创建订单详情
         OmsOrderDetail detail = new OmsOrderDetail();
-        detail.setOrderNo(orderNo);
+        detail.setOrderId(order.getId());
         detail.setStatus("PAID");
         detail.setGoodsId(goods.getId());
         detail.setGoodsBarcode(goods.getBarcode());
@@ -161,8 +161,8 @@ public class OrderDataService {
 
             // 3. 兜底清理：所有 TEST_ORDER_ 前缀的订单和详情
             new LambdaUpdateChainWrapper<>(orderDetailMapper)
-                    .inSql(OmsOrderDetail::getOrderNo,
-                            "SELECT order_no FROM oms_order WHERE order_no LIKE 'TEST_ORDER_%'")
+                    .inSql(OmsOrderDetail::getOrderId,
+                            "SELECT id FROM oms_order WHERE order_no LIKE 'TEST_ORDER_%'")
                     .remove();
             new LambdaUpdateChainWrapper<>(orderMapper)
                     .likeRight(OmsOrder::getOrderNo, "TEST_ORDER_")

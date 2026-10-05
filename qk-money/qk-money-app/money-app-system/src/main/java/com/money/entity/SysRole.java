@@ -29,9 +29,6 @@ public class SysRole extends BaseEntity {
     @Schema(description = "角色描述")
     private String description;
 
-    @Schema(description = "角色人数")
-    private Long count;
-
     @Schema(description = "可用状态：0-禁用；1-启用")
     private Boolean enabled;
 

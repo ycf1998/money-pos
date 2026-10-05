@@ -22,8 +22,8 @@ public class OmsOrderDetailDTO {
     @NotNull(groups = ValidGroup.Update.class)
     private Long id;
 
-    @Schema(description="订单号")
-    private String orderNo;
+    @Schema(description="订单ID")
+    private Long orderId;
 
     @Schema(description="状态")
     private String status;

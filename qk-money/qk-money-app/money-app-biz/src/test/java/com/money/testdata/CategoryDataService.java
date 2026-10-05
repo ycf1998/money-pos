@@ -37,7 +37,6 @@ public class CategoryDataService {
         GmsGoodsCategory category = new GmsGoodsCategory();
         category.setPid(pid);
         category.setName("测试分类_" + suffix);
-        category.setGoodsCount(0);
         category.setTenantId(100L);
 
         categoryMapper.insert(category);

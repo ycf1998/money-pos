@@ -33,7 +33,6 @@ public class BrandDataService {
         brand.setName("测试品牌_" + suffix);
         brand.setDescription("测试品牌描述_" + suffix);
         brand.setLogo("https://example.com/logo_" + suffix + ".png");
-        brand.setGoodsCount(0);
         brand.setTenantId(100L);
 
         if (customizer != null) {

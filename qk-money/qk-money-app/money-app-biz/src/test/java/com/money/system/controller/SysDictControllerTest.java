@@ -230,8 +230,8 @@ class SysDictControllerTest extends ControllerTestBase {
             SysDictDetailDTO dto = new SysDictDetailDTO();
             dto.setDict(testDict);
             dto.setValue("test_value");
-            dto.setCnDesc("测试中文描述");
-            dto.setEnDesc("Test English Description");
+            dto.setNameCn("测试中文描述");
+            dto.setNameEn("Test English Description");
             dto.setHidden(false);
 
             var result = post("/dict/detail", dto);
@@ -270,8 +270,8 @@ class SysDictControllerTest extends ControllerTestBase {
             SysDictDetailDTO dto = new SysDictDetailDTO();
             dto.setId(detailId);
             dto.setValue("updated_value");
-            dto.setCnDesc("更新后的中文描述");
-            dto.setEnDesc("Updated English Description");
+            dto.setNameCn("更新后的中文描述");
+            dto.setNameEn("Updated English Description");
             dto.setHidden(false);
 
             var result = put("/dict/detail", dto);
@@ -281,7 +281,7 @@ class SysDictControllerTest extends ControllerTestBase {
             SysDictDetail updated = dictDetailMapper.selectById(detailId);
             assertNotNull(updated);
             assertEquals("updated_value", updated.getValue());
-            assertEquals("更新后的中文描述", updated.getCnDesc());
+            assertEquals("更新后的中文描述", updated.getNameCn());
         }
     }
 

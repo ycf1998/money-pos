@@ -37,7 +37,7 @@
         <!-- 表单 -->
         <MoneyForm :money-crud="moneyCrud" :rules="rules">
             <el-form-item label="字典名称" prop="dictName">
-                <el-input v-model.trim="moneyCrud.form.dictName" />
+                <el-input v-model.trim="moneyCrud.form.dictName" :disabled="moneyCrud.state === moneyCrud.STATE.EDIT" />
             </el-form-item>
             <el-form-item label="字典描述">
                 <el-input v-model.trim="moneyCrud.form.dictDesc" type="textarea" maxlength="250" show-word-limit />
@@ -51,12 +51,12 @@
             <el-form-item label="字典值" prop="value">
                 <el-input v-model.trim="moneyCrud2.form.value" />
             </el-form-item>
-            <el-form-item label="中文描述" prop="cnDesc">
-                <el-input v-model.trim="moneyCrud2.form.cnDesc" />
+            <el-form-item label="中文描述" prop="nameCn">
+                <el-input v-model.trim="moneyCrud2.form.nameCn" />
             </el-form-item>
                 <!-- TODO 多语言 -->
-<!--            <el-form-item label="英文描述" prop="enDesc">-->
-<!--                <el-input v-model.trim="moneyCrud2.form.enDesc" />-->
+<!--            <el-form-item label="英文描述" prop="nameEn">-->
+<!--                <el-input v-model.trim="moneyCrud2.form.nameEn" />-->
 <!--            </el-form-item>-->
             <el-form-item label="隐藏" prop="hidden">
                 <el-radio-group v-model="moneyCrud2.form.hidden">
@@ -116,9 +116,9 @@ moneyCrud.value.init(moneyCrud)
 
 const columns2 = [
     {prop: 'value', label: '字典值'},
-    {prop: 'cnDesc', label: '中文描述'},
+    {prop: 'nameCn', label: '中文描述'},
     // TODO 多语言
-    {prop: 'enDesc', label: '英文描述', show: false},
+    {prop: 'nameEn', label: '英文描述', show: false},
     {prop: 'hidden', label: '隐藏'},
     {prop: 'sort', label: '排序', sortable: true},
     {
@@ -134,7 +134,7 @@ const columns2 = [
 const rules2 = {
     dict: [{required: true, message: '请选择字典'}],
     value: [{required: true, message: '请输入字典值'}],
-    cnDesc: [{required: true, message: '请输入中文描述'}],
+    nameCn: [{required: true, message: '请输入中文描述'}],
 }
 const moneyCrud2 = ref(new MoneyCrud({
     columns: columns2,

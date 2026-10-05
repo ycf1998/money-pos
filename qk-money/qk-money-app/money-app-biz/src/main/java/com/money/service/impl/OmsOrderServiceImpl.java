@@ -70,15 +70,15 @@ public class OmsOrderServiceImpl extends ServiceImpl<OmsOrderMapper, OmsOrder> i
     public OrderCountVO countOrderAndSales(LocalDateTime startTime, LocalDateTime endTime) {
         // 1.查询时间段内的所有订单详情
         List<OmsOrderDetail> omsOrderDetails = omsOrderDetailService.lambdaQuery()
-                .select(OmsOrderDetail::getOrderNo, OmsOrderDetail::getQuantity, OmsOrderDetail::getReturnQuantity,
+                .select(OmsOrderDetail::getOrderId, OmsOrderDetail::getQuantity, OmsOrderDetail::getReturnQuantity,
                         OmsOrderDetail::getGoodsPrice, OmsOrderDetail::getPurchasePrice)
                 // 只统计已支付的订单
                 .eq(OmsOrderDetail::getStatus, OrderStatusEnum.PAID)
                 .ge(startTime != null, OmsOrderDetail::getCreateTime, startTime)
                 .le(endTime != null, OmsOrderDetail::getCreateTime, endTime)
                 .list();
-        // 2.通过去重订单详情的单号获取到订单数
-        long count = omsOrderDetails.stream().map(OmsOrderDetail::getOrderNo).distinct().count();
+        // 2.通过去重订单详情的订单ID获取到订单数
+        long count = omsOrderDetails.stream().map(OmsOrderDetail::getOrderId).distinct().count();
         // 3.计算销售额和成本
         BigDecimal saleCount = BigDecimal.ZERO;
         BigDecimal costCount = BigDecimal.ZERO;
@@ -110,7 +110,7 @@ public class OmsOrderServiceImpl extends ServiceImpl<OmsOrderMapper, OmsOrder> i
         // 会员信息
         vo.setMember(BeanMapUtil.to(umsMemberService.getById(order.getMemberId()), UmsMemberVO::new));
         // 订单详情
-        vo.setOrderDetail(BeanMapUtil.to(omsOrderDetailService.listByOrderNo(order.getOrderNo()), OmsOrderDetailVO::new));
+        vo.setOrderDetail(BeanMapUtil.to(omsOrderDetailService.listByOrderId(order.getId()), OmsOrderDetailVO::new));
         // 订单日志
         vo.setOrderLog(BeanMapUtil.to(omsOrderLogService.listByOrderId(id), OmsOrderLogVO::new));
         return vo;
@@ -119,7 +119,7 @@ public class OmsOrderServiceImpl extends ServiceImpl<OmsOrderMapper, OmsOrder> i
     @Override
     public void returnOrder(Set<Long> ids) {
         ids.stream().map(this::getById).forEach(order -> {
-            List<OmsOrderDetail> orderDetails = omsOrderDetailService.listByOrderNo(order.getOrderNo());
+            List<OmsOrderDetail> orderDetails = omsOrderDetailService.listByOrderId(order.getId());
             AtomicReference<BigDecimal> returnPrice = new AtomicReference<>(BigDecimal.ZERO);
             AtomicReference<BigDecimal> returnCoupon = new AtomicReference<>(BigDecimal.ZERO);
             orderDetails.forEach(orderDetail -> {
@@ -159,7 +159,7 @@ public class OmsOrderServiceImpl extends ServiceImpl<OmsOrderMapper, OmsOrder> i
         }
         omsOrderDetailService.updateById(orderDetail);
         // 修改订单
-        OmsOrder order = this.lambdaQuery().eq(OmsOrder::getOrderNo, orderDetail.getOrderNo()).one();
+        OmsOrder order = this.getById(orderDetail.getOrderId());
         BigDecimal returnPrice = orderDetail.getGoodsPrice().multiply(new BigDecimal(returnQty));
         BigDecimal finalSalesAmount = order.getFinalSalesAmount().subtract(returnPrice);
         order.setFinalSalesAmount(finalSalesAmount);

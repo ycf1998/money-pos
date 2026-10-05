@@ -51,7 +51,7 @@ export default {
             if (data && data.length > 0) {
                 dictMap[dict] = data.map(dd => {
                     // TODO 多语言 先默认中文
-                    dd.desc = dd.cnDesc
+                    dd.desc = dd.nameCn
                     return {
                         desc: dd.desc,
                         value: dd.value,

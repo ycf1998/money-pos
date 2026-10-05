@@ -47,12 +47,4 @@ public interface GmsGoodsCategoryService extends IService<GmsGoodsCategory> {
      * @return {@link List}<{@link Long}>
      */
     List<Long> getAllSubId(Long pid);
-
-    /**
-     * 更新商品数
-     *
-     * @param categoryId 类别id
-     * @param step            步
-     */
-    void updateGoodsCount(Long categoryId, int step);
 }

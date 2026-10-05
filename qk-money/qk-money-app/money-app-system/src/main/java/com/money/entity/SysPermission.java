@@ -30,7 +30,7 @@ public class SysPermission extends BaseEntity {
     private String icon;
 
     @Schema(description = "权限标识")
-    private String permission;
+    private String permissionCode;
 
     @Schema(description = "路由地址")
     private String routerPath;
@@ -46,9 +46,6 @@ public class SysPermission extends BaseEntity {
 
     @Schema(description = "组件路径")
     private String componentPath;
-
-    @Schema(description = "子节点数")
-    private Integer subCount;
 
     @Schema(description = "排序")
     private Integer sort;

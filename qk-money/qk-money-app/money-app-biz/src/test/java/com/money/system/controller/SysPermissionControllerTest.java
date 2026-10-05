@@ -120,7 +120,7 @@ class SysPermissionControllerTest extends ControllerTestBase {
             dto.setPermissionType("BUTTON");
             dto.setParentId(testRootId);
             dto.setIcon("icon");
-            dto.setPermission("test:add");
+            dto.setPermissionCode("test:add");
             dto.setHidden(false);
             dto.setSort(1);
 
@@ -176,7 +176,7 @@ class SysPermissionControllerTest extends ControllerTestBase {
             dto.setPermissionType("BUTTON");
             dto.setParentId(testRootId);
             dto.setIcon("new-icon");
-            dto.setPermission("test:updated");
+            dto.setPermissionCode("test:updated");
             dto.setHidden(false);
             dto.setSort(2);
 

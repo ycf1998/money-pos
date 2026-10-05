@@ -58,7 +58,7 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
                 .eq(ObjectUtil.isNotNull(queryDTO.getParentId()), SysPermission::getParentId, queryDTO.getParentId())
                 .eq(StrUtil.isNotBlank(queryDTO.getPermissionType()), SysPermission::getPermissionType, queryDTO.getPermissionType())
                 .and(StrUtil.isNotBlank(queryDTO.getCondition()), wrapper -> wrapper.like(SysPermission::getPermissionName, queryDTO.getCondition())
-                        .or(orWrapper -> orWrapper.like(SysPermission::getPermission, queryDTO.getCondition())))
+                        .or(orWrapper -> orWrapper.like(SysPermission::getPermissionCode, queryDTO.getCondition())))
                 .orderByAsc(SysPermission::getSort).list();
         return sysPermissionList.stream().map(sysPermission -> {
             SysPermissionVO vo = new SysPermissionVO();
@@ -73,8 +73,8 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
     @Override
     public void add(SysPermissionDTO permissionDTO) {
         this.checkDTO(permissionDTO);
-        if (StrUtil.isNotBlank(permissionDTO.getPermission())) {
-            boolean exists = this.lambdaQuery().eq(SysPermission::getPermission, permissionDTO.getPermission()).exists();
+        if (StrUtil.isNotBlank(permissionDTO.getPermissionCode())) {
+            boolean exists = this.lambdaQuery().eq(SysPermission::getPermissionCode, permissionDTO.getPermissionCode()).exists();
             if (exists) {
                 throw new BaseException(SysErrorStatus.DATA_ALREADY_EXIST, "权限标识已存在");
             }
@@ -82,15 +82,13 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
         SysPermission sysPermission = new SysPermission();
         BeanUtil.copyProperties(permissionDTO, sysPermission);
         this.save(sysPermission);
-        // 更新子节点数
-        this.updateSubCount(permissionDTO.getParentId(), 1);
     }
 
     @Override
     public void updateById(SysPermissionDTO permissionDTO) {
         this.checkDTO(permissionDTO);
-        if (StrUtil.isNotBlank(permissionDTO.getPermission())) {
-            boolean exists = this.lambdaQuery().eq(SysPermission::getPermission, permissionDTO.getPermission())
+        if (StrUtil.isNotBlank(permissionDTO.getPermissionCode())) {
+            boolean exists = this.lambdaQuery().eq(SysPermission::getPermissionCode, permissionDTO.getPermissionCode())
                     .ne(SysPermission::getId, permissionDTO.getId()).exists();
             if (exists) {
                 throw new BaseException(SysErrorStatus.DATA_ALREADY_EXIST, "权限标识已存在");
@@ -99,16 +97,10 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
         SysPermission sysPermission = this.getById(permissionDTO.getId());
         BeanUtil.copyProperties(permissionDTO, sysPermission);
         this.updateById(sysPermission);
-        // 更新子节点数
-        this.updateSubCount(permissionDTO.getParentId(), 1);
-        this.updateSubCount(sysPermission.getParentId(), -1);
     }
 
     @Override
     public void deleteById(Set<Long> ids) {
-        // 非根节点，更新父节点的子节点数
-        this.listByIds(ids).stream().filter(sysPermission -> sysPermission.getParentId() != 0L)
-                .forEach(sysPermission -> this.updateSubCount(sysPermission.getParentId(), -1));
         // 获取包括子级id，一并删除
         List<Long> temp = new ArrayList<>();
         ids.forEach(id -> {
@@ -131,16 +123,6 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
         allSubIds.add(id);
         recursionFillSubIds(id, allSubIds);
         return allSubIds;
-    }
-
-    /**
-     * 更新子节点数
-     *
-     * @param parentId 父id
-     * @param step     步
-     */
-    private void updateSubCount(Long parentId, int step) {
-        this.lambdaUpdate().setSql("sub_count = sub_count + " + step).eq(SysPermission::getId, parentId).update();
     }
 
     /**
@@ -199,7 +181,7 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
                 }
             }
         } else if (PermissionType.BUTTON.name().equals(permissionType)
-                && StrUtil.isBlank(permissionDTO.getPermission())) {
+                && StrUtil.isBlank(permissionDTO.getPermissionCode())) {
             throw new BaseException("权限标识不允许为空");
         }
     }

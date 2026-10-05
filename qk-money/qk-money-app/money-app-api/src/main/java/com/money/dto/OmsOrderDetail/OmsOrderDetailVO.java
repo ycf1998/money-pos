@@ -12,9 +12,6 @@ public class OmsOrderDetailVO  {
 
     private Long id;
 
-    @Schema(description="订单号")
-    private String orderNo;
-
     @Schema(description="状态")
     private String status;
 

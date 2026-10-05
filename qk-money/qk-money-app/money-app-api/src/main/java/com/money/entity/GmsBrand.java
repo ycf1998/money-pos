@@ -29,9 +29,6 @@ public class GmsBrand extends BaseEntity {
     @Schema(description="品牌描述")
     private String description;
 
-    @Schema(description="商品数量")
-    private Integer goodsCount;
-
     @Schema(description="租户id")
     private Long tenantId;
 

@@ -32,7 +32,7 @@ public class PermissionDataService {
         perm.setPermissionType("BUTTON");
         perm.setParentId(parentId);
         perm.setIcon("icon");
-        perm.setPermission(permission);
+        perm.setPermissionCode(permission);
         perm.setRouterPath("");
         perm.setIframe(false);
         perm.setHidden(false);

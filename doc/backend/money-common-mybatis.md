@@ -42,11 +42,14 @@ MyBatis 模块集成 MyBatis-Plus 增强框架，提供分页插件、自动填�
 
 | 字段 | 类型 | 填充时机 | 值来源 |
 |------|------|----------|--------|
-| `id` | Long | INSERT | 雪花算法 ID |
 | `create_time` | LocalDateTime | INSERT | 当前时间 |
 | `update_time` | LocalDateTime | INSERT/UPDATE | 当前时间 |
 | `create_by` | String | INSERT | Operator Bean |
 | `update_by` | String | INSERT/UPDATE | Operator Bean |
+
+主键 `id` 不走元对象处理器，由 `IdentifierGenerator`（雪花算法）在 INSERT 时生成。
+
+**数据库端不要给这些字段设默认值**（如 `DEFAULT CURRENT_TIMESTAMP`、`ON UPDATE CURRENT_TIMESTAMP`），否则与这里的填充形成两个来源，互相覆盖。
 
 **扩展性**：通过实现 `Operator` 接口，可灵活适配不同的用户信息获取方式（如从安全上下文、Session 等）。
 

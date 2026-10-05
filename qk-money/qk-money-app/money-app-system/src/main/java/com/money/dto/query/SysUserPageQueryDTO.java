@@ -29,6 +29,6 @@ public class SysUserPageQueryDTO extends PageQueryRequest {
 
     @Override
     public Map<String, String> sortKeyMap() {
-        return MoneyCommUtil.sortFieldMap("createTime", "updateTime", "lastTime");
+        return MoneyCommUtil.sortFieldMap("createTime", "updateTime", "lastLoginTime");
     }
 }

@@ -2,6 +2,7 @@ package com.money.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.StrUtil;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.money.web.exception.BaseException;
@@ -11,7 +12,9 @@ import com.money.dto.GmsBrand.GmsBrandQueryDTO;
 import com.money.dto.GmsBrand.GmsBrandVO;
 import com.money.dto.SelectVO;
 import com.money.entity.GmsBrand;
+import com.money.entity.GmsGoods;
 import com.money.mapper.GmsBrandMapper;
+import com.money.mapper.GmsGoodsMapper;
 import com.money.oss.OSSDelegate;
 import com.money.oss.core.FileNameStrategy;
 import com.money.oss.core.FolderPath;
@@ -23,7 +26,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -41,13 +46,28 @@ import java.util.stream.Collectors;
 public class GmsBrandServiceImpl extends ServiceImpl<GmsBrandMapper, GmsBrand> implements GmsBrandService {
 
     private final OSSDelegate<LocalOSS> localOSS;
+    private final GmsGoodsMapper gmsGoodsMapper;
+
     @Override
     public PageVO<GmsBrandVO> list(GmsBrandQueryDTO queryDTO) {
         Page<GmsBrand> page = this.lambdaQuery()
                 .like(StrUtil.isNotBlank(queryDTO.getName()), GmsBrand::getName, queryDTO.getName())
                 .last(StrUtil.isNotBlank(queryDTO.getOrderBy()), queryDTO.getOrderBySql())
                 .page(PageUtil.toPage(queryDTO));
-        return PageUtil.toPageVO(page, GmsBrandVO::new);
+        // 商品数量实时统计，不落库
+        List<Long> brandIds = page.getRecords().stream().map(GmsBrand::getId).collect(Collectors.toList());
+        Map<Long, Long> goodsCount = brandIds.isEmpty() ? Collections.emptyMap()
+                : gmsGoodsMapper.selectList(Wrappers.lambdaQuery(GmsGoods.class)
+                        .select(GmsGoods::getBrandId)
+                        .in(GmsGoods::getBrandId, brandIds))
+                .stream().filter(goods -> goods.getBrandId() != null)
+                .collect(Collectors.groupingBy(GmsGoods::getBrandId, Collectors.counting()));
+        return PageUtil.toPageVO(page, gmsBrand -> {
+            GmsBrandVO gmsBrandVO = new GmsBrandVO();
+            BeanUtil.copyProperties(gmsBrand, gmsBrandVO);
+            gmsBrandVO.setGoodsCount(goodsCount.getOrDefault(gmsBrand.getId(), 0L).intValue());
+            return gmsBrandVO;
+        });
     }
 
     @Override
@@ -102,11 +122,6 @@ public class GmsBrandServiceImpl extends ServiceImpl<GmsBrandMapper, GmsBrand> i
             selectVO.setValue(gmsBrand.getId());
             return selectVO;
         }).collect(Collectors.toList());
-    }
-
-    @Override
-    public void updateGoodsCount(Long id, int step) {
-        this.lambdaUpdate().setSql("goods_count = goods_count + " + step).eq(GmsBrand::getId, id).update();
     }
 
 }

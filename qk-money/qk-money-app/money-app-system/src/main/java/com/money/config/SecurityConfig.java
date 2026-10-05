@@ -37,7 +37,7 @@ public class SecurityConfig {
             List<String> roleCodes = userInfo.getRoles()
                     .stream().map(SysRole::getRoleCode).collect(Collectors.toList());
             List<String> permissions = userInfo.getPermissions()
-                    .stream().map(SysPermission::getPermission).collect(Collectors.toList());
+                    .stream().map(SysPermission::getPermissionCode).collect(Collectors.toList());
             // 返回装填的 rbac user
             RbacUser rbacUser = new RbacUser();
             rbacUser.setUserId(sysUser.getId());

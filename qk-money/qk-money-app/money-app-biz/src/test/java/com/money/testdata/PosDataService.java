@@ -81,8 +81,7 @@ public class PosDataService {
 
                 // 再清理订单明细
                 new LambdaUpdateChainWrapper<>(orderDetailMapper)
-                        .inSql(OmsOrderDetail::getOrderNo,
-                                "SELECT order_no FROM oms_order WHERE id IN (" + String.join(",", createdOrderIds.stream().map(String::valueOf).toArray(String[]::new)) + ")")
+                        .in(OmsOrderDetail::getOrderId, createdOrderIds)
                         .remove();
 
                 // 最后清理订单

@@ -105,7 +105,7 @@ public class SysAuthServiceImpl implements SysAuthService {
         authTokenVO.setRefreshToken(securityTokenSupport.generateRefreshToken(sysUser.getUsername()));
         authTokenVO.setRefreshTtl(securityTokenSupport.getTokenConfig().getRefreshTtl());
         // 更新登录时间
-        sysUser.setLastTime(LocalDateTime.now());
+        sysUser.setLastLoginTime(LocalDateTime.now());
         sysUserService.updateById(sysUser);
         return authTokenVO;
     }

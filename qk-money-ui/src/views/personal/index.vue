@@ -11,7 +11,9 @@
             :show-file-list="false"
             accept="image/*"
           >
-            <el-avatar :src="infoForm.avatar" :size="72" shape="square" class="cursor-pointer hover:opacity-80 transition-opacity ring-2 ring-gray-100 dark:ring-gray-700" />
+            <el-avatar :src="infoForm.avatar" :size="72" shape="square" class="cursor-pointer hover:opacity-80 transition-opacity ring-2 ring-gray-100 dark:ring-gray-700">
+              <span class="text-2xl select-none">{{ (infoForm.nickname || '用户').charAt(0) }}</span>
+            </el-avatar>
           </el-upload>
           <div>
             <h2 class="text-lg font-semibold text-gray-900 dark:text-white">{{ infoForm.nickname || '用户' }}</h2>

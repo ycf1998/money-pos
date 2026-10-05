@@ -40,7 +40,7 @@ public class SysUserVO implements Serializable {
     private Boolean enabled;
 
     @Schema(description = "最后登录时间")
-    private LocalDateTime lastTime;
+    private LocalDateTime lastLoginTime;
 
     @Schema(description = "创建时间")
     private LocalDateTime createTime;

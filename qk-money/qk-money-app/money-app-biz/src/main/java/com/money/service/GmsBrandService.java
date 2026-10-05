@@ -36,12 +36,4 @@ public interface GmsBrandService extends IService<GmsBrand> {
      * @return {@link List}<{@link SelectVO}>
      */
     List<SelectVO> getBrandSelect();
-
-    /**
-     * 更新商品数
-     *
-     * @param id   品牌id
-     * @param step 增/减商品数
-     */
-    void updateGoodsCount(Long id, int step);
 }

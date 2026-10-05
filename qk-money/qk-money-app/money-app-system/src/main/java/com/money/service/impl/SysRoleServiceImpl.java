@@ -31,6 +31,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -85,9 +86,17 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
                 .orderByAsc(StrUtil.isBlank(queryDTO.getOrderBy()), SysRole::getLevel)
                 .last(StrUtil.isNotBlank(queryDTO.getOrderBy()), queryDTO.getOrderBySql())
                 .page(PageUtil.toPage(queryDTO));
+        // 角色人数实时统计，不落库
+        List<Long> roleIds = page.getRecords().stream().map(SysRole::getId).collect(Collectors.toList());
+        Map<Long, Long> userCount = roleIds.isEmpty() ? Collections.emptyMap() : sysUserRoleRelationService.lambdaQuery()
+                .select(SysUserRoleRelation::getRoleId)
+                .in(SysUserRoleRelation::getRoleId, roleIds)
+                .list().stream()
+                .collect(Collectors.groupingBy(SysUserRoleRelation::getRoleId, Collectors.counting()));
         return PageUtil.toPageVO(page, sysRole -> {
             SysRoleVO sysRoleVO = new SysRoleVO();
             BeanUtil.copyProperties(sysRole, sysRoleVO);
+            sysRoleVO.setCount(userCount.getOrDefault(sysRole.getId(), 0L));
             List<SysPermission> permissionByRole = sysPermissionService.getByRole(Collections.singletonList(sysRoleVO.getId()));
             sysRoleVO.setPermissions(permissionByRole);
             return sysRoleVO;
@@ -142,25 +151,11 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     @Override
     public void relate(List<SysUserRoleRelation> userRoleRelations) {
         sysUserRoleRelationService.saveBatch(userRoleRelations);
-        this.updateCount(userRoleRelations.stream().map(SysUserRoleRelation::getRoleId).collect(Collectors.toList()), 1);
     }
 
     @Override
     public void relevanceByUser(Long userId) {
-        List<Long> roleIdList = sysUserRoleRelationService.getRelationByUser(userId)
-                .stream().map(SysUserRoleRelation::getRoleId).collect(Collectors.toList());
         sysUserRoleRelationService.lambdaUpdate().eq(SysUserRoleRelation::getUserId, userId).remove();
-        this.updateCount(roleIdList, -1);
-    }
-
-    /**
-     * 更新角色关联用户数
-     *
-     * @param id   id
-     * @param step 一步
-     */
-    private void updateCount(List<Long> id, long step) {
-        this.lambdaUpdate().in(SysRole::getId, id).setSql("count = count + " + step).update();
     }
 
 }

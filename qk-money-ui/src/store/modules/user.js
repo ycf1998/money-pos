@@ -12,7 +12,7 @@ export const useUserStore = defineStore('user', {
     getters: {
         level: (state) => state.roles[0].level,
         permissionCode: (state) =>
-            [...state.roles.map(e => e.roleCode), ...state.permissions.map(e => e.permission)].filter(e => e.length > 0)
+            [...state.roles.map(e => e.roleCode), ...state.permissions.map(e => e.permissionCode)].filter(e => e.length > 0)
     },
     actions: {
         /**

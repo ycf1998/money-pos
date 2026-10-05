@@ -1,4 +1,4 @@
-CREATE DATABASE IF NOT EXISTS `money_pos` CHARACTER SET 'utf8mb4';
+CREATE DATABASE IF NOT EXISTS `money_pos` CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_0900_ai_ci';
 USE `money_pos`;
 
 SET NAMES utf8mb4;
@@ -8,429 +8,461 @@ SET FOREIGN_KEY_CHECKS = 0;
 
 -- demo
 DROP TABLE IF EXISTS `demo`;
-CREATE TABLE `demo`  (
-  `id` bigint UNSIGNED NOT NULL,
-  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '名称',
-  `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `update_time` datetime NOT NULL,
-  `tenant_id` bigint UNSIGNED NOT NULL DEFAULT 0 COMMENT '租户id',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+CREATE TABLE `demo` (
+  `id`          bigint       NOT NULL                COMMENT '主键ID',
+  `name`        varchar(50)  NOT NULL                COMMENT '名称',
+  `create_by`   varchar(50)  NOT NULL                COMMENT '创建人',
+  `create_time` datetime     NOT NULL                COMMENT '创建时间',
+  `update_by`   varchar(50)  NOT NULL                COMMENT '更新人',
+  `update_time` datetime     NOT NULL                COMMENT '更新时间',
+  `tenant_id`   bigint       NOT NULL DEFAULT 0      COMMENT '租户ID',
+  PRIMARY KEY (`id`),
+  KEY `idx_tenant_id` (`tenant_id`)
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '示例表';
 
 -- sys_dict
 DROP TABLE IF EXISTS `sys_dict`;
-CREATE TABLE `sys_dict`  (
-  `id` bigint UNSIGNED NOT NULL,
-  `dict_name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '字典名称',
-  `dict_desc` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '' COMMENT '字典描述',
-  `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `create_time` datetime NOT NULL,
-  `update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `update_time` datetime NOT NULL,
-  PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `uk_dict_name`(`dict_name` ASC) USING BTREE COMMENT '字典名称唯一'
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '字典表' ROW_FORMAT = DYNAMIC;
+CREATE TABLE `sys_dict` (
+  `id`          bigint       NOT NULL                COMMENT '主键ID',
+  `dict_name`   varchar(50)  NOT NULL                COMMENT '字典名称，不可修改',
+  `dict_desc`   varchar(500) NOT NULL DEFAULT ''     COMMENT '字典描述',
+  `create_by`   varchar(50)  NOT NULL                COMMENT '创建人',
+  `create_time` datetime     NOT NULL                COMMENT '创建时间',
+  `update_by`   varchar(50)  NOT NULL                COMMENT '更新人',
+  `update_time` datetime     NOT NULL                COMMENT '更新时间',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uk_dict_name` (`dict_name`)
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '字典表';
 
 -- sys_dict_detail
 DROP TABLE IF EXISTS `sys_dict_detail`;
-CREATE TABLE `sys_dict_detail`  (
-  `id` bigint UNSIGNED NOT NULL,
-  `dict` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '所属字典',
-  `value` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '字典值',
-  `cn_desc` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '中文描述',
-  `en_desc` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '' COMMENT '英文描述',
-  `sort` int NOT NULL DEFAULT 999 COMMENT '排序',
-  `hidden` tinyint(1) NOT NULL DEFAULT 0 COMMENT '隐藏',
-  `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `create_time` datetime NOT NULL,
-  `update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `update_time` datetime NOT NULL,
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '字典详情表' ROW_FORMAT = DYNAMIC;
+CREATE TABLE `sys_dict_detail` (
+  `id`          bigint       NOT NULL                COMMENT '主键ID',
+  `dict`        varchar(50)  NOT NULL                COMMENT '所属字典，对应 sys_dict.dict_name',
+  `value`       varchar(50)  NOT NULL                COMMENT '字典值',
+  `name_cn`     varchar(100) NOT NULL                COMMENT '中文名称',
+  `name_en`     varchar(100) NOT NULL DEFAULT ''     COMMENT '英文名称',
+  `sort`        int          NOT NULL DEFAULT 999    COMMENT '排序',
+  `hidden`      tinyint(1)   NOT NULL DEFAULT 0      COMMENT '是否隐藏：0-否；1-是',
+  `create_by`   varchar(50)  NOT NULL                COMMENT '创建人',
+  `create_time` datetime     NOT NULL                COMMENT '创建时间',
+  `update_by`   varchar(50)  NOT NULL                COMMENT '更新人',
+  `update_time` datetime     NOT NULL                COMMENT '更新时间',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uk_dict_value` (`dict`, `value`)
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '字典详情表';
 
 -- sys_permission
 DROP TABLE IF EXISTS `sys_permission`;
-CREATE TABLE `sys_permission`  (
-  `id` bigint UNSIGNED NOT NULL,
-  `permission_name` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '名称',
-  `permission_type` varchar(8) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '资源类型',
-  `parent_id` bigint UNSIGNED NOT NULL DEFAULT 0 COMMENT '父编码',
-  `icon` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '图标',
-  `permission` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '权限标识',
-  `router_path` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '路由地址',
-  `iframe` tinyint(1) NOT NULL DEFAULT 0 COMMENT '是否外链菜单',
-  `hidden` tinyint(1) NOT NULL DEFAULT 0 COMMENT '是否隐藏',
-  `component_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '组件名称',
-  `component_path` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '组件路径',
-  `sub_count` int NOT NULL DEFAULT 0 COMMENT '子节点数',
-  `sort` int NOT NULL DEFAULT 999 COMMENT '排序',
-  `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `create_time` datetime NOT NULL,
-  `update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `update_time` datetime NOT NULL,
-  `tenant_id` bigint UNSIGNED NOT NULL DEFAULT 0 COMMENT '租户id',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '资源权限表' ROW_FORMAT = DYNAMIC;
+CREATE TABLE `sys_permission` (
+  `id`               bigint       NOT NULL              COMMENT '主键ID',
+  `permission_name`  varchar(50)  NOT NULL              COMMENT '名称',
+  `permission_type`  varchar(20)  NOT NULL              COMMENT '资源类型：DIR-目录；MENU-菜单；BUTTON-按钮',
+  `parent_id`        bigint       NOT NULL DEFAULT 0    COMMENT '父节点ID，0 为根节点',
+  `icon`             varchar(255) NOT NULL DEFAULT ''   COMMENT '图标',
+  `permission_code`  varchar(100) NOT NULL DEFAULT ''   COMMENT '权限标识，如 user:list；目录等无标识时为空串',
+  `router_path`      varchar(200) NOT NULL DEFAULT ''   COMMENT '路由地址',
+  `iframe`           tinyint(1)   NOT NULL DEFAULT 0    COMMENT '是否外链菜单：0-否；1-是',
+  `hidden`           tinyint(1)   NOT NULL DEFAULT 0    COMMENT '是否隐藏：0-否；1-是',
+  `component_name`   varchar(100) NOT NULL DEFAULT ''   COMMENT '组件名称',
+  `component_path`   varchar(200) NOT NULL DEFAULT ''   COMMENT '组件路径',
+  `sort`             int          NOT NULL DEFAULT 999  COMMENT '排序',
+  `create_by`        varchar(50)  NOT NULL              COMMENT '创建人',
+  `create_time`      datetime     NOT NULL              COMMENT '创建时间',
+  `update_by`        varchar(50)  NOT NULL              COMMENT '更新人',
+  `update_time`      datetime     NOT NULL              COMMENT '更新时间',
+  `tenant_id`        bigint       NOT NULL DEFAULT 0    COMMENT '租户ID',
+  PRIMARY KEY (`id`),
+  KEY `idx_tenant_permission_code` (`tenant_id`, `permission_code`),
+  KEY `idx_tenant_parent_id` (`tenant_id`, `parent_id`)
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '资源权限表';
 
 -- sys_role
 DROP TABLE IF EXISTS `sys_role`;
-CREATE TABLE `sys_role`  (
-  `id` bigint UNSIGNED NOT NULL,
-  `role_code` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '角色编码',
-  `role_name` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '角色名称',
-  `level` int NOT NULL COMMENT '角色级别',
-  `description` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '角色描述',
-  `count` bigint NOT NULL DEFAULT 0 COMMENT '角色人数',
-  `enabled` tinyint(1) NOT NULL DEFAULT 1 COMMENT '可用状态：0-禁用；1-启用',
-  `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `create_time` datetime NOT NULL,
-  `update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `update_time` datetime NOT NULL,
-  `tenant_id` bigint UNSIGNED NOT NULL DEFAULT 0 COMMENT '租户id',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '角色表' ROW_FORMAT = DYNAMIC;
+CREATE TABLE `sys_role` (
+  `id`          bigint       NOT NULL                COMMENT '主键ID',
+  `role_code`   varchar(50)  NOT NULL                COMMENT '角色编码',
+  `role_name`   varchar(50)  NOT NULL                COMMENT '角色名称',
+  `level`       int          NOT NULL DEFAULT 0      COMMENT '角色级别，数值越小权限越大',
+  `description` varchar(500) NOT NULL DEFAULT ''     COMMENT '角色描述',
+  `enabled`     tinyint(1)   NOT NULL DEFAULT 1      COMMENT '可用状态：0-禁用；1-启用',
+  `create_by`   varchar(50)  NOT NULL                COMMENT '创建人',
+  `create_time` datetime     NOT NULL                COMMENT '创建时间',
+  `update_by`   varchar(50)  NOT NULL                COMMENT '更新人',
+  `update_time` datetime     NOT NULL                COMMENT '更新时间',
+  `tenant_id`   bigint       NOT NULL DEFAULT 0      COMMENT '租户ID',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uk_tenant_role_code` (`tenant_id`, `role_code`)
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '角色表';
 
--- sys_role_permission_relation
-DROP TABLE IF EXISTS `sys_role_permission_relation`;
-CREATE TABLE `sys_role_permission_relation`  (
-  `id` bigint UNSIGNED NOT NULL,
-  `permission_id` bigint UNSIGNED NOT NULL COMMENT '资源权限id',
-  `role_id` bigint UNSIGNED NOT NULL COMMENT '角色id',
-  `tenant_id` bigint UNSIGNED NOT NULL DEFAULT 0 COMMENT '租户id',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '角色资源权限关联表' ROW_FORMAT = DYNAMIC;
+-- sys_role_permission
+DROP TABLE IF EXISTS `sys_role_permission`;
+CREATE TABLE `sys_role_permission` (
+  `id`            bigint NOT NULL             COMMENT '主键ID',
+  `role_id`       bigint NOT NULL             COMMENT '角色ID',
+  `permission_id` bigint NOT NULL             COMMENT '权限ID',
+  `tenant_id`     bigint NOT NULL DEFAULT 0   COMMENT '租户ID',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uk_role_permission` (`tenant_id`, `role_id`, `permission_id`),
+  KEY `idx_tenant_permission_id` (`tenant_id`, `permission_id`)
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '角色资源权限关联表';
 
 -- sys_tenant
 DROP TABLE IF EXISTS `sys_tenant`;
-CREATE TABLE `sys_tenant`  (
-  `id` bigint UNSIGNED NOT NULL,
-  `tenant_code` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '租户code',
-  `logo` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT 'https://7up.pics/images/2023/10/21/logo.png' COMMENT 'logo',
-  `ico` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '' COMMENT 'ico',
-  `domain` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '' COMMENT '域名',
-  `tenant_name` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '租户名称',
-  `tenant_desc` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '' COMMENT '租户描述',
-  `deleted` tinyint(1) NOT NULL DEFAULT 0 COMMENT '逻辑删除',
-  `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `tenant_id` bigint UNSIGNED NOT NULL DEFAULT 0,
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '租户表' ROW_FORMAT = DYNAMIC;
+CREATE TABLE `sys_tenant` (
+  `id`          bigint       NOT NULL              COMMENT '主键ID',
+  `tenant_code` varchar(50)  NOT NULL              COMMENT '租户编码',
+  `logo`        varchar(255) NOT NULL DEFAULT ''   COMMENT 'logo 地址',
+  `ico`         varchar(255) NOT NULL DEFAULT ''   COMMENT 'ico 地址',
+  `domain`      varchar(100) NOT NULL DEFAULT ''   COMMENT '域名',
+  `tenant_name` varchar(50)  NOT NULL              COMMENT '租户名称',
+  `tenant_desc` varchar(500) NOT NULL DEFAULT ''   COMMENT '租户描述',
+  `deleted`     tinyint(1)   NOT NULL DEFAULT 0    COMMENT '逻辑删除：0-未删除；1-已删除',
+  `create_by`   varchar(50)  NOT NULL              COMMENT '创建人',
+  `create_time` datetime     NOT NULL              COMMENT '创建时间',
+  `update_by`   varchar(50)  NOT NULL              COMMENT '更新人',
+  `update_time` datetime     NOT NULL              COMMENT '更新时间',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uk_tenant_code` (`tenant_code`)
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '租户表';
 
 -- sys_user
 DROP TABLE IF EXISTS `sys_user`;
-CREATE TABLE `sys_user`  (
-  `id` bigint UNSIGNED NOT NULL,
-  `username` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '用户名',
-  `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '密码',
-  `nickname` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '昵称',
-  `avatar` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'https://7up.pics/images/2023/10/21/superhero.png' COMMENT '头像',
-  `phone` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '手机号码',
-  `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '邮箱',
-  `remark` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '备注',
-  `enabled` tinyint(1) NOT NULL DEFAULT 1 COMMENT '可用状态：0-禁用；1-启用',
-  `init_login` tinyint(1) NOT NULL DEFAULT 1 COMMENT '初次登录：0-不是；1-是',
-  `last_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '最后登录时间',
-  `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `tenant_id` bigint UNSIGNED NOT NULL DEFAULT 0 COMMENT '租户id',
-  PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `uk_username`(`username` ASC, `tenant_id` ASC) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户表' ROW_FORMAT = DYNAMIC;
+CREATE TABLE `sys_user` (
+  `id`              bigint       NOT NULL                COMMENT '主键ID',
+  `username`        varchar(50)  NOT NULL                COMMENT '用户名，不可修改',
+  `password`        varchar(100) NOT NULL                COMMENT '密码，BCrypt 加密',
+  `nickname`        varchar(50)  NOT NULL DEFAULT ''     COMMENT '昵称',
+  `avatar`          varchar(255) NOT NULL DEFAULT ''     COMMENT '头像地址',
+  `phone`           varchar(20)  NOT NULL DEFAULT ''     COMMENT '手机号码',
+  `email`           varchar(100) NOT NULL DEFAULT ''     COMMENT '邮箱',
+  `remark`          varchar(500) NOT NULL DEFAULT ''     COMMENT '备注',
+  `enabled`         tinyint(1)   NOT NULL DEFAULT 1      COMMENT '可用状态：0-禁用；1-启用',
+  `init_login`      tinyint(1)   NOT NULL DEFAULT 1      COMMENT '是否初次登录：0-否；1-是',
+  `last_login_time` datetime     NULL                    COMMENT '最后登录时间，从未登录为 NULL',
+  `create_by`       varchar(50)  NOT NULL                COMMENT '创建人',
+  `create_time`     datetime     NOT NULL                COMMENT '创建时间',
+  `update_by`       varchar(50)  NOT NULL                COMMENT '更新人',
+  `update_time`     datetime     NOT NULL                COMMENT '更新时间',
+  `tenant_id`       bigint       NOT NULL DEFAULT 0      COMMENT '租户ID',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uk_tenant_username` (`tenant_id`, `username`),
+  KEY `idx_tenant_last_login_time` (`tenant_id`, `last_login_time`)
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '用户表';
 
--- sys_user_role_relation
-DROP TABLE IF EXISTS `sys_user_role_relation`;
-CREATE TABLE `sys_user_role_relation`  (
-  `id` bigint UNSIGNED NOT NULL,
-  `user_id` bigint UNSIGNED NOT NULL COMMENT '用户id',
-  `role_id` bigint UNSIGNED NOT NULL COMMENT '角色id',
-  `tenant_id` bigint UNSIGNED NOT NULL DEFAULT 0 COMMENT '租户id',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户角色关联表' ROW_FORMAT = DYNAMIC;
+-- sys_user_role
+DROP TABLE IF EXISTS `sys_user_role`;
+CREATE TABLE `sys_user_role` (
+  `id`        bigint NOT NULL             COMMENT '主键ID',
+  `user_id`   bigint NOT NULL             COMMENT '用户ID',
+  `role_id`   bigint NOT NULL             COMMENT '角色ID',
+  `tenant_id` bigint NOT NULL DEFAULT 0   COMMENT '租户ID',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uk_user_role` (`tenant_id`, `user_id`, `role_id`),
+  KEY `idx_tenant_role_id` (`tenant_id`, `role_id`)
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '用户角色关联表';
 
 -- sys_dict
-INSERT INTO `sys_dict` VALUES (1, 'permissionType', '权限类型', '', '2022-03-06 12:02:55', '', '2022-03-06 12:02:58');
+INSERT INTO `sys_dict` (`id`, `dict_name`, `dict_desc`, `create_by`, `create_time`, `update_by`, `update_time`) VALUES
+(1, 'permissionType', '权限类型', '', '2022-03-06 12:02:55', '', '2022-03-06 12:02:58');
 
 -- sys_dict_detail
-INSERT INTO `sys_dict_detail` VALUES (1, 'permissionType', 'DIR', '目录', 'Directory', 1, 0, '', '2022-03-30 22:13:11', 'money', '2024-05-18 17:34:10');
-INSERT INTO `sys_dict_detail` VALUES (2, 'permissionType', 'MENU', '菜单', 'Menu', 2, 0, '', '2022-03-30 22:13:11', 'money', '2024-05-18 17:34:19');
-INSERT INTO `sys_dict_detail` VALUES (3, 'permissionType', 'BUTTON', '按钮', 'Button', 3, 0, '', '2022-03-30 22:13:11', 'money', '2024-05-18 17:34:27');
+INSERT INTO `sys_dict_detail` (`id`, `dict`, `value`, `name_cn`, `name_en`, `sort`, `hidden`, `create_by`, `create_time`, `update_by`, `update_time`) VALUES
+(1, 'permissionType', 'DIR',    '目录', 'Directory', 1, 0, '', '2022-03-30 22:13:11', 'money', '2024-05-18 17:34:10'),
+(2, 'permissionType', 'MENU',   '菜单', 'Menu',      2, 0, '', '2022-03-30 22:13:11', 'money', '2024-05-18 17:34:19'),
+(3, 'permissionType', 'BUTTON', '按钮', 'Button',    3, 0, '', '2022-03-30 22:13:11', 'money', '2024-05-18 17:34:27');
 
 -- sys_permission
-INSERT INTO `sys_permission` VALUES (1501921151197130754, '系统管理', 'DIR', 0, 'sys-manage', '', 'system', 0, 0, '', '', 5, 1, 'money', '2022-03-10 22:01:21', 'money', '2022-03-10 23:06:45', 0);
-INSERT INTO `sys_permission` VALUES (1502278787507806210, '用户管理', 'MENU', 1501921151197130754, 'sys-user', 'user:list', 'user', 0, 0, 'User', 'system/user/index', 3, 1, 'money', '2022-03-11 21:42:29', 'money', '2022-03-11 21:42:29', 0);
-INSERT INTO `sys_permission` VALUES (1502863016289398785, '角色管理', 'MENU', 1501921151197130754, 'sys-role', 'role:list', 'role', 0, 0, 'Role', 'system/role/index', 2, 2, 'money', '2022-03-13 12:24:00', 'money', '2022-03-13 12:24:00', 0);
-INSERT INTO `sys_permission` VALUES (1502863270971731970, '权限管理', 'MENU', 1501921151197130754, 'sys-permission', 'permission:list', 'permission', 0, 0, 'Permission', 'system/permission/index', 3, 3, 'money', '2022-03-13 12:25:00', 'money', '2022-03-13 12:25:00', 0);
-INSERT INTO `sys_permission` VALUES (1503736683986800642, '新增用户', 'BUTTON', 1502278787507806210, '', 'user:add', '', 0, 0, '', '', 0, 1, 'money', '2022-03-15 22:15:38', 'money', '2022-03-15 22:15:38', 0);
-INSERT INTO `sys_permission` VALUES (1503738104236822529, '修改用户', 'BUTTON', 1502278787507806210, '', 'user:edit', '', 0, 0, '', '', 0, 2, 'money', '2022-03-15 22:21:17', 'money', '2022-03-15 22:21:17', 0);
-INSERT INTO `sys_permission` VALUES (1503738191579009025, '删除用户', 'BUTTON', 1502278787507806210, '', 'user:del', '', 0, 0, '', '', 0, 3, 'money', '2022-03-15 22:21:38', 'money', '2022-03-15 22:21:38', 0);
-INSERT INTO `sys_permission` VALUES (1503753702563991553, '新增角色', 'BUTTON', 1502863016289398785, '', 'role:add', '', 0, 0, '', '', 0, 1, 'money', '2022-03-15 23:23:16', 'money', '2022-03-15 23:23:16', 0);
-INSERT INTO `sys_permission` VALUES (1503753930130149377, '修改角色', 'BUTTON', 1502863016289398785, '', 'role:edit', '', 0, 0, '', '', 0, 2, 'money', '2022-03-15 23:24:10', 'money', '2022-03-15 23:24:10', 0);
-INSERT INTO `sys_permission` VALUES (1503754013445804034, '删除角色', 'BUTTON', 1502863016289398785, '', 'role:del', '', 0, 0, '', '', 0, 3, 'money', '2022-03-15 23:24:30', 'money', '2022-03-15 23:24:30', 0);
-INSERT INTO `sys_permission` VALUES (1503754297878335489, '新增权限', 'BUTTON', 1502863270971731970, '', 'permission:add', '', 0, 0, '', '', 0, 1, 'money', '2022-03-15 23:25:38', 'money', '2022-03-15 23:25:38', 0);
-INSERT INTO `sys_permission` VALUES (1503754393558798337, '修改权限', 'BUTTON', 1502863270971731970, '', 'permission:edit', '', 0, 0, '', '', 0, 2, 'money', '2022-03-15 23:26:00', 'money', '2022-03-15 23:26:00', 0);
-INSERT INTO `sys_permission` VALUES (1503754468678782978, '删除权限', 'BUTTON', 1502863270971731970, '', 'permission:del', '', 0, 0, '', '', 0, 3, 'money', '2022-03-15 23:26:18', 'money', '2022-03-15 23:26:18', 0);
-INSERT INTO `sys_permission` VALUES (1507371326556450818, '字典管理', 'MENU', 1501921151197130754, 'sys-dict', 'dict:list', 'dict', 0, 0, 'Dict', 'system/dict/index', 3, 4, 'money', '2022-03-25 22:58:25', 'money', '2022-03-25 22:58:25', 0);
-INSERT INTO `sys_permission` VALUES (1507371669973479425, '新增字典', 'BUTTON', 1507371326556450818, '', 'dict:add', '', 0, 0, '', '', 0, 1, 'money', '2022-03-25 22:59:46', 'money', '2022-03-25 22:59:46', 0);
-INSERT INTO `sys_permission` VALUES (1507371725170520065, '修改字典', 'BUTTON', 1507371326556450818, '', 'dict:edit', '', 0, 0, '', '', 0, 2, 'money', '2022-03-25 23:00:00', 'money', '2022-03-25 23:00:00', 0);
-INSERT INTO `sys_permission` VALUES (1507371776840151041, '删除字典', 'BUTTON', 1507371326556450818, '', 'dict:del', '', 0, 0, '', '', 0, 3, 'money', '2022-03-25 23:00:12', 'money', '2022-03-25 23:00:12', 0);
-INSERT INTO `sys_permission` VALUES (1507555956060450818, '租户管理', 'MENU', 1501921151197130754, 'sys-tenant', 'tenant:list', 'tenant', 0, 0, 'Tenant', 'system/tenant/index', 3, 5, 'money', '2022-03-26 11:12:04', 'money', '2022-03-26 11:12:04', 0);
-INSERT INTO `sys_permission` VALUES (1507556070254571522, '新增租户', 'BUTTON', 1507555956060450818, '', 'tenant:add', '', 0, 0, '', '', 0, 1, 'money', '2022-03-26 11:12:31', 'money', '2022-03-26 11:12:31', 0);
-INSERT INTO `sys_permission` VALUES (1507556151250776065, '修改租户', 'BUTTON', 1507555956060450818, '', 'tenant:edit', '', 0, 0, '', '', 0, 2, 'money', '2022-03-26 11:12:50', 'money', '2022-03-26 11:12:50', 0);
-INSERT INTO `sys_permission` VALUES (1507556213058039809, '删除租户', 'BUTTON', 1507555956060450818, '', 'tenant:del', '', 0, 0, '', '', 0, 3, 'money', '2022-03-26 11:13:05', 'money', '2022-03-26 11:13:05', 0);
+INSERT INTO `sys_permission` (`id`, `permission_name`, `permission_type`, `parent_id`, `icon`, `permission_code`, `router_path`, `iframe`, `hidden`, `component_name`, `component_path`, `sort`, `create_by`, `create_time`, `update_by`, `update_time`, `tenant_id`) VALUES
+(1501921151197130754, '系统管理', 'DIR',    0,                   'sys-manage', '',            'system',                       0, 0, '',           '',                        1, 'money', '2022-03-10 22:01:21', 'money', '2022-03-10 23:06:45', 0),
+(1502278787507806210, '用户管理', 'MENU',   1501921151197130754, 'sys-user',   'user:list',   'user',                         0, 0, 'User',       'system/user/index',       1, 'money', '2022-03-11 21:42:29', 'money', '2022-03-11 21:42:29', 0),
+(1502863016289398785, '角色管理', 'MENU',   1501921151197130754, 'sys-role',   'role:list',   'role',                         0, 0, 'Role',       'system/role/index',       2, 'money', '2022-03-13 12:24:00', 'money', '2022-03-13 12:24:00', 0),
+(1502863270971731970, '权限管理', 'MENU',   1501921151197130754, 'sys-permission', 'permission:list', 'permission',             0, 0, 'Permission', 'system/permission/index', 3, 'money', '2022-03-13 12:25:00', 'money', '2022-03-13 12:25:00', 0),
+(1503736683986800642, '新增用户', 'BUTTON', 1502278787507806210, '',           'user:add',    '',                             0, 0, '',           '',                        1, 'money', '2022-03-15 22:15:38', 'money', '2022-03-15 22:15:38', 0),
+(1503738104236822529, '修改用户', 'BUTTON', 1502278787507806210, '',           'user:edit',   '',                             0, 0, '',           '',                        2, 'money', '2022-03-15 22:21:17', 'money', '2022-03-15 22:21:17', 0),
+(1503738191579009025, '删除用户', 'BUTTON', 1502278787507806210, '',           'user:del',    '',                             0, 0, '',           '',                        3, 'money', '2022-03-15 22:21:38', 'money', '2022-03-15 22:21:38', 0),
+(1503753702563991553, '新增角色', 'BUTTON', 1502863016289398785, '',           'role:add',    '',                             0, 0, '',           '',                        1, 'money', '2022-03-15 23:23:16', 'money', '2022-03-15 23:23:16', 0),
+(1503753930130149377, '修改角色', 'BUTTON', 1502863016289398785, '',           'role:edit',   '',                             0, 0, '',           '',                        2, 'money', '2022-03-15 23:24:10', 'money', '2022-03-15 23:24:10', 0),
+(1503754013445804034, '删除角色', 'BUTTON', 1502863016289398785, '',           'role:del',    '',                             0, 0, '',           '',                        3, 'money', '2022-03-15 23:24:30', 'money', '2022-03-15 23:24:30', 0),
+(1503754297878335489, '新增权限', 'BUTTON', 1502863270971731970, '',           'permission:add',  '',                         0, 0, '',           '',                        1, 'money', '2022-03-15 23:25:38', 'money', '2022-03-15 23:25:38', 0),
+(1503754393558798337, '修改权限', 'BUTTON', 1502863270971731970, '',           'permission:edit', '',                         0, 0, '',           '',                        2, 'money', '2022-03-15 23:26:00', 'money', '2022-03-15 23:26:00', 0),
+(1503754468678782978, '删除权限', 'BUTTON', 1502863270971731970, '',           'permission:del',  '',                         0, 0, '',           '',                        3, 'money', '2022-03-15 23:26:18', 'money', '2022-03-15 23:26:18', 0),
+(1507371326556450818, '字典管理', 'MENU',   1501921151197130754, 'sys-dict',   'dict:list',   'dict',                         0, 0, 'Dict',       'system/dict/index',       4, 'money', '2022-03-25 22:58:25', 'money', '2022-03-25 22:58:25', 0),
+(1507371669973479425, '新增字典', 'BUTTON', 1507371326556450818, '',           'dict:add',    '',                             0, 0, '',           '',                        1, 'money', '2022-03-25 22:59:46', 'money', '2022-03-25 22:59:46', 0),
+(1507371725170520065, '修改字典', 'BUTTON', 1507371326556450818, '',           'dict:edit',   '',                             0, 0, '',           '',                        2, 'money', '2022-03-25 23:00:00', 'money', '2022-03-25 23:00:00', 0),
+(1507371776840151041, '删除字典', 'BUTTON', 1507371326556450818, '',           'dict:del',    '',                             0, 0, '',           '',                        3, 'money', '2022-03-25 23:00:12', 'money', '2022-03-25 23:00:12', 0),
+(1507555956060450818, '租户管理', 'MENU',   1501921151197130754, 'sys-tenant', 'tenant:list', 'tenant',                       0, 0, 'Tenant',     'system/tenant/index',     5, 'money', '2022-03-26 11:12:04', 'money', '2022-03-26 11:12:04', 0),
+(1507556070254571522, '新增租户', 'BUTTON', 1507555956060450818, '',           'tenant:add',  '',                             0, 0, '',           '',                        1, 'money', '2022-03-26 11:12:31', 'money', '2022-03-26 11:12:31', 0),
+(1507556151250776065, '修改租户', 'BUTTON', 1507555956060450818, '',           'tenant:edit', '',                             0, 0, '',           '',                        2, 'money', '2022-03-26 11:12:50', 'money', '2022-03-26 11:12:50', 0),
+(1507556213058039809, '删除租户', 'BUTTON', 1507555956060450818, '',           'tenant:del',  '',                             0, 0, '',           '',                        3, 'money', '2022-03-26 11:13:05', 'money', '2022-03-26 11:13:05', 0);
 
 -- sys_role
-INSERT INTO `sys_role` VALUES (1, 'SUPER_ADMIN', '超级管理员', 0, '拥有全部权限的人', 1, 1, '', '2021-09-07 22:49:27', 'admin', '2022-03-06 11:40:47', 0);
-INSERT INTO `sys_role` VALUES (1502845638751055873, 'ADMIN', '管理员', 1, '管理员', 1, 1, 'admin', '2022-03-13 11:14:56', 'admin', '2022-03-13 11:14:56', 0);
-INSERT INTO `sys_role` VALUES (1502845786646409218, 'GUEST', '游客', 99, '只能查不能改', 1, 1, 'admin', '2022-03-13 11:15:32', 'admin', '2022-03-13 11:15:42', 0);
+INSERT INTO `sys_role` (`id`, `role_code`, `role_name`, `level`, `description`, `enabled`, `create_by`, `create_time`, `update_by`, `update_time`, `tenant_id`) VALUES
+(1,                  'SUPER_ADMIN', '超级管理员', 0,  '拥有全部权限的人', 1, '',      '2021-09-07 22:49:27', 'admin', '2022-03-06 11:40:47', 0),
+(1502845638751055873, 'ADMIN',       '管理员',     1,  '管理员',           1, 'admin', '2022-03-13 11:14:56', 'admin', '2022-03-13 11:14:56', 0),
+(1502845786646409218, 'GUEST',       '游客',       99, '只能查不能改',     1, 'admin', '2022-03-13 11:15:32', 'admin', '2022-03-13 11:15:42', 0);
 
--- sys_role_permission_relation
-INSERT INTO `sys_role_permission_relation` VALUES (1662099841436852226, 1503736683986800642, 1502845638751055873, 0);
-INSERT INTO `sys_role_permission_relation` VALUES (1662099841436852227, 1501921151197130754, 1502845638751055873, 0);
-INSERT INTO `sys_role_permission_relation` VALUES (1662099841436852228, 1502278787507806210, 1502845638751055873, 0);
-INSERT INTO `sys_role_permission_relation` VALUES (1662099841436852229, 1503754013445804034, 1502845638751055873, 0);
-INSERT INTO `sys_role_permission_relation` VALUES (1662099841436852230, 1507371326556450818, 1502845638751055873, 0);
-INSERT INTO `sys_role_permission_relation` VALUES (1662099841436852231, 1503738191579009025, 1502845638751055873, 0);
-INSERT INTO `sys_role_permission_relation` VALUES (1662099841436852232, 1503753930130149377, 1502845638751055873, 0);
-INSERT INTO `sys_role_permission_relation` VALUES (1662099841436852233, 1502863270971731970, 1502845638751055873, 0);
-INSERT INTO `sys_role_permission_relation` VALUES (1662099841436852234, 1503738104236822529, 1502845638751055873, 0);
-INSERT INTO `sys_role_permission_relation` VALUES (1662099841436852235, 1503753702563991553, 1502845638751055873, 0);
-INSERT INTO `sys_role_permission_relation` VALUES (1662099841436852236, 1502863016289398785, 1502845638751055873, 0);
-INSERT INTO `sys_role_permission_relation` VALUES (1662099841436852237, 1507555956060450818, 1502845638751055873, 0);
-INSERT INTO `sys_role_permission_relation` VALUES (1662099895899889665, 1501921151197130754, 1502845786646409218, 0);
-INSERT INTO `sys_role_permission_relation` VALUES (1662099895966998530, 1502278787507806210, 1502845786646409218, 0);
-INSERT INTO `sys_role_permission_relation` VALUES (1662099895966998531, 1507371326556450818, 1502845786646409218, 0);
-INSERT INTO `sys_role_permission_relation` VALUES (1662099895966998532, 1502863270971731970, 1502845786646409218, 0);
-INSERT INTO `sys_role_permission_relation` VALUES (1662099895966998533, 1502863016289398785, 1502845786646409218, 0);
-INSERT INTO `sys_role_permission_relation` VALUES (1662099895966998534, 1507555956060450818, 1502845786646409218, 0);
+-- sys_role_permission
+INSERT INTO `sys_role_permission` (`id`, `role_id`, `permission_id`, `tenant_id`) VALUES
+(1662099841436852226, 1502845638751055873, 1503736683986800642, 0),
+(1662099841436852227, 1502845638751055873, 1501921151197130754, 0),
+(1662099841436852228, 1502845638751055873, 1502278787507806210, 0),
+(1662099841436852229, 1502845638751055873, 1503754013445804034, 0),
+(1662099841436852230, 1502845638751055873, 1507371326556450818, 0),
+(1662099841436852231, 1502845638751055873, 1503738191579009025, 0),
+(1662099841436852232, 1502845638751055873, 1503753930130149377, 0),
+(1662099841436852233, 1502845638751055873, 1502863270971731970, 0),
+(1662099841436852234, 1502845638751055873, 1503738104236822529, 0),
+(1662099841436852235, 1502845638751055873, 1503753702563991553, 0),
+(1662099841436852236, 1502845638751055873, 1502863016289398785, 0),
+(1662099841436852237, 1502845638751055873, 1507555956060450818, 0),
+(1662099895899889665, 1502845786646409218, 1501921151197130754, 0),
+(1662099895966998530, 1502845786646409218, 1502278787507806210, 0),
+(1662099895966998531, 1502845786646409218, 1507371326556450818, 0),
+(1662099895966998532, 1502845786646409218, 1502863270971731970, 0),
+(1662099895966998533, 1502845786646409218, 1502863016289398785, 0),
+(1662099895966998534, 1502845786646409218, 1507555956060450818, 0);
 
 -- sys_tenant
-INSERT INTO `sys_tenant` VALUES (0, 'M', 'https://7up.pics/images/2023/10/21/logo.png', '', 'www.money.com', '麦尼科技', '主租户', 0, '', '2023-10-01 17:05:41', '', '2022-03-26 14:06:28', 0);
+INSERT INTO `sys_tenant` (`id`, `tenant_code`, `logo`, `ico`, `domain`, `tenant_name`, `tenant_desc`, `deleted`, `create_by`, `create_time`, `update_by`, `update_time`) VALUES
+(0, 'M', 'https://7up.pics/images/2023/10/21/logo.png', '', 'www.money.com', '麦尼科技', '主租户', 0, '', '2022-03-26 14:06:28', '', '2023-10-01 17:05:41');
 
 -- sys_user
-INSERT INTO `sys_user` VALUES (1, 'money', '$2a$10$W6oaOSARIA3DsZy1DkdfUuqI3L7a885Ci7AYvpQK.9NGbeVhcZihi', 'money', 'https://7up.pics/images/2023/10/21/batman.png', '18120800000', 'money@qq.com', '俺是一个超级管理员！', 1, 1, '2023-10-01 12:45:28', '', '2022-03-03 23:12:57', 'money', '2023-05-25 23:54:31', 0);
-INSERT INTO `sys_user` VALUES (1502254138862391297, 'admin', '$2a$10$630Mdca6BcyUJpKC2LNT7eT93.k9pmpcQoes4qm/j2o.pnb725zE6', 'admin', 'https://7up.pics/images/2023/10/21/superhero.png', '18120803972', 'admin@qq.com', '', 1, 1, '2023-05-26 22:33:39', 'money', '2022-03-11 20:04:32', 'money', '2023-05-26 21:52:38', 0);
-INSERT INTO `sys_user` VALUES (1504612500111388673, 'guest', '$2a$10$Nj/4Tn.cj2SEdoIUqMz7FOczatNV/AltEu07ieTpAO.5hEGV7lZqC', 'guest', 'https://7up.pics/images/2023/10/21/superhero.png', '18120800002', 'guest@qq.com', '', 1, 1, '2023-05-26 22:23:55', 'money', '2022-03-18 08:15:49', 'money', '2023-09-30 12:01:33', 0);
+INSERT INTO `sys_user` (`id`, `username`, `password`, `nickname`, `avatar`, `phone`, `email`, `remark`, `enabled`, `init_login`, `last_login_time`, `create_by`, `create_time`, `update_by`, `update_time`, `tenant_id`) VALUES
+(1,                  'money', '$2a$10$W6oaOSARIA3DsZy1DkdfUuqI3L7a885Ci7AYvpQK.9NGbeVhcZihi', 'money', 'https://7up.pics/images/2023/10/21/batman.png',     '18120800000', 'money@qq.com', '俺是一个超级管理员！', 1, 1, '2023-10-01 12:45:28', '',      '2022-03-03 23:12:57', 'money', '2023-05-25 23:54:31', 0),
+(1502254138862391297, 'admin', '$2a$10$630Mdca6BcyUJpKC2LNT7eT93.k9pmpcQoes4qm/j2o.pnb725zE6', 'admin', 'https://7up.pics/images/2023/10/21/superhero.png', '18120803972', 'admin@qq.com', '',                     1, 1, '2023-05-26 22:33:39', 'money', '2022-03-11 20:04:32', 'money', '2023-05-26 21:52:38', 0),
+(1504612500111388673, 'guest', '$2a$10$Nj/4Tn.cj2SEdoIUqMz7FOczatNV/AltEu07ieTpAO.5hEGV7lZqC', 'guest', 'https://7up.pics/images/2023/10/21/superhero.png', '18120800002', 'guest@qq.com', '',                     1, 1, '2023-05-26 22:23:55', 'money', '2022-03-18 08:15:49', 'money', '2023-09-30 12:01:33', 0);
 
--- sys_user_role_relation
-INSERT INTO `sys_user_role_relation` VALUES (1507382155225899009, 1, 1, 0);
-INSERT INTO `sys_user_role_relation` VALUES (1662094367798829058, 1502254138862391297, 1502845638751055873, 0);
-INSERT INTO `sys_user_role_relation` VALUES (1707968908820713472, 1504612500111388673, 1502845786646409218, 0);
+-- sys_user_role
+INSERT INTO `sys_user_role` (`id`, `user_id`, `role_id`, `tenant_id`) VALUES
+(1507382155225899009, 1,                    1,                    0),
+(1662094367798829058, 1502254138862391297,  1502845638751055873,  0),
+(1707968908820713472, 1504612500111388673,  1502845786646409218,  0);
+
 -- <<< qk-money <<<
 
 -- sys_dict
-INSERT INTO `sys_dict` VALUES (1629418139531063298, 'memberType', '会员类型', 'money', '2023-02-25 17:48:52', 'money', '2023-02-25 17:48:52');
-INSERT INTO `sys_dict` VALUES (1629745205996666882, 'goodsStatus', '商品状态', 'money', '2023-02-26 15:28:31', 'money', '2023-02-26 15:28:31');
-INSERT INTO `sys_dict` VALUES (1629751225758216194, 'orderStatus', '订单状态', 'money', '2023-02-26 15:52:26', 'money', '2023-02-26 15:52:32');
+INSERT INTO `sys_dict` (`id`, `dict_name`, `dict_desc`, `create_by`, `create_time`, `update_by`, `update_time`) VALUES
+(1629418139531063298, 'memberType',  '会员类型', 'money', '2023-02-25 17:48:52', 'money', '2023-02-25 17:48:52'),
+(1629745205996666882, 'goodsStatus', '商品状态', 'money', '2023-02-26 15:28:31', 'money', '2023-02-26 15:28:31'),
+(1629751225758216194, 'orderStatus', '订单状态', 'money', '2023-02-26 15:52:26', 'money', '2023-02-26 15:52:32');
 
 -- sys_dict_detail
-INSERT INTO `sys_dict_detail` VALUES (1629418407601614850, 'memberType', 'MEMBER', '普通会员', '', 1, 0, 'money', '2023-02-25 17:49:56', 'money', '2023-02-25 17:49:56');
-INSERT INTO `sys_dict_detail` VALUES (1629418527323828226, 'memberType', 'HJ_VIP', '黄金会员', '', 2, 0, 'money', '2023-02-25 17:50:25', 'money', '2023-02-25 17:50:25');
-INSERT INTO `sys_dict_detail` VALUES (1629418584148258818, 'memberType', 'BJ_VIP', '铂金会员', '', 3, 0, 'money', '2023-02-25 17:50:38', 'money', '2023-02-25 17:50:38');
-INSERT INTO `sys_dict_detail` VALUES (1629745263274082306, 'goodsStatus', 'SALE', '在售', '', 1, 0, 'money', '2023-02-26 15:28:45', 'money', '2023-02-26 15:28:45');
-INSERT INTO `sys_dict_detail` VALUES (1629745293364019202, 'goodsStatus', 'SOLD_OUT', '售罄', '', 2, 0, 'money', '2023-02-26 15:28:52', 'money', '2023-02-26 15:28:52');
-INSERT INTO `sys_dict_detail` VALUES (1629745331712540673, 'goodsStatus', 'UN_SHELVE', '下架', '', 3, 0, 'money', '2023-02-26 15:29:01', 'money', '2023-02-26 15:29:01');
-INSERT INTO `sys_dict_detail` VALUES (1629751322239791106, 'OrderStatus', 'PAID', '已支付', '', 1, 0, 'money', '2023-02-26 15:52:49', 'money', '2023-02-26 15:52:49');
-INSERT INTO `sys_dict_detail` VALUES (1629751418805252098, 'OrderStatus', 'RETURN', '已退单', '', 2, 0, 'money', '2023-02-26 15:53:12', 'money', '2023-02-26 15:53:20');
-INSERT INTO `sys_dict_detail` VALUES (1630931426294759425, 'memberType', 'INNER', '内部会员', '', 4, 0, 'money', '2023-03-01 22:02:08', 'money', '2023-03-01 22:02:13');
+INSERT INTO `sys_dict_detail` (`id`, `dict`, `value`, `name_cn`, `name_en`, `sort`, `hidden`, `create_by`, `create_time`, `update_by`, `update_time`) VALUES
+(1629418407601614850, 'memberType',  'MEMBER',    '普通会员', '', 1, 0, 'money', '2023-02-25 17:49:56', 'money', '2023-02-25 17:49:56'),
+(1629418527323828226, 'memberType',  'HJ_VIP',    '黄金会员', '', 2, 0, 'money', '2023-02-25 17:50:25', 'money', '2023-02-25 17:50:25'),
+(1629418584148258818, 'memberType',  'BJ_VIP',    '铂金会员', '', 3, 0, 'money', '2023-02-25 17:50:38', 'money', '2023-02-25 17:50:38'),
+(1629745263274082306, 'goodsStatus', 'SALE',      '在售',     '', 1, 0, 'money', '2023-02-26 15:28:45', 'money', '2023-02-26 15:28:45'),
+(1629745293364019202, 'goodsStatus', 'SOLD_OUT',  '售罄',     '', 2, 0, 'money', '2023-02-26 15:28:52', 'money', '2023-02-26 15:28:52'),
+(1629745331712540673, 'goodsStatus', 'UN_SHELVE', '下架',     '', 3, 0, 'money', '2023-02-26 15:29:01', 'money', '2023-02-26 15:29:01'),
+(1629751322239791106, 'OrderStatus', 'PAID',      '已支付',   '', 1, 0, 'money', '2023-02-26 15:52:49', 'money', '2023-02-26 15:52:49'),
+(1629751418805252098, 'OrderStatus', 'RETURN',    '已退单',   '', 2, 0, 'money', '2023-02-26 15:53:12', 'money', '2023-02-26 15:53:20'),
+(1630931426294759425, 'memberType',  'INNER',     '内部会员', '', 4, 0, 'money', '2023-03-01 22:02:08', 'money', '2023-03-01 22:02:13');
 
 -- sys_permission
-INSERT INTO `sys_permission` VALUES (1629388418109894657, '会员管理', 'DIR', 0, 'ums', '', 'ums', 0, 0, '', '', 1, 3, 'money', '2023-02-25 15:50:46', 'money', '2023-02-25 15:50:46', 0);
-INSERT INTO `sys_permission` VALUES (1629390135195037697, '会员', 'MENU', 1629388418109894657, 'ums-member', 'umsMember:list', 'member', 0, 0, 'Member', 'ums/member/index', 2, 1, 'money', '2023-02-25 15:57:35', 'money', '2023-02-25 15:57:35', 0);
-INSERT INTO `sys_permission` VALUES (1629390281492361218, '新增', 'BUTTON', 1629390135195037697, '', 'umsMember:add', '', 0, 0, '', '', 0, 1, 'money', '2023-02-25 15:58:10', 'money', '2023-02-25 15:58:10', 0);
-INSERT INTO `sys_permission` VALUES (1629390745160085505, '修改', 'BUTTON', 1629390135195037697, '', 'umsMember:edit', '', 0, 0, '', '', 0, 2, 'money', '2023-02-25 16:00:01', 'money', '2023-02-25 16:00:01', 0);
-INSERT INTO `sys_permission` VALUES (1629390817495052289, '删除', 'BUTTON', 1629390135195037697, '', 'umsMember:del', '', 0, 0, '', '', 0, 3, 'money', '2023-02-25 16:00:18', 'money', '2023-02-25 16:00:18', 0);
-INSERT INTO `sys_permission` VALUES (1629707272975482881, '商品管理', 'DIR', 0, 'gms', '', 'gms', 0, 0, '', '', 2, 4, 'money', '2023-02-26 12:57:47', 'money', '2023-02-26 12:57:47', 0);
-INSERT INTO `sys_permission` VALUES (1629707539397672961, '品牌', 'MENU', 1629707272975482881, 'gms-brand', 'gmsBrand:list', 'brand', 0, 0, 'Brand', 'gms/brand/index', 3, 2, 'money', '2023-02-26 12:58:51', 'money', '2023-02-26 12:58:51', 0);
-INSERT INTO `sys_permission` VALUES (1629707621962547201, '新增', 'BUTTON', 1629707539397672961, '', 'gmsBrand:add', '', 0, 0, '', '', 0, 1, 'money', '2023-02-26 12:59:10', 'money', '2023-02-26 12:59:10', 0);
-INSERT INTO `sys_permission` VALUES (1629707668649345025, '修改', 'BUTTON', 1629707539397672961, '', 'gmsBrand:edit', '', 0, 0, '', '', 0, 2, 'money', '2023-02-26 12:59:21', 'money', '2023-02-26 12:59:21', 0);
-INSERT INTO `sys_permission` VALUES (1629707726832730113, '删除', 'BUTTON', 1629707539397672961, '', 'gmsBrand:del', '', 0, 0, '', '', 0, 3, 'money', '2023-02-26 12:59:35', 'money', '2023-02-26 12:59:35', 0);
-INSERT INTO `sys_permission` VALUES (1629731562059952129, '商品', 'MENU', 1629707272975482881, 'gms-goods', 'gmsGoods:list', 'goods', 0, 0, 'Goods', 'gms/goods/index', 1, 1, 'money', '2023-02-26 14:34:18', 'money', '2023-02-26 14:34:18', 0);
-INSERT INTO `sys_permission` VALUES (1629731649087565825, '新增', 'BUTTON', 1629731562059952129, '', 'gmsGoods:add', '', 0, 0, '', '', 0, 1, 'money', '2023-02-26 14:34:39', 'money', '2023-02-26 14:34:39', 0);
-INSERT INTO `sys_permission` VALUES (1629731729861472258, '修改', 'BUTTON', 1629731562059952129, '', 'gmsGoods:edit', '', 0, 0, '', '', 0, 2, 'money', '2023-02-26 14:34:58', 'money', '2023-02-26 14:34:58', 0);
-INSERT INTO `sys_permission` VALUES (1629731810069147650, '删除', 'BUTTON', 1629731562059952129, '', 'gmsGoods:del', '', 0, 0, '', '', 0, 3, 'money', '2023-02-26 14:35:17', 'money', '2023-02-26 14:35:17', 0);
-INSERT INTO `sys_permission` VALUES (1629732061718999041, '订单管理', 'DIR', 0, 'oms', '', 'oms', 0, 0, '', '', 2, 5, 'money', '2023-02-26 14:36:17', 'money', '2023-02-26 14:36:17', 0);
-INSERT INTO `sys_permission` VALUES (1629732239595237378, '订单', 'MENU', 1629732061718999041, 'oms-order', 'omsOrder:list', 'order', 0, 0, 'Order', 'oms/order/index', 1, 1, 'money', '2023-02-26 14:37:00', 'money', '2023-02-26 14:37:00', 0);
-INSERT INTO `sys_permission` VALUES (1629732461629108226, '修改', 'BUTTON', 1629732239595237378, '', 'omsOrder:edit', '', 0, 0, '', '', 0, 1, 'money', '2023-02-26 14:37:52', 'money', '2023-02-26 14:37:52', 0);
-INSERT INTO `sys_permission` VALUES (1629767886267736065, '日常', 'DIR', 0, 'pos', '', 'pos', 0, 0, '', '', 1, 2, 'money', '2023-02-26 16:58:38', 'money', '2023-02-26 16:58:38', 0);
-INSERT INTO `sys_permission` VALUES (1629768001384603649, '收银台', 'MENU', 1629767886267736065, 'pos', 'pos:cashier', 'pos', 0, 0, 'Pos', 'pos/index', 0, 1, 'money', '2023-02-26 16:59:06', 'money', '2023-02-26 16:59:06', 0);
-INSERT INTO `sys_permission` VALUES (1634214613527801857, '订单详情', 'MENU', 1629732061718999041, 'oms', 'omsOrder:detail', 'order/detail/:id', 0, 1, 'OrderDetail', 'oms/order/detail', 0, 2, 'money', '2023-03-10 23:28:21', 'money', '2023-03-10 23:28:21', 0);
+INSERT INTO `sys_permission` (`id`, `permission_name`, `permission_type`, `parent_id`, `icon`, `permission_code`, `router_path`, `iframe`, `hidden`, `component_name`, `component_path`, `sort`, `create_by`, `create_time`, `update_by`, `update_time`, `tenant_id`) VALUES
+(1629388418109894657, '会员管理', 'DIR',    0,                   'ums',        '',                'ums',              0, 0, '',            '',                     3, 'money', '2023-02-25 15:50:46', 'money', '2023-02-25 15:50:46', 0),
+(1629390135195037697, '会员',     'MENU',   1629388418109894657, 'ums-member', 'umsMember:list',  'member',           0, 0, 'Member',      'ums/member/index',     1, 'money', '2023-02-25 15:57:35', 'money', '2023-02-25 15:57:35', 0),
+(1629390281492361218, '新增',     'BUTTON', 1629390135195037697, '',           'umsMember:add',   '',                 0, 0, '',            '',                     1, 'money', '2023-02-25 15:58:10', 'money', '2023-02-25 15:58:10', 0),
+(1629390745160085505, '修改',     'BUTTON', 1629390135195037697, '',           'umsMember:edit',  '',                 0, 0, '',            '',                     2, 'money', '2023-02-25 16:00:01', 'money', '2023-02-25 16:00:01', 0),
+(1629390817495052289, '删除',     'BUTTON', 1629390135195037697, '',           'umsMember:del',   '',                 0, 0, '',            '',                     3, 'money', '2023-02-25 16:00:18', 'money', '2023-02-25 16:00:18', 0),
+(1629707272975482881, '商品管理', 'DIR',    0,                   'gms',        '',                'gms',              0, 0, '',            '',                     4, 'money', '2023-02-26 12:57:47', 'money', '2023-02-26 12:57:47', 0),
+(1629707539397672961, '品牌',     'MENU',   1629707272975482881, 'gms-brand',  'gmsBrand:list',   'brand',            0, 0, 'Brand',       'gms/brand/index',      2, 'money', '2023-02-26 12:58:51', 'money', '2023-02-26 12:58:51', 0),
+(1629707621962547201, '新增',     'BUTTON', 1629707539397672961, '',           'gmsBrand:add',    '',                 0, 0, '',            '',                     1, 'money', '2023-02-26 12:59:10', 'money', '2023-02-26 12:59:10', 0),
+(1629707668649345025, '修改',     'BUTTON', 1629707539397672961, '',           'gmsBrand:edit',   '',                 0, 0, '',            '',                     2, 'money', '2023-02-26 12:59:21', 'money', '2023-02-26 12:59:21', 0),
+(1629707726832730113, '删除',     'BUTTON', 1629707539397672961, '',           'gmsBrand:del',    '',                 0, 0, '',            '',                     3, 'money', '2023-02-26 12:59:35', 'money', '2023-02-26 12:59:35', 0),
+(1629731562059952129, '商品',     'MENU',   1629707272975482881, 'gms-goods',  'gmsGoods:list',   'goods',            0, 0, 'Goods',       'gms/goods/index',      1, 'money', '2023-02-26 14:34:18', 'money', '2023-02-26 14:34:18', 0),
+(1629731649087565825, '新增',     'BUTTON', 1629731562059952129, '',           'gmsGoods:add',    '',                 0, 0, '',            '',                     1, 'money', '2023-02-26 14:34:39', 'money', '2023-02-26 14:34:39', 0),
+(1629731729861472258, '修改',     'BUTTON', 1629731562059952129, '',           'gmsGoods:edit',   '',                 0, 0, '',            '',                     2, 'money', '2023-02-26 14:34:58', 'money', '2023-02-26 14:34:58', 0),
+(1629731810069147650, '删除',     'BUTTON', 1629731562059952129, '',           'gmsGoods:del',    '',                 0, 0, '',            '',                     3, 'money', '2023-02-26 14:35:17', 'money', '2023-02-26 14:35:17', 0),
+(1629732061718999041, '订单管理', 'DIR',    0,                   'oms',        '',                'oms',              0, 0, '',            '',                     5, 'money', '2023-02-26 14:36:17', 'money', '2023-02-26 14:36:17', 0),
+(1629732239595237378, '订单',     'MENU',   1629732061718999041, 'oms-order',  'omsOrder:list',   'order',            0, 0, 'Order',       'oms/order/index',      1, 'money', '2023-02-26 14:37:00', 'money', '2023-02-26 14:37:00', 0),
+(1629732461629108226, '修改',     'BUTTON', 1629732239595237378, '',           'omsOrder:edit',   '',                 0, 0, '',            '',                     1, 'money', '2023-02-26 14:37:52', 'money', '2023-02-26 14:37:52', 0),
+(1629767886267736065, '日常',     'DIR',    0,                   'pos',        '',                'pos',              0, 0, '',            '',                     2, 'money', '2023-02-26 16:58:38', 'money', '2023-02-26 16:58:38', 0),
+(1629768001384603649, '收银台',   'MENU',   1629767886267736065, 'pos',        'pos:cashier',     'pos',              0, 0, 'Pos',         'pos/index',            1, 'money', '2023-02-26 16:59:06', 'money', '2023-02-26 16:59:06', 0),
+(1634214613527801857, '订单详情', 'MENU',   1629732061718999041, 'oms',        'omsOrder:detail', 'order/detail/:id', 0, 1, 'OrderDetail', 'oms/order/detail',     2, 'money', '2023-03-10 23:28:21', 'money', '2023-03-10 23:28:21', 0);
 
 DROP TABLE IF EXISTS `demo`;
 
 -- gms_brand
 DROP TABLE IF EXISTS `gms_brand`;
-CREATE TABLE `gms_brand`  (
-  `id` bigint UNSIGNED NOT NULL,
-  `logo` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '' COMMENT '品牌logo',
-  `name` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '品牌名称',
-  `description` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '' COMMENT '品牌描述',
-  `goods_count` int UNSIGNED NOT NULL DEFAULT 0 COMMENT '商品数量',
-  `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `create_time` datetime NOT NULL,
-  `update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `update_time` datetime NOT NULL,
-  `tenant_id` bigint UNSIGNED NOT NULL DEFAULT 0 COMMENT '租户id',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '商品品牌表' ROW_FORMAT = DYNAMIC;
+CREATE TABLE `gms_brand` (
+  `id`          bigint       NOT NULL              COMMENT '主键ID',
+  `logo`        varchar(255) NOT NULL DEFAULT ''   COMMENT '品牌logo',
+  `name`        varchar(50)  NOT NULL              COMMENT '品牌名称',
+  `description` varchar(500) NOT NULL DEFAULT ''   COMMENT '品牌描述',
+  `create_by`   varchar(50)  NOT NULL              COMMENT '创建人',
+  `create_time` datetime     NOT NULL              COMMENT '创建时间',
+  `update_by`   varchar(50)  NOT NULL              COMMENT '更新人',
+  `update_time` datetime     NOT NULL              COMMENT '更新时间',
+  `tenant_id`   bigint       NOT NULL DEFAULT 0    COMMENT '租户ID',
+  PRIMARY KEY (`id`),
+  KEY `idx_tenant_id` (`tenant_id`)
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '商品品牌表';
 
 -- gms_goods
 DROP TABLE IF EXISTS `gms_goods`;
-CREATE TABLE `gms_goods`  (
-  `id` bigint NOT NULL,
-  `brand_id` bigint UNSIGNED NULL DEFAULT NULL COMMENT '品牌id',
-  `category_id` bigint UNSIGNED NULL DEFAULT NULL COMMENT '分类id',
-  `barcode` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '条码',
-  `name` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '商品名称',
-  `pinyin` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '' COMMENT '商品拼音',
-  `pic` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '' COMMENT '商品图片',
-  `unit` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '' COMMENT '单位',
-  `size` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '' COMMENT '规格',
-  `description` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '' COMMENT '描述',
-  `purchase_price` decimal(10, 2) NOT NULL COMMENT '进价',
-  `sale_price` decimal(10, 2) NOT NULL COMMENT '售价',
-  `vip_price` decimal(10, 2) NOT NULL COMMENT '会员价',
-  `coupon` decimal(10, 2) NOT NULL DEFAULT 0.00 COMMENT '用券',
-  `stock` bigint NOT NULL DEFAULT 0 COMMENT '库存',
-  `sales` bigint UNSIGNED NOT NULL DEFAULT 0 COMMENT '销量',
-  `status` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT 'SALE' COMMENT '状态',
-  `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `tenant_id` bigint UNSIGNED NOT NULL DEFAULT 0 COMMENT '租户id',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '商品表' ROW_FORMAT = DYNAMIC;
+CREATE TABLE `gms_goods` (
+  `id`             bigint        NOT NULL                COMMENT '主键ID',
+  `brand_id`       bigint        NULL                    COMMENT '品牌ID',
+  `category_id`    bigint        NULL                    COMMENT '分类ID',
+  `barcode`        varchar(50)   NOT NULL                COMMENT '条码',
+  `name`           varchar(50)   NOT NULL                COMMENT '商品名称',
+  `pinyin`         varchar(255)  NOT NULL DEFAULT ''     COMMENT '商品拼音',
+  `pic`            varchar(255)  NOT NULL DEFAULT ''     COMMENT '商品图片地址',
+  `unit`           varchar(20)   NOT NULL DEFAULT ''     COMMENT '单位',
+  `size`           varchar(50)   NOT NULL DEFAULT ''     COMMENT '规格',
+  `description`    varchar(500)  NOT NULL DEFAULT ''     COMMENT '描述',
+  `purchase_price` decimal(10,2) NOT NULL                COMMENT '进价',
+  `sale_price`     decimal(10,2) NOT NULL                COMMENT '售价',
+  `vip_price`      decimal(10,2) NOT NULL                COMMENT '会员价',
+  `coupon`         decimal(10,2) NOT NULL DEFAULT 0.00   COMMENT '用券：每件可抵扣的券额，会员价 = 售价 - 用券',
+  `stock`          bigint        NOT NULL DEFAULT 0      COMMENT '库存',
+  `sales`          bigint        NOT NULL DEFAULT 0      COMMENT '销量',
+  `status`         varchar(20)   NOT NULL DEFAULT 'SALE' COMMENT '状态',
+  `create_by`      varchar(50)   NOT NULL                COMMENT '创建人',
+  `create_time`    datetime      NOT NULL                COMMENT '创建时间',
+  `update_by`      varchar(50)   NOT NULL                COMMENT '更新人',
+  `update_time`    datetime      NOT NULL                COMMENT '更新时间',
+  `tenant_id`      bigint        NOT NULL DEFAULT 0      COMMENT '租户ID',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uk_tenant_barcode` (`tenant_id`, `barcode`),
+  KEY `idx_tenant_brand_id` (`tenant_id`, `brand_id`),
+  KEY `idx_tenant_category_id` (`tenant_id`, `category_id`)
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '商品表';
 
 -- gms_goods_category
 DROP TABLE IF EXISTS `gms_goods_category`;
-CREATE TABLE `gms_goods_category`  (
-  `id` bigint UNSIGNED NOT NULL,
-  `pid` bigint UNSIGNED NOT NULL COMMENT '父分类id',
-  `icon` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '' COMMENT '分类图标',
-  `name` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '分类名称',
-  `goods_count` int NOT NULL DEFAULT 0 COMMENT '商品数量',
-  `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `tenant_id` bigint UNSIGNED NOT NULL DEFAULT 0 COMMENT '租户id',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '商品分类表' ROW_FORMAT = DYNAMIC;
+CREATE TABLE `gms_goods_category` (
+  `id`          bigint       NOT NULL              COMMENT '主键ID',
+  `pid`         bigint       NOT NULL DEFAULT 0    COMMENT '父分类ID，0 为根',
+  `icon`        varchar(255) NOT NULL DEFAULT ''   COMMENT '分类图标',
+  `name`        varchar(50)  NOT NULL              COMMENT '分类名称',
+  `create_by`   varchar(50)  NOT NULL              COMMENT '创建人',
+  `create_time` datetime     NOT NULL              COMMENT '创建时间',
+  `update_by`   varchar(50)  NOT NULL              COMMENT '更新人',
+  `update_time` datetime     NOT NULL              COMMENT '更新时间',
+  `tenant_id`   bigint       NOT NULL DEFAULT 0    COMMENT '租户ID',
+  PRIMARY KEY (`id`),
+  KEY `idx_tenant_pid` (`tenant_id`, `pid`)
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '商品分类表';
 
 -- oms_order
 DROP TABLE IF EXISTS `oms_order`;
-CREATE TABLE `oms_order`  (
-  `id` bigint UNSIGNED NOT NULL,
-  `order_no` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '订单号',
-  `member` varchar(24) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '零售' COMMENT '会员名',
-  `member_id` bigint UNSIGNED NOT NULL DEFAULT 0 COMMENT '会员id',
-  `vip` tinyint(1) NOT NULL COMMENT 'vip单',
-  `status` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '状态',
-  `contact` varchar(24) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '' COMMENT '联系方式',
-  `province` varchar(24) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '' COMMENT '省份',
-  `city` varchar(24) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '' COMMENT '城市',
-  `district` varchar(24) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '' COMMENT '地区',
-  `address` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '' COMMENT '详细地址',
-  `cost_amount` decimal(10, 2) UNSIGNED NOT NULL COMMENT '总成本',
-  `total_amount` decimal(10, 2) UNSIGNED NOT NULL COMMENT '总价',
-  `pay_amount` decimal(10, 2) UNSIGNED NOT NULL COMMENT '实付款',
-  `coupon_amount` decimal(10, 2) UNSIGNED NOT NULL COMMENT '抵用券',
-  `final_sales_amount` decimal(10, 2) UNSIGNED NOT NULL COMMENT '最终销售金额',
-  `remark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '' COMMENT '备注',
-  `payment_time` datetime NOT NULL COMMENT '支付时间',
-  `completion_time` datetime NULL DEFAULT NULL COMMENT '完成时间',
-  `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `tenant_id` bigint NOT NULL DEFAULT 0 COMMENT '租户id',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '订单表' ROW_FORMAT = DYNAMIC;
+CREATE TABLE `oms_order` (
+  `id`                 bigint        NOT NULL                COMMENT '主键ID',
+  `order_no`           varchar(50)   NOT NULL                COMMENT '订单号',
+  `member`             varchar(50)   NOT NULL DEFAULT '零售' COMMENT '会员名',
+  `member_id`          bigint        NOT NULL DEFAULT 0      COMMENT '会员ID',
+  `vip`                tinyint(1)    NOT NULL DEFAULT 0      COMMENT '是否会员单：0-否；1-是',
+  `status`             varchar(20)   NOT NULL                COMMENT '状态',
+  `contact`            varchar(50)   NOT NULL DEFAULT ''     COMMENT '联系方式',
+  `province`           varchar(50)   NOT NULL DEFAULT ''     COMMENT '省份',
+  `city`               varchar(50)   NOT NULL DEFAULT ''     COMMENT '城市',
+  `district`           varchar(50)   NOT NULL DEFAULT ''     COMMENT '地区',
+  `address`            varchar(255)  NOT NULL DEFAULT ''     COMMENT '详细地址',
+  `cost_amount`        decimal(10,2) NOT NULL                COMMENT '总成本',
+  `total_amount`       decimal(10,2) NOT NULL                COMMENT '总价',
+  `pay_amount`         decimal(10,2) NOT NULL                COMMENT '实付款',
+  `coupon_amount`      decimal(10,2) NOT NULL                COMMENT '抵用券：整单抵扣总额，由明细逐件汇总',
+  `final_sales_amount` decimal(10,2) NOT NULL                COMMENT '最终销售金额',
+  `remark`             varchar(500)  NOT NULL DEFAULT ''     COMMENT '备注',
+  `payment_time`       datetime      NULL                    COMMENT '支付时间',
+  `completion_time`    datetime      NULL                    COMMENT '完成时间',
+  `create_by`          varchar(50)   NOT NULL                COMMENT '创建人',
+  `create_time`        datetime      NOT NULL                COMMENT '创建时间',
+  `update_by`          varchar(50)   NOT NULL                COMMENT '更新人',
+  `update_time`        datetime      NOT NULL                COMMENT '更新时间',
+  `tenant_id`          bigint        NOT NULL DEFAULT 0      COMMENT '租户ID',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uk_tenant_order_no` (`tenant_id`, `order_no`),
+  KEY `idx_tenant_member_id` (`tenant_id`, `member_id`),
+  KEY `idx_tenant_payment_time` (`tenant_id`, `payment_time`)
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '订单表';
 
 -- oms_order_detail
 DROP TABLE IF EXISTS `oms_order_detail`;
-CREATE TABLE `oms_order_detail`  (
-  `id` bigint NOT NULL,
-  `order_no` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '订单号',
-  `status` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '状态',
-  `goods_id` bigint NOT NULL COMMENT '商品id',
-  `goods_barcode` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '商品条码',
-  `goods_name` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '商品名称',
-  `goods_price` decimal(10, 2) NOT NULL COMMENT '实际单价',
-  `quantity` int UNSIGNED NOT NULL COMMENT '数量',
-  `sale_price` decimal(10, 2) NOT NULL COMMENT '售价',
-  `purchase_price` decimal(10, 2) NOT NULL COMMENT '进价',
-  `vip_price` decimal(10, 2) NOT NULL COMMENT '会员价',
-  `coupon` decimal(10, 2) NOT NULL COMMENT '抵用券',
-  `return_quantity` int NOT NULL DEFAULT 0 COMMENT '退货数量',
-  `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `tenant_id` bigint UNSIGNED NOT NULL DEFAULT 0 COMMENT '租户id',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '订单明细表' ROW_FORMAT = DYNAMIC;
+CREATE TABLE `oms_order_detail` (
+  `id`              bigint        NOT NULL              COMMENT '主键ID',
+  `order_id`        bigint        NOT NULL              COMMENT '订单ID',
+  `status`          varchar(20)   NOT NULL              COMMENT '状态',
+  `goods_id`        bigint        NOT NULL              COMMENT '商品ID',
+  `goods_barcode`   varchar(50)   NOT NULL              COMMENT '商品条码',
+  `goods_name`      varchar(50)   NOT NULL              COMMENT '商品名称',
+  `goods_price`     decimal(10,2) NOT NULL              COMMENT '实际单价',
+  `quantity`        int           NOT NULL              COMMENT '数量',
+  `sale_price`      decimal(10,2) NOT NULL              COMMENT '售价',
+  `purchase_price`  decimal(10,2) NOT NULL              COMMENT '进价',
+  `vip_price`       decimal(10,2) NOT NULL              COMMENT '会员价',
+  `coupon`          decimal(10,2) NOT NULL              COMMENT '抵用券：每件的券抵扣额，下单时自商品快照',
+  `return_quantity` int           NOT NULL DEFAULT 0    COMMENT '退货数量',
+  `create_by`       varchar(50)   NOT NULL              COMMENT '创建人',
+  `create_time`     datetime      NOT NULL              COMMENT '创建时间',
+  `update_by`       varchar(50)   NOT NULL              COMMENT '更新人',
+  `update_time`     datetime      NOT NULL              COMMENT '更新时间',
+  `tenant_id`       bigint        NOT NULL DEFAULT 0    COMMENT '租户ID',
+  PRIMARY KEY (`id`),
+  KEY `idx_tenant_order_id` (`tenant_id`, `order_id`),
+  KEY `idx_tenant_goods_id` (`tenant_id`, `goods_id`)
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '订单明细表';
 
 -- oms_order_log
 DROP TABLE IF EXISTS `oms_order_log`;
-CREATE TABLE `oms_order_log`  (
-  `id` bigint UNSIGNED NOT NULL,
-  `order_id` bigint NOT NULL COMMENT '订单id',
-  `description` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '描述',
-  `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `tenant_id` bigint UNSIGNED NOT NULL DEFAULT 0 COMMENT '租户id',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '订单操作日志' ROW_FORMAT = DYNAMIC;
+CREATE TABLE `oms_order_log` (
+  `id`          bigint       NOT NULL              COMMENT '主键ID',
+  `order_id`    bigint       NOT NULL              COMMENT '订单ID',
+  `description` varchar(500) NOT NULL              COMMENT '描述',
+  `create_by`   varchar(50)  NOT NULL              COMMENT '创建人',
+  `create_time` datetime     NOT NULL              COMMENT '创建时间',
+  `update_by`   varchar(50)  NOT NULL              COMMENT '更新人',
+  `update_time` datetime     NOT NULL              COMMENT '更新时间',
+  `tenant_id`   bigint       NOT NULL DEFAULT 0    COMMENT '租户ID',
+  PRIMARY KEY (`id`),
+  KEY `idx_tenant_order_id` (`tenant_id`, `order_id`)
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '订单操作日志';
 
 -- provinces
 DROP TABLE IF EXISTS `provinces`;
-CREATE TABLE `provinces`  (
-  `district_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  `province` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  `city` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  `city_geocode` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  `district` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  `district_geocode` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  `lon` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  `lat` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
+CREATE TABLE `provinces` (
+  `district_id`      varchar(20) NOT NULL              COMMENT '行政区划代码',
+  `province`         varchar(50) NOT NULL              COMMENT '省份',
+  `city`             varchar(50) NOT NULL              COMMENT '城市',
+  `city_geocode`     varchar(20) NOT NULL DEFAULT ''   COMMENT '城市编码',
+  `district`         varchar(50) NOT NULL              COMMENT '区县',
+  `district_geocode` varchar(20) NOT NULL DEFAULT ''   COMMENT '区县编码',
+  `lon`              varchar(20) NOT NULL DEFAULT ''   COMMENT '经度',
+  `lat`              varchar(20) NOT NULL DEFAULT ''   COMMENT '纬度',
+  KEY `idx_district_id` (`district_id`)
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '行政区划参照表';
 
 -- ums_member
 DROP TABLE IF EXISTS `ums_member`;
-CREATE TABLE `ums_member`  (
-  `id` bigint NOT NULL,
-  `code` varchar(24) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '卡号',
-  `name` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '会员名称',
-  `type` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '会员类型',
-  `phone` varchar(24) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '手机号',
-  `province` varchar(24) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '' COMMENT '省份',
-  `city` varchar(24) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '' COMMENT '城市',
-  `district` varchar(24) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '' COMMENT '地区',
-  `address` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '' COMMENT '详细地址',
-  `coupon` decimal(15, 2) NOT NULL DEFAULT 0.00 COMMENT '抵用券',
-  `consume_amount` decimal(12, 2) NOT NULL DEFAULT 0.00 COMMENT '总消费金额',
-  `consume_coupon` decimal(12, 2) NOT NULL DEFAULT 0.00 COMMENT '消费抵用券',
-  `consume_times` int NOT NULL DEFAULT 0 COMMENT '消费次数',
-  `cancel_times` int NOT NULL DEFAULT 0 COMMENT '取消次数',
-  `remark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '' COMMENT '备注',
-  `deleted` tinyint(1) NOT NULL DEFAULT 0 COMMENT '逻辑删除',
-  `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `create_time` datetime NOT NULL,
-  `update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `update_time` datetime NOT NULL,
-  `tenant_id` bigint UNSIGNED NOT NULL DEFAULT 0 COMMENT '租户id',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '会员表' ROW_FORMAT = DYNAMIC;
+CREATE TABLE `ums_member` (
+  `id`             bigint        NOT NULL                COMMENT '主键ID',
+  `code`           varchar(50)   NOT NULL                COMMENT '卡号',
+  `name`           varchar(50)   NOT NULL                COMMENT '会员名称',
+  `type`           varchar(20)   NOT NULL                COMMENT '会员类型',
+  `phone`          varchar(20)   NOT NULL                COMMENT '手机号',
+  `province`       varchar(50)   NOT NULL DEFAULT ''     COMMENT '省份',
+  `city`           varchar(50)   NOT NULL DEFAULT ''     COMMENT '城市',
+  `district`       varchar(50)   NOT NULL DEFAULT ''     COMMENT '地区',
+  `address`        varchar(255)  NOT NULL DEFAULT ''     COMMENT '详细地址',
+  `coupon`         decimal(15,2) NOT NULL DEFAULT 0.00   COMMENT '抵用券余额，收银时递减',
+  `consume_amount` decimal(12,2) NOT NULL DEFAULT 0.00   COMMENT '累计消费金额',
+  `consume_coupon` decimal(12,2) NOT NULL DEFAULT 0.00   COMMENT '累计消费抵用券',
+  `consume_times`  int           NOT NULL DEFAULT 0      COMMENT '消费次数',
+  `cancel_times`   int           NOT NULL DEFAULT 0      COMMENT '取消次数',
+  `remark`         varchar(500)  NOT NULL DEFAULT ''     COMMENT '备注',
+  `deleted`        tinyint(1)    NOT NULL DEFAULT 0      COMMENT '逻辑删除：0-未删除；1-已删除',
+  `create_by`      varchar(50)   NOT NULL                COMMENT '创建人',
+  `create_time`    datetime      NOT NULL                COMMENT '创建时间',
+  `update_by`      varchar(50)   NOT NULL                COMMENT '更新人',
+  `update_time`    datetime      NOT NULL                COMMENT '更新时间',
+  `tenant_id`      bigint        NOT NULL DEFAULT 0      COMMENT '租户ID',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uk_tenant_code` (`tenant_id`, `code`),
+  KEY `idx_tenant_phone` (`tenant_id`, `phone`)
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '会员表';
 
 -- gms_goods
 INSERT INTO `gms_goods` VALUES (1487743593950072833, NULL, NULL, '6955470960344', '护垫', '', '', '包', '', '', 4.54, 11.00, 6.00, 5.00, 46, 170, 'SALE', 'money', '2023-10-13 21:10:15', 'money', '2022-04-30 13:01:17', 0);
