@@ -12,7 +12,7 @@
     <img src="https://img.shields.io/badge/Vue-3.x-4FC08D?style=flat-square&logo=vue.js" alt="Vue">
   </a>
   <a href="https://element-plus.org/" target="_blank">
-    <img src="https://img.shields.io/badge/Element%20Plus-2.13.2-409EFF?style=flat-square" alt="Element Plus">
+    <img src="https://img.shields.io/badge/Element%20Plus-2.14.7-409EFF?style=flat-square" alt="Element Plus">
   </a>
   <a href="https://baomidou.com/" target="_blank">
     <img src="https://img.shields.io/badge/MyBatis--Plus-3.5.15-0078D4?style=flat-square" alt="MyBatis-Plus">
@@ -36,8 +36,6 @@
 ## 📖 项目简介
 
 麦尼收银系统（Money POS）是一款基于自制快速后台开发框架 [QK-MONEY](https://github.com/ycf1998/qk-money) 开发的多店铺收银系统。系统支持**会员管理**、**商品管理**、**订单管理**等功能，并集成了**小票打印**等实用特性，适用于零售、餐饮等多种场景。
-
-> 💡 **JDK 1.8 用户**：如需使用 **JDK 1.8 + Spring Boot 2.7** 版本，请切换到 [`jdk1.8`](https://github.com/ycf1998/qk-money/tree/jdk1.8) 分支。
 
 ## ✨ 核心功能
 
@@ -94,7 +92,7 @@
   </tr>
   <tr>
     <td><b>Spring Security</b></td>
-    <td>3.5.12</td>
+    <td>6.5.9</td>
     <td>安全认证</td>
   </tr>
   <tr>
@@ -155,7 +153,7 @@
   </tr>
   <tr>
     <td><b>MySQL</b></td>
-    <td>8.0+</td>
+    <td>5.7+</td>
   </tr>
   <tr>
     <td><b>Maven</b></td>
@@ -163,7 +161,7 @@
   </tr>
   <tr>
     <td><b>Node.js</b></td>
-    <td>16+</td>
+    <td>22.12+</td>
   </tr>
 </table>
 
@@ -184,11 +182,11 @@ cd money-pos
 mysql -u root -p < money_pos.sql
 ```
 
-> ⚠️ **注意**：如果使用 MySQL 8 以下版本，请将脚本中的 `utf8mb4` 替换为 `utf8`，`utf8mb4_general_ci` 替换为 `utf8_general_ci`。
+> ⚠️ **注意**：如果使用 MySQL 8 以下版本，请将脚本中的 `utf8mb4_0900_ai_ci` 替换为 `utf8mb4_general_ci`。
 
 ### 3️⃣ 配置数据库连接
 
-编辑 `qk-money-app/money-app-biz/src/main/resources/application-dev.yml`：
+编辑 `qk-money/qk-money-app/money-app-biz/src/main/resources/application-dev.yml`：
 
 ```yaml
 spring:
